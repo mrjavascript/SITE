@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE liferay-portlet-app PUBLIC "-//Liferay//DTD Portlet Application 6.1.0//EN" "http://www.liferay.com/dtd/liferay-portlet-app_6_1_0.dtd">
+
+<liferay-portlet-app>
+	<portlet>
+		<portlet-name>SIT.DirectTransport</portlet-name>
+		<icon>/icon.png</icon>
+		
+		<configuration-action-class>
+                          com.liferay.config.ConfigurationActionImpl
+        </configuration-action-class>
+        <instanceable>false</instanceable>
+		 
+		<header-portlet-css>http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/themes/smoothness/jquery-ui.min.css</header-portlet-css>
+		<header-portlet-css>/css/main.css</header-portlet-css>
+		<header-portlet-css>/css/validationEngine.jquery.css</header-portlet-css>
+		<header-portlet-css>/css/dropdown.css</header-portlet-css>
+		<header-portlet-css>/css/skeleton.buttons.css</header-portlet-css>
+		 
+		<header-portlet-javascript>http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js</header-portlet-javascript>
+		<header-portlet-javascript>http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js</header-portlet-javascript>
+		
+		<header-portlet-javascript>/js/jquery.filestyle.js</header-portlet-javascript>
+		<header-portlet-javascript>/js/jquery.cookie.js</header-portlet-javascript>
+		<header-portlet-javascript>/js/json2.js</header-portlet-javascript>
+		<header-portlet-javascript>/js/jquery.blockUI.js</header-portlet-javascript>
+		<header-portlet-javascript>/js/jquery.jstree.js</header-portlet-javascript>
+		<header-portlet-javascript>/js/jquery.dropdown.js</header-portlet-javascript>
+		<footer-portlet-javascript>/js/main.js</footer-portlet-javascript>
+		<footer-portlet-javascript>/js/jquery.validationEngine-en.js</footer-portlet-javascript>
+		<footer-portlet-javascript>/js/jquery.validationEngine.js</footer-portlet-javascript>
+		
+		<css-class-wrapper>SIT-DirectTransport-portlet</css-class-wrapper>
+	</portlet>
+	<role-mapper>
+		<role-name>administrator</role-name>
+		<role-link>Administrator</role-link>
+	</role-mapper>
+	<role-mapper>
+		<role-name>guest</role-name>
+		<role-link>Guest</role-link>
+	</role-mapper>
+	<role-mapper>
+		<role-name>power-user</role-name>
+		<role-link>Power User</role-link>
+	</role-mapper>
+	<role-mapper>
+		<role-name>user</role-name>
+		<role-link>User</role-link>
+	</role-mapper>
+</liferay-portlet-app>
