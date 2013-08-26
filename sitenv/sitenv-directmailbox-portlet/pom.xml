@@ -6,11 +6,9 @@
         <groupId>org.sitenv</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-	<groupId>org.sitenv</groupId>
 	<artifactId>sitenv-directmailbox-portlet</artifactId>
 	<packaging>war</packaging>
 	<name>sitenv-directmailbox-portlet Portlet</name>
-	<version>1.0-SNAPSHOT</version>
 	<build>
 		<finalName>SIT.DirectMailBox-portlet</finalName>
 		<plugins>
