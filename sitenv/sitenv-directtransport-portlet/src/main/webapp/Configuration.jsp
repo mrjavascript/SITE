@@ -7,6 +7,11 @@ method="post" name="<portlet:namespace />fm">
  
 <table class="lfr-table">
 <tr>
+    <td>Service context:</td>
+	<td><input type="text" name="<portlet:namespace />serviceContext"  value="<%=ServiceContext %>"/>
+    </td>
+</tr>
+<tr>
     <td>Direct from email:</td>
 	<td><input type="text" name="<portlet:namespace />fromendpoint"  value="<%=fromemail %>"/>
     </td>

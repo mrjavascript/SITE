@@ -41,6 +41,7 @@ public class ConfigurationActionImpl implements ConfigurationAction {
         String password = ParamUtil.getString(actionRequest, "smptpswrd");
         String enablessl = ParamUtil.getString(actionRequest, "enablessl");
         String portletResource = ParamUtil.getString(actionRequest, "portletResource");
+        String serviceContext = ParamUtil.getString(actionRequest, "serviceContext");
         PortletPreferences preferences = PortletPreferencesFactoryUtil.getPortletSetup(actionRequest, portletResource);
  
         preferences.setValue("Directfromendpoint", email);
@@ -49,6 +50,7 @@ public class ConfigurationActionImpl implements ConfigurationAction {
         preferences.setValue("SMTPauthusername", username);
         preferences.setValue("SMTPauthpassword", password);
         preferences.setValue("EnableSSL", enablessl);
+        preferences.setValue("ServiceContext", serviceContext);
         
         preferences.store();
  

@@ -47,4 +47,6 @@ String SMTPAuthPassword = preferences.getValue("SMTPauthpassword", StringPool.BL
 
 String EnableSSL = preferences.getValue("EnableSSL", StringPool.BLANK); 
 
+String ServiceContext = preferences.getValue("ServiceContext", StringPool.BLANK); 
+
 %>

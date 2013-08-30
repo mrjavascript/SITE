@@ -168,7 +168,7 @@ public class UploadTrustAnchorService extends HttpServlet{
 				else
 				{
 					result.setIsSuccess(true);
-					result.setErrorMessage("Upload succeed, it may take up to 60 minutes for our server to receive your trust anchor.(Click to hide this message)");
+					result.setErrorMessage("Upload succeeded, it may take up to five minutes for the server to receive your trust anchor.(Click to hide this message)");
 				}
 			}
 			else

@@ -1,3 +1,21 @@
+(function($) {
+$.fn.serializefiles = function() {
+    var obj = $(this);
+    /* ADD FILE TO PARAM AJAX */
+    var formData = new FormData();
+    $.each($(obj).find("input[type='file']"), function(i, tag) {
+        $.each($(tag)[0].files, function(i, file) {
+            formData.append(tag.name, file);
+        });
+    });
+    var params = $(obj).serializeArray();
+    $.each(params, function (i, val) {
+        formData.append(val.name, val.value);
+    });
+    return formData;
+};
+})(jQuery);
+
 function fileSelected()
 {
 	$(".fakefile input").val($('#ccdafileChooser').val());
@@ -86,8 +104,9 @@ function completeHandler(data){
 	//disable smart ccda result tab.
     $("#ValidationResult #tabs").tabs("disable", "tabs-3");
     $("#ValidationResult #tabs").tabs("disable", "tabs-2");
-	//clean up the links
-    $("#ValidationResult #tabs #tabs-1 b:first, #ValidationResult #tabs #tabs-1 a:first").remove();
+	
+    //clean up the links
+    /*$("#ValidationResult #tabs #tabs-1 b:first, #ValidationResult #tabs #tabs-1 a:first").remove();*/
     $("#ValidationResult #tabs #tabs-1 hr:lt(4)").remove();
     
 	if(typeof window.validationpanel != 'undefined')
@@ -142,7 +161,7 @@ function smartCCDAValidation()
 		
 	});
 	
-	var formData = new FormData($('#CCDAValidationForm')[0]);
+	var formData = $('#CCDAValidationForm').serializefiles();
 	var serviceUrl = $('#CCDAValidationForm').attr("relay");
 	$.ajax({
         url: serviceUrl,
@@ -250,12 +269,15 @@ $(function(){
 	
 	$("#ccdavalidate_btn").click(function(e){
 	    
+		//switch back to tab1.
+		$( "#ValidationResult [href='#tabs-1']").trigger( "click" );
+		
 		//block the UI.
 		//find the cloest panel content
 		
 		BlockPortletUI();
 		
-		var formData = new FormData($('#CCDAValidationForm')[0]);
+		var formData = $('#CCDAValidationForm').serializefiles();
 	    
 	    $.ajax({
 	        url: $('#CCDAValidationForm').attr('action'),

@@ -30,7 +30,7 @@
 
 <%
 	//String serviceContext = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + "/delegate";
-String serviceContext = "http://localhost:8080/delegate";
+	String serviceContext = ServiceContext;
 %>
 
 <portlet:renderURL var="endpointcerturl"> 
@@ -47,29 +47,50 @@ String serviceContext = "http://localhost:8080/delegate";
 	<div class="module_content">
 		<!-- anchor -->
 		
-		<p>
-			<ul>
-			<li>
-				Please upload your Trust Anchor by selecting your Trust Anchor in a &ldquo;
-				<a href="http://en.wikipedia.org/wiki/Distinguished_Encoding_Rules#DER_encoding" target="_blank">.der</a>
-				&rdquo; format. 
-				If you need to replace the Trust Anchor, just perform another upload and the previous one will be replaced.
-			</li>
-			<li>
-				Download the Trust Anchor for the Sandbox 
-				<a href="<%=request.getContextPath()%>/Certificates/PublicKeys/direct.sitenv.org_ca.der">(direct.sitenv.org Certificate)</a> and import the trust anchor into your trust store.
-			</li>
-			<li>
-				Uploading the Trust Anchor causes an update to the 
-				<a href="<%=serviceContext %>/GetTrustBundle">Trust Bundle</a> of 
-				<a href="http://direct.sitenv.org" target="_blank">direct.sitenv.org</a> 
-				which is refreshed  every one hour and is only used for testing purposes. Once a Trust Anchor is uploaded, users can test with the Direct sandbox after an hour. 
-				The Trust Bundle is implemented following the 
-				<a href="http://wiki.directproject.org/file/view/Implementation%20Guide%20for%20Direct%20Project%20Trust%20Bundle%20Distribution%20v1.0.pdf/415555460/Implementation%20Guide%20for%20Direct%20Project%20Trust%20Bundle%20Distribution%20v1.0.pdf" target="_blank">
-				Direct Trust Bundle IG</a>.
-			</li>
-			</ul>
-		</p>
+		
+			<span>Trust Anchor Exchange can be accomplished via two different mechanisms.</span>
+			<ol>
+				<li>
+	  				<span style="text-decoration: underline;">
+	  					Trust Anchor Exchange using BlueButton Trust Bundles:
+					</span>
+					<ul>
+						<li>
+							SITE's Direct instantiation synchronizes with the <a href="https://secure.bluebuttontrust.org/" target="_blank">BlueButton</a>
+							 Patient and Provider Test bundles every minute. 
+							The SITE's Trust Anchor is already part of the <a href="https://secure.bluebuttontrust.org/" target="_blank">BlueButton</a> Patient and Provider Test bundles.
+							<ul>
+								<li>Implementers can download the SITE Trust Anchor from the <a href="https://secure.bluebuttontrust.org/" target="_blank">BlueButton</a> bundles.</li> 
+								<li>Implementers can submit their Trust Anchors on the <a href="https://secure.bluebuttontrust.org/" target="_blank">BlueButton</a> website.</li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<span style="text-decoration: underline;">
+	  					Trust Anchor Exchange using "SITE Upload Trust Anchor":
+					</span>
+					<ul>
+						<li>
+							Download the Trust Anchor for the Sandbox 
+							<a href="<%=request.getContextPath()%>/Certificates/PublicKeys/direct.sitenv.org_ca.der">(direct.sitenv.org Certificate)</a> and import the trust anchor into your trust store.
+						</li>
+						<li>
+							Please upload your Trust Anchor by selecting your Trust Anchor in a &ldquo;
+							<a href="http://en.wikipedia.org/wiki/Distinguished_Encoding_Rules#DER_encoding" target="_blank">.der</a>
+							&rdquo; format. 
+							If you need to replace the Trust Anchor, just perform another upload and the previous one will be replaced.
+						</li>
+						<li>
+							Uploading the Trust Anchor causes an update to the 
+							<a href="<%=serviceContext %>/GetTrustBundle">Trust Bundle</a> of 
+							<a href="http://direct.sitenv.org" target="_blank">direct.sitenv.org</a> 
+							which is refreshed every five minutes and is only used for testing purposes. Once a Trust Anchor is uploaded, users can test with the Direct sandbox after five minutes. 
+						</li>
+					</ul>
+				</li>
+	  		</ol>
+		
 		<form id="anchoruploadform" enctype="multipart/form-data" action="<%=serviceContext %>/UploadTrustAnchorService">
 			<table border="0" cellpadding="0" cellspacing="0"  id="id-form">
 			<colgroup>

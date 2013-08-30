@@ -1,3 +1,21 @@
+(function($) {
+$.fn.serializefiles = function() {
+    var obj = $(this);
+    /* ADD FILE TO PARAM AJAX */
+    var formData = new FormData();
+    $.each($(obj).find("input[type='file']"), function(i, tag) {
+        $.each($(tag)[0].files, function(i, file) {
+            formData.append(tag.name, file);
+        });
+    });
+    var params = $(obj).serializeArray();
+    $.each(params, function (i, val) {
+        formData.append(val.name, val.value);
+    });
+    return formData;
+};
+})(jQuery);
+
 function progressHandlingFunction(e){
     if(e.lengthComputable){
     	//var progressval = floorFigure(e.loaded/e.total*100,0);
@@ -184,7 +202,7 @@ $(function() {
 			//block ui..
 			blockDirectReceiveWidget();
 			
-			var formData = new FormData($('#directreceiveform')[0]);
+			var formData = $('#directreceiveform').serializefiles();
 		    
 		    $.ajax({
 		        url: $('#directreceiveform').attr('action'),
@@ -234,7 +252,7 @@ $("#anchorsubmit").click(function(e){
 			//block ui..
 			blockAnchorUploadWidget();
 			
-			var formData = new FormData($('#anchoruploadform')[0]);
+			var formData = $('#anchoruploadform').serializefiles();
 		    
 		    $.ajax({
 		        url: $('#anchoruploadform').attr('action'),

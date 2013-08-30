@@ -18,4 +18,49 @@
 
 <portlet:defineObjects />
 
-This is the <b>SIT.DirectMailBox</b> portlet.
+
+
+<div id="DirectToolBoxPanel">
+	<div id="tabs">
+	  <ul>
+	    <li><a href="#tabs-1">Received messages</a></li>
+	    <li><a href="#tabs-2">Sent messages</a></li>
+	    <li><a href="#tabs-3">James2 log</a></li>
+	  </ul>
+	  <div id="tabs-1">
+	  	<form id="messagelistingsettings" action="http://localhost:8080/delegate/ListMessages">
+	  		<input name="host" type="hidden" value="direct.sitenv.org" />
+			<input name="username" type="hidden" value="provider1" />
+			<input name="password" type="hidden" value="8sUNwy/nLdJVkowQnbnztQ==" />
+			<input name="provider" type="hidden" value="pop3" />
+			<input name="foldername" type="hidden" value="INBOX" />
+	  	</form>
+	   	<article class="module width_full">
+	   		<header><h3>Provider1@direct.sitenv.org Inbox</h3></header>
+			<div class="message_list">
+				<div class="module_content">
+				</div>
+			</div>
+			<footer>
+				<div class="submit_link">
+				<!-- 
+						<select>
+							<option>Draft</option>
+							<option>Published</option>
+						</select>
+				-->
+					<input type="submit" value="Refresh" class="alt_btn">
+				</div>
+			</footer>	
+	   	</article> 
+	  </div>
+	  <div id="tabs-2">
+	    <p>Under construction.</p>
+	  </div>
+	  <div id="tabs-3">
+	  	<p>Under construction.</p>
+	  </div>
+	</div>
+</div>
+
+	
