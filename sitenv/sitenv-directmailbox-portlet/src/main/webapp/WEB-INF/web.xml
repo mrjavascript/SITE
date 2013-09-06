@@ -7,7 +7,7 @@
 	  <servlet-class>com.liferay.portal.kernel.servlet.PortalDelegateServlet</servlet-class>
 		<init-param>
 		  <param-name>servlet-class</param-name>
-		  <param-value>sit.portal.directmailbox.services.ListMessagesByFolderName</param-value>
+		  <param-value>org.sitenv.portlets.directmailbox.ListMessagesByFolderNameServlet</param-value>
 		</init-param>
 		<init-param>
 		  <param-name>sub-context</param-name>

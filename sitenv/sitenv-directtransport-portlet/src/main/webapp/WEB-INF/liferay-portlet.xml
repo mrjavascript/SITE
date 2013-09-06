@@ -7,7 +7,7 @@
 		<icon>/icon.png</icon>
 		
 		<configuration-action-class>
-                          com.liferay.config.ConfigurationActionImpl
+                          org.sitenv.portlets.directtransport.config.ConfigurationActionImpl
         </configuration-action-class>
         <instanceable>false</instanceable>
 		 

@@ -5,7 +5,7 @@
 		
 		<portlet-name>CCDValidator</portlet-name>
 		<display-name>CCDValidator</display-name>
-		<portlet-class>com.liferay.samples.MyTestPortlet</portlet-class>
+		<portlet-class>org.sitenv.portlets.uploadportlet.UploadPortlet<portlet-class>
 		<init-param>
 			<name>view-template</name>
 			<value>/Upload.jsp</value>
@@ -67,5 +67,11 @@
 		<security-role-ref>
 			<role-name>user</role-name>
 		</security-role-ref>
-	</portlet>
+	</portlet-class>
+        <supports>
+            <mime-type></mime-type>
+        </supports></portlet-class>
+        <supports>
+            <mime-type></mime-type>
+        </supports></portlet>
 </portlet-app>

@@ -19,7 +19,7 @@
 	  <servlet-class>com.liferay.portal.kernel.servlet.PortalDelegateServlet</servlet-class>
 		<init-param>
 		  <param-name>servlet-class</param-name>
-		  <param-value>sit.portal.directtransport.services.DirectEmailReceiveService</param-value>
+		  <param-value>org.sitenv.portlets.directtransport.servlets.DirectEmailReceiveServlet</param-value>
 		</init-param>
 		<init-param>
 		  <param-name>sub-context</param-name>
@@ -29,10 +29,10 @@
 	</servlet>
 	<servlet>
 	  <servlet-name>GetCCDASampleTree</servlet-name>
-	  <servlet-class>com.liferay.portal.kernel.servlet.PortalDelegateServlet</servlet-class>
+	  <servlet-class>org.sitenv.portlets.directtransport.servlets.PortalDelegateServlet</servlet-class>
 		<init-param>
 		  <param-name>servlet-class</param-name>
-		  <param-value>sit.portal.directtransport.services.GetCCDASamplesTree</param-value>
+		  <param-value>sit.portal.directtransport.services.GetCCDASamplesTreeServlet</param-value>
 		</init-param>
 		<init-param>
 		  <param-name>sub-context</param-name>
@@ -45,7 +45,7 @@
 	  <servlet-class>com.liferay.portal.kernel.servlet.PortalDelegateServlet</servlet-class>
 		<init-param>
 		  <param-name>servlet-class</param-name>
-		  <param-value>sit.portal.directtransport.services.GetTrustBundle</param-value>
+		  <param-value>org.sitenv.portlets.directtransport.servlets.GetTrustBundleServlet</param-value>
 		</init-param>
 		<init-param>
 		  <param-name>sub-context</param-name>
@@ -58,7 +58,7 @@
 	  <servlet-class>com.liferay.portal.kernel.servlet.PortalDelegateServlet</servlet-class>
 		<init-param>
 		  <param-name>servlet-class</param-name>
-		  <param-value>sit.portal.directtransport.services.UploadTrustAnchorService</param-value>
+		  <param-value>org.sitenv.portlets.directtransport.servlets.UploadTrustAnchorServlet</param-value>
 		</init-param>
 		<init-param>
 		  <param-name>sub-context</param-name>

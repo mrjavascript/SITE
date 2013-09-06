@@ -9,7 +9,7 @@
     <servlet-class>com.liferay.portal.kernel.servlet.PortalDelegateServlet</servlet-class>
     <init-param>
       <param-name>servlet-class</param-name>
-      <param-value>sit.portal.ccdavalidator.services.TestServlet</param-value>
+      <param-value>org.sitenv.portlets.uploadportlets.servlets.CCDAUploadServlet</param-value>
     </init-param>
     <init-param>
       <param-name>sub-context</param-name>
@@ -22,7 +22,7 @@
     <servlet-class>com.liferay.portal.kernel.servlet.PortalDelegateServlet</servlet-class>
     <init-param>
       <param-name>servlet-class</param-name>
-      <param-value>sit.portal.ccdavalidator.services.DownloadResultReportServlet</param-value>
+      <param-value>org.sitenv.portlets.uploadportlets.servlets.DownloadResultReportServlet</param-value>
     </init-param>
     <init-param>
       <param-name>sub-context</param-name>
@@ -35,7 +35,7 @@
     <servlet-class>com.liferay.portal.kernel.servlet.PortalDelegateServlet</servlet-class>
     <init-param>
       <param-name>servlet-class</param-name>
-      <param-value>sit.portal.ccdavalidator.services.SmartCCDAValidationServlet</param-value>
+      <param-value>org.sitenv.portlets.uploadportlets.servlets.SmartCCDAValidationServlet</param-value>
     </init-param>
     <init-param>
       <param-name>sub-context</param-name>

@@ -96,5 +96,6 @@
 		<module>sitenv-uploadportlet-portlet</module>
 		<module>sitenv-usercreation-hook</module>
 		<module>sitenv-directmailbox-portlet</module>
+		<module>sitenv-commonutilities</module>
 	</modules>
 </project>
