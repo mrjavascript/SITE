@@ -29,10 +29,10 @@
 	</servlet>
 	<servlet>
 	  <servlet-name>GetCCDASampleTree</servlet-name>
-	  <servlet-class>org.sitenv.portlets.directtransport.servlets.PortalDelegateServlet</servlet-class>
+	  <servlet-class>com.liferay.portal.kernel.servlet.PortalDelegateServlet</servlet-class>
 		<init-param>
 		  <param-name>servlet-class</param-name>
-		  <param-value>sit.portal.directtransport.services.GetCCDASamplesTreeServlet</param-value>
+		  <param-value>org.sitenv.portlets.directtransport.servlets.GetCCDASamplesTreeServlet</param-value>
 		</init-param>
 		<init-param>
 		  <param-name>sub-context</param-name>
