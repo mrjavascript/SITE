@@ -5,8 +5,14 @@
 <html class="#language("lang.dir")" dir="#language("lang.dir")" lang="$w3c_language_id">
 
 <head>
-	<title>$the_title - $company_name</title>
-
+	<title>SITE &#150; $the_title</title>
+	
+	<!--
+		<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/themes/smoothness/jquery-ui.min.css">
+	-->
+	<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/themes/smoothness/jquery-ui.min.css">
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
 	$theme.include($top_head_include)
 </head>
 
@@ -14,9 +20,23 @@
 
 $theme.include($body_top_include)
 
-#if ($is_signed_in)
+<!--
+#if ($permissionChecker.isOmniadmin())
 	#dockbar()
 #end
+-->
+
+<!--
+test pre load event hook
+<h1>$beap_1</h1>
+Testing...show dock check:<h1>$showDockBar</h1>
+-->
+
+#if ($is_signed_in && $showDockBar)
+   #dockbar()
+#end
+
+
 
 <div id="wrapper">
 	
@@ -45,7 +65,8 @@ $theme.include($body_top_include)
 			</h2>
 			-->
 		</div>
-
+		
+		
 		#if (!$is_signed_in)
 			<a href="$sign_in_url" id="sign-in" rel="nofollow">$sign_in_text</a>
 		#end
