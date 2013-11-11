@@ -76,9 +76,7 @@
 							<a href="<%=request.getContextPath()%>/Certificates/PublicKeys/direct.sitenv.org_ca.der">(direct.sitenv.org Certificate)</a> and import the trust anchor into your trust store.
 						</li>
 						<li>
-							Please upload your Trust Anchor by selecting your Trust Anchor in a &ldquo;
-							<a href="http://en.wikipedia.org/wiki/Distinguished_Encoding_Rules#DER_encoding" target="_blank">.der</a>
-							&rdquo; format. 
+							Please upload your Trust Anchor by selecting your Trust Anchor. 
 							If you need to replace the Trust Anchor, just perform another upload and the previous one will be replaced.
 						</li>
 						<li>
@@ -96,17 +94,17 @@
 			<colgroup>
 	       		<col span="1" style="width:150px;">
 	       		<col span="1" style="width:380px;">
-	       		<col span="1" style="width:60%;">
+	       		<col span="1" style="width:70%;">
 			</colgroup>
 			<tr>
 				<td>Upload Trust Anchor:</td>
 				<td>
-					<input placeholder="Your CA Certificate (.der)" accept="application/x-x509-ca-cert" id="anchoruploadfile" type="file" name="anchoruploadfile" />
+					<input placeholder="Your CA Certificate" accept="application/x-x509-ca-cert" id="anchoruploadfile" type="file" name="anchoruploadfile" />
 				</td>
 				<td>
 					<div class="tooltip-wrapper">
 						<div class="bubble-left"></div>
-						<div class="bubble-inner">binary DER encoded(.der) only.</div>
+						<div class="bubble-inner">binary or base64-encoded certificates</div>
 						<div class="bubble-right"></div>
 					</div>
 				</td>

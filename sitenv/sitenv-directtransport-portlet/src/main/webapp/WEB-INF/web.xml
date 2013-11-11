@@ -4,14 +4,15 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 	<display-name>SIT.DirectTransport-portlet</display-name>
+	<!-- TODO: Update these to be int the config... -->
 	
 	<context-param>
         <param-name>trustBundleFile</param-name>
-        <param-value>C:\Certificates\TrustBundleTemp\TrustBundle.p7b</param-value>
+        <param-value>/Users/chris/Development/tomcat/tomcat-SITE/temp/TrustBundle.p7b</param-value>
     </context-param>
     <context-param>
         <param-name>trustAnchorDir</param-name>
-        <param-value>C:\Certificates\TrustAnchors</param-value>
+        <param-value>/Users/chris/Development/tomcat/tomcat-SITE/temp/TrustAnchors</param-value>
     </context-param>
 	
 	<servlet>

@@ -1,8 +1,14 @@
 package org.sitenv.portlets.directtransport.servlets;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.security.Security;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
@@ -17,9 +23,15 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Appender;
 import org.apache.log4j.FileAppender;
 import org.apache.log4j.Logger;
+import org.bouncycastle.asn1.ASN1InputStream;
+import org.bouncycastle.asn1.DEROutputStream;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import java.security.cert.X509Certificate;
+import org.bouncycastle.openssl.PEMReader;
 import org.nhindirect.trustbundle.core.CreateUnSignedPKCS7;
 import org.sitenv.portlets.directtransport.models.GenericResult;
 
@@ -114,15 +126,54 @@ public class UploadTrustAnchorServlet extends HttpServlet{
 					if (!item.isFormField()) {
 						//get the name of the file.
 						String fileName = new File(item.getName()).getName();
+						byte[] file = IOUtils.toByteArray(item.getInputStream());
 						
-						if(!FilenameUtils.getExtension(fileName).toUpperCase().equals("DER"))
+						ByteArrayInputStream stream = new ByteArrayInputStream(file);
+						InputStreamReader streamReader = new InputStreamReader(stream);
+						BufferedReader reader = new BufferedReader(streamReader);
+						
+						String firstLine = reader.readLine();
+						
+						if(firstLine.equalsIgnoreCase("-----BEGIN CERTIFICATE-----"))
 						{
-							throw new Exception("invalid extension, expected: .der");
+							Security.addProvider(new BouncyCastleProvider());
+
+							stream = new ByteArrayInputStream(file);
+							streamReader = new InputStreamReader(stream);
+							
+							PEMReader r = new PEMReader(streamReader);
+							X509Certificate certObj = (X509Certificate) r
+									.readObject();
+
+							byte[] tempBytes = certObj.getEncoded();
+							ASN1InputStream in = new ASN1InputStream(tempBytes); 
+						    ByteArrayOutputStream bOut = new ByteArrayOutputStream(); 
+						    DEROutputStream dOut = new DEROutputStream(bOut); 
+						    dOut.writeObject(in.readObject()); 
+						    byte[] derData = bOut.toByteArray(); 
+						    
+						    r.close();
+						    in.close();
+						    dOut.close();
+						    
+						    savedFilePath = uploadAnchorFileDir + File.separator + FilenameUtils.getName(fileName) +  ".der";
+						    
+							FileOutputStream fos = new FileOutputStream(savedFilePath);
+							fos.write(derData);
+							fos.close();
+							
+							fileName = new File(FilenameUtils.getPath(fileName) + FilenameUtils.getName(fileName) + ".der").getName();
+						} 
+						else 
+						{
+							
+							_log.trace(String.format("file uploaded %s", fileName));
+							savedFilePath = uploadAnchorFileDir + File.separator + fileName;
+							File storeFile = new File(savedFilePath);
+							item.write(storeFile);
+							
 						}
-						_log.trace(String.format("file uploaded %s", fileName));
-						savedFilePath = uploadAnchorFileDir + File.separator + fileName;
-						File storeFile = new File(savedFilePath);
-						item.write(storeFile);
+						
 					}
 				}
 				_log.info(String.format("Anchor file uploaded to %s", savedFilePath));

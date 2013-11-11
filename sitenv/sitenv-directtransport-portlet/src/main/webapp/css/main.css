@@ -131,7 +131,7 @@ margin: 0;
 
 .module_content table tr td:last-of-type .tooltip-wrapper{
 	overflow: hidden;
-	width:200px;
+	width:250px;
 }
 
 .module_content table{

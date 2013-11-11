@@ -11,9 +11,9 @@
 	<url>http://www.sitenv.org</url>
 
 	<properties>
-		<liferay.auto.deploy.dir>C:\Liferay\liferay-portal-6.1.1-ce-ga2\deploy</liferay.auto.deploy.dir>
+		<liferay.auto.deploy.dir>/Users/chris/Development/tomcat/tomcat-SITE/deploy/</liferay.auto.deploy.dir>
 		<liferay.version>6.1.1</liferay.version>
-		<local.maven.repository>file:///C:/Liferay/repository/maven-repository/</local.maven.repository>
+		<local.maven.repository>file:///Users/chris/Development/eclipseWorkspaces/site-maven-repo</local.maven.repository>
 	</properties>
 
 	<distributionManagement>
