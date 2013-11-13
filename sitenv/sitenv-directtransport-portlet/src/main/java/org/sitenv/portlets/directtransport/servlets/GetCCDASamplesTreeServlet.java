@@ -45,6 +45,10 @@ public class GetCCDASamplesTreeServlet extends HttpServlet{
 		for(File file : files)
 		{
 			count++;
+			if(!file.getName().equalsIgnoreCase(".git") && !file.getName().equalsIgnoreCase("README.md"))
+			{
+				
+			
 			if(file.isDirectory())
 			{
 				String dirPath = file.getCanonicalPath();
@@ -59,10 +63,13 @@ public class GetCCDASamplesTreeServlet extends HttpServlet{
 				String dirPath = file.getCanonicalPath();
 				jsTreeNode folder = new jsTreeNode(file.getName(), "file", "leaf", String.format("%d_%d", deep, count) , "helloword");
 				folder.getMetadata().setDescription("This is CCDA file 1.");
-				folder.getMetadata().setServerPath(dirPath);
+				folder.getMetadata().setServerPath(dirPath.replace("/Users/chris/Development/tomcat/tomcat-SITE/temp/sample_ccdas/", ""));
 				root.addChild(folder);
 			}
+			}
 		}
+		
+		
 	}
 	
 	@Override
@@ -71,7 +78,7 @@ public class GetCCDASamplesTreeServlet extends HttpServlet{
 		try{
 			_log.trace("Start get sample CCDAs.");
 			jsTreeNode root = new jsTreeNode("Localhost", "root", "open", "1", "helloword");
-			String CCDASampleDir = this.getServletContext().getRealPath("") + File.separator + SAMPLECCDAROOT;
+			String CCDASampleDir = "/Users/chris/Development/tomcat/tomcat-SITE/temp/sample_ccdas";
 			this.tranverseDir(CCDASampleDir, root, 1);
 			
 			PrintWriter out = response.getWriter();

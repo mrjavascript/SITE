@@ -99,7 +99,7 @@
 			<tr>
 				<td>Upload Trust Anchor:</td>
 				<td>
-					<input placeholder="Your CA Certificate" accept="application/x-x509-ca-cert" id="anchoruploadfile" type="file" name="anchoruploadfile" />
+					<input placeholder="Your CA Certificate" id="anchoruploadfile" type="file" name="anchoruploadfile" />
 				</td>
 				<td>
 					<div class="tooltip-wrapper">

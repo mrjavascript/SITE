@@ -14,6 +14,10 @@
         <param-name>trustAnchorDir</param-name>
         <param-value>/Users/chris/Development/tomcat/tomcat-SITE/temp/TrustAnchors</param-value>
     </context-param>
+    <context-param>
+        <param-name>tempUploadDir</param-name>
+        <param-value>/Users/chris/Development/tomcat/tomcat-SITE/temp</param-value>
+    </context-param>
 	
 	<servlet>
 	  <servlet-name>DirectEmailReceiveService</servlet-name>

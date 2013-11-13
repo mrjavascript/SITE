@@ -87,7 +87,10 @@ public class DirectEmailReceiveServlet extends HttpServlet{
 		upload.setFileSizeMax(MAX_FILE_SIZE);
 		upload.setSizeMax(REQUEST_SIZE);
 		
-		//String uploadedFileContent = null;
+		String uploadedFileContent = null;
+		
+
+		String tempUploadDir = this.getServletContext().getInitParameter("tempUploadDir");
 		
 		Boolean uploadSuccess = false;
 		
@@ -123,7 +126,7 @@ public class DirectEmailReceiveServlet extends HttpServlet{
 					else if(_fldName.equals(RECIPIENT_FLDNAME))
 						endPointEmail = item.getString();
 					else if(_fldName.equals(SERVERFILEPATH_FLDNAME))
-						serverFilePath = item.getString();
+						serverFilePath = "/Users/chris/Development/tomcat/tomcat-SITE/temp/sample_ccdas/" + item.getString();
 					else if(_fldName.equals(SMTPHOST_FLDNAME))
 						smtphostname = item.getString();
 					else if(_fldName.equals(SMTPPORT_FLDNAME))
@@ -146,7 +149,7 @@ public class DirectEmailReceiveServlet extends HttpServlet{
 					//Todo: write file to the attachment.
 					
 					stream = item.getInputStream();
-					//System.out.println("est size:" + String.valueOf(stream.available()));
+					//System.out.println("est size:" + String.valueOf(stream.available()))
 					fileName = new File(item.getName()).getName();
 					//System.out.println("File name:" + fileName);
 				}
