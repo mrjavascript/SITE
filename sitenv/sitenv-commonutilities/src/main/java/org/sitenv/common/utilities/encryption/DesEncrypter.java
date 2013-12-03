@@ -1,4 +1,4 @@
-package org.sitenv.common.utilities;
+package org.sitenv.common.utilities.encryption;
 
 /**	@author Eric Tang	**/
 

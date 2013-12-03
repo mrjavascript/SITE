@@ -9,12 +9,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.security.Security;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -30,15 +31,15 @@ import org.apache.log4j.Logger;
 import org.bouncycastle.asn1.ASN1InputStream;
 import org.bouncycastle.asn1.DEROutputStream;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import java.security.cert.X509Certificate;
 import org.bouncycastle.openssl.PEMReader;
 import org.nhindirect.trustbundle.core.CreateUnSignedPKCS7;
+import org.sitenv.common.utilities.servlet.SiteBaseServlet;
 import org.sitenv.portlets.directtransport.models.GenericResult;
 
 import com.google.gson.Gson;
 
 
-public class UploadTrustAnchorServlet extends HttpServlet{
+public class UploadTrustAnchorServlet extends SiteBaseServlet {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -53,11 +54,16 @@ public class UploadTrustAnchorServlet extends HttpServlet{
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
+		if (this.props == null)
+		{
+			this.loadProperties();
+		}
+		
 		_log.trace("Start responding to get request.");
 		PrintWriter out = response.getWriter();
 		
-		String uploadAnchorFileDir = this.getServletContext().getInitParameter("trustAnchorDir"); 
-		String trustBundleFile = this.getServletContext().getInitParameter("trustBundleFile");
+		String uploadAnchorFileDir = props.getProperty("trustAnchorDir"); 
+		String trustBundleFile = props.getProperty("trustBundleFile");
 		String msg = String.format("<p>Upload certificate service 1.0 is running...</p><br/>Anchor upload folder:%s<br/>Trust bundle file path:%s" , 
 			    		uploadAnchorFileDir, 
 			    		trustBundleFile);
@@ -77,12 +83,17 @@ public class UploadTrustAnchorServlet extends HttpServlet{
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
 	{
+		if (this.props == null)
+		{
+			this.loadProperties();
+		}
+		
 		_log.trace("start recieving the anchor file.");
 		
 		GenericResult result = new GenericResult();
 		
-		String uploadAnchorFileDir = this.getServletContext().getInitParameter("trustAnchorDir"); 
-		String trustBundleFile = this.getServletContext().getInitParameter("trustBundleFile");
+		String uploadAnchorFileDir = props.getProperty("trustAnchorDir"); 
+		String trustBundleFile = props.getProperty("trustBundleFile");
 		
 		
 		if(!ServletFileUpload.isMultipartContent(request)) 
@@ -164,15 +175,29 @@ public class UploadTrustAnchorServlet extends HttpServlet{
 							
 							fileName = new File(FilenameUtils.getPath(fileName) + FilenameUtils.getName(fileName) + ".der").getName();
 						} 
-						else 
+						else
 						{
+							// we need to check if the BouncyCastle provider is already installed
+					        // before installing it
+					        if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null) {
+					            Security.addProvider(new BouncyCastleProvider());
+					        }
+					        
+							CertificateFactory cf = CertificateFactory.getInstance("X.509", "BC");
+							X509Certificate x509cert = (X509Certificate) cf.generateCertificate(new ByteArrayInputStream(file));
 							
-							_log.trace(String.format("file uploaded %s", fileName));
-							savedFilePath = uploadAnchorFileDir + File.separator + fileName;
-							File storeFile = new File(savedFilePath);
-							item.write(storeFile);
-							
-						}
+							if (x509cert != null)
+							{
+								_log.trace(String.format("file uploaded %s", fileName));
+								savedFilePath = uploadAnchorFileDir + File.separator + fileName;
+								File storeFile = new File(savedFilePath);
+								item.write(storeFile);
+							}
+							else
+							{
+								throw new Exception("Certificates must be in binary or base64 encoded X.509 format.");
+							}
+						} 
 						
 					}
 				}

@@ -9,13 +9,13 @@ import java.io.IOException;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
+import org.sitenv.common.utilities.servlet.SiteBaseServlet;
 
-public class GetTrustBundleServlet extends HttpServlet{
+public class GetTrustBundleServlet extends SiteBaseServlet {
 
 	
 	private static Logger _log = Logger.getLogger(GetTrustBundleServlet.class);
@@ -36,13 +36,18 @@ public class GetTrustBundleServlet extends HttpServlet{
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 	        throws ServletException, IOException
     {
+		if (this.props == null)
+		{
+			this.loadProperties();
+		}
+		
 		// Prepare streams.
         BufferedInputStream input = null;
         BufferedOutputStream output = null;
         
 		try {
 			//get the file path from configuration.
-			filePath = this.getServletContext().getInitParameter("trustBundleFile");
+			filePath = props.getProperty("trustBundleFile");
 			
 			_log.trace("read bundle file web.xml:" + filePath);
 			

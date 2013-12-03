@@ -25,20 +25,20 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.sitenv.common.utilities.DesEncrypter;
+import org.sitenv.common.utilities.encryption.DesEncrypter;
+import org.sitenv.common.utilities.servlet.SiteBaseServlet;
 import org.sitenv.portlets.directtransport.models.GenericResult;
 
 import com.google.gson.Gson;
 
 
-public class DirectEmailReceiveServlet extends HttpServlet{
+public class DirectEmailReceiveServlet extends SiteBaseServlet {
 	
 	private static final int THRESHOLD_SIZE = 1024 * 1024 * 3;    // 3MB
 	private static final int MAX_FILE_SIZE = 1024 * 1024 * 10;    // 10MB 
@@ -71,6 +71,11 @@ public class DirectEmailReceiveServlet extends HttpServlet{
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
 	{
+		if (this.props == null)
+		{
+			this.loadProperties();
+		}
+		
 		GenericResult result = new GenericResult();
 		
 		if(!ServletFileUpload.isMultipartContent(request)) 
@@ -90,7 +95,8 @@ public class DirectEmailReceiveServlet extends HttpServlet{
 		String uploadedFileContent = null;
 		
 
-		String tempUploadDir = this.getServletContext().getInitParameter("tempUploadDir");
+		String tempUploadDir = props.getProperty("tempUploadDir");
+		String sampleCcdaDir = props.getProperty("sampleCcdaDir");
 		
 		Boolean uploadSuccess = false;
 		
@@ -126,7 +132,7 @@ public class DirectEmailReceiveServlet extends HttpServlet{
 					else if(_fldName.equals(RECIPIENT_FLDNAME))
 						endPointEmail = item.getString();
 					else if(_fldName.equals(SERVERFILEPATH_FLDNAME))
-						serverFilePath = "/Users/chris/Development/tomcat/tomcat-SITE/temp/sample_ccdas/" + item.getString();
+						serverFilePath = sampleCcdaDir + "/" + item.getString();
 					else if(_fldName.equals(SMTPHOST_FLDNAME))
 						smtphostname = item.getString();
 					else if(_fldName.equals(SMTPPORT_FLDNAME))

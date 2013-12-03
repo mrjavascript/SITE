@@ -4,6 +4,12 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
   	<display-name>CCDValidator</display-name>
+  	
+  	<context-param>
+        <param-name>ccdaValidatorUrl</param-name>
+        <param-value>http://localhost:7080/CCDADocumentValidator/ValidationController</param-value>
+    </context-param>
+  	
   <servlet>
     <servlet-name>library</servlet-name>
     <servlet-class>com.liferay.portal.kernel.servlet.PortalDelegateServlet</servlet-class>

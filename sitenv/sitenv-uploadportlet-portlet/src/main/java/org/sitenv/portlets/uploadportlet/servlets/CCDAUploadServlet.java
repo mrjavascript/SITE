@@ -123,7 +123,7 @@ public class CCDAUploadServlet extends HttpServlet {
 			
 			HttpClient client = new DefaultHttpClient();
 			HttpPost post = new HttpPost(
-					"http://localhost:7080/CCDADocumentValidator/ValidationController");
+					this.getServletContext().getInitParameter("ccdaValidatorUrl"));
 
 			MultipartEntity entity = new MultipartEntity();
 			// set the file content
