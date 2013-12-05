@@ -49,12 +49,14 @@ public class DirectEmailReceiveServlet extends SiteBaseServlet {
 	private static final String SERVERFILEPATH_FLDNAME = "precannedfilepath";
 	private static final String CUSTOMCCDAFILE_FLDNAME = "uploadccdafilecontent";
 	
+	/*
 	private static final String DIRECTFORMENDPOINT_FLGNAME = "directfromendpoint";
 	private static final String SMTPHOST_FLDNAME = "smtphostname";
 	private static final String SMTPPORT_FLDNAME = "smtpport";
 	private static final String SMTPUSER_FLDNAME = "smtpusername";
 	private static final String SMTPPSWRD_FLDNAME = "smtppswrd";
 	private static final String ENABLESSL_FLDNAME = "enablessl";
+	*/
 	
 	private static final String ENCRYPTEDKEY = "sitplatform@1234";
 	
@@ -108,12 +110,12 @@ public class DirectEmailReceiveServlet extends SiteBaseServlet {
 		InputStream stream = null;
 		String fileName = null;
 		
-		String fromendpoint = null;
-		String smtphostname = null;
-		String smtpport = null;
-		String smtpuser = null;
-		String smtppswrd = null;
-		String enableSSL = null;
+		String fromendpoint = props.getProperty("directFromEndpoint");
+		String smtphostname = props.getProperty("smtphostname");
+		String smtpport = props.getProperty("smtpport");
+		String smtpuser = props.getProperty("smtpusername");
+		String smtppswrd = props.getProperty("smtppswd");
+		String enableSSL = props.getProperty("smtpenablessl");
 		
 		try{
 			items = upload.parseRequest(request);
@@ -133,18 +135,7 @@ public class DirectEmailReceiveServlet extends SiteBaseServlet {
 						endPointEmail = item.getString();
 					else if(_fldName.equals(SERVERFILEPATH_FLDNAME))
 						serverFilePath = sampleCcdaDir + "/" + item.getString();
-					else if(_fldName.equals(SMTPHOST_FLDNAME))
-						smtphostname = item.getString();
-					else if(_fldName.equals(SMTPPORT_FLDNAME))
-						smtpport = item.getString();
-					else if(_fldName.equals(SMTPUSER_FLDNAME))
-						smtpuser = item.getString();
-					else if(_fldName.equals(SMTPPSWRD_FLDNAME))
-						smtppswrd = item.getString();
-					else if(_fldName.equals(DIRECTFORMENDPOINT_FLGNAME))
-						fromendpoint = item.getString();
-					else if(_fldName.equals(ENABLESSL_FLDNAME))
-						enableSSL = item.getString();
+					
 				}else
 				//data not related to an uploaded file
 				{ 

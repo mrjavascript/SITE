@@ -20,6 +20,8 @@
  
 <%@ page import="com.liferay.portal.kernel.language.LanguageUtil" %>
 <%@ page import="com.liferay.portal.security.permission.ActionKeys"%>
+
+<%@ page import = "java.util.ResourceBundle" %> 
  
 <liferay-theme:defineObjects />
 <portlet:defineObjects />
@@ -27,26 +29,9 @@
 <%
 String currentURL = PortalUtil.getCurrentURL(request);
  
-PortletPreferences preferences = renderRequest.getPreferences();
+ResourceBundle resource = ResourceBundle.getBundle("environment");
  
-String portletResource = ParamUtil.getString(request, "portletResource");
 
-if (Validator.isNotNull(portletResource)) {
-    preferences = PortletPreferencesFactoryUtil.getPortletSetup(request, portletResource);
-}
- 
-String fromemail = preferences.getValue("Directfromendpoint", StringPool.BLANK);
-
-String SMTPServerHost = preferences.getValue("SMTPserverhostname", StringPool.BLANK);
-
-String SMTPServerPort =  preferences.getValue("SMTPserverport", StringPool.BLANK);
-
-String SMTPAuthUserName = preferences.getValue("SMTPauthusername", StringPool.BLANK);
-
-String SMTPAuthPassword = preferences.getValue("SMTPauthpassword", StringPool.BLANK);
-
-String EnableSSL = preferences.getValue("EnableSSL", StringPool.BLANK); 
-
-String ServiceContext = preferences.getValue("ServiceContext", StringPool.BLANK); 
+String ServiceContext = resource.getString("serviceContext"); 
 
 %>
