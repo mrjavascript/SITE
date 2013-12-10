@@ -11,12 +11,12 @@
 	<url>http://www.sitenv.org</url>
 
 	<properties>
-		<liferay.auto.deploy.dir></liferay.auto.deploy.dir>
+		<liferay.auto.deploy.dir/>
 		<liferay.version>6.1.1</liferay.version>
-		<local.maven.repository>file:///Users/chris/Development/eclipseWorkspaces/site-maven-repo</local.maven.repository>
-		<environment.name></environment.name>
-		<deploy.location></deploy.location>
-		<deploy.password></deploy.password>
+		<local.maven.repository>file://C:/liferay/maven</local.maven.repository>
+		<environment.name/>
+		<deploy.location/>
+		<deploy.password/>
 	</properties>
 
 	<distributionManagement>
@@ -99,5 +99,6 @@
 		<module>sitenv-usercreation-hook</module>
 		<module>sitenv-directmailbox-portlet</module>
 		<module>sitenv-commonutilities</module>
+    	<module>sitenv-qrda-portlet</module>
   </modules>
 </project>

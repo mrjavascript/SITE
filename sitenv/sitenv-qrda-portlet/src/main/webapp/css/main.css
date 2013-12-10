@@ -1,0 +1,35 @@
+#QRDAValidationForm ol .ui-selecting { background: #38A9E6; }
+#QRDAValidationForm ol .ui-selected { background: #3875E6; color: white; }
+#QRDAValidationForm ol { list-style-type: none; margin: 0; padding: 0; width: 100%; }
+#QRDAValidationForm ol li { margin: 3px 3px 3px -2px; padding: 0.4em; font-size: 1.4em; height: 18px; }
+
+#QRDAValidationForm{
+	margin-top:-20px;
+}
+
+#QRDAValidationForm ol li{
+	white-space: nowrap;
+	overflow: hidden;	
+	cursor: hand; 
+	cursor: pointer;
+	box-shadow: 2px 2px 2px #888888;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
+
+#QRDAValidationForm h3{
+	font-size: 18px;
+	font-weight: bold;
+	color: rgb(73, 125, 227);
+	font-family: Arial, Verdana, sans-serif;
+	line-height: 1.4;
+}
+
+#qrdavalidate_btn {
+	clear:both; 
+	display:block; 
+	position:relative ; 
+	width: 200px;
+	margin-top: 30px;	
+}
+
