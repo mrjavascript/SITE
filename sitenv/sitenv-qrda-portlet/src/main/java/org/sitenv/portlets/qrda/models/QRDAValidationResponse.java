@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "QRDAValidationResponse")
 public class QRDAValidationResponse {
 	private int returnCode;
-	private boolean isSuccess;
+	private boolean success;
 	private String validationResult;
 	private String errorMessage;
 
@@ -42,11 +42,11 @@ public class QRDAValidationResponse {
 		this.returnCode = returnCode;
 	}
 
-	public boolean isSuccess() {
-		return isSuccess;
+	public boolean getSuccess() {
+		return success;
 	}
 
 	public void setSuccess(boolean isSuccess) {
-		this.isSuccess = isSuccess;
+		this.success = isSuccess;
 	}
 }

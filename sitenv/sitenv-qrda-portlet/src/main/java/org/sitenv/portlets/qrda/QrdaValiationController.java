@@ -4,10 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 
@@ -21,9 +17,7 @@ import org.apache.http.entity.mime.content.InputStreamBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONObject;
 import org.sitenv.portlets.qrda.models.QRDAValidationResponse;
-import org.sitenv.portlets.qrda.models.SamplePortletModel;
 import org.sitenv.portlets.qrda.models.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,110 +27,65 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.portlet.ModelAndView;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
-import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
 import com.google.gson.Gson;
 
-@Controller(value = "samplePortletController")
+@Controller(value = "qrdaValiationController")
 @RequestMapping("VIEW")
-public class SamplePortletController {
+public class QrdaValiationController {
 
-	// RESOURCE MAPPING DEFINITION FOR addUser (This is the operation called via
+	// RESOURCE MAPPING DEFINITION FOR validate measurement document (This is
+	// the operation called via
 	// the AJAX Request)
+	// @ResourceMapping("ajaxUploadFile")
+	@ActionMapping("ajaxUploadFile")
+	public void fileUploaded(
+			// @ModelAttribute("uploadedFile") UploadedFile uploadedFile,
+			@RequestParam("fileData") MultipartFile file2,
+			BindingResult result, Model model, ResourceRequest request,
+			ResourceResponse response) throws IOException {
 
-	// resource mapping is responding to the get requests.
-	@ResourceMapping("addUser")
-	public void addUser(ResourceRequest request, ResourceResponse response)
-			throws IOException {
+		int i = 0;
+		i = i + 1;
 
-		// serve resource here
+		System.out.println("Ajax hit1");
+		System.out.println("filename" + file2.getOriginalFilename()
+				+ file2.getName());
+		InputStream inputStream = null;
+		OutputStream outStream = null;
+		QRDAValidationResponse r = null;
 
-		OutputStream outStream = response.getPortletOutputStream();
-
-		StringBuffer buffer = new StringBuffer();
-
-		SamplePortletModel sample = new SamplePortletModel();
-
-		sample.setFirstName(request.getParameter("sample[firstName]"));
-
-		sample.setLastName(request.getParameter("sample[lastName]"));
-
-		sample.setUsername(request.getParameter("sample[username]"));
-
-		System.out.println("First Name " + sample.getFirstName());
-
-		String test = new JSONObject(sample).toString();
-
-		buffer.append(test);
-
-		System.out.println(buffer.toString());
-
-		outStream.write(buffer.toString().getBytes());
-
-	}
-
-	// MODEL ATTRIBUTE DEFINITION
-
-	@ModelAttribute("sample")
-	public SamplePortletModel getCommandObject() {
-
-		return new SamplePortletModel();
-
-	}
-
-	// PROCESS CODE FOR THE addUser ACTION PARAMETER (This is the operation
-	// called via the normal form submit)
-
-	// response to post.
-	@ActionMapping(params = "action=addUser")
-	public void processUserAdd(ActionRequest arg0, ActionResponse arg1,
-
-	@ModelAttribute(value = "sample") SamplePortletModel sample)
-
-	throws Exception {
-
-		// TODO Auto-generated method stub
-
-		System.out.println("first name" + sample.getFirstName());
-
-		arg1.setRenderParameter("action", "addUser"); // redirect the render to
-														// renderUserAdd()
-
-	}
-
-	// RENDER MAPPING FOR THE addUser ACTION PARAMETER
-
-	@RenderMapping(params = "action=addUser")
-	public ModelAndView renderUserAdd(RenderRequest arg0, RenderResponse arg1,
-
-	@ModelAttribute(value = "sample") SamplePortletModel sample)
-
-	throws Exception {
-
-		System.out.println("user Added render!!");
-
-		ModelAndView modelAndView = new ModelAndView();
-
-		modelAndView.setViewName("sample");
-
-		modelAndView.addObject("sample", sample);
-
-		return modelAndView;
-
+		/*
+		 * String fileName = uploadedFile.getFileData().getOriginalFilename();
+		 * 
+		 * try { inputStream = uploadedFile.getFileData().getInputStream();
+		 * 
+		 * outStream = response.getPortletOutputStream();
+		 * 
+		 * Gson gson = new Gson();
+		 * 
+		 * r = relayCCDAtoQRDAValidator(inputStream, fileName,
+		 * uploadedFile.getCategory());
+		 * 
+		 * outStream.write(gson.toJson(r).getBytes());
+		 * 
+		 * } catch (Exception e) { if (inputStream != null) { try {
+		 * inputStream.close(); } catch (Exception e1) { } } if (outStream !=
+		 * null) { try { outStream.close(); } catch (Exception e2) { } } }
+		 */
 	}
 
 	// DEFAULT RENDERMAPPING FOR THE VIEW
-
 	@RenderMapping()
 	public String handleRenderRequest(
 			@ModelAttribute("uploadedFile") UploadedFile uploadedFile,
 			Model model) throws Exception {
 
-		// ModelAndView modelAndView = new ModelAndView();
-
+		// pass the validation result through the rendering.
 		Errors errors = (Errors) model.asMap().get("errors");
 		if (errors != null) {
 			model.addAttribute(
@@ -150,26 +99,13 @@ public class SamplePortletController {
 	@Autowired
 	Validator fileValidator;
 
-	/*
-	 * @RequestMapping("/fileUploadForm") public ModelAndView getUploadForm(
-	 * 
-	 * @ModelAttribute("uploadedFile") UploadedFile uploadedFile, BindingResult
-	 * result) { return new ModelAndView("uploadForm"); }
-	 */
-
-	// @ActionMapping(params = "action=fileUpload")
-	// RequestMapping
+	// post back handler
 	@ActionMapping("uploadFile")
 	public void fileUploaded(
 			@ModelAttribute("uploadedFile") UploadedFile uploadedFile,
-			BindingResult result, Model model
-	// @RequestParam("file") MultipartFile file2, BindingResult result)
-	// {
-	// @RequestParam("uploadedFile") MultipartFile file) {
-	) {
+			BindingResult result, Model model) {
 
 		InputStream inputStream = null;
-		OutputStream outputStream = null;
 
 		fileValidator.validate(uploadedFile, result);
 
@@ -209,6 +145,13 @@ public class SamplePortletController {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			if (inputStream != null) {
+				try {
+					inputStream.close();
+				} catch (Exception e) {
+				}
+			}
 		}
 
 		return;
