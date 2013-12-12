@@ -149,4 +149,12 @@ color: #666;}
 width: 100%;
 }
 
+#ValidationResult
+{
+	padding: 0px !important;
+}
+
+.scriptenabled{
+	display:none;
+}
 

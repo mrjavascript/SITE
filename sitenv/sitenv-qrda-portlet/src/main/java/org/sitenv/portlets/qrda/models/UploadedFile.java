@@ -1,8 +1,10 @@
 package org.sitenv.portlets.qrda.models;
 
+import java.io.Serializable;
+
 import org.springframework.web.multipart.MultipartFile;
 
-public class UploadedFile {
+public class UploadedFile implements Serializable {
 	MultipartFile fileData;
 	String category;
 

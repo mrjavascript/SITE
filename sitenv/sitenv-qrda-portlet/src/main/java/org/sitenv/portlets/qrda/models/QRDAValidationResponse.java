@@ -1,5 +1,7 @@
 package org.sitenv.portlets.qrda.models;
 
+import java.io.Serializable;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -8,14 +10,40 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 
 @XmlRootElement(name = "QRDAValidationResponse")
-public class QRDAValidationResponse {
+public class QRDAValidationResponse implements Serializable {
 	private int returnCode;
 	private boolean success;
 	private String validationResult;
 	private String errorMessage;
+	private String[] validationResults;
+	private String orgXml;
 
-	public String[] getResults() {
-		return validationResult.split("\\r?\\n");
+	public String getOrgXml() {
+		return orgXml;
+	}
+
+	public void setOrgXml(String orgXml) {
+		this.orgXml = orgXml;
+	}
+
+	public QRDAValidationResponse() {
+		// validationResults = new JsonArray();
+	}
+
+	public String[] getValidationResults() {
+		return validationResults;
+	}
+
+	public void parse() {
+		validationResults = this.validationResult.split("\\r?\\n");
+	}
+
+	public void setValidationResult(String validationResult) {
+		this.validationResult = validationResult;
+		/*
+		 * String[] strs = validationResult.split("\\r?\\n"); for (String str :
+		 * strs) { this.validationResults.add(new JsonPrimitive(str)); }
+		 */
 	}
 
 	public int getReturnCode() {
@@ -24,10 +52,6 @@ public class QRDAValidationResponse {
 
 	public String getValidationResult() {
 		return validationResult;
-	}
-
-	public void setValidationResult(String validationResult) {
-		this.validationResult = validationResult;
 	}
 
 	public String getErrorMessage() {

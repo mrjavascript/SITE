@@ -7,7 +7,11 @@
 		<icon>/icon.png</icon>
 		<instanceable>true</instanceable>
 		<header-portlet-css>/css/main.css</header-portlet-css>
+		<header-portlet-css>/css/vs.css</header-portlet-css>
 		<header-portlet-javascript>/js/jquery.filestyle.js</header-portlet-javascript>
+		<header-portlet-javascript>/js/jquery.blockUI.js</header-portlet-javascript>
+		<header-portlet-javascript>/js/highlight.pack.js</header-portlet-javascript>
+		<header-portlet-javascript>/js/json2.js</header-portlet-javascript>
 		<footer-portlet-javascript>/js/main.js</footer-portlet-javascript>
 	</portlet>
 	<role-mapper>

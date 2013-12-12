@@ -3,44 +3,29 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html" isELIgnored="false" %>
 
+<!-- <portlet:actionURL name="ajaxUploadFile" var="ajax"/> -->
+
 <portlet:defineObjects />
 
 <portlet:actionURL name="uploadFile" var="uploadactionurl"/>
-<portlet:actionURL name="ajaxUploadFile" var="ajaxuploadactionurl"/>
-<!--<portlet:resourceURL  id="ajaxUploadFile" var="ajaxuploadactionurl"/>-->
-
+<portlet:actionURL name="uploadFileIE" var="uploadactionieurl"/>
+<portlet:resourceURL  id="ajaxUploadFile" var="ajaxuploadactionurl"/>
 
 <script type="text/javascript">
 		window.currentContextPath = "<%=request.getContextPath()%>";
-		
-		window.ie = (function(){
-
-		    var undef,
-		        v = 3,
-		        div = document.createElement('div'),
-		        all = div.getElementsByTagName('i');
-
-		    while (
-		        div.innerHTML = '<!--[if gt IE ' + (++v) + ']><i></i><![endif]-->',
-		        all[0]
-		    );
-
-		    return v > 4 ? v : undef;
-
-		}());
 </script>      
 
-
-<article class="module width_full">
+<article id="schematronValidationPanel" class="module width_full">
 	<header>
 		<h3>Schema-tron Validator</h3>
 	</header>
-	<!-- modelAttribute="uploadedFile"  -->
 	<div class="module_content">
-		<h3>Please select category of QRDA below. (validation may take up to one minute to run)</h3>
-		<!-- modelAttribute="uploadedFile" -->
-			<form:form id="QRDAValidationForm" method="post" enctype="multipart/form-data" 
-				action="${ajaxuploadactionurl}">
+		<h3>Please select category of QRDA below. (validation may take up to one minute to run.)</h3>
+		
+		
+			<!-- modelAttribute="uploadedFile" -->
+			<form:form id="QRDAValidationForm" method="post" class="scriptenabled" enctype="multipart/form-data" 
+				action="${ajaxuploadactionurl}" post="${uploadactionieurl}">
 			   <ol id="category">
 				  <li value="categoryI" class="ui-widget-content">Category I</li>
 				  <li value="categoryIII" class="ui-widget-content">Category III</li>
@@ -52,8 +37,8 @@
 				</div>
 				<button id="qrdavalidate_btn" type="submit" >Validate Document</button>
 			</form:form>
-	
-			<!-- render UI if the java script disabled. -->
+			
+			<!-- render UI to render if the java script disabled. -->
 			<noscript>
 				<form:form id="QRDAValidationForm" method="post" enctype="multipart/form-data" modelAttribute="uploadedFile"
 				    action="${uploadactionurl}">
@@ -61,7 +46,7 @@
 				   	<tr>  
 				     <td>Choose validation Category</td>  
 				     <td>
-				     	<select id="categorylist" name="category">
+				     	<select id="categorylist" name="category" style="width:100%">
 				     		<option value="categoryI">Category I</option>
 				     		<option value="categoryIII">Category III</option>
 				     	</select>
@@ -80,34 +65,52 @@
 				     </td>  
 				    </tr>  
 				    <tr>  
-				     <td> </td>  
-				     <td><input id="qrdavalidate_btn" type="submit" value="Upload" />  
+				     <td colspan=2>
+				     	<input id="qrdavalidate_btn" type="submit" value="Validate Document" />  
 				     </td>  
 				     <td> </td>  
 				    </tr>  
 				   </table>
 				</form:form>
 			</noscript>	
-	</div>
+		</div>
 </article>
 
+<div id="postbackValidationResult" style="display:none" >
+	<c:out escapeXml="false" value="${validationResultJson}"/>
+</div>
+
 
    
-   
-   
-   
-   
- 
-      	
+<div id="ValidationResult" style="display:none" class="jscriptenabled">
+	<div id="tabs">
+	  <ul>
+	    <li><a href="#tabs-1">Validation Result</a></li>
+	    <li><a href="#tabs-2">Original CCDA</a></li>
+	    <!-- <li><a href="#tabs-3">Smart CCDA Result</a></li> -->
+	  </ul>
+	  <div id="tabs-1">
+	    <h2>Errors:</h2>
+	    <p></p>
+	  </div>
+	  <div id="tabs-2">
+	    <h2>Original Document</h2>
+	    <p>Under construction.</p>
+	  </div>
+	  <!-- 
+		  <div id="tabs-3">
+		  </div>
+	   -->
+	</div>
+</div>   
    
  <noscript>  
-   <h3>Result:</h3>  
-	<!-- <textarea name="nowrap" cols="30" rows="20" wrap="off">${message}</textarea> -->
-	  <ul style="color: red;font-weight: bold">
-	  <c:forEach var="entry" items="${results}">
-	  	<li>${entry}</li>
-	  </c:forEach>
-	  </ul>
-  </noscript>
+  <h3>Result:</h3>  
+  <ul style="color: red;font-weight: bold">
+  <c:forEach var="entry" items="${results}">
+  	<li>${entry}</li>
+  </c:forEach>
+  </ul>
+</noscript>
 
   
