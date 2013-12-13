@@ -165,12 +165,6 @@
 			</p>	
 			<form id="directreceiveform" enctype="multipart/form-data" action="<%=serviceContext %>/DirectEmailReceiveService">
 			
-			<input name="directfromendpoint" type="hidden" value="<%= fromemail %>" />
-			<input name="smtphostname" type="hidden" value="<%= SMTPServerHost %>" />
-			<input name="smtpport" type="hidden" value="<%= SMTPServerPort %>" />
-			<input name="smtpusername" type="hidden" value="<%= SMTPAuthUserName %>" />
-			<input name="smtppswrd" type="hidden" value="<%= SMTPAuthPassword %>" />
-			<input name="enablessl" type="hidden" value="<%= EnableSSL %>" />
 			<table border="0" cellpadding="0" cellspacing="0"  id="id-form">
 			<colgroup>
         		<col span="1" style="width:150px;">
