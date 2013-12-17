@@ -36,6 +36,7 @@
 		<property name="suffix" value=".jsp" />
 		<property name="order" value="1" />
 	</bean>
+	
 	<!-- Important, need to use the type of the resolver for portlet to parse the multi-part request. -->
 	<bean id="portletMultipartResolver" class="org.springframework.web.portlet.multipart.CommonsPortletMultipartResolver">
 	    <!-- one of the properties available; the maximum file size in bytes -->

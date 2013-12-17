@@ -17,6 +17,15 @@ public class QRDAValidationResponse implements Serializable {
 	private String errorMessage;
 	private String[] validationResults;
 	private String orgXml;
+	private String note;
+
+	public String getNote() {
+		return note;
+	}
+
+	public void setNote(String note) {
+		this.note = note;
+	}
 
 	public String getOrgXml() {
 		return orgXml;

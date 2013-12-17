@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Properties;
 
@@ -41,7 +42,7 @@ import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.util.PortalUtil;
 
-@Controller(value = "qrdaValiationController")
+@Controller(value = "qrda")
 @RequestMapping("VIEW")
 public class QrdaValiationController {
 
@@ -84,7 +85,9 @@ public class QrdaValiationController {
 					.getUploadPortletRequest(portletRequest);
 
 			String category = ParamUtil.getString(uploadRequest, "category");
-			System.out.println("Ajax hit1");
+			System.out
+					.println("Responding ajax call, relay the request to url:"
+							+ QRDA_VALIDATOR_URL);
 			System.out.println("category1:" + category);
 
 			String fileName = uploadRequest.getFileName("fileData");
@@ -200,19 +203,22 @@ public class QrdaValiationController {
 
 		String fileName = uploadedFile.getFileData().getOriginalFilename();
 
+		QRDAValidationResponse response = new QRDAValidationResponse();
 		try {
 			inputStream = uploadedFile.getFileData().getInputStream();
 
-			QRDAValidationResponse response = relayCCDAtoQRDAValidator(
-					inputStream, fileName, uploadedFile.getCategory());
+			response = relayCCDAtoQRDAValidator(inputStream, fileName,
+					uploadedFile.getCategory());
 			response.parse();
 			// parse to json string, and set on the data model.
-			Gson gson = new Gson();
-			model.addAttribute("validationResultJson", gson.toJson(response));
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			StringWriter sw = new StringWriter();
+			PrintWriter pw = new PrintWriter(sw);
+			e.printStackTrace(pw);
+			response.setSuccess(false);
+			response.setErrorMessage(e.getMessage() + sw.toString());
+			response.setNote(QRDA_VALIDATOR_URL);
 		} finally {
 			if (inputStream != null) {
 				try {
@@ -221,6 +227,9 @@ public class QrdaValiationController {
 				}
 			}
 		}
+
+		Gson gson = new Gson();
+		model.addAttribute("validationResultJson", gson.toJson(response));
 
 		return;
 	}
