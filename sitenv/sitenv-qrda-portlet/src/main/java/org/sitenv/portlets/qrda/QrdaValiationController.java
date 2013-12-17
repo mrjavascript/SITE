@@ -1,9 +1,11 @@
 package org.sitenv.portlets.qrda;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringWriter;
+import java.util.Properties;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.ResourceResponse;
@@ -43,19 +45,34 @@ import com.liferay.portal.util.PortalUtil;
 @RequestMapping("VIEW")
 public class QrdaValiationController {
 
-	// RESOURCE MAPPING DEFINITION FOR validate measurement document (This is
-	// the operation called via
-	// the AJAX Request)
+	public static final String DEFAULT_PROPERTIES_FILE = "environment.properties";
+
+	protected Properties props;
+
+	protected String QRDA_VALIDATOR_URL = "http://localhost:7080/QrdaValidatorServices/QRDA/Validate";
+
+	protected void loadProperties() throws IOException {
+		InputStream in = this.getClass().getClassLoader()
+				.getResourceAsStream(DEFAULT_PROPERTIES_FILE);
+
+		if (in == null) {
+			props = null;
+			throw new FileNotFoundException(
+					"Environment Properties File not found in class path.");
+		} else {
+			props = new Properties();
+			props.load(in);
+		}
+	}
+
+	public QrdaValiationController() throws IOException {
+		loadProperties();
+		QRDA_VALIDATOR_URL = props.getProperty("qrdaValidatorUrl");
+	}
+
 	@ResourceMapping("ajaxUploadFile")
-	// @ActionMapping("ajaxUploadFile")
-	public void fileUploaded(
-	// @ModelAttribute("uploadedFile") UploadedFile uploadedFile,
-	// @RequestParam("fileData") MultipartFile file2,
-			PortletRequest portletRequest,
-			// @ModelAttribute("uploadedFile") UploadedFile uploadedFile,
-			// BindingResult result, Model model, ResourceRequest request,
+	public void fileUploaded(PortletRequest portletRequest,
 			ResourceResponse response) throws IOException {
-		// get the category string,
 
 		OutputStream outStream = null;
 		QRDAValidationResponse r = new QRDAValidationResponse();
@@ -85,7 +102,7 @@ public class QrdaValiationController {
 
 		} catch (Exception e) {
 			r.setSuccess(false);
-			r.setErrorMessage("error:" + e.getCause().getMessage());
+			r.setErrorMessage("error:" + e.getMessage());
 			e.printStackTrace();
 		}
 
@@ -93,33 +110,6 @@ public class QrdaValiationController {
 		outStream = response.getPortletOutputStream();
 		outStream.write(gson.toJson(r).getBytes());
 
-		/*
-		 * int i = 0; i = i + 1;
-		 * 
-		 * System.out.println("Ajax hit1"); System.out.println("filename" +
-		 * uploadedFile.getFileData().getOriginalFilename() +
-		 * uploadedFile.getFileData().getName()); InputStream inputStream =
-		 * null; OutputStream outStream = null; QRDAValidationResponse r = null;
-		 */
-
-		/*
-		 * String fileName = uploadedFile.getFileData().getOriginalFilename();
-		 * 
-		 * try { inputStream = uploadedFile.getFileData().getInputStream();
-		 * 
-		 * outStream = response.getPortletOutputStream();
-		 * 
-		 * Gson gson = new Gson();
-		 * 
-		 * r = relayCCDAtoQRDAValidator(inputStream, fileName,
-		 * uploadedFile.getCategory());
-		 * 
-		 * outStream.write(gson.toJson(r).getBytes());
-		 * 
-		 * } catch (Exception e) { if (inputStream != null) { try {
-		 * inputStream.close(); } catch (Exception e1) { } } if (outStream !=
-		 * null) { try { outStream.close(); } catch (Exception e2) { } } }
-		 */
 	}
 
 	// DEFAULT RENDERMAPPING FOR THE VIEW
@@ -166,16 +156,6 @@ public class QrdaValiationController {
 
 		try {
 			inputStream = uploadedFile.getFileData().getInputStream();
-
-			/*
-			 * File newFile = new File("C:/temp/" + fileName); if
-			 * (!newFile.exists()) { newFile.createNewFile(); } outputStream =
-			 * new FileOutputStream(newFile); int read = 0; byte[] bytes = new
-			 * byte[1024];
-			 * 
-			 * while ((read = inputStream.read(bytes)) != -1) {
-			 * outputStream.write(bytes, 0, read); }
-			 */
 
 			QRDAValidationResponse response = relayCCDAtoQRDAValidator(
 					inputStream, fileName, uploadedFile.getCategory());
@@ -250,8 +230,7 @@ public class QrdaValiationController {
 			throws ClientProtocolException, IOException {
 
 		HttpClient client = new DefaultHttpClient();
-		HttpPost post = new HttpPost(
-				"http://localhost:7080/QrdaValidatorServices/QRDA/Validate");
+		HttpPost post = new HttpPost(QRDA_VALIDATOR_URL);
 
 		MultipartEntity entity = new MultipartEntity();
 		// set the file content
@@ -275,5 +254,4 @@ public class QrdaValiationController {
 		Gson gson = new Gson();
 		return gson.fromJson(body, QRDAValidationResponse.class);
 	}
-
 }
