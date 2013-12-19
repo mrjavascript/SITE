@@ -3,7 +3,7 @@
 
 <liferay-portlet-app>
 	<portlet>
-		<portlet-name>sitenv-qrda</portlet-name>
+		<portlet-name>QRDAValidator</portlet-name>
 		<icon>/icon.png</icon>
 		<instanceable>true</instanceable>
 		<header-portlet-css>/css/main.css</header-portlet-css>
@@ -12,6 +12,7 @@
 		<header-portlet-javascript>/js/jquery.blockUI.js</header-portlet-javascript>
 		<header-portlet-javascript>/js/highlight.pack.js</header-portlet-javascript>
 		<header-portlet-javascript>/js/json2.js</header-portlet-javascript>
+		<header-portlet-javascript>/js/jquery.scrollTo-1.4.3.1-min.js</header-portlet-javascript>
 		<footer-portlet-javascript>/js/main.js</footer-portlet-javascript>
 	</portlet>
 	<role-mapper>

@@ -5,11 +5,21 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.HashMap;
 import java.util.Properties;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.ResourceResponse;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -23,6 +33,7 @@ import org.apache.http.entity.mime.content.InputStreamBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.sitenv.portlets.qrda.models.QRDAValidationEnhancedResult;
 import org.sitenv.portlets.qrda.models.QRDAValidationResponse;
 import org.sitenv.portlets.qrda.models.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +47,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
+import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.ls.DOMImplementationLS;
+import org.w3c.dom.ls.LSSerializer;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import com.google.gson.Gson;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
@@ -69,6 +88,7 @@ public class QrdaValiationController {
 	public QrdaValiationController() throws IOException {
 		loadProperties();
 		QRDA_VALIDATOR_URL = props.getProperty("qrdaValidatorUrl");
+		System.out.println("init portlet class");
 	}
 
 	@ResourceMapping("ajaxUploadFile")
@@ -96,10 +116,39 @@ public class QrdaValiationController {
 			StringWriter writer = new StringWriter();
 			IOUtils.copy(inputStream, writer, "UTF-8");
 			String orgXml = writer.toString();
-			orgXml = StringEscapeUtils.escapeXml(orgXml);
+
 			inputStream.reset();
 			r = relayCCDAtoQRDAValidator(inputStream, fileName, category);
 			r.parse();
+
+			HashMap<String, String> xpathMapping = new HashMap<String, String>();
+
+			if (r.getEnhancedResults() != null) {
+				int seed = 0;
+
+				for (QRDAValidationEnhancedResult reslt : r
+						.getEnhancedResults()) {
+					String keyValue = null;
+
+					String xpath = reslt.getXpath() + "]";
+
+					if (!xpathMapping.containsKey(xpath)) {
+						seed++;
+						keyValue = "000" + seed;
+						xpathMapping.put(xpath, keyValue);
+					} else {
+						keyValue = xpathMapping.get(xpath);
+					}
+					System.out.print("added xpath:" + xpath);
+					System.out.println(" added key:" + keyValue);
+					reslt.setNavKey(keyValue);
+				}
+			}
+
+			if (!xpathMapping.isEmpty()) {
+				orgXml = StringEscapeUtils.escapeXml(InjectTags(orgXml,
+						xpathMapping));
+			}
 
 			r.setOrgXml(orgXml);
 
@@ -108,7 +157,6 @@ public class QrdaValiationController {
 			r.setErrorMessage("error:" + e.getMessage());
 			e.printStackTrace();
 		}
-
 		Gson gson = new Gson();
 		outStream = response.getPortletOutputStream();
 		outStream.write(gson.toJson(r).getBytes());
@@ -211,13 +259,11 @@ public class QrdaValiationController {
 					uploadedFile.getCategory());
 			response.parse();
 			// parse to json string, and set on the data model.
+			response.setOrgXml(response.getOrgXml());
 
 		} catch (IOException e) {
-			StringWriter sw = new StringWriter();
-			PrintWriter pw = new PrintWriter(sw);
-			e.printStackTrace(pw);
 			response.setSuccess(false);
-			response.setErrorMessage(e.getMessage() + sw.toString());
+			response.setErrorMessage(e.getMessage() + PrintStackStrace(e));
 			response.setNote(QRDA_VALIDATOR_URL);
 		} finally {
 			if (inputStream != null) {
@@ -232,6 +278,47 @@ public class QrdaValiationController {
 		model.addAttribute("validationResultJson", gson.toJson(response));
 
 		return;
+	}
+
+	private String PrintStackStrace(Throwable e) {
+		StringWriter sw = new StringWriter();
+		PrintWriter pw = new PrintWriter(sw);
+		e.printStackTrace(pw);
+		return sw.toString();
+	}
+
+	private String InjectTags(String RawXml,
+			HashMap<String, String> XpathMapping)
+			throws XPathExpressionException, ParserConfigurationException,
+			SAXException, IOException {
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		factory.setNamespaceAware(true);
+		DocumentBuilder builder = factory.newDocumentBuilder();
+		Document doc = builder.parse(new InputSource(new StringReader(RawXml)));
+		XPath xpath = XPathFactory.newInstance().newXPath();
+
+		for (String xpathexpr : XpathMapping.keySet()) {
+			XPathExpression expr = xpath.compile(xpathexpr);
+
+			NodeList nl = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
+			System.out.println("Node list v1: " + nl.getLength());
+			for (int i = 0; i < nl.getLength(); i++) {
+				Node childNode = nl.item(i);
+				setAttribute(childNode, "anchor", XpathMapping.get(xpathexpr));
+			}
+		}
+
+		DOMImplementationLS domImplementation = (DOMImplementationLS) doc
+				.getImplementation();
+		LSSerializer lsSerializer = domImplementation.createLSSerializer();
+		return lsSerializer.writeToString(doc);
+	}
+
+	private void setAttribute(Node node, String attName, String val) {
+		NamedNodeMap attributes = node.getAttributes();
+		Node attNode = node.getOwnerDocument().createAttribute(attName);
+		attNode.setNodeValue(val);
+		attributes.setNamedItem(attNode);
 	}
 
 	private QRDAValidationResponse relayCCDAtoQRDAValidator(

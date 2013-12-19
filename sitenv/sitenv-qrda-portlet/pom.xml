@@ -14,6 +14,7 @@
 	</properties>
 	
 	<build>
+		<finalName>QRDAValidatorPortlet</finalName>
 		<plugins>
 			<plugin>
 				<groupId>com.liferay.maven.plugins</groupId>

@@ -3,6 +3,6 @@
 
 <display>
 	<category name="category.sample">
-		<portlet id="sitenv-qrda" />
+		<portlet id="QRDAValidator" />
 	</category>
 </display>

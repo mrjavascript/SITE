@@ -122,18 +122,35 @@ function qrdaAjaxValidationResultHandler(result)
 	var html = [];
 	if(result.success)
 	{
-		var rowtmp = '<li><u>{data}</u></li>';
+		var rowtmp ;
 		html.push('<ul style="color: red;font-weight: bold">');
-		//remove first 2 lines.
-		var strs = (result.validationResults.length > 2)?result.validationResults.slice(2,result.validationResults.length):
-															result.validationResults;
-		$.each(strs, function(i, validationResult) {
-			//look up the label
-			var rowcache = rowtmp;
-			rowcache = rowcache.replace(/{data}/g, validationResult);
-			html.push(rowcache);
-        });
-		html.push('</ul>');
+		
+		if(result.enhancedResults!==undefined && result.enhancedResults.length > 0 )
+		{
+			rowtmp = '<li rsltMsg="{msg}" navKey="{key}" ><u>{msg}</u></li>';
+			
+			$.each(result.enhancedResults, function(i ,rslt) {
+				//look up the label
+				var rowcache = rowtmp;
+				rowcache = rowcache.replace(/{msg}/g, rslt.message);
+				rowcache = rowcache.replace(/{key}/g, rslt.navKey);
+				html.push(rowcache);
+	        });
+		}
+		else{
+			rowtmp = '<li><u>{data}</u></li>';
+			
+			//remove first 2 lines.
+			var strs = (result.validationResults.length > 2)?result.validationResults.slice(2,result.validationResults.length):
+																result.validationResults;
+			$.each(strs, function(i, validationResult) {
+				//look up the label
+				var rowcache = rowtmp;
+				rowcache = rowcache.replace(/{data}/g, validationResult);
+				html.push(rowcache);
+	        });
+			html.push('</ul>');
+		}
 		$( "#ValidationResult #tabs #tabs-1 h2" ).val("Errors in document");
 		$( "#ValidationResult #tabs #tabs-1 p" ).html(html.join(""));
 		//post the origianl xml on the second tab.
@@ -143,6 +160,22 @@ function qrdaAjaxValidationResultHandler(result)
 		$("pre").each(function (i, e) {
 		    hljs.highlightBlock(e);
 		});
+		
+		
+		
+		$("#tabs-1 ul li").unbind().click(function(e){
+			e.preventDefault();
+			//switch to tab2
+			$( "#ValidationResult [href='#tabs-2']").trigger( "click" );
+			var parentTag = $("#ValidationResult");
+			var anchorID = $(this).attr('navKey');
+			var target = parentTag.find("#tabs-2 span[class='tag'] span[class='value']:contains('" + anchorID +"')").filter(function(){
+				return $(this).text() == "\"" + anchorID + "\"";
+			});
+			target.parent().css("background-color", "yellow");
+			parentTag.stop().scrollTo( target.parent() , 800 , {offset: {top: -50, left:-50} });
+		});
+		
 	}
 	else
 	{
@@ -179,6 +212,9 @@ function qrdaAjaxValidationResultHandler(result)
 	      }
 	});
 	
+	var newWidth = $('.ui-tabs-nav').parent().width();
+	$('.ui-tabs-nav').width(newWidth);
+	
 	if(typeof window.validationpanel != 'undefined')
 	{
 		window.validationpanel.unblock();
@@ -186,6 +222,8 @@ function qrdaAjaxValidationResultHandler(result)
 }
 
 $(function(){
+	
+	
 	
 	//tabify the validation result dialog box
 	$( "#ValidationResult #tabs" ).tabs();
