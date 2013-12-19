@@ -7,14 +7,19 @@
 		<icon>/icon.png</icon>
 		<instanceable>true</instanceable>
 		<private-session-attributes>false</private-session-attributes>
-		<header-portlet-css>/css/main.css</header-portlet-css>
+		<header-portlet-css>http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css</header-portlet-css>
+		<header-portlet-css>/css/jquery.fileupload.css</header-portlet-css>
 		<header-portlet-css>http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/themes/smoothness/jquery-ui.min.css</header-portlet-css>
-		<header-portlet-javascript>http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js</header-portlet-javascript>
+		<header-portlet-css>/css/main.css</header-portlet-css>
+		<header-portlet-javascript>http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js</header-portlet-javascript>
 		<header-portlet-javascript>http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js</header-portlet-javascript>
-		<header-portlet-javascript>/js/jquery.fileDownload.js</header-portlet-javascript>
-		<header-portlet-javascript>/js/json2.js</header-portlet-javascript>
+		<header-portlet-javascript>/js/vendor/jquery.ui.widget.js</header-portlet-javascript>
 		<header-portlet-javascript>/js/jquery.blockUI.js</header-portlet-javascript>
+		<header-portlet-javascript>/js/jquery.iframe-transport.js</header-portlet-javascript>
+		<header-portlet-javascript>/js/jquery.fileupload.js</header-portlet-javascript>
+		<header-portlet-javascript>/js/jquery.fileDownload.js</header-portlet-javascript>
 		<footer-portlet-javascript>/js/main.js</footer-portlet-javascript>
+		<footer-portlet-javascript>/js/uploader.js</footer-portlet-javascript>
 		<css-class-wrapper>UploadPortlet-portlet</css-class-wrapper>
 	</portlet>
 	<role-mapper>

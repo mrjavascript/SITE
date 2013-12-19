@@ -2,7 +2,7 @@
 
 #parse ($init)
 
-<html class="#language("lang.dir")" dir="#language("lang.dir")" lang="$w3c_language_id">
+<html class="#language("lang.dir") no-js" dir="#language("lang.dir")" lang="$w3c_language_id">
 
 <head>
 	<title>SITE &#150; $the_title</title>
@@ -11,7 +11,7 @@
 		<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/themes/smoothness/jquery-ui.min.css">
 	-->
 	<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/themes/smoothness/jquery-ui.min.css">
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
 	$theme.include($top_head_include)
 </head>
@@ -107,6 +107,14 @@ Testing...show dock check:<h1>$showDockBar</h1>
 	</footer>
 	
 </div>
+
+	<script type="text/javascript">
+		
+		$(function() {
+			'use strict';
+			$('html').removeClass('no-js');
+			});
+	</script>
 
 $theme.include($body_bottom_include)
 

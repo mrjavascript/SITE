@@ -1,7 +1,22 @@
-#ccda_type_radioboxgroup .ui-selecting { background: #38A9E6; }
-#ccda_type_radioboxgroup .ui-selected { background: #3875E6; color: white; }
-#ccda_type_radioboxgroup { list-style-type: none; margin: 0; padding: 0; width: 100%; }
-#ccda_type_radioboxgroup li { margin: 3px 3px 3px -2px; padding: 0.4em; font-size: 1.4em; height: 18px; }
+
+#ccda_type_radioboxgroup input[type="radio"] {
+    display:none;
+}
+
+#ccda_type_radioboxgroup label {
+    display: block;
+    background: white;
+    margin: 3px 3px 3px -2px; 
+    padding: 0.4em; 
+    font-size: 1.4em;
+    font-weight: normal;
+}
+
+#ccda_type_radioboxgroup input[type="radio"]:checked + label {
+    background: #3875E6; 
+    color: white;
+}
+
 #ccdafileChooser {float:left}
 #ccdavalidate_btn {
 	clear:both; 
@@ -176,7 +191,7 @@ form{
 	margin-top:-20px;
 }
 
-#CCDAValidationForm ol li{
+#CCDAValidationForm div label{
 	white-space: nowrap;
 	overflow: hidden;	
 	cursor: hand; 
@@ -191,4 +206,18 @@ form{
 	color: rgb(73, 125, 227);
 	font-family: Arial, Verdana, sans-serif;
 	line-height: 1.4;
+}
+
+code {
+	color: inherit;
+	white-space: inherit;
+	background-color: inherit;
+}
+
+.radio {
+	display: inline;
+}
+
+.radio input[type="radio"]{
+	margin: 0px 0px 0px 0px;
 }
