@@ -6,10 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
 import javax.portlet.PortletException;
 import javax.portlet.PortletSession;
+import javax.portlet.ResourceRequest;
+import javax.portlet.ResourceResponse;
 
 import org.apache.xmlbeans.XmlException;
 
@@ -31,7 +31,6 @@ public class SingleTestPortlet extends MVCPortlet {
     private static final String FINISHED = "FINISHED";
     private static final String BASE_DN_PROPERTY = "project.test.server.dsml.dn.base";
     private static final String URL_PROPERTY = "project.test.server.wsdl.url";
-    private static final String NONE = "none";
     private static final String MSPD_SOAPUI_PROJECT_FILE = "soapui-project_hpdplus.xml";
     private static final String IHE_SOAPUI_PROJECT_FILE = "soapui-project.xml";
 
@@ -65,6 +64,7 @@ public class SingleTestPortlet extends MVCPortlet {
     private static WsdlProject getWsdlProject(final String projectFile) {
         WsdlProject wsdlProject = null;
         try {
+        	System.out.println (getFileUrl(projectFile));
             wsdlProject = new WsdlProject(getFileUrl(projectFile));
             XmlBeansSettingsImpl xmlBeansSettingsImpl = wsdlProject.getSettings();
             xmlBeansSettingsImpl.setString(HttpSettings.CLOSE_CONNECTIONS, Boolean.TRUE.toString());
@@ -87,7 +87,7 @@ public class SingleTestPortlet extends MVCPortlet {
     }
 
     private static String getFileUrl(final String fileName) {
-        return SingleTestPortlet.class.getClassLoader().getResource(fileName).toString();
+        return SingleTestPortlet.class.getClassLoader().getResource(fileName).getPath();
     }
 	
     private Map<String, TestCase> buildTestCaseMap(final WsdlProject wsdlProject) {
@@ -101,14 +101,13 @@ public class SingleTestPortlet extends MVCPortlet {
         }
         return testCaseMap;
     }
-
+    
     @Override
-	public void processAction(ActionRequest actionRequest, ActionResponse actionResponse)
-    		throws IOException, PortletException {
+    public void serveResource(ResourceRequest request, ResourceResponse response) throws PortletException, IOException {
 
 		WsdlProject project = null;
    	
-		String wsdl = actionRequest.getParameter("wsdl");
+		String wsdl = request.getParameter("wsdl");
 		if (wsdl.equals("modSpec")) {
 			project = MSPD_WSDL_PROJECT;			
 		} else if (wsdl.equals("ihehpd")) {
@@ -117,9 +116,9 @@ public class SingleTestPortlet extends MVCPortlet {
 			project = null;
 		}
 		
-		String wsdlUrl = actionRequest.getParameter("endpointUrl");
+		String wsdlUrl = request.getParameter("endpointUrl");
 		if (wsdlUrl == null || wsdlUrl.equals("")) {
-    		PortletSession session = actionRequest.getPortletSession();
+    		PortletSession session = request.getPortletSession();
     	    session.setAttribute("LIFERAY_SHARED_testStatus", "FAILED", PortletSession.APPLICATION_SCOPE);
     	    List<String> results = new ArrayList<String> ();
     	    results.add("You must provide an endpoint URL");
@@ -128,9 +127,9 @@ public class SingleTestPortlet extends MVCPortlet {
     	    return;
 		}
 		
-		String baseDn = actionRequest.getParameter("baseDn");
+		String baseDn = request.getParameter("baseDn");
 		if (baseDn == null || baseDn.equals("")) {
-    		PortletSession session = actionRequest.getPortletSession();
+    		PortletSession session = request.getPortletSession();
     	    session.setAttribute("LIFERAY_SHARED_testStatus", "FAILED", PortletSession.APPLICATION_SCOPE);
     	    List<String> results = new ArrayList<String> ();
     	    results.add("You must provide an base DN");
@@ -142,23 +141,23 @@ public class SingleTestPortlet extends MVCPortlet {
         project.setPropertyValue(URL_PROPERTY, wsdlUrl);
 		project.setPropertyValue(BASE_DN_PROPERTY, baseDn);		
 		
-		String testCaseName = actionRequest.getParameter("testCase");
+		String testCaseName = request.getParameter("testCase");
 		if (testCaseName.equals("run_all_test_cases")) {
-			runAllTests(actionRequest, project);
+			runAllTests(request, project);
 			
 		} else {
 		
 			try {
-	            List<String> testResultList = new ArrayList<String> ();
+	            List<TestCaseResultWrapper> testResultList = new ArrayList<TestCaseResultWrapper> ();
 								
 				Map<String, TestCase> testCases = buildTestCaseMap(project);
 
 				TestCase tc = testCases.get(testCaseName);
 				TestCaseRunner testCaseRunner = tc.run(null, false);
 				
-	            String testStatus = testCaseName + " - " + FAILED;
+	            String testStatus = FAILED;
 	            if(FINISHED.equals(testCaseRunner.getStatus().toString())) {
-	                testStatus = testCaseName + " - " + PASSED;
+	                testStatus = PASSED;
 	            }
 
 	            List<TestStepResult> testStepResultList = testCaseRunner.getResults();
@@ -171,61 +170,76 @@ public class SingleTestPortlet extends MVCPortlet {
                         wsdlTestRequestStepResult = (WsdlTestRequestStepResult)testStepResult;
                         requestContent = wsdlTestRequestStepResult.getRequestContentAsXml();
                         responseContent = wsdlTestRequestStepResult.getResponseContentAsXml();
-                    }
-                    String[] messages = testStepResult.getMessages();
-                    for(String message : messages) {
-                    	testResultList.add(message);
-                    }
-                    if(0 == testResultList.size()) {
-                    	testResultList.add(NONE);
+                    	TestCaseResultWrapper wrapper = new TestCaseResultWrapper();
+                    	wrapper.setName(testCaseName);
+                    	wrapper.setStatus(testStatus);
+                    	if (requestContent != null) {
+                    	    wrapper.setRequest(requestContent.replaceAll("<", "&lt;").replaceAll(">", "&gt;"));
+                    	} else {
+                    	    wrapper.setRequest("Request is null");                		
+                    	}
+                    	if (responseContent != null) {
+                        	wrapper.setResponse(responseContent.replaceAll("<", "&lt;").replaceAll(">", "&gt;"));
+                    	} else {
+                        	wrapper.setResponse("Response is null");                		
+                    	}
+                    	testResultList.add(wrapper);
                     }
                 }
 	    		
-	    		PortletSession session = actionRequest.getPortletSession();
-	    	    session.setAttribute("LIFERAY_SHARED_whichPage", "server", PortletSession.APPLICATION_SCOPE);
-	    	    session.setAttribute("LIFERAY_SHARED_testStatus", testStatus, PortletSession.APPLICATION_SCOPE);
+	    		PortletSession session = request.getPortletSession();
 	    	    session.setAttribute("LIFERAY_SHARED_resultList", testResultList, PortletSession.APPLICATION_SCOPE);
 
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
-		
-        super.processAction(actionRequest, actionResponse);
+		}	
+        getPortletContext().getRequestDispatcher("/testcase_results.jsp").include(request, response);
     }
 
-    public void runAllTests(ActionRequest actionRequest, WsdlProject project)
+    public void runAllTests(ResourceRequest request, WsdlProject project)
     		throws IOException, PortletException {
 		
 		Map<String, TestCase> testCases = buildTestCaseMap(project);
 		
-		Map<String, List<String>> testResults = new HashMap<String, List<String>> ();
+		List<TestCaseResultWrapper> testResultList = new ArrayList<TestCaseResultWrapper> ();
 		for (String testCaseName : testCaseNames) {
-			System.out.print(testCaseName + " - ");
 			TestCase tc = testCases.get(testCaseName);				
 			TestCaseRunner testCaseRunner = tc.run(null, false);
             String testStatus = FAILED;
-            System.out.println (testCaseRunner.getStatus());
             if(FINISHED.equals(testCaseRunner.getStatus().toString())) {
                 testStatus = PASSED;
             }
             List<TestStepResult> testStepResultList = testCaseRunner.getResults();
             
-            List<String> testResultList = new ArrayList<String> ();
-            testResultList.add(testStatus);
-            for (TestStepResult res : testStepResultList) {
-            	String[] mes = res.getMessages();
-            	for (String m : mes) {
-            		testResultList.add(m);
-            	}
-            }			
-            testResults.put(testCaseName, testResultList);
+            String requestContent = null;
+            String responseContent = null;
+            for(TestStepResult testStepResult : testStepResultList) {
+                WsdlTestRequestStepResult wsdlTestRequestStepResult = null;
+                if(testStepResult instanceof WsdlTestRequestStepResult) {
+                    wsdlTestRequestStepResult = (WsdlTestRequestStepResult)testStepResult;
+                    requestContent = wsdlTestRequestStepResult.getRequestContentAsXml();
+                    responseContent = wsdlTestRequestStepResult.getResponseContentAsXml();
+                	TestCaseResultWrapper wrapper = new TestCaseResultWrapper();
+                	wrapper.setName(testCaseName);
+                	wrapper.setStatus(testStatus);
+                	if (requestContent != null) {
+                	    wrapper.setRequest(requestContent.replaceAll("<", "&lt;").replaceAll(">", "&gt;"));
+                	} else {
+                	    wrapper.setRequest("Request is null");                		
+                	}
+                	if (responseContent != null) {
+                    	wrapper.setResponse(responseContent.replaceAll("<", "&lt;").replaceAll(">", "&gt;"));
+                	} else {
+                    	wrapper.setResponse("Response is null");                		
+                	}
+                	testResultList.add(wrapper);
+                }
+            }
 		}
 		
-		PortletSession session = actionRequest.getPortletSession();
-	    //session.setAttribute("LIFERAY_SHARED_testStatus", testStatus, PortletSession.APPLICATION_SCOPE);
-	    session.setAttribute("LIFERAY_SHARED_whichPage", "server", PortletSession.APPLICATION_SCOPE);
-	    session.setAttribute("LIFERAY_SHARED_testResultMap", testResults, PortletSession.APPLICATION_SCOPE);
+		PortletSession session = request.getPortletSession();
+	    session.setAttribute("LIFERAY_SHARED_resultList", testResultList, PortletSession.APPLICATION_SCOPE);
     }
 }

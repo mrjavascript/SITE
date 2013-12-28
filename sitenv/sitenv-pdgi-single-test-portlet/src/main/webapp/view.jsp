@@ -19,37 +19,75 @@
 
 <portlet:defineObjects />
 
-<portlet:actionURL var="runTestsUrl">
+<portlet:resourceURL var="runTestsUrl">
     <portlet:param name="mvcPath" value="/view.jsp" />
-</portlet:actionURL>
+</portlet:resourceURL>
 
-<aui:form action="<%= runTestsUrl %>" name="testForm" method="post">
-  <aui:field-wrapper label="" name="wsdl">
-    <aui:input inlineField="<%= true %>" checked="<%= true %>" inlineLabel="right" name="wsdl" type="radio" value="modSpec" label="ModSpec 1.0" />
-    <aui:input inlineField="<%= true %>" inlineLabel="right" name="wsdl" type="radio" value="ihehpd" label="IHE HPD with CP 601" />
-    <aui:input inlineField="<%= true %>" inlineLabel="right" name="wsdl" type="radio" value="ehriwg" label="EHR-IWG HPD+ 1.1" />
-  </aui:field-wrapper>
+<script type="text/javascript">
+  function submitForm() {	  
+	  $("#dialog").dialog({ "width": 640, 
+          "height": 480});
+	  $("#dialog").html("<div><strong>Sending Query...</strong></div>");
+	  
+	  $.ajax({
+          type: "POST",
+          url: "<%= runTestsUrl %>",
+          data: $("#<portlet:namespace/>testForm").serialize(),
+          success: function(data) {
+        	  $("#dialog").html(data);
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+        	  $("#dialog").html(jqXHR['responseText']);
+          }
+        });
+  }
+</script>
+
+<article class="module width_full">
+	<header><h3>Provider Directory Server Test Cases</h3></header>
+	<div class="module_content">
+
+  <aui:form action="<%= runTestsUrl %>" name="testForm" method="post" id="<portlet:namespace/>testForm">
+      <aui:field-wrapper label="" name="wsdl">
+        <aui:input inlineField="<%= true %>" checked="<%= true %>" inlineLabel="right" name="wsdl" type="radio" value="modSpec" label="ModSpec 1.0" />
+        <aui:input inlineField="<%= true %>" inlineLabel="right" name="wsdl" type="radio" value="ihehpd" label="IHE HPD with CP 601" />
+      </aui:field-wrapper>
 	
-  <aui:input label="Enter your PD Endpoint URL" name="endpointUrl" type="text" value="" />
-  <aui:input label="Base DN" name="baseDn" type="text" value="" />
-  <aui:select label="Select Test Case" name="testCase">
-    <aui:option value="run_all_test_cases">Run All Test Cases</aui:option>
-    <aui:option value="search_provider_by_name">Search Provider By Name</aui:option>
-    <aui:option value="search_org_by_id">Search Organization by Id</aui:option>
-    <aui:option value="search_membership_by_provider">Search Membership by Id</aui:option>
-    <aui:option value="search_service_by_id">Search Service by Id</aui:option>
-    <aui:option value="search_credential_by_id">Search Credential by Id</aui:option>
-    <aui:option value="Find_Individual">Find Individual</aui:option>
-    <aui:option value="Find_Unique_Individual">Find Unique Individual</aui:option>
-    <aui:option value="Find_Organization">Find Organization</aui:option>
-    <aui:option value="Find_Unique_Organization">Find Unique Organization</aui:option>
-    <aui:option value="Find_Organizations_for_Unique_Individual">Find Organizations for Unique Individual</aui:option>
-    <aui:option value="Find_Individuals_for_Unique_Organization">Find Individuals for Unique Organization</aui:option>
-    <aui:option value="Find_Individuals_and_Organizations">Find Individuals and Organizations</aui:option>
-    <aui:option value="dup_req_id_federation_loop_test">Federation Loop Test</aui:option>
-  </aui:select>
-  <aui:button type="submit" value="Run Test Case"  /> 
-</aui:form> 
+      <aui:input label="Enter your PD Endpoint URL" name="endpointUrl" type="text" value="" />
+      <aui:input label="Base DN" name="baseDn" type="text" value="" />
+      <aui:select label="Select Test Case" name="testCase">
+        <aui:option value="run_all_test_cases">Run All Test Cases</aui:option>
+        <aui:option value="search_provider_by_name">Search Provider By Name</aui:option>
+        <aui:option value="search_org_by_id">Search Organization by Id</aui:option>
+        <aui:option value="search_membership_by_provider">Search Membership by Id</aui:option>
+        <aui:option value="search_service_by_id">Search Service by Id</aui:option>
+        <aui:option value="search_credential_by_id">Search Credential by Id</aui:option>
+        <aui:option value="Find_Individual">Find Individual</aui:option>
+        <aui:option value="Find_Unique_Individual">Find Unique Individual</aui:option>
+        <aui:option value="Find_Organization">Find Organization</aui:option>
+        <aui:option value="Find_Unique_Organization">Find Unique Organization</aui:option>
+        <aui:option value="Find_Organizations_for_Unique_Individual">Find Organizations for Unique Individual</aui:option>
+        <aui:option value="Find_Individuals_for_Unique_Organization">Find Individuals for Unique Organization</aui:option>
+        <aui:option value="Find_Individuals_and_Organizations">Find Individuals and Organizations</aui:option>
+        <aui:option value="dup_req_id_federation_loop_test">Federation Loop Test</aui:option>
+      </aui:select>
+    <aui:button type="submit" value="Run Test Case"  /> 
+  </aui:form> 
+
+  </div>
+</article>
+
+<article class="module width_full">
+	<header><h3>Provider Directory Client Testing</h3></header>
+	<div class="module_content">
+      For PD clients who would like to verify that their systems are generating conformant PD search requests following the ONC Modular Specifications can issue the requests against the Provider Directory Test Implementation (PDTI) setup at the following WSDL.<br /><br />
+http://dev.provider-directories.com/pdti-server/Hpd_Plus_ProviderInformationDirectoryService?wsdl<br /><br />
+The PDTI has the test data loaded as specified above and clients can verify the results based on their search requests by manually cross-checking results versus the test data.
+  </div>
+</article>
+
+<div id="dialog" title="Results">
+</div>
 
 <portlet:renderURL var="viewUrl">
         <portlet:param name="mvcPath" value="/view.jsp" />
