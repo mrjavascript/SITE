@@ -18,6 +18,10 @@
         <param-name>tempUploadDir</param-name>
         <param-value>/Users/chris/Development/tomcat/tomcat-SITE/temp</param-value>
     </context-param>
+    <context-param>
+        <param-name>sampleCcdaDir</param-name>
+        <param-value>/Users/chris/Development/tomcat/tomcat-SITE/temp/sample_ccdas</param-value>
+    </context-param>
 	
 	<servlet>
 	  <servlet-name>DirectEmailReceiveService</servlet-name>

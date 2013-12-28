@@ -185,7 +185,7 @@
 	            //customized regular expression.
 	            "derencncodedfileextension":{
 	            	"regex": /\.(der|pem|cer|crt)$/i,
-	            	"alertText" : "expected extension: .der, .pem, .cer, or .crt - the file needs to be binary or Base64 encoded."
+	            	"alertText" : "expected extension: .der, .pem, .cer, or .crt - the file needs to be binary or base64 encoded."
 	            }
 	        };
             

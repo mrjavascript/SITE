@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
-import org.sitenv.common.utilities.DesEncrypter;
+import org.sitenv.common.utilities.encryption.DesEncrypter;
 import org.sitenv.portlets.directmailbox.models.EmailMetaData;
 
 import com.google.gson.Gson;

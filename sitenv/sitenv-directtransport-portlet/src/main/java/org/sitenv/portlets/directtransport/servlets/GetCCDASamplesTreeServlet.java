@@ -4,19 +4,20 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
+import org.sitenv.common.utilities.servlet.SiteBaseServlet;
 import org.sitenv.portlets.directtransport.models.jsTreeNode;
 
 import com.google.gson.Gson;
 
 
-public class GetCCDASamplesTreeServlet extends HttpServlet{
+public class GetCCDASamplesTreeServlet extends SiteBaseServlet {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -36,9 +37,16 @@ public class GetCCDASamplesTreeServlet extends HttpServlet{
 	
 	private void tranverseDir(String path, jsTreeNode root, int deep) throws IOException
 	{
+		if (this.props == null)
+		{
+			this.loadProperties();
+		}
+		
 		File[] files = (new File(path)).listFiles();
 		
 		if(files==null) return;
+		
+		Arrays.sort(files);
 		
 		int count = 1;
 		deep++;
@@ -63,7 +71,7 @@ public class GetCCDASamplesTreeServlet extends HttpServlet{
 				String dirPath = file.getCanonicalPath();
 				jsTreeNode folder = new jsTreeNode(file.getName(), "file", "leaf", String.format("%d_%d", deep, count) , "helloword");
 				folder.getMetadata().setDescription("This is CCDA file 1.");
-				folder.getMetadata().setServerPath(dirPath.replace("/Users/chris/Development/tomcat/tomcat-SITE/temp/sample_ccdas/", ""));
+				folder.getMetadata().setServerPath(dirPath.replace(props.getProperty("sampleCcdaDir") + "/", ""));
 				root.addChild(folder);
 			}
 			}
@@ -75,10 +83,15 @@ public class GetCCDASamplesTreeServlet extends HttpServlet{
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
+		if (this.props == null)
+		{
+			this.loadProperties();
+		}
+		
 		try{
 			_log.trace("Start get sample CCDAs.");
 			jsTreeNode root = new jsTreeNode("Localhost", "root", "open", "1", "helloword");
-			String CCDASampleDir = "/Users/chris/Development/tomcat/tomcat-SITE/temp/sample_ccdas";
+			String CCDASampleDir = props.getProperty("sampleCcdaDir");
 			this.tranverseDir(CCDASampleDir, root, 1);
 			
 			PrintWriter out = response.getWriter();

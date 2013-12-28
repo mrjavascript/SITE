@@ -39,7 +39,7 @@ function BlockPortletUI()
 		},
 		message: '<div class="progresspanel"><img src="'+ ajaximgpath + '" alt="loading">'+
 				 '<div class="lbl">Uploading...</div>' +
-				 '<div class="progress">0%</div></div>',
+				 '<div class="progressor">0%</div></div>',
 	});
 }
 
@@ -126,12 +126,12 @@ function progressHandlingFunction(e){
     	if(progressval < 99)
     	{
     		$('.blockMsg .progresspanel .lbl').text('Uploading...');
-    		$('.blockMsg .progresspanel .progress').text( floorFigure(e.loaded/e.total*100,0).toString()+"%" );
+    		$('.blockMsg .progresspanel .progressor').text( floorFigure(e.loaded/e.total*100,0).toString()+"%" );
     	}
     	else
     	{
     		$('.blockMsg .progresspanel .lbl').text('Validating...');
-    		$('.blockMsg .progresspanel .progress').text('');
+    		$('.blockMsg .progresspanel .progressor').text('');
     	}
     }
 }
@@ -244,6 +244,7 @@ $(function(){
 	
 	$('#reportSaveAsQuestion button').button();
 	
+	/*
 	$("#ccda_type_radioboxgroup").selectable({
 		selected : function(event,ui)
 		{
@@ -252,13 +253,27 @@ $(function(){
 			$("input[type='hidden'][name='ccda_type_val']").val(_selectedValue);
 		}
 	});
+	*/
 	
 	$('#reportSaveAsQuestion #yes').on('click', function(e){
-		$.blockUI({ message: "<h1>Pareparing your report...</h1>" });
+		$.blockUI({ message: "<h1>Preparing your report...</h1>" });
 		//set the value of the result and post back to server.
 		$('#downloadtest textarea').val($('#ValidationResult').html());
 		//submit the form.
-		$('#downloadtest').submit();
+		
+		$.fileDownload($('#downloadtest').attr('action'), {
+			
+			successCallback: function (url) {
+				$.unblockUI(); 
+            },
+            failCallback: function (responseHtml, url) {
+            	alert("Sever error:" + responseHtml);
+            	$.unblockUI(); 
+            },
+	        httpMethod: "POST",
+	        data: $('#downloadtest').serialize()
+	    });
+		
 	});
 	
 	$('#reportSaveAsQuestion #no').on('click', function(e){
@@ -305,22 +320,5 @@ $(function(){
 	    return false;
 	});
 	
-	$('#downloadtest').on("submit",function(e){
-		
-		$.fileDownload($(this).attr('action'), {
-			
-			successCallback: function (url) {
-				$.unblockUI(); 
-            },
-            failCallback: function (responseHtml, url) {
-            	alert("Sever error:" + responseHtml);
-            	$.unblockUI(); 
-            },
-	        httpMethod: "POST",
-	        data: $(this).serialize()
-	    });
-		
-	    e.preventDefault();
-	});
 });
 

@@ -5,15 +5,11 @@
 		
 		<portlet-name>CCDValidator</portlet-name>
 		<display-name>CCDValidator</display-name>
-		<portlet-class>org.sitenv.portlets.uploadportlet.UploadPortlet</portlet-class>
+		<portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>
 		<init-param>
-			<name>view-template</name>
-			<value>/Upload.jsp</value>
+			<name>view-jsp</name>
+			<value>/view.jsp</value>
 		</init-param>
-        <init-param>
-            <name>uploadFolder</name>
-            <value>C:/Software/liferay-portal-6.1.1-ce-ga2/tomcat-7.0.27/webapps/UploadPortlet-portlet/home/uploads/</value>
-        </init-param>
 		<expiration-cache>0</expiration-cache>
 		<supports>
 			<mime-type>text/html</mime-type>
@@ -23,38 +19,6 @@
 			<short-title>CCDValidator</short-title>
 			<keywords>CCDValidator</keywords>
 		</portlet-info>
-		<portlet-preferences>
-		    <preference>
-		        <name>JsNs</name>
-		        <value>ccdavalidator</value>
-                <read-only>false</read-only>
-		    </preference>
-            <preference>
-                <name>CcdaUploadServiceUrl</name>
-                <value>http://sitenv.org/delegate/library</value>
-                <read-only>false</read-only>
-            </preference>
-            <preference>
-                <name>ResultSaveAsServiceUrl</name>
-                <value>http://sitenv.org/delegate/SaveCCDAValidationResult</value>
-                <read-only>false</read-only>
-            </preference>
-            <preference>
-                <name>SmartCCDAServiceUrl</name>
-                <value>http://sitenv.org/delegate/SmartCCDAValidationRelay</value>
-                <read-only>false</read-only>
-            </preference>
-            <preference>
-                <name>SmartCCDARemoteServiceUrl</name>
-                <value>http://ccda-scorecard.smartplatforms.org/v1/ccda-scorecard/request</value>
-                <read-only>false</read-only>
-            </preference>
-            <preference>
-                <name>SmartCCDARemoteRubricsUrl</name>
-                <value>http://ccda-scorecard.smartplatforms.org/v1/ccda-scorecard/rubrics</value>
-                <read-only>false</read-only>
-            </preference>
-		</portlet-preferences>
 		<security-role-ref>
 			<role-name>administrator</role-name>
 		</security-role-ref>
