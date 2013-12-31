@@ -107,7 +107,7 @@ public class SingleTestPortlet extends MVCPortlet {
 
 		WsdlProject project = null;
    	
-		String wsdl = request.getParameter("wsdl");
+		String wsdl = request.getParameter("wsdl").trim();
 		if (wsdl.equals("modSpec")) {
 			project = MSPD_WSDL_PROJECT;			
 		} else if (wsdl.equals("ihehpd")) {
@@ -116,7 +116,7 @@ public class SingleTestPortlet extends MVCPortlet {
 			project = null;
 		}
 		
-		String wsdlUrl = request.getParameter("endpointUrl");
+		String wsdlUrl = request.getParameter("endpointUrl").trim();
 		if (wsdlUrl == null || wsdlUrl.equals("")) {
     		PortletSession session = request.getPortletSession();
     	    session.setAttribute("LIFERAY_SHARED_testStatus", "FAILED", PortletSession.APPLICATION_SCOPE);
@@ -127,7 +127,7 @@ public class SingleTestPortlet extends MVCPortlet {
     	    return;
 		}
 		
-		String baseDn = request.getParameter("baseDn");
+		String baseDn = request.getParameter("baseDn").trim();
 		if (baseDn == null || baseDn.equals("")) {
     		PortletSession session = request.getPortletSession();
     	    session.setAttribute("LIFERAY_SHARED_testStatus", "FAILED", PortletSession.APPLICATION_SCOPE);
@@ -141,7 +141,7 @@ public class SingleTestPortlet extends MVCPortlet {
         project.setPropertyValue(URL_PROPERTY, wsdlUrl);
 		project.setPropertyValue(BASE_DN_PROPERTY, baseDn);		
 		
-		String testCaseName = request.getParameter("testCase");
+		String testCaseName = request.getParameter("testCase").trim();
 		if (testCaseName.equals("run_all_test_cases")) {
 			runAllTests(request, project);
 			
