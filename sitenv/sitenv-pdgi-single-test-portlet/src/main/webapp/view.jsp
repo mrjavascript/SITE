@@ -57,7 +57,7 @@
       <aui:input label="Base DN" name="baseDn" type="text" value="" />
       <aui:select label="Select Test Case" name="testCase">
         <aui:option value="run_all_test_cases">Run All Test Cases</aui:option>
-        <aui:option value="search_provider_by_name">Search Provider By Name</aui:option>
+        <aui:option value="search_provider_by_name">Search Provider by Name</aui:option>
         <aui:option value="search_org_by_id">Search Organization by Id</aui:option>
         <aui:option value="search_membership_by_provider">Search Membership by Id</aui:option>
         <aui:option value="search_service_by_id">Search Service by Id</aui:option>
