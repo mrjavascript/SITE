@@ -58,7 +58,7 @@ public class SingleTestPortlet extends MVCPortlet {
     	testCaseNames.add("Find_Organizations_for_Unique_Individual");
     	testCaseNames.add("Find_Individuals_for_Unique_Organization");
     	testCaseNames.add("Find_Individuals_and_Organizations");
-    	//testCaseNames.add("dup_req_id_federation_loop_test");
+    	testCaseNames.add("dup_req_id_federation_loop_test");
     }
 
     private static WsdlProject getWsdlProject(final String projectFile) {
@@ -154,11 +154,6 @@ public class SingleTestPortlet extends MVCPortlet {
 
 				TestCase tc = testCases.get(testCaseName);
 				TestCaseRunner testCaseRunner = tc.run(null, false);
-				
-	            String testStatus = FAILED;
-	            if(FINISHED.equals(testCaseRunner.getStatus().toString())) {
-	                testStatus = PASSED;
-	            }
 
 	            List<TestStepResult> testStepResultList = testCaseRunner.getResults();
 	            
@@ -168,19 +163,36 @@ public class SingleTestPortlet extends MVCPortlet {
                     WsdlTestRequestStepResult wsdlTestRequestStepResult = null;
                     if(testStepResult instanceof WsdlTestRequestStepResult) {
                         wsdlTestRequestStepResult = (WsdlTestRequestStepResult)testStepResult;
+        	            
                         requestContent = wsdlTestRequestStepResult.getRequestContentAsXml();
                         responseContent = wsdlTestRequestStepResult.getResponseContentAsXml();
                     	TestCaseResultWrapper wrapper = new TestCaseResultWrapper();
                     	wrapper.setName(testCaseName);
-                    	wrapper.setStatus(testStatus);
+
                     	if (requestContent != null) {
                     	    wrapper.setRequest(requestContent.replaceAll("<", "&lt;").replaceAll(">", "&gt;"));
                     	} else {
+                    	    wrapper.setStatus("FAILED");
                     	    wrapper.setRequest("Request is null");                		
                     	}
+                    	
                     	if (responseContent != null) {
                         	wrapper.setResponse(responseContent.replaceAll("<", "&lt;").replaceAll(">", "&gt;"));
+
+                        	if (responseContent.contains("S:Fault")) {
+                        	    wrapper.setStatus("FAILED");
+                        	} else {
+                        	    wrapper.setStatus("PASSED");
+                        	}
+                            
+            	            if (wsdlTestRequestStepResult.getResponseStatusCode() == 500) {
+                        	    wrapper.setStatus("FAILED");            	            	
+            	            } else {
+                        	    wrapper.setStatus("PASSED");            	            	
+            	            }
+
                     	} else {
+                    	    wrapper.setStatus("FAILED");
                         	wrapper.setResponse("Response is null");                		
                     	}
                     	testResultList.add(wrapper);
@@ -207,11 +219,7 @@ public class SingleTestPortlet extends MVCPortlet {
 		for (String testCaseName : testCaseNames) {
 			TestCase tc = testCases.get(testCaseName);				
 			TestCaseRunner testCaseRunner = tc.run(null, false);
-            String testStatus = FAILED;
-            if(FINISHED.equals(testCaseRunner.getStatus().toString())) {
-                testStatus = PASSED;
-            }
-            List<TestStepResult> testStepResultList = testCaseRunner.getResults();
+           List<TestStepResult> testStepResultList = testCaseRunner.getResults();
             
             String requestContent = null;
             String responseContent = null;
@@ -223,15 +231,30 @@ public class SingleTestPortlet extends MVCPortlet {
                     responseContent = wsdlTestRequestStepResult.getResponseContentAsXml();
                 	TestCaseResultWrapper wrapper = new TestCaseResultWrapper();
                 	wrapper.setName(testCaseName);
-                	wrapper.setStatus(testStatus);
+                	
                 	if (requestContent != null) {
                 	    wrapper.setRequest(requestContent.replaceAll("<", "&lt;").replaceAll(">", "&gt;"));
                 	} else {
+                	    wrapper.setStatus("FAILED");
                 	    wrapper.setRequest("Request is null");                		
                 	}
+                	
                 	if (responseContent != null) {
                     	wrapper.setResponse(responseContent.replaceAll("<", "&lt;").replaceAll(">", "&gt;"));
+
+                    	if (responseContent.contains("S:Fault")) {
+                    	    wrapper.setStatus("FAILED");
+                    	} else {
+                    	    wrapper.setStatus("PASSED");
+                    	}
+                        
+        	            if (wsdlTestRequestStepResult.getResponseStatusCode() == 500) {
+                    	    wrapper.setStatus("FAILED");            	            	
+        	            } else {
+                    	    wrapper.setStatus("PASSED");            	            	
+        	            }
                 	} else {
+                	    wrapper.setStatus("FAILED");
                     	wrapper.setResponse("Response is null");                		
                 	}
                 	testResultList.add(wrapper);
