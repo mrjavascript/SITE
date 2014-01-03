@@ -24,23 +24,41 @@
 </portlet:resourceURL>
 
 <script type="text/javascript">
-  function submitForm() {	  
-	  $("#dialog").dialog({ "width": 640, 
-          "height": 480});
-	  $("#dialog").html("<div><strong>Sending Query...</strong></div>");
+  $(document).ready(function () {
+	  $("#querySubmit").click(function () {
+		  $("#resultsDialog").dialog({ "width": 640, "height": 480});
+		  $("#resultsDialog").html("<div><strong>Sending Query...</strong></div>");
+		  
+		  $.ajax({
+	          type: "POST",
+	          url: "<%= runTestsUrl %>",
+	          data: $("#<portlet:namespace/>testForm").serialize(),
+	          success: function(data) {
+	        	  $("#resultsDialog").html(data);
+	          },
+	          error: function(jqXHR, textStatus, errorThrown) {
+	        	  $("#resultsDialog").html(jqXHR['responseText']);
+	          }
+	        });	  
+	  });
+  });
+  
+  <%-- function submitForm() {	  
+	  $("#resultsDialog").dialog({ "width": 640, "height": 480});
+	  $("#resultsDialog").html("<div><strong>Sending Query...</strong></div>");
 	  
 	  $.ajax({
           type: "POST",
           url: "<%= runTestsUrl %>",
           data: $("#<portlet:namespace/>testForm").serialize(),
           success: function(data) {
-        	  $("#dialog").html(data);
+        	  $("#resultsDialog").html(data);
           },
           error: function(jqXHR, textStatus, errorThrown) {
-        	  $("#dialog").html(jqXHR['responseText']);
+        	  $("#resultsDialog").html(jqXHR['responseText']);
           }
         });
-  }
+  } --%>
 </script>
 
 <article class="module width_full">
@@ -71,7 +89,10 @@
         <aui:option value="Find_Individuals_and_Organizations">Find Individuals and Organizations</aui:option>
         <aui:option value="dup_req_id_federation_loop_test">Federation Loop Test</aui:option>
       </aui:select>
-    <aui:button type="submit" value="Run Test Case"  /> 
+      
+      <table>
+        <tr><td valign="top"><input id="querySubmit" type="button" value="" /></td></tr>
+      </table>
   </aui:form> 
 
   </div>
@@ -86,7 +107,7 @@ The PDTI has the test data loaded as specified above and clients can verify the 
   </div>
 </article>
 
-<div id="dialog" title="Results">
+<div id="resultsDialog" title="Results">
 </div>
 
 <portlet:renderURL var="viewUrl">
