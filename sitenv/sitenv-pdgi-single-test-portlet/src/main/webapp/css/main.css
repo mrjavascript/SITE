@@ -139,30 +139,6 @@ margin: 0;
     table-layout: fixed;
 }
 
-.module_content .bubble-left {
-	float:left;
-	width:10px;
-	height:29px;
-	margin-left: 5px;
-	background: url(../images/bubble_left.gif) no-repeat;
-}
-
-.module_content .bubble-inner {
-	float:left;
-	padding: 7px 0px 0 2px;
-	color:#2e74b2; 
-	line-height: 14px;
-	font-size: 11px;
-	height:22px;
-	background: url(../images/bubble_inner.gif) repeat-x;
-}
-.module_content .bubble-right {
-	float:left;
-	width:8px;
-	height:29px;
-	background: url(../images/bubble_right.gif) right no-repeat;
-}
-
 .module_content input[type=text] {
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
@@ -185,11 +161,6 @@ margin: 0;
 	padding: 1px!important;
 }
 
-.module_content input[type=text]:disabled{
-	background-color: lightgrey;
-}
-
-
 .module_content .form-submit{
 	
 	width: 120px;
@@ -204,19 +175,11 @@ margin: 0;
 	text-indent: -3000px;
 }
 
-.module_content #anchorsubmit
+.module_content #querySubmit
 {
-	background: url(../images/SubmitAnchor_Button.png) no-repeat;	
-}
-
-.module_content #directreceivesubmit
-{
-	background: url(../images/SendMessage_Btn.png) no-repeat;		
-}
-
-#ccdafiletreepanel
-{
-	height:200px;
+	background: url(../images/querySubmit_Button.png) no-repeat;	
+    width: 189px;
+    height: 30px;
 }
 
 .module_content form table td input[type="radio"]{
@@ -234,3 +197,4 @@ margin: 0;
 .statusLine {
 	margin: 0.25em 0 0 0;
 }
+
