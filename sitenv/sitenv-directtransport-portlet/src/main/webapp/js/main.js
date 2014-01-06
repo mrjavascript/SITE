@@ -16,19 +16,19 @@ $.fn.serializefiles = function() {
 };
 })(jQuery);
 
-function progressHandlingFunction(e){
+function progressorHandlingFunction(e){
     if(e.lengthComputable){
-    	//var progressval = floorFigure(e.loaded/e.total*100,0);
+    	//var progressorval = floorFigure(e.loaded/e.total*100,0);
     	/*
-    	if(progressval < 99)
+    	if(progressorval < 99)
     	{
-    		$('.blockMsg .progresspanel .lbl').text('Uploading...');
-    		$('.blockMsg .progresspanel .progress').text( floorFigure(e.loaded/e.total*100,0).toString()+"%" );
+    		$('.blockMsg .progressorpanel .lbl').text('Uploading...');
+    		$('.blockMsg .progressorpanel .progressor').text( floorFigure(e.loaded/e.total*100,0).toString()+"%" );
     	}
     	else
     	{
-    		$('.blockMsg .progresspanel .lbl').text('Validating...');
-    		$('.blockMsg .progresspanel .progress').text('');
+    		$('.blockMsg .progressorpanel .lbl').text('Validating...');
+    		$('.blockMsg .progressorpanel .progressor').text('');
     	}
     	*/
     }
@@ -48,7 +48,7 @@ function blockAnchorUploadWidget()
 	            opacity: .5, 
 	            color: '#fff' 
 		},
-		message: '<div class="progresspanel">' +
+		message: '<div class="progressorpanel">' +
 				 '<img src="'+ ajaximgpath + '" alt="loading">'+
 				 '<div class="lbl">Uploading the certificate...</div></div>',
 	});
@@ -74,7 +74,7 @@ function blockDirectReceiveWidget()
 	            opacity: .5, 
 	            color: '#fff' 
 		},
-		message: '<div class="progresspanel">' +
+		message: '<div class="progressorpanel">' +
 				 '<img src="'+ ajaximgpath + '" alt="loading">'+
 				 '<div class="lbl">Contacting SMTP Server...</div></div>',
 	});
@@ -87,31 +87,36 @@ function unblockDirectReceiveWidget()
 }
 
 function precannedRequired(field, rules, i, options){
-	var uploadccdatype = $("#directreceiveform").find("input[name=filetype]:checked").val();
-	if(uploadccdatype == 'precanned' && field.val()== '')
+	if($('#precannedfilepath').val()== '')
 	{
 		return "Please select a precanned C-CDA sample";
 	}
 }
 
-function customccdaRequired(field, rules, i, options){
-	var uploadccdatype = $("#directreceiveform").find("input[name=filetype]:checked").val();
-	if(uploadccdatype == 'custom' && field.val()== '')
-	{
-		return "Please upload your C-CDA sample";
-	}
-}
 
 $(function() {
 	
-	$(".module_content #anchoruploadfile").filestyle({ 
-		image: window.currentContextPath + "/images/uploadcertificate.png",
-		imageheight : 24,
-		imagewidth : 130,
-		width : 220,
-		isdisabled: false,
-		validationclass: "validate[required,custom[derencncodedfileextension]]"
+	$('.dropdown-menu').click(function (e) {
+		e.stopPropagation();
 	});
+	
+	$('#uploadFormWrapper').toggle(false);
+	
+	$('input[name="directMessageType"]').bind('change',function(){
+	    var showOrHide = ($(this).val() == "precanned") ? true : false;
+	    $('#precannedFormWrapper').toggle(showOrHide);
+	    $('#uploadFormWrapper').toggle(!showOrHide);
+	    $('#precannedCCDAsubmit').validationEngine('hideAll');
+	    $('#ccdauploadsubmit').validationEngine('hideAll');
+	 });
+	
+	$('#precannedemail').bind('change',function(){
+	    $('#ccdauploademail').val($(this).val());
+	 });
+	
+	$('#ccdauploademail').bind('change',function(){
+	    $('#precannedemail').val($(this).val());
+	 });
 	
 	$('.module_content #uploadccdainput').filestyle({ 
 		image: window.currentContextPath + "/images/button_upload.png",
@@ -127,8 +132,8 @@ $(function() {
 	$("#ccdafiletreepanel").jstree({
 		 "json_data" : {
 			      "ajax" : {
-				      "url" : window.serviceContextPath +"/GetCCDASamplesTree",
-				      "type" : "get",
+				      "url" : sampleCCDATreeURL,
+				      "type" : "post",
 				      /*"data" : function (n) {
 				    	 return { id : n.attr ? n.attr("id") : 0 };
 				      }*/
@@ -160,11 +165,12 @@ $(function() {
 		    		  "valid_children" : [ "none" ],
 		    		  "select_node" : function (node,e) {
 		    			  //populate the textbox
-		    			  $("#directreceiveform input[name='precannedfilepath']").val(node.data("serverpath"));
+		    			  $("#precannedfilepath").val(node.data("serverpath"));
+		    			  $("#prescannedfilePathOutput").text($("#precannedfilepath").val());
 		    	    	  //hide the drop down panel
-		    			  $('#precannedccdaselectbutton').dropdown('hide');
+		    			  $('[data-toggle="dropdown"]').parent().removeClass('open');
 		    			  //hide all the errors
-		    			  $('#directreceivesubmit').validationEngine('hideAll');
+		    			  $('#precannedCCDAsubmit').validationEngine('hideAll');
 		    			  
 		    		  }
 		    	  },
@@ -185,52 +191,83 @@ $(function() {
 		isfiletreeloaded = true;
 	});
 	
-	$('#directreceiveform input[name="filetype"]').change(function(){
-		var $checked = $('#directreceiveform input[name="filetype"]:checked');
-		$("#directreceiveform .ccdainputfile").attr('disabled','disabled');
-		$checked.closest('tr').find("td input").removeAttr('disabled');
-    });
-	
-	$('#precannedccdaselectbutton').dropdown({width:'400px', maxHeight:'500px'}); 
 	
 	
-	$("#directreceivesubmit").click(function(e){
+	$("#precannedCCDAsubmit").click(function(e){
 	    
-		var jform = $('#directreceiveform');
+		var jform = $('#precannedForm');
 		jform.validationEngine('hideAll');
 		if(jform.validationEngine('validate'))
 		{
 			//block ui..
 			blockDirectReceiveWidget();
 			
-			var formData = $('#directreceiveform').serializefiles();
+			var formData = $('#precannedForm').serializefiles();
 		    
 		    $.ajax({
-		        url: $('#directreceiveform').attr('action'),
+		        url: $('#precannedForm').attr('action'),
 		        
 		        type: 'POST',
 		        
 		        xhr: function() {  // custom xhr
 		            myXhr = $.ajaxSettings.xhr();
 		            if(myXhr.upload){ // check if upload property exists
-		                myXhr.upload.addEventListener('progress', progressHandlingFunction, false); // for handling the progress of the upload
+		                myXhr.upload.addEventListener('progressor', progressorHandlingFunction, false); // for handling the progressor of the upload
 		            }
 		            return myXhr;
 		        },
 		        
 		        success: function(data){
 		        	var results = JSON.parse(data);
-		        	var iconurl = results.IsSuccess? window.currentContextPath + "/images/icn_alert_success.png" :
+		        	var iconurl = results.body.IsSuccess? window.currentContextPath + "/images/icn_alert_success.png" :
 		        									window.currentContextPath + "/images/icn_alert_error.png" ;
-		        	$('#directreceivewidget .blockMsg .progresspanel img').attr('src',iconurl);
-		        	$('#directreceivewidget .blockMsg .progresspanel .lbl').text(results.ErrorMessage);
-		        	setTimeout(function(){
-		        		unblockDirectReceiveWidget();
-		        	},1800);
+
+		        	$('#directreceivewidget .blockMsg .progressorpanel img').attr('src',iconurl);
+		        	
+		        	$('#directreceivewidget .blockMsg .progressorpanel .lbl').text(results.body.ErrorMessage);
+
+		        	if(window.directReceiveWdgt)
+		        	{
+		        		window.directReceiveUploadTimeout = setTimeout(function(){
+		        				window.directReceiveWdgt.unbind("click");
+		        				window.directReceiveWdgt.unblock();
+		        			},10000);
+		        		
+		        		
+		        		window.directReceiveWdgt.bind("click", function() { 
+		        			window.directReceiveWdgt.unbind("click");
+		        			clearTimeout(window.directReceiveUploadTimeout);
+		        			window.directReceiveWdgt.unblock(); 
+		        			window.directReceiveWdgt.attr('title','Click to hide this message.').click($.unblockUI); 
+			            });
+		        		
+		        	}
+		        	
 		        },
 		        
 		        error: function (request, status, error) {
-		        	alert("ajax error:"+ error);
+		        	var iconurl = window.currentContextPath + "/images/icn_alert_error.png" ;
+					
+					$('#directreceivewidget .blockMsg .progressorpanel img').attr('src',iconurl);
+		        	
+		        	$('#directreceivewidget .blockMsg .progressorpanel .lbl').text('Error sending sample C-CDA file.');
+					
+					if(window.directReceiveWdgt)
+		        	{
+		        		window.directReceiveUploadTimeout = setTimeout(function(){
+		        				window.directReceiveWdgt.unbind("click");
+		        				window.directReceiveWdgt.unblock();
+		        			},10000);
+		        		
+		        		
+		        		window.directReceiveWdgt.bind("click", function() { 
+		        			window.directReceiveWdgt.unbind("click");
+		        			clearTimeout(window.directReceiveUploadTimeout);
+		        			window.directReceiveWdgt.unblock(); 
+		        			window.directReceiveWdgt.attr('title','Click to hide this message.').click($.unblockUI); 
+			            });
+		        		
+		        	}
 		        },
 		        // Form data
 		        data: formData,
@@ -240,10 +277,14 @@ $(function() {
 		        processData: false
 		    });
 		}
+		else
+		{
+			$('#precannedform .precannedfilepathformError').prependTo('#precannederrorlock');
+		}
 		return false;
 	});
 	
-	
+/*	
 $("#anchorsubmit").click(function(e){
 	    
 		var jform = $('#anchoruploadform');
@@ -263,7 +304,7 @@ $("#anchorsubmit").click(function(e){
 		        xhr: function() {  // custom xhr
 		            myXhr = $.ajaxSettings.xhr();
 		            if(myXhr.upload){ // check if upload property exists
-		                myXhr.upload.addEventListener('progress', progressHandlingFunction, false); // for handling the progress of the upload
+		                myXhr.upload.addEventListener('progressor', progressorHandlingFunction, false); // for handling the progressor of the upload
 		            }
 		            return myXhr;
 		        },
@@ -274,9 +315,9 @@ $("#anchorsubmit").click(function(e){
 		        	var iconurl = results.IsSuccess? window.currentContextPath + "/images/icn_alert_success.png" :
 		        									window.currentContextPath + "/images/icn_alert_error.png" ;
 		        	
-		        	$('#anchoruploadwidget .blockMsg .progresspanel img').attr('src',iconurl);
+		        	$('#anchoruploadwidget .blockMsg .progressorpanel img').attr('src',iconurl);
 		        	
-		        	$('#anchoruploadwidget .blockMsg .progresspanel .lbl').text(results.ErrorMessage);
+		        	$('#anchoruploadwidget .blockMsg .progressorpanel .lbl').text(results.ErrorMessage);
 		        	
 		        	if(window.anchorUploadWidget)
 		        	{
@@ -303,5 +344,5 @@ $("#anchorsubmit").click(function(e){
 		    });
 		}
 	    return false;
-	});
+	});*/
 });

@@ -90,10 +90,10 @@ function completeHandler(data){
 	    	"Smart CCDA Validation": function(){
 	    		smartCCDAValidation();
 	    	},
-	        "Save results": function() {
+	        "Save Results": function() {
 	        	$.blockUI({ message: $('#reportSaveAsQuestion'), css: { width: '275px' } }); 
 	       },
-	        "Close Result": function() {
+	        "Close Results": function() {
 	          $( this ).dialog( "close" );
 	       }
 	      }

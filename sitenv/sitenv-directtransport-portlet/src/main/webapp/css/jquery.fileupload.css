@@ -72,12 +72,13 @@ html.no-js .start {
 	display: inline;
 }
 
-.start, .start:visited, .start:hover, .start:active, .start:focus {
+.dropdown-toggle, .dropdown-toggle:visited, .dropdown-toggle:hover, .dropdown-toggle:active, .dropdown-toggle:focus,
+.btn-primary, .btn-primary:visited, .btn-primary:hover, .btn-primary:active, .btn-primary:focus {
 	background-image: none;
 	text-shadow: none;
 }
 
-.start, .fileinput-button {
+.start, .fileinput-button, .dropdown-toggle {
 	width: 180px;
 }
 

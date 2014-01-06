@@ -10,6 +10,30 @@ $(function() {
 		type : 'POST',
 		contenttype : false,
 		replaceFileInput : false,
+		error: function (e, data) {
+			var iconurl = window.currentContextPath + "/images/icn_alert_error.png" ;
+			
+			$('.blockMsg .progressorpanel img').attr('src',iconurl);
+        	
+        	$('.blockMsg .progressorpanel .lbl').text('Error uploading file.');
+			
+			if(window.directReceiveWdgt)
+        	{
+        		window.directReceiveUploadTimeout = setTimeout(function(){
+        				window.directReceiveWdgt.unbind("click");
+        				window.directReceiveWdgt.unblock();
+        			},10000);
+        		
+        		
+        		window.directReceiveWdgt.bind("click", function() { 
+        			window.directReceiveWdgt.unbind("click");
+        			clearTimeout(window.directReceiveUploadTimeout);
+        			window.directReceiveWdgt.unblock(); 
+        			window.directReceiveWdgt.attr('title','Click to hide this message.').click($.unblockUI); 
+	            });
+        		
+        	}
+        },
 		done : function(e, data) {
 			$.each(data.result.files, function(index, file) {
 				$('#files').empty();
@@ -39,10 +63,10 @@ $(function() {
 			    	"Smart CCDA Validation": function(){
 			    		smartCCDAValidation();
 			    	},
-			        "Save results": function() {
+			        "Save Results": function() {
 			        	$.blockUI({ message: $('#reportSaveAsQuestion'), css: { width: '275px' } }); 
 			       },
-			        "Close Result": function() {
+			        "Close Results": function() {
 			          $( this ).dialog( "close" );
 			       }
 			      }

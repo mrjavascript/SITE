@@ -221,3 +221,10 @@ code {
 .radio input[type="radio"]{
 	margin: 0px 0px 0px 0px;
 }
+
+
+h6 
+{
+	margin-top: 0px;
+	margin-bottom: 0px;
+}

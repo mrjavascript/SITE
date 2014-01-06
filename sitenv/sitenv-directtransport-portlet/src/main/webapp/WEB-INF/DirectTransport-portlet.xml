@@ -19,7 +19,7 @@
 		class="org.springframework.web.portlet.mvc.annotation.AnnotationMethodHandlerAdapter" />
 
 
-	<context:component-scan base-package="org.sitenv.portlets.uploadportlet" />
+	<context:component-scan base-package="org.sitenv.portlets.directtransport" />
 
 	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver"
 		p:order="1" />

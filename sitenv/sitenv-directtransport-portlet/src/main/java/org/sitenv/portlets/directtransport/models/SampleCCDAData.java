@@ -1,8 +1,8 @@
 package org.sitenv.portlets.directtransport.models;
 
-public class jsData {
+public class SampleCCDAData {
 	private String title;
-	private jsTreeAttribute attr;
+	private SampleCCDATreeAttribute attr;
 	private String icon;
 	public String getTitle() {
 		return title;
@@ -10,10 +10,10 @@ public class jsData {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	public jsTreeAttribute getAttr() {
+	public SampleCCDATreeAttribute getAttr() {
 		return attr;
 	}
-	public void setAttr(jsTreeAttribute attr) {
+	public void setAttr(SampleCCDATreeAttribute attr) {
 		this.attr = attr;
 	}
 	public String getIcon() {

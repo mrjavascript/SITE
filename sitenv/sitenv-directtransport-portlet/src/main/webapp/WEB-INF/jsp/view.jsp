@@ -25,8 +25,27 @@
 <%@ page import="com.liferay.util.PwdGenerator"%>
 <%@ page import="com.liferay.portal.service.PortletPreferencesLocalServiceUtil" %>
 <%@ page import="com.liferay.portal.kernel.util.WebKeys" %>
+<%@ page import="com.liferay.portal.kernel.portlet.LiferayWindowState"%>
 
 <portlet:defineObjects />
+
+<portlet:actionURL var="sampleCCDATree" windowState="<%= LiferayWindowState.EXCLUSIVE.toString() %>">
+    <portlet:param name="javax.portlet.action" value="sampleCCDATree"/>
+</portlet:actionURL>
+
+<portlet:resourceURL id="getTrustBundle" var="getTrustBundleResource"/>
+
+<portlet:actionURL var="uploadTrustAnchor" windowState="<%= LiferayWindowState.EXCLUSIVE.toString() %>">
+    <portlet:param name="javax.portlet.action" value="uploadTrustAnchor"/>
+</portlet:actionURL>
+
+<portlet:actionURL var="uploadCCDADirectReceive" windowState="<%= LiferayWindowState.EXCLUSIVE.toString() %>">
+    <portlet:param name="javax.portlet.action" value="uploadCCDADirectReceive"/>
+</portlet:actionURL>
+
+<portlet:actionURL var="precannedCCDADirectReceive" windowState="<%= LiferayWindowState.EXCLUSIVE.toString() %>">
+    <portlet:param name="javax.portlet.action" value="precannedCCDADirectReceive"/>
+</portlet:actionURL>
 
 <%
 	//String serviceContext = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + "/delegate";
@@ -40,6 +59,7 @@
 <script type="text/javascript">
 	window.currentContextPath = "<%=request.getContextPath()%>";
 	window.serviceContextPath = "<%=serviceContext%>"; 
+	var sampleCCDATreeURL = '${sampleCCDATree}';
 </script>
 
 <article class="module width_full" id="anchoruploadwidget">
@@ -81,14 +101,54 @@
 						</li>
 						<li>
 							Uploading the Trust Anchor causes an update to the 
-							<a href="<%=serviceContext %>/GetTrustBundle">Trust Bundle</a> of 
+							<a href="${getTrustBundleResource}">Trust Bundle</a> of 
 							<a href="http://direct.sitenv.org" target="_blank">direct.sitenv.org</a> 
 							which is refreshed every five minutes and is only used for testing purposes. Once a Trust Anchor is uploaded, users can test with the Direct sandbox after five minutes. 
 						</li>
 					</ul>
 				</li>
 	  		</ol>
-		
+	  	<form id="anchoruploadform" action="${uploadTrustAnchor}" method="POST" enctype="multipart/form-data">
+      		
+			<!-- The fileinput-button span is used to style the file input field as button -->
+			
+			<noscript><input type="hidden" name="redirect" value="true" /></noscript>
+			<div id="anchoruploaderrorlock" style="position:relative;">
+	  		<br/>
+			<table>
+				<tr>
+					<td><span class="btn btn-success fileinput-button"> <i
+							class="glyphicon glyphicon-plus"></i>&nbsp;<span>Select a Certificate...</span>
+							<!-- The file input field used as target for the file upload widget -->
+							<input id="anchoruploadfile" type="file" name="anchoruploadfile" class="validate[custom[derencncodedfileextension[der|crt|cer|pem]]]"/>
+					</span>
+						</td>
+					<td>
+						<div id="anchoruploadfiles" class="files"></div>
+					</td>
+					<td>
+						<div id="anchoruploadprogress" class="progress">
+							<div class="progress-bar progress-bar-success"></div>
+						</div>
+					</td>
+					<td>
+						<div class="tooltip-wrapper">
+							<div class="bubble-left"></div>
+							<div class="bubble-inner">binary or base64-encoded certificates</div>
+							<div class="bubble-right"></div>
+						</div>
+					</td>
+				</tr>
+			</table>
+			</div>
+			<br/>
+			<button id="anchoruploadsubmit" type="submit" class="btn btn-primary start" onclick="return false;">
+				<i class="glyphicon glyphicon-ok"></i> <span>Submit Anchor</span>
+			</button>
+			
+			
+      	</form>
+		<!-- 
 		<form id="anchoruploadform" enctype="multipart/form-data" action="<%=serviceContext %>/UploadTrustAnchorService">
 			<table border="0" cellpadding="0" cellspacing="0"  id="id-form">
 			<colgroup>
@@ -117,7 +177,7 @@
 				<td></td>
 			</tr>
 			</table>
-		</form>
+		</form>-->
 		<div class="clear"></div>
 	</div>
 </article>
@@ -162,81 +222,107 @@
 						You will receive a message from provider1@direct.sitenv.org to your system with the content you have uploaded.			
 					</li>
 				</ul>
-			</p>	
-			<form id="directreceiveform" enctype="multipart/form-data" action="<%=serviceContext %>/DirectEmailReceiveService">
+			</p>
 			
-			<table border="0" cellpadding="0" cellspacing="0"  id="id-form">
-			<colgroup>
-        		<col span="1" style="width:150px;">
-        		<col span="1" style="width:380px;">
-        		<col span="1" style="width:60%;">
-			</colgroup>
-			<tr>
-				<td>
-					<input  type="radio" name="filetype" id="customccda_rdbtn" value="custom">
-					<label for="customccda_rdbtn">Choose Your Own Content:</label>
-				</td>
-				<td>
-					<input id="uploadccdainput" 
-						data-prompt-position="topLeft:0" 
-						name="uploadccdafilecontent" 
-						type="file" 
-						
-						class="ccdainputfile"/>
-				</td>
-				<td>
-					<div class="tooltip-wrapper">
-					<div class="bubble-left"></div>
-					<div class="bubble-inner">CCDA, 3MB max size</div>
-					<div class="bubble-right"></div>
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<input checked="checked"  type="radio" name="filetype" id="chooseprecannedccda_rdbtn" value="precanned" data-prompt-position="topLeft:0">
-					<label for="chooseprecannedccda_rdbtn">Choose Precanned Content:</label>
-				</td>
-				<td>  
-					<input id="ccdainputfile"
-						class="ccdainputfile validate[funcCall[precannedRequired]]" 
-						data-prompt-position="topLeft:0" 
-						name="precannedfilepath" 
-						style="display: inline; width: 250px;" type="text">
-					<div id="precannedccdaselectbutton" class="dropdown">
-					    <a class="dropdown-button button">Pick Sample<img src="<%=request.getContextPath()%>/images/dropdown.png" class="dropdown-icon"/></a>
-						<div class="dropdown-panel">
-							<div id="ccdafiletreepanel">
-							</div>	
-						</div>
-					</div>
-					
-				</td>
-				<td>
-				</td>
-			</tr>
-			<tr>
-				<td>Enter your end point name:</td>
-				<td>
-					<input class="validate[required,custom[email]]" 
+			<div class="btn-group" data-toggle="buttons">
+				<label class="btn btn-primary active">
+				<input type="radio" id="precanned" name="directMessageType" value="precanned" checked/>Choose Precanned Content</label>
+				<label class="btn btn-primary">
+				<input type="radio" id="choosecontent" name="directMessageType" value="choosecontent"/>Choose Your Own Content</label>
+			</div>
+			<br/><br/>
+		
+		<div id="precannedFormWrapper">
+			<form id="precannedForm"  action="${precannedCCDADirectReceive}" method="POST">
+				<p>
+					Enter Your Endpoint Name: <input id="precannedemail"
+						class="validate[required,custom[email]]"
 						data-errormessage-value-missing="end point is required!"
 						data-errormessage-custom-error="end point format is invalid (hint:example@test.org)"
-						data-prompt-position="topLeft:0"
-						name="endpontemail" 
+						data-prompt-position="topLeft:0" name="precannedemail"
 						placeholder="recipient direct email address"
-						style="display: inline; width: 250px;" type="text"></td>
-				<td>
-				</td>
-			</tr>
-			<tr>
-				<td>&nbsp;</td>
-				<td valign="top">
-					<input id="directreceivesubmit" type="button" value="" class="form-submit" />
-				</td>
-				<td></td>
-			</tr>
-			</table>
-        </form>
+						style="display: inline;" type="text" />
+				</p>
+				<br />
+				<noscript><input type="hidden" name="redirect" value="true" /></noscript>
+				<div id="precannederrorlock" style="position: relative;">
+					<br />
+					
+									<div class="dropdown">
+										<button id="dLabel" data-toggle="dropdown"
+											class="btn btn-success dropdown-toggle validate[funcCall[precannedRequired]]" type="button">
+											Pick Sample <i class="glyphicon glyphicon-play"></i>
+										</button>
+
+										<ul class="dropdown-menu rightMenu" role="menu" aria-labelledby="dLabel">
+											<li>
+												<div id="ccdafiletreepanel"></div>
+											</li>
+										</ul>
+									</div>
+									<span id="prescannedfilePathOutput"></span>
+							
+					
+				</div>
+				<br />
+				<button id="precannedCCDAsubmit" type="submit"
+					class="btn btn-primary start" onclick="return false;">
+					<i class="glyphicon glyphicon-envelope"></i> <span>Send
+						Message</span>
+				</button>
+				<input id="precannedfilepath"
+						name="precannedfilepath" type="hidden">
+			</form>
+		</div>
+		<div id="uploadFormWrapper">
+			<form id="ccdauploadform" action="${uploadCCDADirectReceive}" method="POST" enctype="multipart/form-data">
+				<p>
+					Enter Your Endpoint Name: <input id="ccdauploademail"
+						class="validate[required,custom[email]]"
+						data-errormessage-value-missing="end point is required!"
+						data-errormessage-custom-error="end point format is invalid (hint:example@test.org)"
+						data-prompt-position="topLeft:0" name="ccdauploademail"
+						placeholder="recipient direct email address"
+						style="display: inline;" type="text" />
+				</p>
+				<br />
+				<noscript><input type="hidden" name="redirect" value="true" /></noscript>
+				<div id="ccdauploaderrorlock" style="position: relative;">
+					<br />
+					<table>
+						<tr>
+							<td><span
+								class="btn btn-success fileinput-button"> <i
+									class="glyphicon glyphicon-plus"></i>&nbsp;<span>Upload C-CDA</span> <!-- The file input field used as target for the file upload widget -->
+									<input id="ccdauploadfile" type="file"
+									name="ccdauploadfile" class="validate[custom[maxCCDAFileSize]]"/>
+							</span></td>
+							<td>
+								<div id="ccdauploadfiles" class="files"></div>
+							</td>
+							<td>
+								<div id="ccdauploadprogress" class="progress">
+									<div class="progress-bar progress-bar-success"></div>
+								</div>
+							</td>
+							<td>
+								<div class="tooltip-wrapper">
+									<div class="bubble-left"></div>
+									<div class="bubble-inner">CCDA, 3MB max size</div>
+									<div class="bubble-right"></div>
+								</div>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<br />
+				<button id="ccdauploadsubmit" type="submit"
+					class="btn btn-primary start" onclick="return false;">
+					<i class="glyphicon glyphicon-envelope"></i> <span>Send Message</span>
+				</button>
+			</form>
+		</div>
+		<br/>
 			
 			<div class="clear"></div>
 		</div>

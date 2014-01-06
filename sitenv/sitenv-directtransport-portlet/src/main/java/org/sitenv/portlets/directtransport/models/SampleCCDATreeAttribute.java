@@ -1,6 +1,6 @@
 package org.sitenv.portlets.directtransport.models;
 
-public class jsTreeAttribute {
+public class SampleCCDATreeAttribute {
 	private String id;
 	private String role;
 	private String ref;

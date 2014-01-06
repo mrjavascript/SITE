@@ -184,8 +184,33 @@
 	            },
 	            //customized regular expression.
 	            "derencncodedfileextension":{
-	            	"regex": /\.(der|pem|cer|crt)$/i,
+	            	"func": function(field, rules, i, options) {
+	            		var uploadedFile = $('#anchoruploadfile');
+	            		
+	            		if (uploadedFile) {
+	                        var extensions = rules[i + 2];               
+	                        var mimeFilter = new RegExp(extensions, 'i');
+	                        
+	                        return mimeFilter.test($(uploadedFile).val().split('.').reverse()[0]);
+	                    }
+	                    else {
+	                        return true;
+	                    }       
+	            	},
 	            	"alertText" : "expected extension: .der, .pem, .cer, or .crt - the file needs to be binary or base64 encoded."
+	            },
+	            "maxCCDAFileSize":{
+	            	"func": function(field, rules, i, options) {
+	            		var uploadedFile = $('#ccdauploadfile')[0].files[0];
+	            		
+	            		if (uploadedFile && uploadedFile.size > (3*1024*1024)) {
+	            			return false;
+	                    }
+	                    else {
+	                        return true;
+	                    }     
+	            	},
+	            	"alertText" : "The uploaded file exceeds the maximum file size of 3 MB."
 	            }
 	        };
             

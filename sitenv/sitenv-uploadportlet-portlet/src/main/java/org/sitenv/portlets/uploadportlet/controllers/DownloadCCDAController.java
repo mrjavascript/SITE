@@ -93,7 +93,6 @@ public class DownloadCCDAController extends BaseController {
 		res.addProperty(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""
 				+ "test.pdf" + "\"");
 		// Use this to directly download the file
-		res.addProperty(HttpHeaders.CONTENT_DISPOSITION,"attachment");
 		res.addProperty("Set-Cookie", "fileDownload=true; path=/");
 		OutputStream out = res.getPortletOutputStream();
 		// out.write(pdfContentVO.getPdfData());

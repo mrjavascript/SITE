@@ -1,6 +1,8 @@
 package org.sitenv.portlets.directtransport.models;
 
-public class GenericResult {
+import java.io.Serializable;
+
+public class GenericResult implements Serializable {
 	private Boolean IsSuccess;
 	private String ErrorMessage;
 	public Boolean getIsSuccess() {
