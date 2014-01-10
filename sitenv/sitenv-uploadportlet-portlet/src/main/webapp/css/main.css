@@ -228,3 +228,27 @@ h6
 	margin-top: 0px;
 	margin-bottom: 0px;
 }
+
+.bubble-left {
+	float:left;
+	width:10px;
+	height:29px;
+	margin-left: 5px;
+	background: url(../images/bubble_left.gif) no-repeat;
+}
+
+.bubble-inner {
+	float:left;
+	padding: 7px 0px 0 2px;
+	color:#2e74b2; 
+	line-height: 14px;
+	font-size: 11px;
+	height:29px;
+	background: url(../images/bubble_inner.gif) repeat-x;
+}
+.bubble-right {
+	float:left;
+	width:8px;
+	height:29px;
+	background: url(../images/bubble_right.gif) right no-repeat;
+}

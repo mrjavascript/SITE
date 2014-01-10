@@ -35,12 +35,12 @@ public class SmartCCDAValidatorJsonView extends AbstractView {
     String returnJson = null;
     if (smartCcdaResponse != null && smartCcdaRubricResponse != null)
     {
-    	String returnJsonTemplate = "{\"IsSuccess\":\"true\",\"RubricLookup\":{RUBRICLOOKUP},\"Results\":{RESPONSE}}";
+    	String returnJsonTemplate = "{\"IsSuccess\":true,\"RubricLookup\":{RUBRICLOOKUP},\"Results\":{RESPONSE}}";
 		returnJson = returnJsonTemplate.replace("{RUBRICLOOKUP}",smartCcdaRubricResponse.toString()).replace("{RESPONSE}", smartCcdaResponse.toString());
     }
     else
     {
-    	returnJson = "{\"IsSuccess\":\"false\", \"Message\":\"Relay failed.\"}";
+    	returnJson = "{\"IsSuccess\":false, \"Message\":\"Relay failed.\"}";
     }
     
 

@@ -40,6 +40,8 @@ $(function() {
 				$('#files').text(file.name);
 			});
 			
+			
+			
 			$( "#ValidationResult #tabs #tabs-1" ).html(data.result.body);
 			
 			$( "#ValidationResult" ).dialog({
@@ -122,22 +124,41 @@ $(function() {
 
 		data.context = $('#formSubmit').click(function(e) {
 			
-			BlockPortletUI();
+			var jform = $('#CCDAValidationForm');
+			jform.validationEngine({validateNonVisibleFields: true, updatePromptsPosition:true});
+			jform.validationEngine('hideAll');
 			
-			var selectedValue = $("input:radio[name='ccda_type_val']:checked").val();
-			
-			data.formData = { };
-			
-			if (selectedValue != undefined) {
-				data.formData.ccda_type_val = selectedValue;
+			if(jform.validationEngine('validate'))
+			{
+				//switch back to tab1.
+				$( "#ValidationResult [href='#tabs-1']").trigger( "click" );
+				
+				BlockPortletUI();
+				
+				var selectedValue = $("input:radio[name='ccda_type_val']:checked").val();
+				
+				data.formData = { };
+				
+				if (selectedValue != undefined) {
+					data.formData.ccda_type_val = selectedValue;
+				}
+				
+				data.submit();
+				
+
+				window.lastFilesUploaded = data.files;
+			}
+			else
+			{
+				$('#CCDAValidationForm .fileuploadformError').prependTo('#ccdauploaderrorlock');
 			}
 			
-			data.submit();
 			
-
-			window.lastFilesUploaded = data.files;
 			
 		});
+		
+		
+		
 	}).prop('disabled', !$.support.fileInput).parent().addClass(
 			$.support.fileInput ? undefined : 'disabled');
 

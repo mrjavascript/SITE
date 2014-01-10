@@ -17,7 +17,9 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.log4j.Logger;
 import org.sitenv.common.utilities.controller.BaseController;
+import org.sitenv.portlets.uploadportlet.views.CCDAValidatorJsonView;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,12 +32,16 @@ import org.springframework.web.portlet.multipart.MultipartActionRequest;
 @RequestMapping("VIEW")
 public class SmartCCDAValidatorController extends BaseController {
 
+	private Logger logger = Logger.getLogger(SmartCCDAValidatorController.class);
+	
 	private String smartCcdaResponse = null;
 	private String smartCcdaRubricResponse = null;
 
 	@ActionMapping(params = "javax.portlet.action=smartCCDA")
 	public void response(MultipartActionRequest request, ActionResponse response) throws IOException {
 
+		try {
+		
 		if (this.props == null)
 		{
 			this.loadProperties();
@@ -43,10 +49,10 @@ public class SmartCCDAValidatorController extends BaseController {
 		
 		MultipartFile file = request.getFile("file");
 		String uploadedFileContent = null;
+		
+		response.setRenderParameter("javax.portlet.action", "smartCCDA");
 
-		response.setRenderParameter("javax.portlet.action", "success");
-
-		try {
+		
 
 			StringWriter writer = new StringWriter();
 			IOUtils.copy(file.getInputStream(), writer, "UTF-8");
@@ -95,10 +101,10 @@ public class SmartCCDAValidatorController extends BaseController {
 			smartCcdaRubricResponse = handler.handleResponse(getRubricResponse);
 
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			logger.error(e);
 		}
 
-		response.setRenderParameter("javax.portlet.action", "smartCCDA");
+		
 
 	}
 
