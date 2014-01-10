@@ -175,13 +175,6 @@ margin: 0;
 	text-indent: -3000px;
 }
 
-.module_content #querySubmit
-{
-	background: url(../images/querySubmit_Button.png) no-repeat;	
-    width: 189px;
-    height: 30px;
-}
-
 .module_content form table td input[type="radio"]{
 	 vertical-align:middle;
 }
@@ -198,3 +191,42 @@ margin: 0;
 	margin: 0.25em 0 0 0;
 }
 
+.btn {
+	margin-top: 1em;
+}
+
+.btn-primary, .btn-primary:visited, .btn-primary:hover, .btn-primary:active, .btn-primary:focus {
+	background-image: none;
+	text-shadow: none;
+	color: #ffffff;
+	background-color: #428bca;
+	border-color: #357cbd;
+	
+	span {
+	    font-size: 14px;
+        font-weight: normal;
+        line-height: 1.428571429;
+        text-align: center;
+        white-space: nowrap;
+        cursor: pointer;
+    }
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary {
+	color: #ffffff;
+	background-color: #3276b1;
+	border-color: #285e8e;
+	
+	span {
+	    font-size: 14px;
+        font-weight: normal;
+        line-height: 1.428571429;
+        text-align: center;
+        white-space: nowrap;
+        cursor: pointer;
+    }
+}
+
+.start {
+	width: 180px;
+}
