@@ -1,6 +1,6 @@
 package org.sitenv.portlets.directtransport.models;
 
-public class jsMetaData {
+public class SampleCCDAMetaData {
 	private String description;
 	private String serverpath;
 	public String getDescription() {

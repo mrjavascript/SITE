@@ -1,82 +1,17 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<web-app id="WebApp_ID" version="2.4" 
-	xmlns="http://java.sun.com/xml/ns/j2ee" 
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
-	<display-name>SIT.DirectTransport-portlet</display-name>
-	<!-- TODO: Update these to be int the config... -->
-	
-	<context-param>
-        <param-name>trustBundleFile</param-name>
-        <param-value>/Users/chris/Development/tomcat/tomcat-SITE/temp/TrustBundle.p7b</param-value>
-    </context-param>
-    <context-param>
-        <param-name>trustAnchorDir</param-name>
-        <param-value>/Users/chris/Development/tomcat/tomcat-SITE/temp/TrustAnchors</param-value>
-    </context-param>
-    <context-param>
-        <param-name>tempUploadDir</param-name>
-        <param-value>/Users/chris/Development/tomcat/tomcat-SITE/temp</param-value>
-    </context-param>
-    <context-param>
-        <param-name>sampleCcdaDir</param-name>
-        <param-value>/Users/chris/Development/tomcat/tomcat-SITE/temp/sample_ccdas</param-value>
-    </context-param>
-	
+<?xml version="1.0"?>
+
+<web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 	<servlet>
-	  <servlet-name>DirectEmailReceiveService</servlet-name>
-	  <servlet-class>com.liferay.portal.kernel.servlet.PortalDelegateServlet</servlet-class>
-		<init-param>
-		  <param-name>servlet-class</param-name>
-		  <param-value>org.sitenv.portlets.directtransport.servlets.DirectEmailReceiveServlet</param-value>
-		</init-param>
-		<init-param>
-		  <param-name>sub-context</param-name>
-		  <param-value>DirectEmailReceiveService</param-value>
-		</init-param>
-		<load-on-startup>1</load-on-startup>   
+		<servlet-name>ViewRendererServlet</servlet-name>
+		<servlet-class>
+			org.springframework.web.servlet.ViewRendererServlet
+		</servlet-class>
 	</servlet>
-	<servlet>
-	  <servlet-name>GetCCDASampleTree</servlet-name>
-	  <servlet-class>com.liferay.portal.kernel.servlet.PortalDelegateServlet</servlet-class>
-		<init-param>
-		  <param-name>servlet-class</param-name>
-		  <param-value>org.sitenv.portlets.directtransport.servlets.GetCCDASamplesTreeServlet</param-value>
-		</init-param>
-		<init-param>
-		  <param-name>sub-context</param-name>
-		  <param-value>GetCCDASamplesTree</param-value>
-		</init-param>
-		<load-on-startup>1</load-on-startup>   
-	</servlet>
-	<servlet>
-	  <servlet-name>GetTrustBundle</servlet-name>
-	  <servlet-class>com.liferay.portal.kernel.servlet.PortalDelegateServlet</servlet-class>
-		<init-param>
-		  <param-name>servlet-class</param-name>
-		  <param-value>org.sitenv.portlets.directtransport.servlets.GetTrustBundleServlet</param-value>
-		</init-param>
-		<init-param>
-		  <param-name>sub-context</param-name>
-		  <param-value>GetTrustBundle</param-value>
-		</init-param>
-		<load-on-startup>1</load-on-startup>   
-	</servlet>
-	<servlet>
-	  <servlet-name>UploadTrustAnchorService</servlet-name>
-	  <servlet-class>com.liferay.portal.kernel.servlet.PortalDelegateServlet</servlet-class>
-		<init-param>
-		  <param-name>servlet-class</param-name>
-		  <param-value>org.sitenv.portlets.directtransport.servlets.UploadTrustAnchorServlet</param-value>
-		</init-param>
-		<init-param>
-		  <param-name>sub-context</param-name>
-		  <param-value>UploadTrustAnchorService</param-value>
-		</init-param>
-		<load-on-startup>1</load-on-startup>   
-	</servlet>
-	
-	
+	<servlet-mapping>
+		<servlet-name>ViewRendererServlet</servlet-name>
+		<url-pattern>/WEB-INF/servlet/view</url-pattern>
+	</servlet-mapping>
+
 	<jsp-config>
 		<taglib>
 			<taglib-uri>http://java.sun.com/portlet_2_0</taglib-uri>
@@ -89,5 +24,6 @@
 			<taglib-location>/WEB-INF/tld/aui.tld</taglib-location>
 		</taglib>
 	</jsp-config>
-	
+
 </web-app>
+

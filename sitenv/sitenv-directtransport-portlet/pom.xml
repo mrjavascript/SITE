@@ -13,7 +13,7 @@
 
 
 	<build>
-		<finalName>SIT.DirectTransport-portlet</finalName>
+		<finalName>DirectTransport-portlet</finalName>
 		<plugins>
 			<plugin>
 				<artifactId>maven-antrun-plugin</artifactId>
@@ -55,14 +55,14 @@
 									<then>
 										<echo message="Uploading file to location: ${deploy.location}"/>
 										<exec executable="scp">
-										 	<arg value="${liferay.auto.deploy.dir}/SIT.DirectTransport-portlet.war"/>
+										 	<arg value="${liferay.auto.deploy.dir}/DirectTransport-portlet.war"/>
 										 	<arg value="${deploy.location}" />
 										</exec>
 										<echo message="...Uploaded."/>
 										<echo message="Deploying to tomcat7..."/>
 										<exec executable="ssh">
 											<arg value="site-dev-liferay" />
-											<arg value="echo ${deploy.password} | sudo -S mv ~/SIT.DirectTransport-portlet.war /opt/tomcat7/deploy"/>
+											<arg value="echo ${deploy.password} | sudo -S mv ~/DirectTransport-portlet.war /opt/tomcat7/deploy"/>
 										</exec>
 										<echo message="...Deployed."/>
 									</then>
@@ -217,5 +217,42 @@
 			<artifactId>sitenv-commonutilities</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
+		</dependency>
+		<!-- Shared version number properties -->
+
+		<!-- Core utilities used by other modules. Define this if you use Spring 
+			Utility APIs (org.springframework.core.*/org.springframework.util.*) -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+		<!-- Spring MVC for Servlet Environments (depends on spring-core, spring-beans, 
+			spring-context, spring-web) Define this if you use Spring MVC with a Servlet 
+			Container such as Apache Tomcat (org.springframework.web.servlet.*) -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+		<!-- Spring MVC for Portlet Environments (depends on spring-core, spring-beans, 
+			spring-context, spring-web) Define this if you use Spring MVC with a Portlet 
+			Container (org.springframework.web.portlet.*) -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc-portlet</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20090211</version>
+		</dependency>
+			
+		
 	</dependencies>
 </project>

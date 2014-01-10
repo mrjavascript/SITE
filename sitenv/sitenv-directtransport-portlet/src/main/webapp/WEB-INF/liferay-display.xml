@@ -3,6 +3,6 @@
 
 <display>
 	<category name="category.sample">
-		<portlet id="SIT.DirectTransport" />
+		<portlet id="DirectTransport" />
 	</category>
 </display>
