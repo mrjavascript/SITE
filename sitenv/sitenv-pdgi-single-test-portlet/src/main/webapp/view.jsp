@@ -42,23 +42,6 @@
 	        });	  
 	  });
   });
-  
-  <%-- function submitForm() {	  
-	  $("#resultsDialog").dialog({ "width": 640, "height": 480});
-	  $("#resultsDialog").html("<div><strong>Sending Query...</strong></div>");
-	  
-	  $.ajax({
-          type: "POST",
-          url: "<%= runTestsUrl %>",
-          data: $("#<portlet:namespace/>testForm").serialize(),
-          success: function(data) {
-        	  $("#resultsDialog").html(data);
-          },
-          error: function(jqXHR, textStatus, errorThrown) {
-        	  $("#resultsDialog").html(jqXHR['responseText']);
-          }
-        });
-  } --%>
 </script>
 
 <article class="module width_full">
