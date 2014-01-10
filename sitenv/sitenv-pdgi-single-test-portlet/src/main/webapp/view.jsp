@@ -73,9 +73,9 @@
         <aui:option value="dup_req_id_federation_loop_test">Federation Loop Test</aui:option>
       </aui:select>
       
-      <table>
-        <tr><td valign="top"><input id="querySubmit" type="button" value="" /></td></tr>
-      </table>
+      <button id="querySubmit" type="submit" class="btn btn-primary start" onclick="return false;">
+          <span>Run Test Case</span>
+      </button>
   </aui:form> 
 
   </div>
