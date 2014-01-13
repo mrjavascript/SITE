@@ -223,6 +223,7 @@ function smartCCDAValidation()
         	else
         	{
         		alert(results.Message);
+        		$.unblockUI();
         	}
         },
         error: errorHandler,
@@ -256,6 +257,7 @@ $(function(){
 	*/
 	
 	$('#reportSaveAsQuestion #yes').on('click', function(e){
+		e.preventDefault();
 		$.blockUI({ message: "<h1>Preparing your report...</h1>" });
 		//set the value of the result and post back to server.
 		$('#downloadtest textarea').val($('#ValidationResult').html());
@@ -277,6 +279,7 @@ $(function(){
 	});
 	
 	$('#reportSaveAsQuestion #no').on('click', function(e){
+		e.preventDefault();
 		$.unblockUI();
 	});
 	
