@@ -58,7 +58,7 @@ public class SingleTestPortlet extends MVCPortlet {
     private WsdlProject getWsdlProject(final String projectFile) {
         WsdlProject wsdlProject = null;
         try {
-            wsdlProject = new WsdlProject(getFileUrl(projectFile));
+            wsdlProject = new WsdlProject(projectFile);
             XmlBeansSettingsImpl xmlBeansSettingsImpl = wsdlProject.getSettings();
             xmlBeansSettingsImpl.setString(HttpSettings.CLOSE_CONNECTIONS, Boolean.TRUE.toString());
             xmlBeansSettingsImpl.setString(HttpSettings.INCLUDE_REQUEST_IN_TIME_TAKEN, Boolean.TRUE.toString());
@@ -79,8 +79,8 @@ public class SingleTestPortlet extends MVCPortlet {
         return wsdlProject;
     }
 
-    private static String getFileUrl(final String fileName) {
-        return SingleTestPortlet.class.getClassLoader().getResource(fileName).getPath();
+    private static String getFileUrl(String fileName) {
+        return SingleTestPortlet.class.getClassLoader().getResource("/" + fileName).getPath();
     }
 	
     private Map<String, TestCase> buildTestCaseMap(final WsdlProject wsdlProject) {
@@ -97,10 +97,10 @@ public class SingleTestPortlet extends MVCPortlet {
     
     @Override
     public void init() {
-    	SoapUI.initDefaultCore();
-    	IHE_WSDL_PROJECT = getWsdlProject(IHE_SOAPUI_PROJECT_FILE);
-    	MSPD_WSDL_PROJECT = getWsdlProject(MSPD_SOAPUI_PROJECT_FILE);
     	try {
+    	    SoapUI.initDefaultCore();
+    	    IHE_WSDL_PROJECT = getWsdlProject(getFileUrl(IHE_SOAPUI_PROJECT_FILE));
+    	    MSPD_WSDL_PROJECT = getWsdlProject(getFileUrl(MSPD_SOAPUI_PROJECT_FILE));
 			super.init();
 		} catch (PortletException e) {
 			// TODO Auto-generated catch block
