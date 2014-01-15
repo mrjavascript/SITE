@@ -51,7 +51,6 @@
   <aui:form action="<%= runTestsUrl %>" name="testForm" method="post" id="<portlet:namespace/>testForm">
       <aui:field-wrapper label="" name="wsdl">
         <aui:input inlineField="<%= true %>" checked="<%= true %>" inlineLabel="right" name="wsdl" type="radio" value="modSpec" label="ModSpec 1.0" />
-        <aui:input inlineField="<%= true %>" inlineLabel="right" name="wsdl" type="radio" value="ihehpd" label="IHE HPD with CP 601" />
       </aui:field-wrapper>
 	
       <aui:input label="Enter your PD Endpoint URL" name="endpointUrl" type="text" value="" />
@@ -85,7 +84,7 @@
 	<header><h3>Provider Directory Client Testing</h3></header>
 	<div class="module_content">
       For PD clients who would like to verify that their systems are generating conformant PD search requests following the ONC Modular Specifications can issue the requests against the Provider Directory Test Implementation (PDTI) setup at the following WSDL.<br /><br />
-http://dev.provider-directories.com/pdti-server/Hpd_Plus_ProviderInformationDirectoryService?wsdl<br /><br />
+http://54.201.181.21/pdti-server/Hpd_Plus_ProviderInformationDirectoryService?wsdl<br /><br />
 The PDTI has the test data loaded as specified above and clients can verify the results based on their search requests by manually cross-checking results versus the test data.
   </div>
 </article>
