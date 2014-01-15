@@ -58,7 +58,7 @@ public class SingleTestPortlet extends MVCPortlet {
     private WsdlProject getWsdlProject(final String projectFile) {
         WsdlProject wsdlProject = null;
         try {
-            wsdlProject = new WsdlProject(projectFile);
+            wsdlProject = new WsdlProject("file:" + projectFile);
             XmlBeansSettingsImpl xmlBeansSettingsImpl = wsdlProject.getSettings();
             xmlBeansSettingsImpl.setString(HttpSettings.CLOSE_CONNECTIONS, Boolean.TRUE.toString());
             xmlBeansSettingsImpl.setString(HttpSettings.INCLUDE_REQUEST_IN_TIME_TAKEN, Boolean.TRUE.toString());
@@ -99,6 +99,11 @@ public class SingleTestPortlet extends MVCPortlet {
     public void init() {
     	try {
     	    SoapUI.initDefaultCore();
+    	    
+    	    SoapUI.getThreadPool().setCorePoolSize(0); // allocate a core pool size of 0
+            SoapUI.getThreadPool().setMaximumPoolSize(25);  // as threads are needed we can allocate up to 25 threads
+            SoapUI.getThreadPool().setKeepAliveTime(0, TimeUnit.SECONDS);  // any threads over the core pool size will be deallocated immediately upon completion.
+
     	    IHE_WSDL_PROJECT = getWsdlProject(getFileUrl(IHE_SOAPUI_PROJECT_FILE));
     	    MSPD_WSDL_PROJECT = getWsdlProject(getFileUrl(MSPD_SOAPUI_PROJECT_FILE));
 			super.init();
@@ -229,7 +234,7 @@ public class SingleTestPortlet extends MVCPortlet {
     	                        	if (responseContent.contains("S:Fault") || responseContent.contains("dsml:errorResponse") || responseContent.contains("hpdplus:hpdPlusError")) {
     	                        	    wrapper.setStatus("FAILED");
     	                        	} else {
-    		            	            if (wsdlTestRequestStepResult.getResponseStatusCode() == 500) {
+    		            	            if (wsdlTestRequestStepResult.getResponseStatusCode() != 200) {
     		                        	    wrapper.setStatus("FAILED");            	            	
     		            	            } else {
     		                        	    wrapper.setStatus("PASSED");            	            	
@@ -310,7 +315,7 @@ public class SingleTestPortlet extends MVCPortlet {
 	                    	if (responseContent.contains("S:Fault") || responseContent.contains("dsml:errorResponse") || responseContent.contains("hpdplus:hpdPlusError")) {
 	                    	    wrapper.setStatus("FAILED");
 	                    	} else {
-		        	            if (wsdlTestRequestStepResult.getResponseStatusCode() == 500) {
+		        	            if (wsdlTestRequestStepResult.getResponseStatusCode() != 200) {
 		                    	    wrapper.setStatus("FAILED");            	            	
 		        	            } else {
 		                    	    wrapper.setStatus("PASSED");            	            	
