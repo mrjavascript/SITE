@@ -12,9 +12,9 @@ import javax.portlet.PortletSession;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 
+import org.apache.log4j.Logger;
 import org.apache.xmlbeans.XmlException;
 
-//import com.eviware.soapui.SoapUI;
 import com.eviware.soapui.SoapUI;
 import com.eviware.soapui.impl.settings.XmlBeansSettingsImpl;
 import com.eviware.soapui.impl.wsdl.WsdlProject;
@@ -36,6 +36,8 @@ public class SingleTestPortlet extends MVCPortlet {
 
     private WsdlProject IHE_WSDL_PROJECT;
     private WsdlProject MSPD_WSDL_PROJECT;
+
+	private Logger logger = Logger.getLogger(SingleTestPortlet.class);
 
     private static List<String> testCaseNames;
     static {
@@ -67,13 +69,10 @@ public class SingleTestPortlet extends MVCPortlet {
             xmlBeansSettingsImpl.setString(WsdlSettings.PRETTY_PRINT_PROJECT_FILES, Boolean.TRUE.toString());
             xmlBeansSettingsImpl.setString(WsdlSettings.PRETTY_PRINT_RESPONSE_MESSAGES, Boolean.TRUE.toString());
         } catch (XmlException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
         } catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SoapUIException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
         return wsdlProject;
@@ -108,7 +107,6 @@ public class SingleTestPortlet extends MVCPortlet {
     	    MSPD_WSDL_PROJECT = getWsdlProject(getFileUrl(MSPD_SOAPUI_PROJECT_FILE));
 			super.init();
 		} catch (PortletException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }
@@ -141,35 +139,44 @@ public class SingleTestPortlet extends MVCPortlet {
 		} else {
 			project = null;
 		}
+		
+		String testCaseName = request.getParameter("testCase").trim();
 
 		String wsdlUrl = request.getParameter("endpointUrl").trim();
 		if (wsdlUrl == null || wsdlUrl.equals("")) {
+			System.out.println("The endpoint URL was not provided");
     		PortletSession session = request.getPortletSession();
-    	    session.setAttribute("LIFERAY_SHARED_testStatus", "FAILED", PortletSession.APPLICATION_SCOPE);
-    	    List<String> results = new ArrayList<String> ();
-    	    results.add("You must provide an endpoint URL");
-    	    session.setAttribute("LIFERAY_SHARED_whichPage", "error", PortletSession.APPLICATION_SCOPE);
+    	    List<TestCaseResultWrapper> results = new ArrayList<TestCaseResultWrapper> ();
+    	    TestCaseResultWrapper wrapper = new TestCaseResultWrapper();
+    	    wrapper.setName(testCaseName);
+    	    wrapper.setStatus("FAILED");
+    	    wrapper.setRequest("");
+    	    wrapper.setResponse("You must provide an endpoint URL");
+    	    results.add(wrapper);
     	    session.setAttribute("LIFERAY_SHARED_resultList", results, PortletSession.APPLICATION_SCOPE);
+            getPortletContext().getRequestDispatcher("/testcase_results.jsp").include(request, response);
     	    return;
 		}
 		
 		String baseDn = request.getParameter("baseDn").trim();
 		if (baseDn == null || baseDn.equals("")) {
+			System.out.println("The Base DN was not provided");
     		PortletSession session = request.getPortletSession();
-    	    session.setAttribute("LIFERAY_SHARED_testStatus", "FAILED", PortletSession.APPLICATION_SCOPE);
-    	    List<String> results = new ArrayList<String> ();
-    	    results.add("You must provide an base DN");
-    	    session.setAttribute("LIFERAY_SHARED_whichPage", "error", PortletSession.APPLICATION_SCOPE);
+    	    List<TestCaseResultWrapper> results = new ArrayList<TestCaseResultWrapper> ();
+    	    TestCaseResultWrapper wrapper = new TestCaseResultWrapper();
+    	    wrapper.setName(testCaseName);
+    	    wrapper.setStatus("FAILED");
+    	    wrapper.setRequest("");
+            wrapper.setResponse("You must provide a Base DN");
+            results.add(wrapper);
     	    session.setAttribute("LIFERAY_SHARED_resultList", results, PortletSession.APPLICATION_SCOPE);
+            getPortletContext().getRequestDispatcher("/testcase_results.jsp").include(request, response);
     	    return;
 		}
 		
         project.setPropertyValue(URL_PROPERTY, wsdlUrl);
-		
-		String testCaseName = request.getParameter("testCase").trim();
-		
         
-        String origBaseDn = project.getPropertyValue(BASE_DN_PROPERTY);
+        /*String origBaseDn = project.getPropertyValue(BASE_DN_PROPERTY);
         if (!origBaseDn.equals(baseDn)) {
         	TestCaseResultWrapper wrapper = new TestCaseResultWrapper();
     	    wrapper.setStatus("FAILED");
@@ -180,7 +187,7 @@ public class SingleTestPortlet extends MVCPortlet {
             testResultList.add(wrapper);
     		PortletSession session = request.getPortletSession();
     	    session.setAttribute("LIFERAY_SHARED_resultList", testResultList, PortletSession.APPLICATION_SCOPE);
-        } else {
+        } else {*/
 
     		project.setPropertyValue(BASE_DN_PROPERTY, baseDn);		
 
@@ -199,11 +206,12 @@ public class SingleTestPortlet extends MVCPortlet {
 
     				TestCase tc = testCases.get(testCaseName);
     				if (tc == null) {
+    					System.out.println("Unable to locate the specified test case");
     	            	TestCaseResultWrapper wrapper = new TestCaseResultWrapper();
     	        	    wrapper.setStatus("FAILED");
     	        	    wrapper.setRequest("");
     	        	    wrapper.setName(testCaseName);
-    	            	wrapper.setResponse("The server returned a null test case");                		
+    	            	wrapper.setResponse("Unable to locate the specified test case");                		
     		            testResultList.add(wrapper);
     				} else {
     					TestCaseRunner testCaseRunner = tc.run(null, false);
@@ -223,18 +231,23 @@ public class SingleTestPortlet extends MVCPortlet {
     	                    	wrapper.setName(testCaseName);
 
     	                    	if (requestContent != null) {
+    	                    		System.out.println(requestContent);
     	                    	    wrapper.setRequest(requestContent.replaceAll("<", "&lt;").replaceAll(">", "&gt;"));
     	                    	} else {
+    	                    		System.out.println("The request was null");
     	                    	    wrapper.setStatus("FAILED");
     	                    	    wrapper.setRequest("Request is null");                		
     	                    	}
     	                    	
     	                    	if (responseContent != null) {
+    	                    		System.out.println(responseContent);
     	                        	wrapper.setResponse(responseContent.replaceAll("<", "&lt;").replaceAll(">", "&gt;"));                      	
     	                        	if (responseContent.contains("S:Fault") || responseContent.contains("dsml:errorResponse") || responseContent.contains("hpdplus:hpdPlusError")) {
-    	                        	    wrapper.setStatus("FAILED");
+    	                        	    System.out.println("An error response was returned");
+    	                        		wrapper.setStatus("FAILED");
     	                        	} else {
     		            	            if (wsdlTestRequestStepResult.getResponseStatusCode() != 200) {
+    		            	            	System.out.println("The server returned a http status of " + testCaseRunner.getStatus());
     		                        	    wrapper.setStatus("FAILED");            	            	
     		            	            } else {
     		                        	    wrapper.setStatus("PASSED");            	            	
@@ -242,6 +255,7 @@ public class SingleTestPortlet extends MVCPortlet {
     	                        	}
 
     	                    	} else {
+    	                    		System.out.println("The response is null");
     	                    	    wrapper.setStatus("FAILED");
     	                        	wrapper.setResponse("Response is null");                		
     	                    	}
@@ -254,6 +268,7 @@ public class SingleTestPortlet extends MVCPortlet {
     	    	    session.setAttribute("LIFERAY_SHARED_resultList", testResultList, PortletSession.APPLICATION_SCOPE);
 
     			} catch (Exception e) {
+    				e.printStackTrace();
                 	TestCaseResultWrapper wrapper = new TestCaseResultWrapper();
             	    wrapper.setStatus("FAILED");
             	    wrapper.setRequest("");
@@ -265,7 +280,7 @@ public class SingleTestPortlet extends MVCPortlet {
     	    	    session.setAttribute("LIFERAY_SHARED_resultList", testResultList, PortletSession.APPLICATION_SCOPE);
     			}
     		}
-        }
+        //}
         getPortletContext().getRequestDispatcher("/testcase_results.jsp").include(request, response);
     }
 
@@ -282,10 +297,11 @@ public class SingleTestPortlet extends MVCPortlet {
 			TestCase tc = testCases.get(testCaseName);	
 			if (tc == null) {
             	TestCaseResultWrapper wrapper = new TestCaseResultWrapper();
+				System.out.println("Unable to locate the specified test case");
         	    wrapper.setStatus("FAILED");
         	    wrapper.setRequest("");
         	    wrapper.setName(testCaseName);
-            	wrapper.setResponse("The server returned a null test case");                		
+            	wrapper.setResponse("Unable to locate the specified test case");                		
 	            testResultList.add(wrapper);
 			} else {
 				TestCaseRunner testCaseRunner = tc.run(null, false);
@@ -303,25 +319,31 @@ public class SingleTestPortlet extends MVCPortlet {
 	                	wrapper.setName(testCaseName);
 	                	
 	                	if (requestContent != null) {
+	                		System.out.println(requestContent);
 	                	    wrapper.setRequest(requestContent.replaceAll("<", "&lt;").replaceAll(">", "&gt;"));
 	                	} else {
+	                		System.out.println("The request is null");
 	                	    wrapper.setStatus("FAILED");
 	                	    wrapper.setRequest("Request is null");                		
 	                	}
 	                	
 	                	if (responseContent != null) {
+	                		System.out.println(responseContent);
 	                    	wrapper.setResponse(responseContent.replaceAll("<", "&lt;").replaceAll(">", "&gt;"));
 
 	                    	if (responseContent.contains("S:Fault") || responseContent.contains("dsml:errorResponse") || responseContent.contains("hpdplus:hpdPlusError")) {
-	                    	    wrapper.setStatus("FAILED");
+                        	    System.out.println("An error response was returned");
+	                    		wrapper.setStatus("FAILED");
 	                    	} else {
 		        	            if (wsdlTestRequestStepResult.getResponseStatusCode() != 200) {
+		        	            	System.out.println("The server returned a http status of " + testCaseRunner.getStatus());
 		                    	    wrapper.setStatus("FAILED");            	            	
 		        	            } else {
 		                    	    wrapper.setStatus("PASSED");            	            	
 		        	            }
 	                    	}
 	                	} else {
+	                		System.out.println("The response is null");
 	                	    wrapper.setStatus("FAILED");
 	                    	wrapper.setResponse("Response is null");                		
 	                	}
