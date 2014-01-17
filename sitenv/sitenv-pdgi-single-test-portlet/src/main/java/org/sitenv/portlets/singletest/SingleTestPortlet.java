@@ -39,6 +39,7 @@ public class SingleTestPortlet extends MVCPortlet {
 
 	private Logger logger = Logger.getLogger(SingleTestPortlet.class);
 
+	
     private static List<String> testCaseNames;
     static {
     	testCaseNames = new ArrayList<String> ();
