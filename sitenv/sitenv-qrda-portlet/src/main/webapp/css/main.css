@@ -154,14 +154,37 @@ width: 100%;
 	padding: 0px !important;
 }
 
+.ui-tabs-nav{
+	position: fixed;
+	margin: -4px !important;	
+}
+
+.ui-dialog{
+	position:fixed;	
+}
+
+.ui-layout-content
+{
+	margin-top: 30px;
+}
+
+/*
+stick the tab bar at top , doesn't work well.
 .ui-tabs-panel{
 	margin-top:30px;
 }
+
 .ui-tabs-nav{
 	position:fixed;
 }
+*/
 
 .scriptenabled{
 	display:none;
 }
+
+#tabs-1 .nav {
+    cursor: pointer;
+}
+
 

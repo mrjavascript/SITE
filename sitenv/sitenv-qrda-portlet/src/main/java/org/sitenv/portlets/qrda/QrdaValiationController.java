@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Properties;
 
@@ -33,6 +34,7 @@ import org.apache.http.entity.mime.content.InputStreamBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.sitenv.portlets.qrda.models.QRDASchemaError;
 import org.sitenv.portlets.qrda.models.QRDAValidationEnhancedResult;
 import org.sitenv.portlets.qrda.models.QRDAValidationResponse;
 import org.sitenv.portlets.qrda.models.UploadedFile;
@@ -57,6 +59,8 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import com.google.gson.Gson;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.util.PortalUtil;
@@ -67,8 +71,12 @@ public class QrdaValiationController {
 
 	public static final String DEFAULT_PROPERTIES_FILE = "environment.properties";
 
+	private static final Log logger = LogFactoryUtil
+			.getLog(QrdaValiationController.class);
+
 	protected Properties props;
 
+	// default value.
 	protected String QRDA_VALIDATOR_URL = "http://localhost:7080/QrdaValidatorServices/QRDA/Validate";
 
 	protected void loadProperties() throws IOException {
@@ -95,62 +103,93 @@ public class QrdaValiationController {
 	public void fileUploaded(PortletRequest portletRequest,
 			ResourceResponse response) throws IOException {
 
+		// Calculating the matrix.
 		OutputStream outStream = null;
 		QRDAValidationResponse r = new QRDAValidationResponse();
 
 		try {
 
+			Date d1 = new Date();
+
 			// cast the upload request.
 			UploadPortletRequest uploadRequest = PortalUtil
 					.getUploadPortletRequest(portletRequest);
 
-			String category = ParamUtil.getString(uploadRequest, "category");
+			String selectedCategory = ParamUtil.getString(uploadRequest,
+					"category");
 			System.out
 					.println("Responding ajax call, relay the request to url:"
 							+ QRDA_VALIDATOR_URL);
-			System.out.println("category1:" + category);
+			System.out.println("category1:" + selectedCategory);
 
 			String fileName = uploadRequest.getFileName("fileData");
 			InputStream inputStream = uploadRequest.getFileAsStream("fileData");
 
+			// output the content of document to a string.
 			StringWriter writer = new StringWriter();
 			IOUtils.copy(inputStream, writer, "UTF-8");
 			String orgXml = writer.toString();
 
+			Date d2 = new Date();
+
 			inputStream.reset();
-			r = relayCCDAtoQRDAValidator(inputStream, fileName, category);
-			r.parse();
+			long diff = d2.getTime() - d1.getTime();
+			long diffExtractAttachment = diff / 1000 % 60;
 
+			d1 = new Date();
+			// do the validation then return the result.
+			r = relayCCDAtoQRDAValidator(inputStream, fileName,
+					selectedCategory);
+			d2 = new Date();
+			diff = d2.getTime() - d1.getTime();
+			long diffRelayRequest = diff / 1000 % 60;
+
+			// prepare the meta data for anchor injection.
 			HashMap<String, String> xpathMapping = new HashMap<String, String>();
-
-			if (r.getEnhancedResults() != null) {
-				int seed = 0;
-
+			d1 = new Date();
+			if (r.getSchematronErrors() != null) {
 				for (QRDAValidationEnhancedResult reslt : r
-						.getEnhancedResults()) {
-					String keyValue = null;
-
-					String xpath = reslt.getXpath() + "]";
+						.getSchematronErrors()) {
+					String xpath = reslt.getXpath();
+					String keyValue = reslt.getNavKey();
 
 					if (!xpathMapping.containsKey(xpath)) {
-						seed++;
-						keyValue = "000" + seed;
 						xpathMapping.put(xpath, keyValue);
-					} else {
-						keyValue = xpathMapping.get(xpath);
 					}
-					System.out.print("added xpath:" + xpath);
-					System.out.println(" added key:" + keyValue);
-					reslt.setNavKey(keyValue);
+				}
+			}
+
+			if (r.getSchematronWarnings() != null) {
+				for (QRDAValidationEnhancedResult reslt : r
+						.getSchematronWarnings()) {
+					String xpath = reslt.getXpath();
+					String keyValue = reslt.getNavKey();
+
+					if (!xpathMapping.containsKey(xpath)) {
+						xpathMapping.put(xpath, keyValue);
+					}
 				}
 			}
 
 			if (!xpathMapping.isEmpty()) {
 				orgXml = StringEscapeUtils.escapeXml(InjectTags(orgXml,
 						xpathMapping));
+			} else {
+				orgXml = StringEscapeUtils.escapeXml(orgXml);
 			}
+			d2 = new Date();
+			diff = d2.getTime() - d1.getTime();
+			long diffAnalyzingResult = diff / 1000 % 60;
 
+			logger.info(String
+					.format("Validate file:%s%n, %d seconds to extract the QRDA%n %d seconds to relay the request%n %d seconds to analyze the result.%n",
+							fileName, diffExtractAttachment, diffRelayRequest,
+							diffAnalyzingResult));
+
+			// set the original QRDA on the response.
 			r.setOrgXml(orgXml);
+			r.setOrgFileName(fileName);
+			r.setSelectedCategory(selectedCategory);
 
 		} catch (Exception e) {
 			r.setSuccess(false);
@@ -159,6 +198,7 @@ public class QrdaValiationController {
 		}
 		Gson gson = new Gson();
 		outStream = response.getPortletOutputStream();
+		// write the JSON serialized result back to client.
 		outStream.write(gson.toJson(r).getBytes());
 
 	}
@@ -177,45 +217,153 @@ public class QrdaValiationController {
 					errors);
 		}
 
-		return "uploadForm";
+		return "qrdaSandboxGUI";
 	}
 
 	@Autowired
 	Validator fileValidator;
 
-	// post back handler
+	// normal post back handler, if user disabled the javascript.
 	@ActionMapping("uploadFile")
 	public void fileUploaded(
 			@ModelAttribute("uploadedFile") UploadedFile uploadedFile,
 			BindingResult result, Model model) {
 
-		System.out.println("hit post");
+		System.out.println("hit post for java disabled client.");
 
 		InputStream inputStream = null;
 
 		fileValidator.validate(uploadedFile, result);
 
 		if (result.hasErrors()) {
-
-			// return new ModelAndView("uploadForm");
-
 			model.addAttribute("errors", result);
 			return;
 		}
 
-		String fileName = uploadedFile.getFileData().getOriginalFilename();
-
 		try {
+
+			String fileName = uploadedFile.getFileData().getOriginalFilename();
+
 			inputStream = uploadedFile.getFileData().getInputStream();
 
+			// query the remote validator
 			QRDAValidationResponse response = relayCCDAtoQRDAValidator(
 					inputStream, fileName, uploadedFile.getCategory());
-			response.parse();
 
-			model.addAttribute("message", response.getValidationResult());
-			model.addAttribute("results", response.getValidationResults());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			boolean failed = false;
+			String resultMsg = "";
+			String rowCache = "";
+			StringBuilder htmls = new StringBuilder();
+
+			if (response.getSuccess()) {
+
+				String rowtmp = "<b>Upload Results:</b><br/>"
+						+ "The file: {filename} was uploaded successfully."
+						+ "<br/><b>QRDA category selected: {category}</b><hr/><hr/><b>Validation Results</b><br/>"
+						+ "<font style='color:{color}'><i>{result}</i><br/>{resultmessage}</font><hr/>";
+
+				// schema error.
+				if (response.getSchemaErrors().size() != 0) {
+					failed = true;
+					resultMsg += "The file has encountered schema errors.";
+				}
+
+				if (response.getSchematronErrors().size() != 0) {
+					failed = true;
+					resultMsg += "The file has encountered schema-tron warnings.";
+				}
+
+				if (response.getSchematronErrors().size() != 0) {
+					failed = true;
+					resultMsg += "The file has encountered schema-tron errors.";
+				}
+
+				// add the header.
+				rowtmp = rowtmp.replace("{filename}", fileName);
+				rowtmp = rowtmp.replace("{category}",
+						uploadedFile.getCategory());
+				rowtmp = rowtmp.replace("{color}", failed ? "color" : "green");
+				rowtmp = rowtmp
+						.replace("{result}", failed ? "Validation Failed."
+								: "Validation Succeeded.");
+				rowtmp = rowtmp.replace("{resultmessage}", resultMsg);
+				htmls.append(rowtmp);
+
+				// schema error.
+				int i = 0;
+				if (response.getSchemaErrors().size() != 0) {
+					htmls.append("<font color='red'>Schema Errors Received:<hr/>");
+
+					rowtmp = "Error {i}:<br/>{msg}<br/> ";
+
+					for (QRDASchemaError error : response.getSchemaErrors()) {
+						rowCache = rowtmp;
+						rowCache = rowCache.replace("{i}",
+								String.valueOf(i + 1));
+						i++;
+						rowCache = rowCache.replace("{msg}",
+								error.getErrorMessage());
+						htmls.append(rowCache);
+					}
+
+					htmls.append("</font>");
+				}
+
+				// schematron warnings.
+				if (response.getSchematronWarnings().size() != 0) {
+
+					i = 0;
+					htmls.append("<font color='blue'>Schematron Warnings Received:<hr/>");
+					rowtmp = "Warning {i}:<br/><div class='nav' navKey='{key}'><u>{msg}</u></div><br/><br/>";
+
+					for (QRDAValidationEnhancedResult warning : response
+							.getSchematronWarnings()) {
+						rowCache = rowtmp;
+						rowCache = rowCache.replace("{i}",
+								String.valueOf(i + 1));
+						i++;
+						rowCache = rowCache.replace("{msg}",
+								warning.getMessage());
+						rowCache = rowCache.replace("{key}",
+								warning.getNavKey());
+
+						htmls.append(rowCache);
+					}
+
+					htmls.append("</font>");
+				}
+
+				// schematron errors.
+				if (response.getSchematronErrors().size() != 0) {
+
+					i = 0;
+					htmls.append("<font color='red'>Schematron Errors Received:<hr/>");
+					rowtmp = "Error {i}:<br/><div class='nav' navKey='{key}'><u>{msg}</u></div><br/><br/> ";
+
+					for (QRDAValidationEnhancedResult error : response
+							.getSchematronErrors()) {
+						rowCache = rowtmp;
+						rowCache = rowCache.replace("{i}",
+								String.valueOf(i + 1));
+						i++;
+						rowCache = rowCache
+								.replace("{msg}", error.getMessage());
+						rowCache = rowCache.replace("{key}", error.getNavKey());
+
+						htmls.append(rowCache);
+					}
+
+					htmls.append("</font>");
+				}
+			} else {
+				htmls.append("<h2>Validation failed due to server errors</h2>");
+				htmls.append("<div style='color: red;font-weight: bold'>");
+				htmls.append(response.getErrorMessage());
+				htmls.append("</div>");
+			}
+
+			model.addAttribute("results", htmls.toString());
+		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			if (inputStream != null) {
@@ -229,13 +377,13 @@ public class QrdaValiationController {
 		return;
 	}
 
-	// post back handler
+	// post back handler for IE browsers.
 	@ActionMapping("uploadFileIE")
 	public void fileUploadedIE(
 			@ModelAttribute("uploadedFile") UploadedFile uploadedFile,
 			BindingResult result, Model model) {
 
-		System.out.println("hit post for IE");
+		System.out.println("hit post for IE9 and below.");
 
 		InputStream inputStream = null;
 
@@ -252,16 +400,40 @@ public class QrdaValiationController {
 		String fileName = uploadedFile.getFileData().getOriginalFilename();
 
 		QRDAValidationResponse response = new QRDAValidationResponse();
+
 		try {
 			inputStream = uploadedFile.getFileData().getInputStream();
 
+			// output the content of document to a string.
+			StringWriter writer = new StringWriter();
+			IOUtils.copy(inputStream, writer, "UTF-8");
+			String orgXml = writer.toString();
+			inputStream.reset();
+
 			response = relayCCDAtoQRDAValidator(inputStream, fileName,
 					uploadedFile.getCategory());
-			response.parse();
-			// parse to json string, and set on the data model.
-			response.setOrgXml(response.getOrgXml());
 
-		} catch (IOException e) {
+			HashMap<String, String> xpathMapping = new HashMap<String, String>();
+			if (response.getSchematronErrors() != null) {
+				for (QRDAValidationEnhancedResult reslt : response
+						.getSchematronErrors()) {
+					String xpath = reslt.getXpath();
+					String keyValue = reslt.getNavKey();
+
+					if (!xpathMapping.containsKey(xpath)) {
+						xpathMapping.put(xpath, keyValue);
+					}
+				}
+			}
+
+			if (!xpathMapping.isEmpty()) {
+				orgXml = StringEscapeUtils.escapeXml(InjectTags(orgXml,
+						xpathMapping));
+			}
+
+			response.setOrgXml(orgXml);
+
+		} catch (Exception e) {
 			response.setSuccess(false);
 			response.setErrorMessage(e.getMessage() + PrintStackStrace(e));
 			response.setNote(QRDA_VALIDATOR_URL);
@@ -274,6 +446,7 @@ public class QrdaValiationController {
 			}
 		}
 
+		// de-serialize it to json.
 		Gson gson = new Gson();
 		model.addAttribute("validationResultJson", gson.toJson(response));
 
@@ -301,7 +474,7 @@ public class QrdaValiationController {
 			XPathExpression expr = xpath.compile(xpathexpr);
 
 			NodeList nl = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
-			System.out.println("Node list v1: " + nl.getLength());
+			// System.out.println("Node list v1: " + nl.getLength());
 			for (int i = 0; i < nl.getLength(); i++) {
 				Node childNode = nl.item(i);
 				setAttribute(childNode, "anchor", XpathMapping.get(xpathexpr));
@@ -343,7 +516,12 @@ public class QrdaValiationController {
 		int code = relayResponse.getStatusLine().getStatusCode();
 
 		if (code != 200) {
-			// do the error handling.
+			QRDAValidationResponse r = new QRDAValidationResponse();
+			r.setSuccess(false);
+			r.setErrorMessage(String
+					.format("Remote validation service returned http status error code:%s. <br> This is usually caused by the service outage, service crashing or the encoding of the CCDA document is other than UTF8",
+							String.valueOf(code)));
+			return r;
 		}
 
 		String body = handler.handleResponse(relayResponse);
