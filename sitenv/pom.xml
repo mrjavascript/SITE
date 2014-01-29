@@ -101,5 +101,6 @@
 		<module>sitenv-directmailbox-portlet</module>
 		<module>sitenv-commonutilities</module>
     	<module>sitenv-qrda-portlet</module>
-  </modules>
+    	<module>sitenv-responsivebootstrap-theme</module>
+	</modules>
 </project>
