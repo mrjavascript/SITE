@@ -102,5 +102,6 @@
 		<module>sitenv-commonutilities</module>
     	<module>sitenv-qrda-portlet</module>
     	<module>sitenv-responsivebootstrap-theme</module>
-	</modules>
+    <module>sitenv-responsivebootstrap-portlet-layouttpl</module>
+  </modules>
 </project>
