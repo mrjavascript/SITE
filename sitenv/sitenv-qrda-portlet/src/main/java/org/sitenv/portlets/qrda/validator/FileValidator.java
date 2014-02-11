@@ -16,12 +16,12 @@ public class FileValidator implements Validator {
 
 		UploadedFile file = (UploadedFile) uploadedFile;
 		if (file.getCategory().equals("NONE"))
-			errors.rejectValue("category", "uploadForm.selectCategory",
+			errors.rejectValue("category", "qrdaSandboxGUI.selectCategory",
 					"Please select the validation category!");
 
 		if (file.getFileData() == null
 				|| (file.getFileData() != null && file.getFileData().getSize() == 0)) {
-			errors.rejectValue("fileData", "uploadForm.selectFile",
+			errors.rejectValue("fileData", "qrdaSandboxGUI.selectFile",
 					"Please select a file!");
 		}
 

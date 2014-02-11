@@ -12,12 +12,15 @@
 	<title>SITE &#150; $the_title</title>
 	<meta name="viewport" content="width=device-width">
 	
-	$theme.include($top_head_include)
+	
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+	<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
+	<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
     <script src="$javascript_folder/vendor/bootstrap.min.js"></script>
 	<script src="$javascript_folder/removeNoJS.js"></script>
+	<script src="$javascript_folder/hoverMenu.js"></script>
 	<script src="$javascript_folder/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
-   
+   	$theme.include($top_head_include)
 </head>
 
 <body class="$css_class">
@@ -39,7 +42,8 @@ $theme.include($body_top_include)
 				<a href="$sign_in_url" id="sign-in" rel="nofollow">$sign_in_text</a>
 			</div>
 			#end
-        	<h3 class="text-muted">$site_name</h3>
+        	<h3 class="text-muted"><img src="
+$images_folder/site/SITP_Logo_Small_WhiteBG.png" alt="SITE logo"/>$site_name</h3>
 			
 			#if ($has_navigation || $is_signed_in)
 				#parse ("$full_templates_path/navigation.vm")

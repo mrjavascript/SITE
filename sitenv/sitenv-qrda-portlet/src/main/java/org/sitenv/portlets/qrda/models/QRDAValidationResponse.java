@@ -1,6 +1,5 @@
 package org.sitenv.portlets.qrda.models;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -11,23 +10,34 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 
 @XmlRootElement(name = "QRDAValidationResponse")
-public class QRDAValidationResponse implements Serializable {
+public class QRDAValidationResponse {
+
 	private int returnCode;
 	private boolean success;
 	private String validationResult;
 	private String errorMessage;
-	private String[] validationResults;
-	private ArrayList<QRDAValidationEnhancedResult> enhancedResults;
-
-	private String orgXml;
 	private String note;
+	private ArrayList<QRDAValidationEnhancedResult> schematronWarnings;
+	private ArrayList<QRDAValidationEnhancedResult> schematronErrors;
+	private ArrayList<QRDASchemaError> schemaErrors;
+	private String orgXml;
+	private String orgFileName;
+	private String selectedCategory;
 
-	public String getNote() {
-		return note;
+	public String getOrgFileName() {
+		return orgFileName;
 	}
 
-	public void setNote(String note) {
-		this.note = note;
+	public void setOrgFileName(String orgFileName) {
+		this.orgFileName = orgFileName;
+	}
+
+	public String getSelectedCategory() {
+		return selectedCategory;
+	}
+
+	public void setSelectedCategory(String selectedCategory) {
+		this.selectedCategory = selectedCategory;
 	}
 
 	public String getOrgXml() {
@@ -39,42 +49,43 @@ public class QRDAValidationResponse implements Serializable {
 	}
 
 	public QRDAValidationResponse() {
-		// validationResults = new JsonArray();
+		schematronWarnings = new ArrayList<QRDAValidationEnhancedResult>();
+		schematronErrors = new ArrayList<QRDAValidationEnhancedResult>();
+		schemaErrors = new ArrayList<QRDASchemaError>();
 	}
 
-	public String[] getValidationResults() {
-		return validationResults;
+	public ArrayList<QRDAValidationEnhancedResult> getSchematronWarnings() {
+		return schematronWarnings;
 	}
 
-	public ArrayList<QRDAValidationEnhancedResult> getEnhancedResults() {
-		return enhancedResults;
+	public void setSchematronWarnings(
+			ArrayList<QRDAValidationEnhancedResult> schematronWarnings) {
+		this.schematronWarnings = schematronWarnings;
 	}
 
-	public void parse() {
-		validationResults = this.validationResult.split("\\r?\\n");
-
-		enhancedResults = new ArrayList<QRDAValidationEnhancedResult>();
-		for (String result : validationResults) {
-			System.out.println("Raw validation result string:" + result);
-			if (result.startsWith("[schematron] [assert] ")
-					&& result.contains("] - ")) {
-				String[] parts = result.split("\\] \\-");
-				// System.out.println("first:" + parts[0] + " second:" +
-				// parts[1]);
-				QRDAValidationEnhancedResult temp = new QRDAValidationEnhancedResult();
-				temp.setMessage(parts[1]);
-				temp.setXpath(parts[0].replace("[schematron] [assert] ", ""));
-				enhancedResults.add(temp);
-			}
-		}
+	public ArrayList<QRDAValidationEnhancedResult> getSchematronErrors() {
+		return schematronErrors;
 	}
 
-	public void setValidationResult(String validationResult) {
-		this.validationResult = validationResult;
-		/*
-		 * String[] strs = validationResult.split("\\r?\\n"); for (String str :
-		 * strs) { this.validationResults.add(new JsonPrimitive(str)); }
-		 */
+	public void setSchematronErrors(
+			ArrayList<QRDAValidationEnhancedResult> schematronErrors) {
+		this.schematronErrors = schematronErrors;
+	}
+
+	public ArrayList<QRDASchemaError> getSchemaErrors() {
+		return schemaErrors;
+	}
+
+	public void setSchemaErrors(ArrayList<QRDASchemaError> schemaErrors) {
+		this.schemaErrors = schemaErrors;
+	}
+
+	public String getNote() {
+		return note;
+	}
+
+	public void setNote(String note) {
+		this.note = note;
 	}
 
 	public int getReturnCode() {
@@ -83,6 +94,10 @@ public class QRDAValidationResponse implements Serializable {
 
 	public String getValidationResult() {
 		return validationResult;
+	}
+
+	public void setValidationResult(String validationResult) {
+		this.validationResult = validationResult;
 	}
 
 	public String getErrorMessage() {
@@ -101,7 +116,7 @@ public class QRDAValidationResponse implements Serializable {
 		return success;
 	}
 
-	public void setSuccess(boolean isSuccess) {
-		this.success = isSuccess;
+	public void setSuccess(boolean success) {
+		this.success = success;
 	}
 }

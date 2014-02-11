@@ -54,6 +54,7 @@
             filename.attr('type' , 'text');
             filename.attr('id', $(self).attr('id')+'_fake');
             filename.attr('data-prompt-position', $(self).attr('data-prompt-position'));
+            filename.attr('data-errormessage-value-missing', $(self).attr('data-errormessage-value-missing'));
             filename.attr('placeholder',$(self).attr('placeholder'));
             if(settings.isdisabled)
             	filename.attr('disabled','disabled');

@@ -115,55 +115,109 @@ function qrdaValidationHandler()
     });
 }	
 
+//parse the response data model.
 function qrdaAjaxValidationResultHandler(result)
 {
-	//var result = JSON.parse(data);
-	
 	var html = [];
 	if(result.success)
 	{
-		var rowtmp ;
-		html.push('<ul style="color: red;font-weight: bold">');
+		var rowtmp;
+		var rowcache;
+		var resultMsg = '';
+		var failed = false;
 		
-		if(result.enhancedResults!==undefined && result.enhancedResults.length > 0 )
+		rowtmp = '<b>Upload Results:</b><br/>'+
+				 'The file: {filename} was uploaded successfully.' +
+				 '<br/><b>QRDA category selected: {category}</b><hr/><hr/><b>Validation Results</b><br/>'+
+				 '<font style="color:{color}"><b><i>{result}</i></b><br/>{resultmessage}</font><hr/>';
+		
+		
+		//schema error.
+		if('schemaErrors' in result && result.schemaErrors.length>0)
 		{
-			rowtmp = '<li rsltMsg="{msg}" navKey="{key}" ><u>{msg}</u></li>';
+			failed = true;
+			resultMsg += "The file has encountered schema errors.";
+		}
+		
+		if('schematronWarnings' in result && result.schematronWarnings.length>0)
+		{
+			failed = true;
+			resultMsg += "The file has encountered schema-tron warnings.";
+		}
+		
+		if('schematronErrors' in result && result.schematronErrors.length>0)
+		{
+			failed = true;
+			resultMsg += "The file has encountered schema-tron errors.";
+		}
+		
+		rowtmp = rowtmp.replace(/{filename}/g, result.orgFileName);
+		rowtmp = rowtmp.replace(/{category}/g, result.selectedCategory);
+		rowtmp = rowtmp.replace(/{color}/g, failed?'red':'green');
+		rowtmp = rowtmp.replace(/{result}/g, failed?'Validation Failed.':'Validation Succeeded.');
+		rowtmp = rowtmp.replace(/{resultmessage}/g, resultMsg);
+		html.push(rowtmp);
+		
+		//schema error.
+		if('schemaErrors' in result && result.schemaErrors.length>0)
+		{
+			html.push("<font color='red'>Schema Errors Received:<hr/>");
 			
-			$.each(result.enhancedResults, function(i ,rslt) {
+			rowtmp = 'Error {i}:<br/>{msg}<br/> ';
+			
+			$.each(result.schemaErrors, function(i ,rslt) {
+				//look up the label
+				rowcache = rowtmp;
+				rowcache = rowcache.replace(/{i}/g, i + 1 );
+				rowcache = rowcache.replace(/{msg}/g, rslt.errorMessage);
+				html.push(rowcache);
+	        });
+			
+			html.push('</font>');
+		}
+		
+		if('schematronErrors' in result && result.schematronErrors.length>0)
+		{
+			html.push("<font color='red'>Schematron Errors Received:<hr/>");
+			
+			rowtmp = "Error {i}:<br/><div class='nav' navKey='{key}'><u><b>{msg}</b></u></div>(xpath:{xpath})<br/><br/> ";
+			
+			$.each(result.schematronErrors, function(i ,rslt) {
 				//look up the label
 				var rowcache = rowtmp;
+				rowcache = rowcache.replace(/{i}/g, i + 1);
 				rowcache = rowcache.replace(/{msg}/g, rslt.message);
 				rowcache = rowcache.replace(/{key}/g, rslt.navKey);
+				rowcache = rowcache.replace(/{xpath}/g, rslt.xpath);
 				html.push(rowcache);
 	        });
-		}
-		else{
-			rowtmp = '<li><u>{data}</u></li>';
 			
-			//remove first 2 lines.
-			var strs = (result.validationResults.length > 2)?result.validationResults.slice(2,result.validationResults.length):
-																result.validationResults;
-			$.each(strs, function(i, validationResult) {
+			html.push('</font>');
+		}
+		
+		if('schematronWarnings' in result && result.schematronWarnings.length>0)
+		{
+			html.push("<font color='blue'>Schematron Warnings Received:<hr/>");
+			
+			rowtmp = "Warning {i}:<br/><div class='nav' navKey='{key}'><u><b>{msg}</b></u></div>(xpath:{xpath})<br/><br/>";
+			
+			$.each(result.schematronWarnings, function(i ,rslt) {
 				//look up the label
 				var rowcache = rowtmp;
-				rowcache = rowcache.replace(/{data}/g, validationResult);
+				rowcache = rowcache.replace(/{i}/g, i + 1);
+				rowcache = rowcache.replace(/{msg}/g, rslt.message);
+				rowcache = rowcache.replace(/{key}/g, rslt.navKey);
+				rowcache = rowcache.replace(/{xpath}/g, rslt.xpath);
 				html.push(rowcache);
 	        });
-			html.push('</ul>');
+			
+			html.push('</font>');
 		}
-		$( "#ValidationResult #tabs #tabs-1 h2" ).val("Errors in document");
-		$( "#ValidationResult #tabs #tabs-1 p" ).html(html.join(""));
-		//post the origianl xml on the second tab.
 		
-		$( "#ValidationResult #tabs #tabs-2 p" ).html('<pre class="xml">' + result.orgXml + '</pre>');
+		$("#ValidationResult #tabs #tabs-1 p" ).html(html.join(""));
 		
-		$("pre").each(function (i, e) {
-		    hljs.highlightBlock(e);
-		});
-		
-		
-		
-		$("#tabs-1 ul li").unbind().click(function(e){
+		//make the links click, if the errors have been found.
+		$("#ValidationResult #tabs-1 .nav").unbind().click(function(e){
 			e.preventDefault();
 			//switch to tab2
 			$( "#ValidationResult [href='#tabs-2']").trigger( "click" );
@@ -174,18 +228,27 @@ function qrdaAjaxValidationResultHandler(result)
 			});
 			target.parent().css("background-color", "yellow");
 			parentTag.stop().scrollTo( target.parent() , 800 , {offset: {top: -50, left:-50} });
+			
+			//set this as last clicked link
+			window.lastclickederror = $(this);
 		});
 		
 	}
 	else
 	{
-		html.push('<div style="color: red;font-weight: bold">');
+		html.push('<h2>Validation failed due to server errors:</h2><div style="color: red;font-weight: bold">');
 		html.push(result.errorMessage);
 		html.push('</div>');
-		$( "#ValidationResult #tabs #tabs-1 h2" ).val("Server errors:");
 		$( "#ValidationResult #tabs #tabs-1 p" ).html(html.join(""));
-		
 	}
+	
+	//post the or original on the second tab.
+	$("#ValidationResult #tabs #tabs-2 p" ).html('<pre class="xml">' + result.orgXml + '</pre>');
+	
+	//high light the xml.
+	$("#ValidationResult #tabs #tabs-2 p pre").each(function (i, e) {
+	    hljs.highlightBlock(e);
+	});
 	
 	//pop the dialog box
 	$( "#ValidationResult" ).dialog({
@@ -212,23 +275,41 @@ function qrdaAjaxValidationResultHandler(result)
 	      }
 	});
 	
+	//resize the navigation bar.
 	var newWidth = $('.ui-tabs-nav').parent().width();
 	$('.ui-tabs-nav').width(newWidth);
 	
+	//unblock the panel.
 	if(typeof window.validationpanel != 'undefined')
 	{
 		window.validationpanel.unblock();
 	}
 }
 
+//jquery init code.
 $(function(){
 	
-	
-	
 	//tabify the validation result dialog box
-	$( "#ValidationResult #tabs" ).tabs();
+	$( "#ValidationResult #tabs" ).tabs({
+		activate: function(event, ui) {
+			var tabidx = ui.newTab.index();
+			if(tabidx == 0)
+	        {
+	        	if(window.lastclickederror != 'undefined')
+        		{
+	        		//scroll to the target.
+	        		var parentTag = $("#ValidationResult");
+	        		parentTag.stop().scrollTo( window.lastclickederror , 500 , {offset: {top: -50, left:-50} });
+        		}
+	        }
+	    }
+	});
 	
+	
+	
+	//if javascript is enabled, then display the ajaxifide page,
 	$(".scriptenabled").removeClass('scriptenabled');
+	//and remove the noscript dom.
 	$("noscript").remove();
 	
 	$("#category").selectable({
@@ -236,7 +317,7 @@ $(function(){
 		{
 			var _selectedValue = $(ui.selected).attr('value');
 			//set the hidden value.
-			$("input[type='hidden'][name='category']").val(_selectedValue);
+			$("input[name='category']").val(_selectedValue);
 		}
 	});
 	
@@ -245,7 +326,8 @@ $(function(){
 		image: window.currentContextPath + "/images/uploadqrdabutton.png",
 		imageheight : 24,
 		imagewidth : 110,
-		width : 220
+		width : 220,
+		validationclass: "validate[required]"
 	});
 	
 	//if the formdata is supported by the borwser then fall back to the post back.
@@ -253,8 +335,19 @@ $(function(){
 		$("#qrdavalidate_btn").button({ 
 			icons: {primary: "ui-icon-check"  } 
 		}).click(function(e){
-			e.preventDefault(); 
-			qrdaValidationHandler();
+			e.preventDefault();
+			//validate the form;
+			var jform = $('#QRDAValidationForm');
+			jform.validationEngine({validateNonVisibleFields: true, updatePromptsPosition:true});
+			jform.validationEngine('hideAll');
+			if(jform.validationEngine('validate'))
+			{	
+				qrdaValidationHandler();
+			}
+			else
+			{ 
+				return false;
+			}
 		});
 	}else
 	//to support old browser and IE version below 10.
