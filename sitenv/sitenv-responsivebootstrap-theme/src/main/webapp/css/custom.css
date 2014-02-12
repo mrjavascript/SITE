@@ -1,8 +1,8 @@
-blockquote,ol,dl {
+blockquote,dl {
 	margin: 0;
 }
 
-ul {
+ul, ol {
 	margin-left: 2em;
 }
 
@@ -143,4 +143,11 @@ body {
 
 .dropdown:hover .dropdown-menu {
     display: block;
+}
+
+.modal.modal-wide .modal-dialog {
+  width: 90%;
+}
+.modal-wide .modal-body {
+  overflow-y: auto;
 }

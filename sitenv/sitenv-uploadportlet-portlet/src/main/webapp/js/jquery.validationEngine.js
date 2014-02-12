@@ -10,6 +10,7 @@
  * Form validation engine allowing custom regex rules to be added.
  * Licensed under the MIT License
  */
+
  (function($) {
 
 	"use strict";

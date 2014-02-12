@@ -6,17 +6,12 @@
 		<portlet-name>DirectTransport</portlet-name>
 		<icon>/icon.png</icon>
         <instanceable>true</instanceable>
-		 <header-portlet-css>http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css</header-portlet-css>
 		<header-portlet-css>/css/jquery.fileupload.css</header-portlet-css>
-		<header-portlet-css>http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/themes/smoothness/jquery-ui.min.css</header-portlet-css>
-		<header-portlet-css>/css/main.css</header-portlet-css>
+		
 		<header-portlet-css>/css/validationEngine.jquery.css</header-portlet-css>
-		<header-portlet-css>/css/dropdown.css</header-portlet-css>
 		<header-portlet-css>/css/skeleton.buttons.css</header-portlet-css>
 		
-		<header-portlet-javascript>http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js</header-portlet-javascript>
-		<header-portlet-javascript>http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js</header-portlet-javascript>
-		<header-portlet-javascript>http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js</header-portlet-javascript>
+		
 		
 		<header-portlet-javascript>/js/vendor/jquery.ui.widget.js</header-portlet-javascript>
 		<header-portlet-javascript>/js/jquery.filestyle.js</header-portlet-javascript>
@@ -27,7 +22,8 @@
 		<header-portlet-javascript>/js/jquery.iframe-transport.js</header-portlet-javascript>
 		<header-portlet-javascript>/js/jquery.fileupload.js</header-portlet-javascript>
 		
-		
+		<footer-portlet-css>/css/dropdown.css</footer-portlet-css>
+		<footer-portlet-css>/css/main.css</footer-portlet-css>
 		<footer-portlet-javascript>/js/main.js</footer-portlet-javascript>
 		<footer-portlet-javascript>/js/jquery.validationEngine-en.js</footer-portlet-javascript>
 		<footer-portlet-javascript>/js/jquery.validationEngine.js</footer-portlet-javascript>

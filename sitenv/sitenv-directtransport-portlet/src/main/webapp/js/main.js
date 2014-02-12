@@ -37,7 +37,7 @@ function progressorHandlingFunction(e){
 function blockAnchorUploadWidget()
 {
 	var ajaximgpath = window.currentContextPath + "/images/ajax-loader.gif";
-	window.anchorUploadWidget = $('#anchoruploadwidget');
+	window.anchorUploadWidget = $('#anchoruploadwidget .well');
 	window.anchorUploadWidget.block({ 
 		css: { 
 	            border: 'none', 
@@ -63,7 +63,7 @@ function unblockAnchorUploadWidget()
 function blockDirectReceiveWidget()
 {
 	var ajaximgpath = window.currentContextPath + "/images/ajax-loader.gif";
-	window.directReceiveWdgt = $('#directreceivewidget');
+	window.directReceiveWdgt = $('#directreceivewidget  .well');
 	window.directReceiveWdgt.block({ 
 		css: { 
 	            border: 'none', 
@@ -197,6 +197,7 @@ $(function() {
 	    
 		var jform = $('#precannedForm');
 		jform.validationEngine('hideAll');
+		jform.validationEngine({promptPosition:"centerRight", validateNonVisibleFields: true, updatePromptsPosition:true});
 		if(jform.validationEngine('validate'))
 		{
 			//block ui..
@@ -219,8 +220,12 @@ $(function() {
 		        
 		        success: function(data){
 		        	var results = JSON.parse(data);
-		        	var iconurl = results.body.IsSuccess? window.currentContextPath + "/images/icn_alert_success.png" :
+		        	
+		        	var results = data.result.body;
+		        	
+		        	var iconurl = (results.IsSuccess == "true")? window.currentContextPath + "/images/icn_alert_success.png" :
 		        									window.currentContextPath + "/images/icn_alert_error.png" ;
+		        	
 
 		        	$('#directreceivewidget .blockMsg .progressorpanel img').attr('src',iconurl);
 		        	

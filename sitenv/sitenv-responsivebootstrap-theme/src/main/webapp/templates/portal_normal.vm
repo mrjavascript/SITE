@@ -76,9 +76,13 @@ $images_folder/site/SITP_Logo_Small_WhiteBG.png" alt="SITE logo"/>$site_name</h3
 
 $theme.include($body_bottom_include)
 
+<script src="$javascript_folder/wideModal.js"></script>
 	
 </body>
 
 $theme.include($bottom_include)
+
+
+	
 
 </html>

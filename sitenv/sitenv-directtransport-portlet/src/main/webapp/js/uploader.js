@@ -11,10 +11,6 @@ $(function() {
 		contenttype : false,
 		replaceFileInput : false,
 		done : function(e, data) {
-			$.each(data.result.files, function(index, file) {
-				$('#anchoruploadfiles').empty();
-				$('#anchoruploadfiles').text(file.name);
-			});
 			
 			var results = data.result.body;
         	
@@ -22,6 +18,7 @@ $(function() {
         									window.currentContextPath + "/images/icn_alert_error.png" ;
         	
         	$('#anchoruploadwidget .blockMsg .progressorpanel img').attr('src',iconurl);
+      
         	
         	$('#anchoruploadwidget .blockMsg .progressorpanel .lbl').text(results.ErrorMessage);
         	
@@ -64,6 +61,7 @@ $(function() {
 		data.context = $('#anchoruploadsubmit').click(function(e) {
 			var jform = $('#anchoruploadform');
 			jform.validationEngine('hideAll');
+			jform.validationEngine({promptPosition:"centerRight", validateNonVisibleFields: true, updatePromptsPosition:true});
 			if(jform.validationEngine('validate'))
 			{
 				
@@ -124,10 +122,7 @@ $(function() {
         	}
         },
 		done : function(e, data) {
-			$.each(data.result.files, function(index, file) {
-				$('#ccdauploadfiles').empty();
-				$('#ccdauploadfiles').text(file.name);
-			});
+			
 			
 			var results = data.result.body;
         	
@@ -177,6 +172,7 @@ $(function() {
 		data.context = $('#ccdauploadsubmit').click(function(e) {
 			var jform = $('#ccdauploadform');
 			jform.validationEngine('hideAll');
+			jform.validationEngine({promptPosition:"centerRight", validateNonVisibleFields: true, updatePromptsPosition:true});
 			if(jform.validationEngine('validate'))
 			{
 				

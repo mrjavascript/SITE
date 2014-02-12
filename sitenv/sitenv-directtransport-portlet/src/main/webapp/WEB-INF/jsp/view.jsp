@@ -62,12 +62,10 @@
 	var sampleCCDATreeURL = '${sampleCCDATree}';
 </script>
 
-<article class="module width_full" id="anchoruploadwidget">
-	<header><h3>Trust Anchor Exchange</h3></header>
-	<div class="module_content">
-		<!-- anchor -->
-		
-		
+<div class="panel panel-default" id="anchoruploadwidget">
+      <div class="panel-heading"><h3 class="panel-title">Trust Anchor Exchange</h3></div>
+  		<div class="panel-body">
+				
 			<span>Trust Anchor Exchange can be accomplished via two different mechanisms.</span>
 			<ol>
 				<li>
@@ -108,46 +106,35 @@
 					</ul>
 				</li>
 	  		</ol>
+	  	<div class="well">
 	  	<form id="anchoruploadform" action="${uploadTrustAnchor}" method="POST" enctype="multipart/form-data">
       		
 			<!-- The fileinput-button span is used to style the file input field as button -->
 			
 			<noscript><input type="hidden" name="redirect" value="true" /></noscript>
 			<div id="anchoruploaderrorlock" style="position:relative;">
-	  		<br/>
-			<table>
-				<tr>
-					<td><span class="btn btn-success fileinput-button"> <i
+				<div class="row">
+					<div class="col-md-12">
+				<label for="anchoruploadfile">Select a Local Trust Anchor Certificate (binary or PEM encoded): </label><br/>
+				<span class="btn btn-success fileinput-button"> <i
 							class="glyphicon glyphicon-plus"></i>&nbsp;<span>Select a Certificate...</span>
 							<!-- The file input field used as target for the file upload widget -->
 							<input id="anchoruploadfile" type="file" name="anchoruploadfile" class="validate[custom[derencncodedfileextension[der|crt|cer|pem]]]"/>
 					</span>
-						</td>
-					<td>
-						<div id="anchoruploadfiles" class="files"></div>
-					</td>
-					<td>
-						<div id="anchoruploadprogress" class="progress">
-							<div class="progress-bar progress-bar-success"></div>
-						</div>
-					</td>
-					<td>
-						<div class="tooltip-wrapper">
-							<div class="bubble-left"></div>
-							<div class="bubble-inner">binary or base64-encoded certificates</div>
-							<div class="bubble-right"></div>
-						</div>
-					</td>
-				</tr>
-			</table>
+					<div id="anchoruploadfiles" class="files"></div>
 			</div>
-			<br/>
+					
+				</div>
+			</div>
+			<hr/>
 			<button id="anchoruploadsubmit" type="submit" class="btn btn-primary start" onclick="return false;">
 				<i class="glyphicon glyphicon-ok"></i> <span>Submit Anchor</span>
 			</button>
 			
 			
       	</form>
+      	
+      	</div>
 		<!-- 
 		<form id="anchoruploadform" enctype="multipart/form-data" action="<%=serviceContext %>/UploadTrustAnchorService">
 			<table border="0" cellpadding="0" cellspacing="0"  id="id-form">
@@ -180,12 +167,13 @@
 		</form>-->
 		<div class="clear"></div>
 	</div>
-</article>
+</div>
+
+<div class="panel panel-default" id="anchoruploadwidget">
+      <div class="panel-heading"><h3 class="panel-title">Direct Send</h3></div>
+  		<div class="panel-body">
 
 
-<article class="module width_full">
-	<header><h3>Direct Send</h3></header>
-	<div class="module_content">
 		<p>
 		Send messages from your implementation to the end points listed below:
 		<ul>
@@ -196,13 +184,13 @@
 		Upon successful receipt of the message, the Direct Sandbox will send an MDN(Message Disposition Notification) back to the sender. The content of the message can be anything and is not validated or used by the SITE.
 		</p>
 	</div>
-</article>
+</div>
+
+<div class="panel panel-default" id="directreceivewidget">
+      <div class="panel-heading"><h3 class="panel-title">Direct Receive</h3></div>
+  		<div class="panel-body">
 
 
-<article class="module width_full" id="directreceivewidget">
-		<header><h3>Direct Receive</h3></header>
-		
-		<div class="module_content">
 			<p>
 				Receive messages from the Sandbox to your system. 
 				
@@ -223,11 +211,14 @@
 					</li>
 				</ul>
 			</p>
+			<div class="well">
+			
+			<label for="directMessageType">Select C-CDA Content Source:</label><br/>
 			
 			<div class="btn-group" data-toggle="buttons">
-				<label class="btn btn-primary active">
+				<label class="btn btn-default active">
 				<input type="radio" id="precanned" name="directMessageType" value="precanned" checked/>Choose Precanned Content</label>
-				<label class="btn btn-primary">
+				<label class="btn btn-default">
 				<input type="radio" id="choosecontent" name="directMessageType" value="choosecontent"/>Choose Your Own Content</label>
 			</div>
 			<br/><br/>
@@ -235,19 +226,21 @@
 		<div id="precannedFormWrapper">
 			<form id="precannedForm"  action="${precannedCCDADirectReceive}" method="POST">
 				<p>
-					Enter Your Endpoint Name: <input id="precannedemail"
+				<label for="precannedemail">Enter Your Endpoint Name:</label><br/>
+					<input id="precannedemail"
 						class="validate[required,custom[email]]"
 						data-errormessage-value-missing="end point is required!"
 						data-errormessage-custom-error="end point format is invalid (hint:example@test.org)"
-						data-prompt-position="topLeft:0" name="precannedemail"
+						name="precannedemail"
 						placeholder="recipient direct email address"
 						style="display: inline;" type="text" />
 				</p>
 				<br />
 				<noscript><input type="hidden" name="redirect" value="true" /></noscript>
 				<div id="precannederrorlock" style="position: relative;">
-					<br />
-					
+					<div class="row">
+					<div class="col-md-12">
+					<label for="dLabel">Select a Precanned Sample C-CDA File:</label><br/>
 									<div class="dropdown">
 										<button id="dLabel" data-toggle="dropdown"
 											class="btn btn-success dropdown-toggle validate[funcCall[precannedRequired]]" type="button">
@@ -262,9 +255,10 @@
 									</div>
 									<span id="prescannedfilePathOutput"></span>
 							
-					
+					</div>
+					</div>
 				</div>
-				<br />
+				<hr />
 				<button id="precannedCCDAsubmit" type="submit"
 					class="btn btn-primary start" onclick="return false;">
 					<i class="glyphicon glyphicon-envelope"></i> <span>Send
@@ -277,7 +271,8 @@
 		<div id="uploadFormWrapper">
 			<form id="ccdauploadform" action="${uploadCCDADirectReceive}" method="POST" enctype="multipart/form-data">
 				<p>
-					Enter Your Endpoint Name: <input id="ccdauploademail"
+					<label for="ccdauploademail">Enter Your Endpoint Name:</label><br/>
+					 <input id="ccdauploademail"
 						class="validate[required,custom[email]]"
 						data-errormessage-value-missing="end point is required!"
 						data-errormessage-custom-error="end point format is invalid (hint:example@test.org)"
@@ -288,43 +283,31 @@
 				<br />
 				<noscript><input type="hidden" name="redirect" value="true" /></noscript>
 				<div id="ccdauploaderrorlock" style="position: relative;">
-					<br />
-					<table>
-						<tr>
-							<td><span
+					<div class="row">
+					<div class="col-md-12">
+						<label for="ccdauploadfile">Select a Local C-CDA File to Validate:</label><br/>
+							<span
 								class="btn btn-success fileinput-button"> <i
 									class="glyphicon glyphicon-plus"></i>&nbsp;<span>Upload C-CDA</span> <!-- The file input field used as target for the file upload widget -->
 									<input id="ccdauploadfile" type="file"
 									name="ccdauploadfile" class="validate[custom[maxCCDAFileSize]]"/>
-							</span></td>
-							<td>
+							</span>
+							
 								<div id="ccdauploadfiles" class="files"></div>
-							</td>
-							<td>
-								<div id="ccdauploadprogress" class="progress">
-									<div class="progress-bar progress-bar-success"></div>
-								</div>
-							</td>
-							<td>
-								<div class="tooltip-wrapper">
-									<div class="bubble-left"></div>
-									<div class="bubble-inner">CCDA, 3MB max size</div>
-									<div class="bubble-right"></div>
-								</div>
-							</td>
-						</tr>
-					</table>
+					</div>
+					</div>
 				</div>
-				<br />
+				<hr />
 				<button id="ccdauploadsubmit" type="submit"
 					class="btn btn-primary start" onclick="return false;">
 					<i class="glyphicon glyphicon-envelope"></i> <span>Send Message</span>
 				</button>
 			</form>
 		</div>
+		</div>
 		<br/>
 			
 			<div class="clear"></div>
 		</div>
-</article>
+</div>
 
