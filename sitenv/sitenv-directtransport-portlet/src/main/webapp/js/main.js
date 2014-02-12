@@ -221,9 +221,8 @@ $(function() {
 		        success: function(data){
 		        	var results = JSON.parse(data);
 		        	
-		        	var results = data.result.body;
 		        	
-		        	var iconurl = (results.IsSuccess == "true")? window.currentContextPath + "/images/icn_alert_success.png" :
+		        	var iconurl = (results.body.IsSuccess == "true")? window.currentContextPath + "/images/icn_alert_success.png" :
 		        									window.currentContextPath + "/images/icn_alert_error.png" ;
 		        	
 

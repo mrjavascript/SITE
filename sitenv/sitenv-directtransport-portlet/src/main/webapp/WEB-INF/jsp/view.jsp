@@ -253,8 +253,9 @@
 											</li>
 										</ul>
 									</div>
+									<div>
 									<span id="prescannedfilePathOutput"></span>
-							
+									</div>
 					</div>
 					</div>
 				</div>
@@ -276,7 +277,7 @@
 						class="validate[required,custom[email]]"
 						data-errormessage-value-missing="end point is required!"
 						data-errormessage-custom-error="end point format is invalid (hint:example@test.org)"
-						data-prompt-position="topLeft:0" name="ccdauploademail"
+						name="ccdauploademail"
 						placeholder="recipient direct email address"
 						style="display: inline;" type="text" />
 				</p>
