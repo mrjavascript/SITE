@@ -7,11 +7,19 @@
 		<icon>/icon.png</icon>
 		<instanceable>false</instanceable>
 		<private-session-attributes>false</private-session-attributes>
-		<header-portlet-css>/css/main.css</header-portlet-css>
+		
+		<header-portlet-css>/css/validationEngine.jquery.css</header-portlet-css>
 		<header-portlet-css>/css/skeleton.buttons.css</header-portlet-css>
-				<header-portlet-javascript>/js/jquery.min.js</header-portlet-javascript>
-		<header-portlet-javascript>/js/jquery-ui-1.10.3.custom.min.js</header-portlet-javascript>
-				<footer-portlet-javascript>/js/main.js</footer-portlet-javascript>
+		<header-portlet-css>/css/main.css</header-portlet-css>
+		
+		
+		
+		<header-portlet-javascript>/js/jquery.blockUI.js</header-portlet-javascript>
+		
+		<footer-portlet-javascript>/js/main.js</footer-portlet-javascript>
+		
+		<footer-portlet-javascript>/js/jquery.validationEngine-en.js</footer-portlet-javascript>
+		<footer-portlet-javascript>/js/jquery.validationEngine.js</footer-portlet-javascript>
 	</portlet>
 	<role-mapper>
 		<role-name>administrator</role-name>

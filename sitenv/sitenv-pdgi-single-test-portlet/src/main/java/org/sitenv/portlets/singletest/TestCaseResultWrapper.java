@@ -1,6 +1,8 @@
 package org.sitenv.portlets.singletest;
 
-public class TestCaseResultWrapper {
+import java.io.Serializable;
+
+public class TestCaseResultWrapper implements Serializable {
     private String name;
     private String status;
     private String request;

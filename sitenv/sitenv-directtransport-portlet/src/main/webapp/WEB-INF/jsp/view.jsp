@@ -286,7 +286,7 @@
 				<div id="ccdauploaderrorlock" style="position: relative;">
 					<div class="row">
 					<div class="col-md-12">
-						<label for="ccdauploadfile">Select a Local C-CDA File to Validate:</label><br/>
+						<label for="ccdauploadfile">Select a Local C-CDA File to Send:</label><br/>
 							<span
 								class="btn btn-success fileinput-button"> <i
 									class="glyphicon glyphicon-plus"></i>&nbsp;<span>Upload C-CDA</span> <!-- The file input field used as target for the file upload widget -->

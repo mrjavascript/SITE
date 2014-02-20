@@ -20,6 +20,7 @@
 <%@ page import="javax.portlet.PortletSession" %>
 <%@ page import="java.util.List" %>
 <%@ page import="org.sitenv.portlets.singletest.TestCaseResultWrapper" %>
+<%@ page import="org.sitenv.portlets.singletest.SingleTestPortlet" %>
 
 <portlet:defineObjects />
 
@@ -33,27 +34,50 @@
         	accordionAttrs = "{ active: false, collapsible: true }";
     	}
 %>
-         <script type="text/javascript">
-             $(document).ready(function () {
-	             $( "#accordion" ).accordion(<%= accordionAttrs %>);
-             });
-        </script>
+        
 
-        <div id="accordion">
+
+  
+    
 <%
+	int i = 0;
         for (TestCaseResultWrapper wrapper : testResultList) {
 %>
-            <h3><%= wrapper.getName() %> - <%= wrapper.getStatus() %></h3>
-            <div>
-                <div class="requestHeader"><strong>Request:</strong></div>
-                <div><pre><%= wrapper.getRequest() %></pre></div>
-                <div class="responseHeader"><strong>Response:</strong></div>
-                <div><pre><%= wrapper.getResponse() %></pre></div>
-            </div>
-<%
-        }
-%>
+<div class="panel-group" id="accordion<%=i%>">
+<div class="panel panel-default <%= (wrapper.getStatus().equals("PASSED")) ? "panel-success" : "panel-danger" %>">
+    <div class="panel-heading">
+    <h3 class="panel-title">
+    <% if (wrapper.getStatus().equals("PASSED")) { %>
+    	<span class="glyphicon glyphicon-ok"></span>
+    	<% } else { %>
+    	<span class="glyphicon glyphicon-remove"></span>
+    	<% } %>
+      	<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion<%=i%>" href="#collapse<%=i%>">
+       		<%= SingleTestPortlet.testCaseRealNames.get(wrapper.getName()) %> 
+       		<span class="label <%= (wrapper.getStatus().equals("PASSED")) ? "label-success" : "label-danger" %>" style="float: right; padding: .4em .6em .3em; width: 75px;"><%= wrapper.getStatus() %></span>
+		</a>
+    </h3>
+    </div>
+    <div id="collapse<%=i%>" class="panel-collapse collapse">
+      	<div class="panel-body">
+      			
+      				<strong>REQUEST</strong>
+                	<pre><%= wrapper.getRequest() %></pre>
+             
+         		
+         		<br/>
+                <strong>RESPONSE</strong>
+                	<pre><%= wrapper.getResponse() %></pre>
+                	</div>
         </div>
+    </div>
+</div>
+</div>
+<%
+		i++;
+        }
+%>    
+        
 <%
     } 
 %>
