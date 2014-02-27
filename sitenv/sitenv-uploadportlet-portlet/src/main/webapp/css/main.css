@@ -54,17 +54,7 @@ form{
     padding-top: 10px;
 }
 
-.blockMsg .progresspanel .lbl, .blockMsg .progresspanel img, .blockMsg .progresspanel .progress
-{
-	display: inline-block;
-	vertical-align: middle;
-}
 
-.blockMsg .progresspanel img
-{
-	height:32px;
-	width:32px;
-}
 
 #reportSaveAsQuestion input[type="radio"]
 {

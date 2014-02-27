@@ -105,13 +105,13 @@ $(function() {
 			
 			if(progressval < 99)
 		    {
-		    	$('.blockMsg .progresspanel .lbl').text('Uploading...');
-		   		$('.blockMsg .progresspanel .progressor').text( floorFigure(data.loaded/data.total*100,0).toString()+"%" );
+		    	$('.blockMsg .progressorpanel .lbl').text('Uploading...');
+		   		$('.blockMsg .progressorpanel .progressor').text( floorFigure(data.loaded/data.total*100,0).toString()+"%" );
 		    }
 		    else
 		    {
-		    	$('.blockMsg .progresspanel .lbl').text('Validating...');
-		    	$('.blockMsg .progresspanel .progressor').text('');
+		    	$('.blockMsg .progressorpanel .lbl').text('Validating...');
+		    	$('.blockMsg .progressorpanel .progressor').text('');
 		    }
 		}
 	}).on('fileuploadadd', function(e, data) {
@@ -173,6 +173,41 @@ $(function() {
 	
 	$('#smartCCDAValidationBtn').bind('click', function(e, data) {
 		smartCCDAValidation();
+	});
+	
+	$('#formSubmit').click(function(e) {
+		
+		var jform = $('#CCDAValidationForm');
+		jform.validationEngine({promptPosition:"centerRight", validateNonVisibleFields: true, updatePromptsPosition:true});
+		jform.validationEngine('hideAll');
+		
+		if(jform.validationEngine('validate'))
+		{
+			//switch back to tab1.
+			$( "#ValidationResult [href='#tabs-1']").trigger( "click" );
+			
+			BlockPortletUI();
+			
+			var selectedValue = $("#ccda_type_val").val();
+			
+			data.formData = { };
+			
+			if (selectedValue != undefined) {
+				data.formData.ccda_type_val = selectedValue;
+			}
+			
+			data.submit();
+			
+
+			window.lastFilesUploaded = data.files;
+		}
+		else
+		{
+			$('#CCDAValidationForm .fileuploadformError').prependTo('#ccdauploaderrorlock');
+		}
+		
+		
+		
 	});
 
 });

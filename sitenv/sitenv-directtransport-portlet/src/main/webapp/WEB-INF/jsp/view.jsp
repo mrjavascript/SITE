@@ -99,7 +99,7 @@
 						</li>
 						<li>
 							Uploading the Trust Anchor causes an update to the 
-							<a href="${getTrustBundleResource}">Trust Bundle</a> of 
+							<a href="/trustBundle/TrustBundle.p7b">Trust Bundle</a> of 
 							<a href="http://direct.sitenv.org" target="_blank">direct.sitenv.org</a> 
 							which is refreshed every five minutes and is only used for testing purposes. Once a Trust Anchor is uploaded, users can test with the Direct sandbox after five minutes. 
 						</li>
@@ -119,7 +119,7 @@
 				<span class="btn btn-success fileinput-button"> <i
 							class="glyphicon glyphicon-plus"></i>&nbsp;<span>Select a Certificate...</span>
 							<!-- The file input field used as target for the file upload widget -->
-							<input id="anchoruploadfile" type="file" name="anchoruploadfile" class="validate[custom[derencncodedfileextension[der|crt|cer|pem]]]"/>
+							<input id="anchoruploadfile" type="file" name="anchoruploadfile" class="validate[required, custom[derencncodedfileextension[der|crt|cer|pem]]], custom[maxCCDAFileSize]"/>
 					</span>
 					<div id="anchoruploadfiles" class="files"></div>
 			</div>
@@ -291,7 +291,7 @@
 								class="btn btn-success fileinput-button"> <i
 									class="glyphicon glyphicon-plus"></i>&nbsp;<span>Upload C-CDA</span> <!-- The file input field used as target for the file upload widget -->
 									<input id="ccdauploadfile" type="file"
-									name="ccdauploadfile" class="validate[custom[maxCCDAFileSize]]"/>
+									name="ccdauploadfile" class="validate[required, custom[maxCCDAFileSize]]"/>
 							</span>
 							
 								<div id="ccdauploadfiles" class="files"></div>

@@ -46,6 +46,22 @@ $(function() {
 				});
 
 			}, 1000);
+		},
+		progressall : function(e, data) {
+			var progressval = parseInt(data.loaded / data.total * 100, 10);
+			//$('#progress').fadeIn();
+			//$('#progress .progress-bar').css('width', progress + '%');
+			
+			if(progressval < 99)
+		    {
+		    	$('#anchoruploadwidget .blockMsg .progressorpanel .lbl').text('Uploading...');
+		   		$('#anchoruploadwidget .blockMsg .progressorpanel .progressor').text( floorFigure(data.loaded/data.total*100,0).toString()+"%" );
+		    }
+		    else
+		    {
+		    	$('.blockMsg .progressorpanel .lbl').text('Updating Bundle...');
+		    	$('.blockMsg .progressorpanel .progressor').text('');
+		    }
 		}
 	}).on('fileuploadadd', function(e, data) {
 		$('#anchoruploadsubmit').unbind("click");
@@ -80,13 +96,12 @@ $(function() {
 	}).prop('disabled', !$.support.fileInput).parent().addClass(
 			$.support.fileInput ? undefined : 'disabled');
 
-	$('#fileupload').bind('fileuploaddrop', function(e, data) {
+	$('#anchoruploadfile').bind('fileuploaddrop', function(e, data) {
 		e.preventDefault();
 	}).bind('fileuploaddragover', function(e) {
 		e.preventDefault();
 	});
-	
-	
+
 	
 	// Change this to the location of your server-side upload handler:
 	$('#ccdauploadprogress').hide();
@@ -157,6 +172,22 @@ $(function() {
 				});
 
 			}, 1000);
+		},
+		progressall : function(e, data) {
+			var progressval = parseInt(data.loaded / data.total * 100, 10);
+			//$('#progress').fadeIn();
+			//$('#progress .progress-bar').css('width', progress + '%');
+			
+			if(progressval < 99)
+		    {
+		    	$('#directreceivewidget .blockMsg .progressorpanel .lbl').text('Uploading...');
+		   		$('#directreceivewidget .blockMsg .progressorpanel .progressor').text( floorFigure(data.loaded/data.total*100,0).toString()+"%" );
+		    }
+		    else
+		    {
+		    	$('#directreceivewidget .blockMsg .progressorpanel .lbl').text('Sending...');
+		    	$('#directreceivewidget .blockMsg .progressorpanel .progressor').text('');
+		    }
 		}
 	}).on('fileuploadadd', function(e, data) {
 		$('#ccdauploadsubmit').unbind("click");
@@ -191,10 +222,11 @@ $(function() {
 	}).prop('disabled', !$.support.fileInput).parent().addClass(
 			$.support.fileInput ? undefined : 'disabled');
 
-	$('#fileupload').bind('fileuploaddrop', function(e, data) {
+	$('#ccdauploadfile').bind('fileuploaddrop', function(e, data) {
 		e.preventDefault();
 	}).bind('fileuploaddragover', function(e) {
 		e.preventDefault();
 	});
+	
 
 });

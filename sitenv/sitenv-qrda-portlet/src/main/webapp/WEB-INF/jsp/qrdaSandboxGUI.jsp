@@ -18,37 +18,30 @@
 	<p style="color:red">Javascript is disabled. Please enable javascript for optimal usability.</p>
 </noscript>
 
-<article id="schematronValidationPanel" class="module width_full">
-	<header>
-		<h3>Schematron Validator</h3>
-	</header>
-	<div class="module_content">
+<div class="panel panel-default" id="qrdaWidget">
+      <div class="panel-heading"><h3 class="panel-title">Schematron Validator</h3></div>
+  		<div class="panel-body">
 		<p>
 			1.Select QRDA Category I or III for validating your input file
 			<br>
-			2.Select QRDA document
+			2.Select a QRDA document
 			<br>
 			3.Click on Validate Document button			
 			<br>
 		</p>
-		
+		<div class="well">
 			<!-- modelAttribute="uploadedFile" -->
 			<form:form id="QRDAValidationForm" method="post" class="scriptenabled" enctype="multipart/form-data" 
-				action="${ajaxuploadactionurl}" post="${uploadactionieurl}">
-				<input type="text" style="visibility: hidden;height:0.1px"
-						value=""
-						name="category" 
-						class="validate[required]" 
-						data-errormessage-value-missing="Please select an category !"
-						data-prompt-position="topLeft:0">
-						
-			   <ol id="category" style="clear:both">
-				  <li value="categoryI" class="ui-widget-content">Category I</li>
-				  <li value="categoryIII" class="ui-widget-content">Category III</li>
-				</ol>
+				action="${ajaxuploadactionurl}">
 				
+				<label for="category">Select a QRDA Category:</label><br/>
+				<select id="category" name="category">
+					<option value="categoryI">Category I</option>
+					<option value="categoryIII">Category III</option>      				
+				</select>
+
 				<hr/>
-				<div>
+				<!-- div>
 				<input placeholder="upload your QRDA document" 
 						id="qrdauploadfile" 
 						type="file" 
@@ -56,74 +49,69 @@
 						data-errormessage-value-missing="QRDA document is required!"
 						data-prompt-position="topLeft:0"
 						 />
+				</div -->
+				
+				<noscript><input type="hidden" name="redirect" value="true" /></noscript>
+				<label for="qrdauploadfile">Select a QRDA File: </label><br/>
+				<div id="qrdauploaderrorlock" style="position:relative;">
+					<div class="row">
+						<div class="col-md-12">
+					
+					<span class="btn btn-success fileinput-button"> <i
+								class="glyphicon glyphicon-plus"></i>&nbsp;<span>Select a QRDA...</span>
+								<!-- The file input field used as target for the file upload widget -->
+								<input id="qrdauploadfile" type="file" name="qrdauploadfile" class="validate[required]" />
+						</span>
+						<div id="qrdauploadfiles" class="files"></div>
 				</div>
-				<button id="qrdavalidate_btn" type="submit" >Validate Document</button>
+				</div>
+				</div>
+				<button id="qrdavalidate_btn" type="submit"
+					class="btn btn-primary start" onclick="return false;">
+					<i class="glyphicon glyphicon-ok"></i> <span>Validate Document</span>
+				</button>
 			</form:form>
+			</div>
 			
-			<!-- render UI to render if the java script disabled. -->
-			<noscript>
-				<form:form id="QRDAValidationForm" method="post" enctype="multipart/form-data" modelAttribute="uploadedFile"
-				    action="${uploadactionurl}">
-					<table>
-				   	<tr>  
-				     <td>Choose validation Category</td>  
-				     <td>
-				     	<select id="categorylist" name="category" style="width:100%">
-				     		<option value="categoryI">Category I</option>
-				     		<option value="categoryIII">Category III</option>
-				     	</select>
-				     </td>
-				     <td style="color: red; font-style: italic;"><form:errors  
-				       path="category" />  
-				     </td>  
-				    </tr> 
-				    <tr>  
-				     <td>Upload File: </td>  
-				     <td>
-				     	<input type="file" name="fileData"/>
-				     </td>  
-				     <td style="color: red; font-style: italic;"><form:errors  
-				       path="fileData" />
-				     </td>  
-				    </tr>  
-				    <tr>  
-				     <td colspan=2>
-				     	<input id="qrdavalidate_btn" type="submit" value="Validate Document" />  
-				     </td>  
-				     <td> </td>  
-				    </tr>  
-				   </table>
-				</form:form>
-			</noscript>	
 		</div>
-</article>
+</div>
 
 <div id="postbackValidationResult" style="display:none" >
 	<c:out escapeXml="false" value="${validationResultJson}"/>
 </div>
 
 
-<!-- Result panels for the ajax result. -->   
-<div id="ValidationResult" style="display:none" class="jscriptenabled">
-	<div id="tabs">
-	  <ul>
-	    <li><a href="#tabs-1">Validation Result</a></li>
-	    <li><a href="#tabs-2">Original QRDA</a></li>
-	    <!-- <li><a href="#tabs-3">Smart CCDA Result</a></li> -->
-	  </ul>
-	  
-		<div id="tabs-1">
-		  <p>
-		  	place holder.
-		  </p>
-		</div>
-		<div id="tabs-2">
-		  <h2>Original Document</h2>
-		  <p>Under construction.</p>
-		</div>
-	  
-	</div>
-</div>   
+      	<div class="modal modal-wide fade" id="resultModal" tabindex="-1" role="dialog" aria-labelledby="resultModalLabel" aria-hidden="true">
+	      	<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<ul class="nav nav-tabs" id="resultModalTabs">
+					  <li><a href="#tabs-1" data-toggle="tab">Validation Result</a></li>
+					  <li><a href="#tabs-2" data-toggle="tab">Original QRDA</a></li>
+					</ul>
+				</div>
+				<div class="modal-body">  
+					<div id="ValidationResult">
+						<div class="tab-content" id="resultTabContent">
+							<div class="tab-pane" id="tabs-1">
+								<h1 align="center">QRDA Document Validation Results</h1>
+								<p></p>
+							</div>
+							<div class="tab-pane" id="tabs-2">
+								<h1 align="center">Original QRDA Document</h1>
+								<p></p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+			        <button type="button" class="btn btn-default" data-dismiss="modal">Close Results</button>
+				</div>
+			</div>
+			</div>
+			</div>
 
 <!-- Result panel for the regular postback. -->   
  <noscript>  

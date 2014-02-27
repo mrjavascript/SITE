@@ -50,7 +50,7 @@ function blockAnchorUploadWidget()
 		},
 		message: '<div class="progressorpanel">' +
 				 '<img src="'+ ajaximgpath + '" alt="loading">'+
-				 '<div class="lbl">Uploading the certificate...</div></div>',
+				 '<div class="lbl">Uploading...</div></div>',
 	});
 }
 
@@ -76,7 +76,7 @@ function blockDirectReceiveWidget()
 		},
 		message: '<div class="progressorpanel">' +
 				 '<img src="'+ ajaximgpath + '" alt="loading">'+
-				 '<div class="lbl">Contacting SMTP Server...</div></div>',
+				 '<div class="lbl">Sending...</div></div>',
 	});
 }
 

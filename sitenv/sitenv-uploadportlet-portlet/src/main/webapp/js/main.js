@@ -38,7 +38,7 @@ function BlockPortletUI()
 	            color: '#fff',
 	            width: '90%' 
 		},
-		message: '<div class="progresspanel"><img src="'+ ajaximgpath + '" alt="loading">'+
+		message: '<div class="progressorpanel"><img src="'+ ajaximgpath + '" alt="loading">'+
 				 '<div class="lbl">Uploading...</div>' +
 				 '<div class="progressor">0%</div></div>',
 	});
@@ -61,9 +61,9 @@ function BlockResultUI()
 	            color: '#fff',
 	            width: '90%'
 		},
-		message: '<div class="progresspanel"><img src="'+ ajaximgpath + '" alt="loading">'+
+		message: '<div class="progressorpanel"><img src="'+ ajaximgpath + '" alt="loading">'+
 				 '<div class="lbl">Uploading...</div>' +
-				 '<div class="progress">0%</div></div>',
+				 '<div class="progressor">0%</div></div>',
 	});
 }
 
@@ -81,13 +81,13 @@ function progressHandlingFunction(e){
     	var progressval = floorFigure(e.loaded/e.total*100,0);
     	if(progressval < 99)
     	{
-    		$('.blockMsg .progresspanel .lbl').text('Uploading...');
-    		$('.blockMsg .progresspanel .progressor').text( floorFigure(e.loaded/e.total*100,0).toString()+"%" );
+    		$('.blockMsg .progressorpanel .lbl').text('Uploading...');
+    		$('.blockMsg .progressorpanel .progressor').text( floorFigure(e.loaded/e.total*100,0).toString()+"%" );
     	}
     	else
     	{
-    		$('.blockMsg .progresspanel .lbl').text('Validating...');
-    		$('.blockMsg .progresspanel .progressor').text('');
+    		$('.blockMsg .progressorpanel .lbl').text('Validating...');
+    		$('.blockMsg .progressorpanel .progressor').text('');
     	}
     }
 }
@@ -112,7 +112,7 @@ function smartCCDAValidation()
 	        opacity: .5, 
 	        color: '#fff' 
     	},
-    	message: '<div class="progresspanel"><img src="'+ ajaximgpath + '" alt="loading">'+
+    	message: '<div class="progressorpanel"><img src="'+ ajaximgpath + '" alt="loading">'+
 		          '<div class="lbl">Validating...</div></div>'
 		
 	});
@@ -214,8 +214,10 @@ $(function(){
 	        opacity: .5, 
 	        color: '#fff' 
     	},
-    	message: '<div class="progresspanel"><img src="'+ ajaximgpath + '" alt="loading">'+
+    	message: '<div class="progressorpanel"><img src="'+ ajaximgpath + '" alt="loading">'+
 		          '<div class="lbl">Preparing your report...</div></div>' });
+		
+		
 		//set the value of the result and post back to server.
 		
 		var $tab = $('#resultTabContent'), $active = $tab.find('.tab-pane.active');

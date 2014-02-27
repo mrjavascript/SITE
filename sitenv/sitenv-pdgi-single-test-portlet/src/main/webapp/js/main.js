@@ -1,5 +1,6 @@
-$(document).ready(function () {
-	  $("#querySubmit").click(function () {
+$(function() {
+	  $("#querySubmit").click(function (e) {
+		  e.preventDefault();
 		  
 		  var jform = $('#providerDirectoryTestForm');
 			jform.validationEngine('hideAll');
