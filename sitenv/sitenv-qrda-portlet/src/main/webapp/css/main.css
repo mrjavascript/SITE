@@ -25,13 +25,6 @@
 	line-height: 1.4;
 }
 
-#qrdavalidate_btn {
-	clear:both; 
-	display:block; 
-	position:relative ; 
-	width: 222px;
-	margin-top: 45px;	
-}
 
 
 #QRDAValidationForm input[type=text] {

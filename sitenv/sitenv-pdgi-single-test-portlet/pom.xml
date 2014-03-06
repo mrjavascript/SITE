@@ -14,10 +14,93 @@
 	<version>1.0-SNAPSHOT</version>
 	<build>
 		<plugins>
+		<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>properties</id>
+						<phase>test</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<tasks>
+								<delete
+									file="${project.build.outputDirectory}/environment.properties" />
+								<copy
+									file="src/main/resources/environment.${environment.name}.properties"
+									tofile="${project.build.outputDirectory}/environment.properties" />
+								<delete
+									file="${project.build.outputDirectory}/environment.development.properties" />
+								<delete
+									file="${project.build.outputDirectory}/environment.test.properties" />
+								<delete
+									file="${project.build.outputDirectory}/environment.production.properties" />
+							</tasks>
+						</configuration>
+					</execution>
+					<execution>
+						<id>scp-to-env</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<tasks>
+								<taskdef resource="net/sf/antcontrib/antlib.xml"
+									classpathref="maven.plugin.classpath" />
+								<if>
+									<equals arg1="${environment.name}" arg2="test" />
+									<then>
+										<echo message="Uploading file to location: ${deploy.location}"/>
+										<exec executable="scp">
+										 	<arg value="${liferay.auto.deploy.dir}/${artifactId}-${version}.war"/>
+										 	<arg value="${deploy.location}" />
+										</exec>
+										<echo message="...Uploaded."/>
+										<echo message="Deploying to tomcat7..."/>
+										<exec executable="ssh">
+											<arg value="site-dev-liferay" />
+											<arg value="echo ${deploy.password} | sudo -S mv ~/${artifactId}-${version}.war /opt/tomcat7/deploy"/>
+										</exec>
+										<echo message="...Deployed."/>
+									</then>
+								</if>
+							</tasks>
+						</configuration>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>ant-contrib</groupId>
+						<artifactId>ant-contrib</artifactId>
+						<version>1.0b3</version>
+						<exclusions>
+							<exclusion>
+								<groupId>ant</groupId>
+								<artifactId>ant</artifactId>
+							</exclusion>
+						</exclusions>
+					</dependency>
+					<dependency>
+						<groupId>org.apache.ant</groupId>
+						<artifactId>ant-nodeps</artifactId>
+						<version>1.8.1</version>
+					</dependency>
+				</dependencies>
+			</plugin>
 			<plugin>
 				<groupId>com.liferay.maven.plugins</groupId>
 				<artifactId>liferay-maven-plugin</artifactId>
 				<version>${liferay.version}</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>deploy</goal>
+						</goals>
+					</execution>
+				</executions>
 				<configuration>
 					<autoDeployDir>${liferay.auto.deploy.dir}</autoDeployDir>
 					<appServerDeployDir>${liferay.app.server.deploy.dir}</appServerDeployDir>

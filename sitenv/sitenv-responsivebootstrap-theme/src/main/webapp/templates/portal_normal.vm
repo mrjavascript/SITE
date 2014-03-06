@@ -20,6 +20,7 @@
 	<script src="$javascript_folder/removeNoJS.js"></script>
 	<script src="$javascript_folder/hoverMenu.js"></script>
 	<script src="$javascript_folder/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+	<script src="$javascript_folder/vendor/bowser.js"></script>
    	$theme.include($top_head_include)
 </head>
 
@@ -66,7 +67,8 @@ $images_folder/site/SITP_Logo_Small_WhiteBG.png" alt="SITE logo"/>$site_name</h3
 		</div>
 	
 		<div class="footer">
-	       <p>&copy; SITE 2014</p>
+	       <div style="float:left;"><p>&copy; SITE 2014</p></div>
+	       <div style="float:right;"><p>For any inquiries or questions, please send an email to <a href="mailto:admin@sitenv.org">admin@sitenv.org</a></p></div>
 	    </div>
 	
 	</div>

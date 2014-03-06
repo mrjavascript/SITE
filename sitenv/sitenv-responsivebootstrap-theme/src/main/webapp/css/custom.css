@@ -151,3 +151,53 @@ body {
 .modal-wide .modal-body {
   overflow-y: auto;
 }
+
+
+@media (min-width: 1200px) {
+
+.main-link {
+	display:none;	
+}
+
+.second-link {
+	display:block;
+}
+	
+/* top row */
+.col .thumbnail {
+    margin-bottom: -99999px;
+    padding-bottom: 99999px;
+}
+	
+/* top row */
+.col .caption {
+    margin-bottom: -99999px;
+    padding-bottom: 99999px;
+}
+
+/* bottom row */
+.col-base{ 
+    margin-top: -12px; /* cut off top portion of bottom wells */
+}
+}
+
+@media (max-width: 1199px) {
+.row.base{
+    display:none;
+}
+
+
+.main-link {
+	display:block;	
+}
+
+.second-link {
+	display:none;
+}
+
+}
+
+
+.col-wrap{
+    overflow: hidden; 
+}

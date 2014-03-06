@@ -61,11 +61,12 @@
       </select>
 </p>
 <p> 
-	<br/>     
+	<hr/>     
       <button id="querySubmit" type="submit" class="btn btn-primary start" onclick="return false;">
       	<span class="glyphicon glyphicon-ok"></span>
           <span>Run Test Case</span>
       </button>
+
 </p>
   </form> 
 

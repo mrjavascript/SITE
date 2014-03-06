@@ -165,6 +165,8 @@ function smartCCDAValidation()
 	        		
 	        		$("#resultModalTabs a[href='#tabs-3']").show();
 	        		
+	        		$(".modal-body").scrollTop(0);
+	        		
 	        		$("#resultModalTabs a[href='#tabs-3']").tab("show");
 	        		
 	        		$("#ValidationResult .tab-content #tabs-3" ).html(tablehtml.join(""));

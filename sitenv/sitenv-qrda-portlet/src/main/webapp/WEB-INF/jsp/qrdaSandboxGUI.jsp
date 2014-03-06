@@ -66,6 +66,7 @@
 				</div>
 				</div>
 				</div>
+				<hr/>
 				<button id="qrdavalidate_btn" type="submit"
 					class="btn btn-primary start" onclick="return false;">
 					<i class="glyphicon glyphicon-ok"></i> <span>Validate Document</span>

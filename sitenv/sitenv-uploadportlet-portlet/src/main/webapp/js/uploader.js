@@ -175,39 +175,6 @@ $(function() {
 		smartCCDAValidation();
 	});
 	
-	$('#formSubmit').click(function(e) {
-		
-		var jform = $('#CCDAValidationForm');
-		jform.validationEngine({promptPosition:"centerRight", validateNonVisibleFields: true, updatePromptsPosition:true});
-		jform.validationEngine('hideAll');
-		
-		if(jform.validationEngine('validate'))
-		{
-			//switch back to tab1.
-			$( "#ValidationResult [href='#tabs-1']").trigger( "click" );
-			
-			BlockPortletUI();
-			
-			var selectedValue = $("#ccda_type_val").val();
-			
-			data.formData = { };
-			
-			if (selectedValue != undefined) {
-				data.formData.ccda_type_val = selectedValue;
-			}
-			
-			data.submit();
-			
-
-			window.lastFilesUploaded = data.files;
-		}
-		else
-		{
-			$('#CCDAValidationForm .fileuploadformError').prependTo('#ccdauploaderrorlock');
-		}
-		
-		
-		
-	});
+	
 
 });

@@ -35,8 +35,8 @@ public class SingleTestPortlet extends MVCPortlet {
     private static final String MSPD_SOAPUI_PROJECT_FILE = "soapui-project_hpdplus.xml";
     private static final String IHE_SOAPUI_PROJECT_FILE = "soapui-project.xml";
 
-    //private static WsdlProject IHE_WSDL_PROJECT;
-    //private static WsdlProject MSPD_WSDL_PROJECT;
+    private static WsdlProject IHE_WSDL_PROJECT;
+    private static WsdlProject MSPD_WSDL_PROJECT;
 
 	//private static Logger logger = Logger.getLogger(SingleTestPortlet.class);
 	private final Log logger = LogFactoryUtil.getLog(SingleTestPortlet.class); 
@@ -117,17 +117,18 @@ public class SingleTestPortlet extends MVCPortlet {
     @Override
     public void init() {
     	try {
-    		super.init();  // call this first, any failure here will stop the SoapUI from being initialized
     		
-    	    //SoapUI.initDefaultCore();
+    		
+    	    SoapUI.initDefaultCore();
     	    
     	    SoapUI.getThreadPool().setCorePoolSize(0); // allocate a core pool size of 0
             SoapUI.getThreadPool().setMaximumPoolSize(25);  // as threads are needed we can allocate up to 25 threads
             SoapUI.getThreadPool().setKeepAliveTime(0, TimeUnit.SECONDS);  // any threads over the core pool size will be deallocated immediately upon completion.
             
-    	    //IHE_WSDL_PROJECT = getWsdlProject(getFileUrl(IHE_SOAPUI_PROJECT_FILE));
-    	    //MSPD_WSDL_PROJECT = getWsdlProject(getFileUrl(MSPD_SOAPUI_PROJECT_FILE));
-			
+    	    IHE_WSDL_PROJECT = getWsdlProject(getFileUrl(IHE_SOAPUI_PROJECT_FILE));
+    	    MSPD_WSDL_PROJECT = getWsdlProject(getFileUrl(MSPD_SOAPUI_PROJECT_FILE));
+    	    
+    	    super.init();  // call this first, any failure here will stop the SoapUI from being initialized
 		} catch (PortletException e) {
 			e.printStackTrace();
 		}
@@ -135,8 +136,8 @@ public class SingleTestPortlet extends MVCPortlet {
     
     @Override
     public void destroy() {
-    	//IHE_WSDL_PROJECT.release();
-    	//MSPD_WSDL_PROJECT.release();
+    	IHE_WSDL_PROJECT.release();
+    	MSPD_WSDL_PROJECT.release();
     	
     	SoapUI.getThreadPool().shutdownNow();
         try {
@@ -159,9 +160,9 @@ public class SingleTestPortlet extends MVCPortlet {
 		
 		// we are only dealing with ModSpec for this version...
 		//if (wsdl.equals("modSpec")) {
-			project = getWsdlProject(getFileUrl(MSPD_SOAPUI_PROJECT_FILE));;			
+			project = MSPD_WSDL_PROJECT;			
 		//} else if (wsdl.equals("ihehpd")) {
-		//    project = getWsdlProject(getFileUrl(IHE_SOAPUI_PROJECT_FILE));;			
+		//    project = IHE_WSDL_PROJECT;			
 		//} else {
 		//	project = null;
 		//}
