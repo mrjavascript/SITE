@@ -1,21 +1,4 @@
 
-#ccda_type_radioboxgroup input[type="radio"] {
-    display:none;
-}
-
-#ccda_type_radioboxgroup label {
-    display: block;
-    background: white;
-    margin: 3px 3px 3px -2px; 
-    padding: 0.4em; 
-    font-size: 1.4em;
-    font-weight: normal;
-}
-
-#ccda_type_radioboxgroup input[type="radio"]:checked + label {
-    background: #3875E6; 
-    color: white;
-}
 
 #ccdafileChooser {float:left}
 #ccdavalidate_btn {
@@ -71,17 +54,7 @@ form{
     padding-top: 10px;
 }
 
-.blockMsg .progresspanel .lbl, .blockMsg .progresspanel img, .blockMsg .progresspanel .progress
-{
-	display: inline-block;
-	vertical-align: middle;
-}
 
-.blockMsg .progresspanel img
-{
-	height:32px;
-	width:32px;
-}
 
 #reportSaveAsQuestion input[type="radio"]
 {
@@ -187,26 +160,7 @@ form{
 #ValidationResult .ui-state-disabled {
     display: none;
 }
-#CCDAValidationForm{
-	margin-top:-20px;
-}
 
-#CCDAValidationForm div label{
-	white-space: nowrap;
-	overflow: hidden;	
-	cursor: hand; 
-	cursor: pointer;
-	box-shadow: 2px 2px 2px #888888;
-	-moz-border-radius: 5px;
-	border-radius: 5px;
-}
-#CCDAValidationForm h3{
-	font-size: 18px;
-	font-weight: bold;
-	color: rgb(73, 125, 227);
-	font-family: Arial, Verdana, sans-serif;
-	line-height: 1.4;
-}
 
 code {
 	color: inherit;
@@ -251,4 +205,29 @@ h6
 	width:8px;
 	height:29px;
 	background: url(../images/bubble_right.gif) right no-repeat;
+}
+
+.modal .nav-tabs {
+	border-bottom: none;
+}
+
+.modal-wide .modal-header {
+	padding-bottom: 0px;
+	
+}
+
+.panel select {
+	border: 1px solid #BBBBBB;
+	color: #666666;
+	-webkit-box-shadow: inset 0 2px 2px #ccc, 0 1px 0 #fff;
+	-moz-box-shadow: inset 0 2px 2px #ccc, 0 1px 0 #fff;
+	box-shadow: inset 0 2px 2px #ccc, 0 1px 0 #fff;
+	padding-left: 10px;
+	background-position: 10px 6px;
+	margin: 0;
+	display: block;
+	width: 100%;
+	margin: 0 10px;
+	background-image: none!important;
+	margin: 0px 1px 0px 0px!important;
 }

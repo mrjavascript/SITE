@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Properties;
@@ -34,6 +35,8 @@ import org.apache.http.entity.mime.content.InputStreamBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.sitenv.portlets.qrda.models.QRDAAjaxResponse;
+import org.sitenv.portlets.qrda.models.QRDAFileResponse;
 import org.sitenv.portlets.qrda.models.QRDASchemaError;
 import org.sitenv.portlets.qrda.models.QRDAValidationEnhancedResult;
 import org.sitenv.portlets.qrda.models.QRDAValidationResponse;
@@ -106,6 +109,8 @@ public class QrdaValiationController {
 		// Calculating the matrix.
 		OutputStream outStream = null;
 		QRDAValidationResponse r = new QRDAValidationResponse();
+		QRDAAjaxResponse ajax = new QRDAAjaxResponse();
+		ajax.setFiles(new ArrayList<QRDAFileResponse>());
 
 		try {
 
@@ -122,8 +127,16 @@ public class QrdaValiationController {
 							+ QRDA_VALIDATOR_URL);
 			System.out.println("category1:" + selectedCategory);
 
-			String fileName = uploadRequest.getFileName("fileData");
-			InputStream inputStream = uploadRequest.getFileAsStream("fileData");
+			String fileName = uploadRequest.getFileName("qrdauploadfile");
+			InputStream inputStream = uploadRequest.getFileAsStream("qrdauploadfile");
+			
+			QRDAFileResponse file = new QRDAFileResponse();
+			file.setName(fileName);
+			if (uploadRequest.getSize("qrdauploadfile") != null)
+			{
+				file.setSize(uploadRequest.getSize("qrdauploadfile").toString());
+			}
+			ajax.getFiles().add(file);
 
 			// output the content of document to a string.
 			StringWriter writer = new StringWriter();
@@ -197,9 +210,12 @@ public class QrdaValiationController {
 			e.printStackTrace();
 		}
 		Gson gson = new Gson();
+		
+		ajax.setBody(r);
+		
 		outStream = response.getPortletOutputStream();
-		// write the JSON serialized result back to client.
-		outStream.write(gson.toJson(r).getBytes());
+		// write the JSON serialized result back to client.		
+		outStream.write(gson.toJson(ajax).getBytes());
 
 	}
 

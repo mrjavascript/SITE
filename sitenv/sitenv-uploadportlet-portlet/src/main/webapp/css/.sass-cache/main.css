@@ -1,21 +1,4 @@
-#ccda_type_radioboxgroup .ui-selecting {
-  background: #38A9E6; }
 
-#ccda_type_radioboxgroup .ui-selected {
-  background: #3875E6;
-  color: white; }
-
-#ccda_type_radioboxgroup {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  width: 100%; }
-
-#ccda_type_radioboxgroup li {
-  margin: 3px 3px 3px -2px;
-  padding: 0.4em;
-  font-size: 1.4em;
-  height: 18px; }
 
 #ccdafileChooser {
   float: left; }

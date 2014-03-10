@@ -99,9 +99,9 @@
 			css: {
 				padding:	0,
 				margin:		0,
-				width:		'30%',
+				width:		'90%',
 				top:		'40%',
-				left:		'35%',
+				left:		'5%',
 				textAlign:	'center',
 				color:		'#000',
 				border:		'3px solid #aaa',
@@ -111,9 +111,9 @@
 
 			// minimal style set used when themes are used
 			themedCSS: {
-				width:	'30%',
+				width:	'90%',
 				top:	'40%',
-				left:	'35%'
+				left:	'5%'
 			},
 
 			// styles for the overlay
@@ -153,7 +153,7 @@
 			forceIframe: false,
 
 			// z-index for the blocking overlay
-			baseZ: 1000,
+			baseZ: 9999,
 
 			// set these to true to have the message automatically centered
 			centerX: true, // <-- only effects element blocking (page block controlled via css above)

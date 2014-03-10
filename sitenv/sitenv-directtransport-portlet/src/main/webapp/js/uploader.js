@@ -11,10 +11,6 @@ $(function() {
 		contenttype : false,
 		replaceFileInput : false,
 		done : function(e, data) {
-			$.each(data.result.files, function(index, file) {
-				$('#anchoruploadfiles').empty();
-				$('#anchoruploadfiles').text(file.name);
-			});
 			
 			var results = data.result.body;
         	
@@ -22,6 +18,7 @@ $(function() {
         									window.currentContextPath + "/images/icn_alert_error.png" ;
         	
         	$('#anchoruploadwidget .blockMsg .progressorpanel img').attr('src',iconurl);
+      
         	
         	$('#anchoruploadwidget .blockMsg .progressorpanel .lbl').text(results.ErrorMessage);
         	
@@ -49,6 +46,22 @@ $(function() {
 				});
 
 			}, 1000);
+		},
+		progressall : function(e, data) {
+			var progressval = parseInt(data.loaded / data.total * 100, 10);
+			//$('#progress').fadeIn();
+			//$('#progress .progress-bar').css('width', progress + '%');
+			
+			if(progressval < 99)
+		    {
+		    	$('#anchoruploadwidget .blockMsg .progressorpanel .lbl').text('Uploading...');
+		   		$('#anchoruploadwidget .blockMsg .progressorpanel .progressor').text( floorFigure(data.loaded/data.total*100,0).toString()+"%" );
+		    }
+		    else
+		    {
+		    	$('.blockMsg .progressorpanel .lbl').text('Updating Bundle...');
+		    	$('.blockMsg .progressorpanel .progressor').text('');
+		    }
 		}
 	}).on('fileuploadadd', function(e, data) {
 		$('#anchoruploadsubmit').unbind("click");
@@ -64,6 +77,7 @@ $(function() {
 		data.context = $('#anchoruploadsubmit').click(function(e) {
 			var jform = $('#anchoruploadform');
 			jform.validationEngine('hideAll');
+			jform.validationEngine({promptPosition:"centerRight", validateNonVisibleFields: true, updatePromptsPosition:true});
 			if(jform.validationEngine('validate'))
 			{
 				
@@ -82,13 +96,12 @@ $(function() {
 	}).prop('disabled', !$.support.fileInput).parent().addClass(
 			$.support.fileInput ? undefined : 'disabled');
 
-	$('#fileupload').bind('fileuploaddrop', function(e, data) {
+	$('#anchoruploadfile').bind('fileuploaddrop', function(e, data) {
 		e.preventDefault();
 	}).bind('fileuploaddragover', function(e) {
 		e.preventDefault();
 	});
-	
-	
+
 	
 	// Change this to the location of your server-side upload handler:
 	$('#ccdauploadprogress').hide();
@@ -124,10 +137,7 @@ $(function() {
         	}
         },
 		done : function(e, data) {
-			$.each(data.result.files, function(index, file) {
-				$('#ccdauploadfiles').empty();
-				$('#ccdauploadfiles').text(file.name);
-			});
+			
 			
 			var results = data.result.body;
         	
@@ -162,6 +172,22 @@ $(function() {
 				});
 
 			}, 1000);
+		},
+		progressall : function(e, data) {
+			var progressval = parseInt(data.loaded / data.total * 100, 10);
+			//$('#progress').fadeIn();
+			//$('#progress .progress-bar').css('width', progress + '%');
+			
+			if(progressval < 99)
+		    {
+		    	$('#directreceivewidget .blockMsg .progressorpanel .lbl').text('Uploading...');
+		   		$('#directreceivewidget .blockMsg .progressorpanel .progressor').text( floorFigure(data.loaded/data.total*100,0).toString()+"%" );
+		    }
+		    else
+		    {
+		    	$('#directreceivewidget .blockMsg .progressorpanel .lbl').text('Sending...');
+		    	$('#directreceivewidget .blockMsg .progressorpanel .progressor').text('');
+		    }
 		}
 	}).on('fileuploadadd', function(e, data) {
 		$('#ccdauploadsubmit').unbind("click");
@@ -177,6 +203,7 @@ $(function() {
 		data.context = $('#ccdauploadsubmit').click(function(e) {
 			var jform = $('#ccdauploadform');
 			jform.validationEngine('hideAll');
+			jform.validationEngine({promptPosition:"centerRight", validateNonVisibleFields: true, updatePromptsPosition:true});
 			if(jform.validationEngine('validate'))
 			{
 				
@@ -195,10 +222,11 @@ $(function() {
 	}).prop('disabled', !$.support.fileInput).parent().addClass(
 			$.support.fileInput ? undefined : 'disabled');
 
-	$('#fileupload').bind('fileuploaddrop', function(e, data) {
+	$('#ccdauploadfile').bind('fileuploaddrop', function(e, data) {
 		e.preventDefault();
 	}).bind('fileuploaddragover', function(e) {
 		e.preventDefault();
 	});
+	
 
 });

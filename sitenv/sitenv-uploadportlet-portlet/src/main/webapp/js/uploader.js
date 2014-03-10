@@ -42,8 +42,8 @@ $(function() {
 			
 			
 			
-			$( "#ValidationResult #tabs #tabs-1" ).html(data.result.body);
-			
+			$( "#ValidationResult .tab-content #tabs-1" ).html(data.result.body);
+			/*
 			$( "#ValidationResult" ).dialog({
 			      //hide the header bar.
 				  open: function() { $(this).closest(".ui-dialog").find(".ui-dialog-titlebar:first").hide(); },
@@ -72,17 +72,20 @@ $(function() {
 			          $( this ).dialog( "close" );
 			       }
 			      }
-			});
+			});*/
+			
+			$("#resultModal").modal("show");
 			
 			
-			$( "#ValidationResult #tabs" ).tabs();
+			
 			//disable smart ccda result tab.
-		    $("#ValidationResult #tabs").tabs("disable", "tabs-3");
-		    $("#ValidationResult #tabs").tabs("disable", "tabs-2");
+			$("#resultModalTabs a[href='#tabs-1']").tab("show");
+		    $("#resultModalTabs a[href='#tabs-2']").hide();
+		    $("#resultModalTabs a[href='#tabs-3']").hide();
 			
 		    //clean up the links
 		    /*$("#ValidationResult #tabs #tabs-1 b:first, #ValidationResult #tabs #tabs-1 a:first").remove();*/
-		    $("#ValidationResult #tabs #tabs-1 hr:lt(4)").remove();
+		    $("#ValidationResult .tab-content #tabs-1 hr:lt(4)").remove();
 		    
 			if(typeof window.validationpanel != 'undefined')
 				window.validationpanel.unblock();
@@ -102,13 +105,13 @@ $(function() {
 			
 			if(progressval < 99)
 		    {
-		    	$('.blockMsg .progresspanel .lbl').text('Uploading...');
-		   		$('.blockMsg .progresspanel .progressor').text( floorFigure(e.loaded/e.total*100,0).toString()+"%" );
+		    	$('.blockMsg .progressorpanel .lbl').text('Uploading...');
+		   		$('.blockMsg .progressorpanel .progressor').text( floorFigure(data.loaded/data.total*100,0).toString()+"%" );
 		    }
 		    else
 		    {
-		    	$('.blockMsg .progresspanel .lbl').text('Validating...');
-		    	$('.blockMsg .progresspanel .progressor').text('');
+		    	$('.blockMsg .progressorpanel .lbl').text('Validating...');
+		    	$('.blockMsg .progressorpanel .progressor').text('');
 		    }
 		}
 	}).on('fileuploadadd', function(e, data) {
@@ -125,7 +128,7 @@ $(function() {
 		data.context = $('#formSubmit').click(function(e) {
 			
 			var jform = $('#CCDAValidationForm');
-			jform.validationEngine({validateNonVisibleFields: true, updatePromptsPosition:true});
+			jform.validationEngine({promptPosition:"centerRight", validateNonVisibleFields: true, updatePromptsPosition:true});
 			jform.validationEngine('hideAll');
 			
 			if(jform.validationEngine('validate'))
@@ -135,7 +138,7 @@ $(function() {
 				
 				BlockPortletUI();
 				
-				var selectedValue = $("input:radio[name='ccda_type_val']:checked").val();
+				var selectedValue = $("#ccda_type_val").val();
 				
 				data.formData = { };
 				
@@ -167,5 +170,11 @@ $(function() {
 	}).bind('fileuploaddragover', function(e) {
 		e.preventDefault();
 	});
+	
+	$('#smartCCDAValidationBtn').bind('click', function(e, data) {
+		smartCCDAValidation();
+	});
+	
+	
 
 });

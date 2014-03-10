@@ -66,6 +66,25 @@
 										</exec>
 										<echo message="...Deployed."/>
 									</then>
+									<elseif>
+									<equals arg1="${environment.name}" arg2="production"/>
+										<then>
+											<echo message="Uploading file to location: ${deploy.location}" />
+											<exec executable="scp">
+												<arg
+													value="${liferay.auto.deploy.dir}/DirectTransport-portlet.war" />
+												<arg value="${deploy.location}" />
+											</exec>
+											<echo message="...Uploaded." />
+											<echo message="Deploying to tomcat7..." />
+											<exec executable="ssh">
+												<arg value="site-prod-liferay" />
+												<arg
+													value="echo ${deploy.password} | sudo -S mv ~/DirectTransport-portlet.war /opt/tomcat7/deploy" />
+											</exec>
+											<echo message="...Deployed." />
+										</then>
+									</elseif>
 								</if>
 							</tasks>
 						</configuration>

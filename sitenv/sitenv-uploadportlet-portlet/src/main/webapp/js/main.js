@@ -23,7 +23,7 @@ function fileSelected()
 
 function BlockPortletUI()
 {
-	window.validationpanel = $('#CCDAValidationForm').closest('div[class="portlet-content"]');
+	window.validationpanel = $('#CCDAValidationForm').closest('div[class="well"]');
 	
 	var ajaximgpath = window.currentContextPath + "/css/ajax-loader.gif";
 	
@@ -35,9 +35,10 @@ function BlockPortletUI()
 	            '-webkit-border-radius': '10px', 
 	            '-moz-border-radius': '10px', 
 	            opacity: .5, 
-	            color: '#fff' 
+	            color: '#fff',
+	            width: '90%' 
 		},
-		message: '<div class="progresspanel"><img src="'+ ajaximgpath + '" alt="loading">'+
+		message: '<div class="progressorpanel"><img src="'+ ajaximgpath + '" alt="loading">'+
 				 '<div class="lbl">Uploading...</div>' +
 				 '<div class="progressor">0%</div></div>',
 	});
@@ -57,61 +58,16 @@ function BlockResultUI()
 	            '-webkit-border-radius': '10px', 
 	            '-moz-border-radius': '10px', 
 	            opacity: .5, 
-	            color: '#fff' 
+	            color: '#fff',
+	            width: '90%'
 		},
-		message: '<div class="progresspanel"><img src="'+ ajaximgpath + '" alt="loading">'+
+		message: '<div class="progressorpanel"><img src="'+ ajaximgpath + '" alt="loading">'+
 				 '<div class="lbl">Uploading...</div>' +
-				 '<div class="progress">0%</div></div>',
+				 '<div class="progressor">0%</div></div>',
 	});
 }
 
-function completeHandler(data){
-	
-	$( "#ValidationResult #tabs #tabs-1" ).html(data);
-	
-	$( "#ValidationResult" ).dialog({
-	      //hide the header bar.
-		  open: function() { $(this).closest(".ui-dialog").find(".ui-dialog-titlebar:first").hide(); },
-		  resizable: false,
-		  draggable: false,
-		  height: $(window).height() * 0.9,
-		  width: $(window).width() * 0.9,
-		  modal: true,
-	      autoOpen: true,
-	      show: {
-	        effect: "blind",
-	        duration: 1000
-	      },
-	      hide: {
-	        effect: "blind",
-	        duration: 1000
-	      },
-	      buttons: {
-	    	"Smart CCDA Validation": function(){
-	    		smartCCDAValidation();
-	    	},
-	        "Save Results": function() {
-	        	$.blockUI({ message: $('#reportSaveAsQuestion'), css: { width: '275px' } }); 
-	       },
-	        "Close Results": function() {
-	          $( this ).dialog( "close" );
-	       }
-	      }
-	});
-	
-	
-	$( "#ValidationResult #tabs" ).tabs();
-	//disable smart ccda result tab.
-    $("#ValidationResult #tabs").tabs("disable", "tabs-3");
-    $("#ValidationResult #tabs").tabs("disable", "tabs-2");
-	
-    //clean up the links
-    /*$("#ValidationResult #tabs #tabs-1 b:first, #ValidationResult #tabs #tabs-1 a:first").remove();*/
-    $("#ValidationResult #tabs #tabs-1 hr:lt(4)").remove();
-    
-	if(typeof window.validationpanel != 'undefined')
-		window.validationpanel.unblock();
-} 
+
 
 function errorHandler (request, status, error) {
     alert("error:"+ error);
@@ -125,13 +81,13 @@ function progressHandlingFunction(e){
     	var progressval = floorFigure(e.loaded/e.total*100,0);
     	if(progressval < 99)
     	{
-    		$('.blockMsg .progresspanel .lbl').text('Uploading...');
-    		$('.blockMsg .progresspanel .progressor').text( floorFigure(e.loaded/e.total*100,0).toString()+"%" );
+    		$('.blockMsg .progressorpanel .lbl').text('Uploading...');
+    		$('.blockMsg .progressorpanel .progressor').text( floorFigure(e.loaded/e.total*100,0).toString()+"%" );
     	}
     	else
     	{
-    		$('.blockMsg .progresspanel .lbl').text('Validating...');
-    		$('.blockMsg .progresspanel .progressor').text('');
+    		$('.blockMsg .progressorpanel .lbl').text('Validating...');
+    		$('.blockMsg .progressorpanel .progressor').text('');
     	}
     }
 }
@@ -156,7 +112,7 @@ function smartCCDAValidation()
 	        opacity: .5, 
 	        color: '#fff' 
     	},
-    	message: '<div class="progresspanel"><img src="'+ ajaximgpath + '" alt="loading">'+
+    	message: '<div class="progressorpanel"><img src="'+ ajaximgpath + '" alt="loading">'+
 		          '<div class="lbl">Validating...</div></div>'
 		
 	});
@@ -207,11 +163,13 @@ function smartCCDAValidation()
 	        		
 	        		tablehtml.push('</tbody></table>');
 	        		
-	        		$("#ValidationResult #tabs").tabs("enable", "tabs-3");
+	        		$("#resultModalTabs a[href='#tabs-3']").show();
 	        		
-	        		$( "#ValidationResult [href='#tabs-3']").trigger( "click" );
+	        		$(".modal-body").scrollTop(0);
 	        		
-	        		$("#ValidationResult #tabs #tabs-3" ).html(tablehtml.join(""));
+	        		$("#resultModalTabs a[href='#tabs-3']").tab("show");
+	        		
+	        		$("#ValidationResult .tab-content #tabs-3" ).html(tablehtml.join(""));
         		
         		}
         		catch(exp)
@@ -237,30 +195,36 @@ function smartCCDAValidation()
 }
 
 $(function(){
-	$("#ccdavalidate_btn").button({ 
-		icons: {primary: "ui-icon-check"  } 
-	});
 	
 	
 	
 	$('#reportSaveAsQuestion button').button();
 	
-	/*
-	$("#ccda_type_radioboxgroup").selectable({
-		selected : function(event,ui)
-		{
-			var _selectedValue = $(ui.selected).attr('value');
-			//set the hidden value.
-			$("input[type='hidden'][name='ccda_type_val']").val(_selectedValue);
-		}
-	});
-	*/
 	
-	$('#reportSaveAsQuestion #yes').on('click', function(e){
+	
+	$('#saveResultsBtn').on('click', function(e){
 		e.preventDefault();
-		$.blockUI({ message: "<h1>Preparing your report...</h1>" });
+		
+		var ajaximgpath = window.currentContextPath + "/css/ajax-loader.gif";
+		
+		$.blockUI({ css: { 
+	        border: 'none', 
+	        padding: '15px', 
+	        backgroundColor: '#000', 
+	        '-webkit-border-radius': '10px', 
+	        '-moz-border-radius': '10px', 
+	        opacity: .5, 
+	        color: '#fff' 
+    	},
+    	message: '<div class="progressorpanel"><img src="'+ ajaximgpath + '" alt="loading">'+
+		          '<div class="lbl">Preparing your report...</div></div>' });
+		
+		
 		//set the value of the result and post back to server.
-		$('#downloadtest textarea').val($('#ValidationResult').html());
+		
+		var $tab = $('#resultTabContent'), $active = $tab.find('.tab-pane.active');
+		
+		$('#downloadtest textarea').val($active.html());
 		//submit the form.
 		
 		$.fileDownload($('#downloadtest').attr('action'), {
@@ -276,11 +240,6 @@ $(function(){
 	        data: $('#downloadtest').serialize()
 	    });
 		
-	});
-	
-	$('#reportSaveAsQuestion #no').on('click', function(e){
-		e.preventDefault();
-		$.unblockUI();
 	});
 	
 	//ccdavalidator_callAjax();

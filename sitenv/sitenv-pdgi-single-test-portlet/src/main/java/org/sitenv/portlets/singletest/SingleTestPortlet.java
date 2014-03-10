@@ -12,7 +12,6 @@ import javax.portlet.PortletSession;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 
-import org.apache.log4j.Logger;
 import org.apache.xmlbeans.XmlException;
 
 import com.eviware.soapui.SoapUI;
@@ -36,13 +35,14 @@ public class SingleTestPortlet extends MVCPortlet {
     private static final String MSPD_SOAPUI_PROJECT_FILE = "soapui-project_hpdplus.xml";
     private static final String IHE_SOAPUI_PROJECT_FILE = "soapui-project.xml";
 
-    private WsdlProject IHE_WSDL_PROJECT;
-    private WsdlProject MSPD_WSDL_PROJECT;
+    private static WsdlProject IHE_WSDL_PROJECT;
+    private static WsdlProject MSPD_WSDL_PROJECT;
 
 	//private static Logger logger = Logger.getLogger(SingleTestPortlet.class);
 	private final Log logger = LogFactoryUtil.getLog(SingleTestPortlet.class); 
 	
-    private static List<String> testCaseNames;
+    public static List<String> testCaseNames;
+    public static Map<String, String> testCaseRealNames;
     static {
     	testCaseNames = new ArrayList<String> ();
     	testCaseNames.add("search_provider_by_name");
@@ -58,6 +58,23 @@ public class SingleTestPortlet extends MVCPortlet {
     	testCaseNames.add("Find_Individuals_for_Unique_Organization");
     	testCaseNames.add("Find_Individuals_and_Organizations");
     	testCaseNames.add("dup_req_id_federation_loop_test");
+    	
+    	testCaseRealNames = new HashMap<String, String>();
+    	testCaseRealNames.put("search_provider_by_name", "Search Provider by Name");
+    	testCaseRealNames.put("search_org_by_id", "Search Organization by Id");
+    	testCaseRealNames.put("search_membership_by_provider", "Search Membership by Id");
+    	testCaseRealNames.put("search_service_by_id", "Search Service by Id");
+    	testCaseRealNames.put("search_credential_by_id", "Search Credential by Id");
+    	testCaseRealNames.put("Find_Individual", "Find Individual");
+    	testCaseRealNames.put("Find_Unique_Individual", "Find Unique Individual");
+    	testCaseRealNames.put("Find_Organization", "Find Organization");
+    	testCaseRealNames.put("Find_Unique_Organization", "Find Unique Organization");
+    	testCaseRealNames.put("Find_Organizations_for_Unique_Individual", "Find Organizations for Unique Individual");
+    	testCaseRealNames.put("Find_Individuals_for_Unique_Organization", "Find Individuals for Unique Organization");
+    	testCaseRealNames.put("Find_Individuals_and_Organizations", "Find Individuals and Organizations");
+    	testCaseRealNames.put("dup_req_id_federation_loop_test", "Federation Loop Test");
+    	testCaseRealNames.put("dup_req_id_federation_loop_test_hpdplus", "Federation Loop Test");
+    	
     }
 
     private WsdlProject getWsdlProject(final String projectFile) {
@@ -100,15 +117,18 @@ public class SingleTestPortlet extends MVCPortlet {
     @Override
     public void init() {
     	try {
+    		
+    		
     	    SoapUI.initDefaultCore();
     	    
     	    SoapUI.getThreadPool().setCorePoolSize(0); // allocate a core pool size of 0
             SoapUI.getThreadPool().setMaximumPoolSize(25);  // as threads are needed we can allocate up to 25 threads
             SoapUI.getThreadPool().setKeepAliveTime(0, TimeUnit.SECONDS);  // any threads over the core pool size will be deallocated immediately upon completion.
-
+            
     	    IHE_WSDL_PROJECT = getWsdlProject(getFileUrl(IHE_SOAPUI_PROJECT_FILE));
     	    MSPD_WSDL_PROJECT = getWsdlProject(getFileUrl(MSPD_SOAPUI_PROJECT_FILE));
-			super.init();
+    	    
+    	    super.init();  // call this first, any failure here will stop the SoapUI from being initialized
 		} catch (PortletException e) {
 			e.printStackTrace();
 		}
@@ -119,13 +139,13 @@ public class SingleTestPortlet extends MVCPortlet {
     	IHE_WSDL_PROJECT.release();
     	MSPD_WSDL_PROJECT.release();
     	
-    	SoapUI.getThreadPool().shutdown();
+    	SoapUI.getThreadPool().shutdownNow();
         try {
             SoapUI.getThreadPool().awaitTermination(120, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        SoapUI.shutdown();
+    	SoapUI.shutdown();
     	super.destroy();
     }
     
@@ -134,14 +154,18 @@ public class SingleTestPortlet extends MVCPortlet {
 
 		WsdlProject project = null;
    	
-		String wsdl = request.getParameter("wsdl").trim();
-		if (wsdl.equals("modSpec")) {
+		
+		
+		String wsdl = "modSpec";
+		
+		// we are only dealing with ModSpec for this version...
+		//if (wsdl.equals("modSpec")) {
 			project = MSPD_WSDL_PROJECT;			
-		} else if (wsdl.equals("ihehpd")) {
-		    project = IHE_WSDL_PROJECT;			
-		} else {
-			project = null;
-		}
+		//} else if (wsdl.equals("ihehpd")) {
+		//    project = IHE_WSDL_PROJECT;			
+		//} else {
+		//	project = null;
+		//}
 		
 		String testCaseName = request.getParameter("testCase").trim();
 
@@ -206,8 +230,10 @@ public class SingleTestPortlet extends MVCPortlet {
     				if (testCaseName.equals("dup_req_id_federation_loop_test") && wsdl.equals("modSpec")) {
     					testCaseName = "dup_req_id_federation_loop_test_hpdplus";
     				}
+    				
 
     				TestCase tc = testCases.get(testCaseName);
+    				
     				if (tc == null) {
     					logger.info("Unable to locate the specified test case");
     	            	TestCaseResultWrapper wrapper = new TestCaseResultWrapper();

@@ -26,7 +26,7 @@ function errorHandler (request, status, error) {
 function BlockPortletUI(formID)
 {
 	//find the module content.
-	window.validationpanel = $('#' + formID);
+	window.validationpanel = $(formID);
 	
 	//get the loading image.
 	var ajaximgpath = window.currentContextPath + "/images/ajax-loader.gif";
@@ -43,9 +43,9 @@ function BlockPortletUI(formID)
 	            opacity: .5, 
 	            color: '#fff' 
 		},
-		message: '<div class="progresspanel"><img src="'+ ajaximgpath + '" alt="loading">'+
+		message: '<div class="progressorpanel"><img src="'+ ajaximgpath + '" alt="loading">'+
 				 '<div class="lbl">Uploading...</div>' +
-				 '<div class="progress">0%</div></div>',
+				 '<div class="progressor">0%</div></div>',
 	});
 }
 
@@ -59,22 +59,6 @@ function floorFigure(figure, decimals){
     return (parseInt(figure*d)/d).toFixed(decimals);
 };
 
-function progressHandlingFunction(e){
-    if(e.lengthComputable){
-    	var progressval = floorFigure(e.loaded/e.total*100,0);
-    	if(progressval < 99)
-    	{
-    		$('.blockMsg .progresspanel .lbl').text('Uploading...');
-    		$('.blockMsg .progresspanel .progress').text( floorFigure(e.loaded/e.total*100,0).toString()+"%" );
-    	}
-    	else
-    	{
-    		$('.blockMsg .progresspanel .lbl').text('Validating...');
-    		$('.blockMsg .progresspanel .progress').text('');
-    	}
-    }
-}
-
 
 
 
@@ -82,7 +66,7 @@ function qrdaValidationHandler()
 {
 	var ajaximgpath = window.currentContextPath + "/images/ajax-loader.gif";
 	
-	BlockPortletUI('schematronValidationPanel');
+	BlockPortletUI('#qrdaWidget .well');
 	
 	var formData = $('#QRDAValidationForm').serializefiles();
 	//formData.attr('modelAttribute','uploadedFile');
@@ -214,24 +198,8 @@ function qrdaAjaxValidationResultHandler(result)
 			html.push('</font>');
 		}
 		
-		$("#ValidationResult #tabs #tabs-1 p" ).html(html.join(""));
+		$("#ValidationResult #tabs-1 p" ).html(html.join(""));
 		
-		//make the links click, if the errors have been found.
-		$("#ValidationResult #tabs-1 .nav").unbind().click(function(e){
-			e.preventDefault();
-			//switch to tab2
-			$( "#ValidationResult [href='#tabs-2']").trigger( "click" );
-			var parentTag = $("#ValidationResult");
-			var anchorID = $(this).attr('navKey');
-			var target = parentTag.find("#tabs-2 span[class='tag'] span[class='value']:contains('" + anchorID +"')").filter(function(){
-				return $(this).text() == "\"" + anchorID + "\"";
-			});
-			target.parent().css("background-color", "yellow");
-			parentTag.stop().scrollTo( target.parent() , 800 , {offset: {top: -50, left:-50} });
-			
-			//set this as last clicked link
-			window.lastclickederror = $(this);
-		});
 		
 	}
 	else
@@ -239,41 +207,21 @@ function qrdaAjaxValidationResultHandler(result)
 		html.push('<h2>Validation failed due to server errors:</h2><div style="color: red;font-weight: bold">');
 		html.push(result.errorMessage);
 		html.push('</div>');
-		$( "#ValidationResult #tabs #tabs-1 p" ).html(html.join(""));
+		$( "#ValidationResult #tabs-1 p" ).html(html.join(""));
 	}
 	
 	//post the or original on the second tab.
-	$("#ValidationResult #tabs #tabs-2 p" ).html('<pre class="xml">' + result.orgXml + '</pre>');
+	$("#ValidationResult #tabs-2 p" ).html('<pre class="xml">' + result.orgXml + '</pre>');
 	
 	//high light the xml.
-	$("#ValidationResult #tabs #tabs-2 p pre").each(function (i, e) {
+	$("#ValidationResult #tabs-2 p pre").each(function (i, e) {
 	    hljs.highlightBlock(e);
 	});
 	
+	$("#resultModalTabs a[href='#tabs-1']").tab("show");
+	
 	//pop the dialog box
-	$( "#ValidationResult" ).dialog({
-	      //hide the header bar.
-		  open: function() { $(this).closest(".ui-dialog").find(".ui-dialog-titlebar:first").hide(); },
-		  resizable: false,
-		  draggable: false,
-		  height: $(window).height() * 0.9,
-		  width: $(window).width() * 0.9,
-		  modal: true,
-	      autoOpen: true,
-	      show: {
-	        effect: "blind",
-	        duration: 1000
-	      },
-	      hide: {
-	        effect: "blind",
-	        duration: 1000
-	      },
-	      buttons: {
-	    	"Close Result": function() {
-	          $( this ).dialog( "close" );
-	       }
-	      }
-	});
+	$( "#resultModal" ).modal("show");
 	
 	//resize the navigation bar.
 	var newWidth = $('.ui-tabs-nav').parent().width();
@@ -288,22 +236,6 @@ function qrdaAjaxValidationResultHandler(result)
 
 //jquery init code.
 $(function(){
-	
-	//tabify the validation result dialog box
-	$( "#ValidationResult #tabs" ).tabs({
-		activate: function(event, ui) {
-			var tabidx = ui.newTab.index();
-			if(tabidx == 0)
-	        {
-	        	if(window.lastclickederror != 'undefined')
-        		{
-	        		//scroll to the target.
-	        		var parentTag = $("#ValidationResult");
-	        		parentTag.stop().scrollTo( window.lastclickederror , 500 , {offset: {top: -50, left:-50} });
-        		}
-	        }
-	    }
-	});
 	
 	
 	
@@ -321,17 +253,10 @@ $(function(){
 		}
 	});
 	
-	//make the upload box pretty
-	$("#qrdauploadfile").filestyle({ 			    
-		image: window.currentContextPath + "/images/uploadqrdabutton.png",
-		imageheight : 24,
-		imagewidth : 110,
-		width : 220,
-		validationclass: "validate[required]"
-	});
 	
 	//if the formdata is supported by the borwser then fall back to the post back.
 	if( window.FormData !== undefined ){
+/*		
 		$("#qrdavalidate_btn").button({ 
 			icons: {primary: "ui-icon-check"  } 
 		}).click(function(e){
@@ -349,6 +274,7 @@ $(function(){
 				return false;
 			}
 		});
+*/
 	}else
 	//to support old browser and IE version below 10.
 	{

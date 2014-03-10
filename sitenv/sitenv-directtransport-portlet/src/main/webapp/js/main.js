@@ -37,7 +37,7 @@ function progressorHandlingFunction(e){
 function blockAnchorUploadWidget()
 {
 	var ajaximgpath = window.currentContextPath + "/images/ajax-loader.gif";
-	window.anchorUploadWidget = $('#anchoruploadwidget');
+	window.anchorUploadWidget = $('#anchoruploadwidget .well');
 	window.anchorUploadWidget.block({ 
 		css: { 
 	            border: 'none', 
@@ -50,7 +50,7 @@ function blockAnchorUploadWidget()
 		},
 		message: '<div class="progressorpanel">' +
 				 '<img src="'+ ajaximgpath + '" alt="loading">'+
-				 '<div class="lbl">Uploading the certificate...</div></div>',
+				 '<div class="lbl">Uploading...</div></div>',
 	});
 }
 
@@ -63,7 +63,7 @@ function unblockAnchorUploadWidget()
 function blockDirectReceiveWidget()
 {
 	var ajaximgpath = window.currentContextPath + "/images/ajax-loader.gif";
-	window.directReceiveWdgt = $('#directreceivewidget');
+	window.directReceiveWdgt = $('#directreceivewidget  .well');
 	window.directReceiveWdgt.block({ 
 		css: { 
 	            border: 'none', 
@@ -76,7 +76,7 @@ function blockDirectReceiveWidget()
 		},
 		message: '<div class="progressorpanel">' +
 				 '<img src="'+ ajaximgpath + '" alt="loading">'+
-				 '<div class="lbl">Contacting SMTP Server...</div></div>',
+				 '<div class="lbl">Sending...</div></div>',
 	});
 }
 
@@ -197,6 +197,7 @@ $(function() {
 	    
 		var jform = $('#precannedForm');
 		jform.validationEngine('hideAll');
+		jform.validationEngine({promptPosition:"centerRight", validateNonVisibleFields: true, updatePromptsPosition:true});
 		if(jform.validationEngine('validate'))
 		{
 			//block ui..
@@ -219,8 +220,11 @@ $(function() {
 		        
 		        success: function(data){
 		        	var results = JSON.parse(data);
-		        	var iconurl = results.body.IsSuccess? window.currentContextPath + "/images/icn_alert_success.png" :
+		        	
+		        	
+		        	var iconurl = (results.body.IsSuccess == "true")? window.currentContextPath + "/images/icn_alert_success.png" :
 		        									window.currentContextPath + "/images/icn_alert_error.png" ;
+		        	
 
 		        	$('#directreceivewidget .blockMsg .progressorpanel img').attr('src',iconurl);
 		        	
