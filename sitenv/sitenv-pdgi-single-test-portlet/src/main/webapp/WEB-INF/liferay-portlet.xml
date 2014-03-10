@@ -9,7 +9,7 @@
 		<private-session-attributes>false</private-session-attributes>
 		
 		<header-portlet-css>/css/validationEngine.jquery.css</header-portlet-css>
-		<header-portlet-css>/css/skeleton.buttons.css</header-portlet-css>
+		
 		<header-portlet-css>/css/main.css</header-portlet-css>
 		<header-portlet-css>/css/vs.css</header-portlet-css>
 		
