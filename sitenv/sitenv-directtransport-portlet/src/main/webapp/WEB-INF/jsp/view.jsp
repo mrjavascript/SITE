@@ -116,10 +116,10 @@
 				<div class="row">
 					<div class="col-md-12">
 				<label for="anchoruploadfile">Select a Local Trust Anchor Certificate (binary or PEM encoded): </label><br/>
-				<span class="btn btn-success fileinput-button"> <i
+				<span class="btn btn-success fileinput-button" id="anchoruploadfile-btn"> <i
 							class="glyphicon glyphicon-plus"></i>&nbsp;<span>Select a Certificate...</span>
 							<!-- The file input field used as target for the file upload widget -->
-							<input id="anchoruploadfile" type="file" name="anchoruploadfile" class="validate[required, custom[derencncodedfileextension[der|crt|cer|pem]]], custom[maxCCDAFileSize]"/>
+							<input id="anchoruploadfile" type="file" name="anchoruploadfile" class="validate[required, custom[derencncodedfileextension[der|crt|cer|pem|DER|CRT|CER|PEM]], custom[maxCCDAFileSize]]"/>
 					</span>
 					<div id="anchoruploadfiles" class="files"></div>
 			</div>
@@ -240,7 +240,7 @@
 				<div id="precannederrorlock" style="position: relative;">
 					<div class="row">
 					<div class="col-md-12">
-					<label for="dLabel">Select a Precanned Sample C-CDA File:</label><br/>
+					<label for="dLabel">Select a Precanned Sample C-CDA File to Send:</label><br/>
 									<div class="dropdown">
 										<button id="dLabel" data-toggle="dropdown"
 											class="btn btn-success dropdown-toggle validate[funcCall[precannedRequired]]" type="button">
@@ -254,7 +254,7 @@
 										</ul>
 									</div>
 									<div>
-									<span id="prescannedfilePathOutput"></span>
+									<span id="precannedfilePathOutput"></span>
 									</div>
 					</div>
 					</div>
@@ -288,7 +288,7 @@
 					<div class="col-md-12">
 						<label for="ccdauploadfile">Select a Local C-CDA File to Send:</label><br/>
 							<span
-								class="btn btn-success fileinput-button"> <i
+								class="btn btn-success fileinput-button" id="ccdauploadfile-btn"> <i
 									class="glyphicon glyphicon-plus"></i>&nbsp;<span>Upload C-CDA</span> <!-- The file input field used as target for the file upload widget -->
 									<input id="ccdauploadfile" type="file"
 									name="ccdauploadfile" class="validate[required, custom[maxCCDAFileSize]]"/>

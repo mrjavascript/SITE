@@ -176,5 +176,17 @@ $(function() {
 	});
 	
 	
+	$('#fileupload-btn').bind('click', function(e, data)
+	{
+		var dropdownvalue = $('#ccda_type_val').val();
+		$('#CCDAValidationForm').trigger('reset');
+		$('#formSubmit').unbind("click");
+		
+		$('#files').empty();
+		
+		$('#ccda_type_val').val(dropdownvalue);
+		
+	});
+	
 
 });

@@ -197,11 +197,11 @@
 	                        return true;
 	                    }       
 	            	},
-	            	"alertText" : "expected extension: .der, .pem, .cer, or .crt - the file needs to be binary or base64 encoded."
+	            	"alertText" : "* The selected certificate file must be a binary or Base64 encoded file file (.cer, .crt, .der, or .pem)."
 	            },
 	            "maxCCDAFileSize":{
 	            	"func": function(field, rules, i, options) {
-	            		var uploadedFile = $('#ccdauploadfile')[0].files[0];
+	            		var uploadedFile = $('#anchoruploadfile')[0].files[0];
 	            		
 	            		if (uploadedFile && uploadedFile.size > (3*1024*1024)) {
 	            			return false;
@@ -210,7 +210,7 @@
 	                        return true;
 	                    }     
 	            	},
-	            	"alertText" : "The uploaded file exceeds the maximum file size of 3 MB."
+	            	"alertText" : "* The uploaded file exceeds the maximum file size of 3 MB."
 	            }
 	        };
             

@@ -57,10 +57,10 @@
 					<div class="row">
 						<div class="col-md-12">
 					
-					<span class="btn btn-success fileinput-button"> <i
+					<span class="btn btn-success fileinput-button" id="qrdauploadfile-btn"> <i
 								class="glyphicon glyphicon-plus"></i>&nbsp;<span>Select a QRDA...</span>
 								<!-- The file input field used as target for the file upload widget -->
-								<input id="qrdauploadfile" type="file" name="qrdauploadfile" class="validate[required]" />
+								<input id="qrdauploadfile" type="file" name="qrdauploadfile" class="validate[required, custom[xmlfileextension[xml|XML]], custom[maxCCDAFileSize]]" />
 						</span>
 						<div id="qrdauploadfiles" class="files"></div>
 				</div>
