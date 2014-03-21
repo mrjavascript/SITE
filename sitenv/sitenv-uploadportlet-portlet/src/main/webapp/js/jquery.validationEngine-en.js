@@ -183,6 +183,22 @@
                     "alertText3": "mm/dd/yyyy hh:mm:ss AM|PM or ", 
                     "alertText4": "yyyy-mm-dd hh:mm:ss AM|PM"
 	            },
+	            "xmlfileextension":{
+	            	"func": function(field, rules, i, options) {
+	            		var uploadedFile = $('#fileupload');
+	            		
+	            		if (uploadedFile && $(uploadedFile).val()) {
+	                        var extensions = rules[i + 2];               
+	                        var mimeFilter = new RegExp(extensions, 'i');
+	                        
+	                        return mimeFilter.test($(uploadedFile).val().split('.').reverse()[0]);
+	                    }
+	                    else {
+	                        return true;
+	                    }       
+	            	},
+	            	"alertText" : "* The selected C-CDA file must be an xml file (.xml)."
+	            },
 	            "maxCCDAFileSize":{
 	            	"func": function(field, rules, i, options) {
 	            		var uploadedFile = $('#fileupload')[0].files[0];
@@ -194,7 +210,7 @@
 	                        return true;
 	                    }     
 	            	},
-	            	"alertText" : "The uploaded file exceeds the maximum file size of 3 MB."
+	            	"alertText" : "* The uploaded file exceeds the maximum file size of 3 MB."
 	            }
 	        };
             

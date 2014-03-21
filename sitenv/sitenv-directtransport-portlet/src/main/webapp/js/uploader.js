@@ -228,5 +228,29 @@ $(function() {
 		e.preventDefault();
 	});
 	
+	
+	$('#anchoruploadfile-btn').bind('click', function(e, data)
+			{
+				$('#anchoruploadform').trigger('reset');
+				$('#anchoruploadsubmit').unbind("click");
+				
+				$('#anchoruploadfiles').empty();
+				
+				var jform = $('#anchoruploadform');
+				jform.validationEngine('hideAll');
+				
+			});
+	
+	$('#ccdauploadfile-btn').bind('click', function(e, data)
+			{
+				var textValue = $('#ccdauploademail').val();
+				$('#ccdauploadform').trigger('reset');
+				$('#ccdauploadsubmit').unbind("click");
+				
+				$('#ccdauploadfiles').empty();
+				
+				$('#ccdauploademail').val(textValue);
+				
+			});
 
 });

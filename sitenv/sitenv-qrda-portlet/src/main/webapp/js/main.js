@@ -125,7 +125,6 @@ function qrdaAjaxValidationResultHandler(result)
 		
 		if('schematronWarnings' in result && result.schematronWarnings.length>0)
 		{
-			failed = true;
 			resultMsg += "The file has encountered schema-tron warnings.";
 		}
 		

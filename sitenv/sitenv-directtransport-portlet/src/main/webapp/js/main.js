@@ -163,14 +163,126 @@ $(function() {
 		    	    	  "image" : window.currentContextPath + "/images/file.png"
 		    	      },
 		    		  "valid_children" : [ "none" ],
+		    		  "deselect_node" : function (node,e) {
+		    			  var jform = $('#precannedForm');
+		    			  jform.validationEngine('hideAll');
+		    				
+		    			  
+		    			var textValue = $('#precannedemail').val();
+		  				$('#precannedForm').trigger('reset');
+		  				$('#precannedCCDAsubmit').unbind("click");
+		  				
+		  				$('#precannedfilePathOutput').empty();
+		  				$('#precannedfilepath').val('');
+		  				
+		  				$('#precannedemail').val(textValue);
+		    			  
+		    		  },
 		    		  "select_node" : function (node,e) {
+		    			  var jform = $('#precannedForm');
+		    			  jform.validationEngine('hideAll');
 		    			  //populate the textbox
 		    			  $("#precannedfilepath").val(node.data("serverpath"));
-		    			  $("#prescannedfilePathOutput").text($("#precannedfilepath").val());
+		    			  $("#precannedfilePathOutput").text($("#precannedfilepath").val());
 		    	    	  //hide the drop down panel
 		    			  $('[data-toggle="dropdown"]').parent().removeClass('open');
 		    			  //hide all the errors
 		    			  $('#precannedCCDAsubmit').validationEngine('hideAll');
+		    			  
+		    			  $("#precannedCCDAsubmit").click(function(e){
+		    				    
+		    					var jform = $('#precannedForm');
+		    					jform.validationEngine('hideAll');
+		    					jform.validationEngine({promptPosition:"centerRight", validateNonVisibleFields: true, updatePromptsPosition:true});
+		    					if(jform.validationEngine('validate'))
+		    					{
+		    						//block ui..
+		    						blockDirectReceiveWidget();
+		    						
+		    						var formData = $('#precannedForm').serializefiles();
+		    					    
+		    					    $.ajax({
+		    					        url: $('#precannedForm').attr('action'),
+		    					        
+		    					        type: 'POST',
+		    					        
+		    					        xhr: function() {  // custom xhr
+		    					            myXhr = $.ajaxSettings.xhr();
+		    					            if(myXhr.upload){ // check if upload property exists
+		    					                myXhr.upload.addEventListener('progressor', progressorHandlingFunction, false); // for handling the progressor of the upload
+		    					            }
+		    					            return myXhr;
+		    					        },
+		    					        
+		    					        success: function(data){
+		    					        	var results = JSON.parse(data);
+		    					        	
+		    					        	
+		    					        	var iconurl = (results.body.IsSuccess == "true")? window.currentContextPath + "/images/icn_alert_success.png" :
+		    					        									window.currentContextPath + "/images/icn_alert_error.png" ;
+		    					        	
+
+		    					        	$('#directreceivewidget .blockMsg .progressorpanel img').attr('src',iconurl);
+		    					        	
+		    					        	$('#directreceivewidget .blockMsg .progressorpanel .lbl').text(results.body.ErrorMessage);
+
+		    					        	if(window.directReceiveWdgt)
+		    					        	{
+		    					        		window.directReceiveUploadTimeout = setTimeout(function(){
+		    					        				window.directReceiveWdgt.unbind("click");
+		    					        				window.directReceiveWdgt.unblock();
+		    					        			},10000);
+		    					        		
+		    					        		
+		    					        		window.directReceiveWdgt.bind("click", function() { 
+		    					        			window.directReceiveWdgt.unbind("click");
+		    					        			clearTimeout(window.directReceiveUploadTimeout);
+		    					        			window.directReceiveWdgt.unblock(); 
+		    					        			window.directReceiveWdgt.attr('title','Click to hide this message.').click($.unblockUI); 
+		    						            });
+		    					        		
+		    					        	}
+		    					        	
+		    					        },
+		    					        
+		    					        error: function (request, status, error) {
+		    					        	var iconurl = window.currentContextPath + "/images/icn_alert_error.png" ;
+		    								
+		    								$('#directreceivewidget .blockMsg .progressorpanel img').attr('src',iconurl);
+		    					        	
+		    					        	$('#directreceivewidget .blockMsg .progressorpanel .lbl').text('Error sending sample C-CDA file.');
+		    								
+		    								if(window.directReceiveWdgt)
+		    					        	{
+		    					        		window.directReceiveUploadTimeout = setTimeout(function(){
+		    					        				window.directReceiveWdgt.unbind("click");
+		    					        				window.directReceiveWdgt.unblock();
+		    					        			},10000);
+		    					        		
+		    					        		
+		    					        		window.directReceiveWdgt.bind("click", function() { 
+		    					        			window.directReceiveWdgt.unbind("click");
+		    					        			clearTimeout(window.directReceiveUploadTimeout);
+		    					        			window.directReceiveWdgt.unblock(); 
+		    					        			window.directReceiveWdgt.attr('title','Click to hide this message.').click($.unblockUI); 
+		    						            });
+		    					        		
+		    					        	}
+		    					        },
+		    					        // Form data
+		    					        data: formData,
+		    					        //Options to tell JQuery not to process data or worry about content-type
+		    					        cache: false,
+		    					        contentType: false,
+		    					        processData: false
+		    					    });
+		    					}
+		    					else
+		    					{
+		    						$('#precannedform .precannedfilepathformError').prependTo('#precannederrorlock');
+		    					}
+		    					return false;
+		    				});
 		    			  
 		    		  }
 		    	  },
@@ -193,160 +305,7 @@ $(function() {
 	
 	
 	
-	$("#precannedCCDAsubmit").click(function(e){
-	    
-		var jform = $('#precannedForm');
-		jform.validationEngine('hideAll');
-		jform.validationEngine({promptPosition:"centerRight", validateNonVisibleFields: true, updatePromptsPosition:true});
-		if(jform.validationEngine('validate'))
-		{
-			//block ui..
-			blockDirectReceiveWidget();
-			
-			var formData = $('#precannedForm').serializefiles();
-		    
-		    $.ajax({
-		        url: $('#precannedForm').attr('action'),
-		        
-		        type: 'POST',
-		        
-		        xhr: function() {  // custom xhr
-		            myXhr = $.ajaxSettings.xhr();
-		            if(myXhr.upload){ // check if upload property exists
-		                myXhr.upload.addEventListener('progressor', progressorHandlingFunction, false); // for handling the progressor of the upload
-		            }
-		            return myXhr;
-		        },
-		        
-		        success: function(data){
-		        	var results = JSON.parse(data);
-		        	
-		        	
-		        	var iconurl = (results.body.IsSuccess == "true")? window.currentContextPath + "/images/icn_alert_success.png" :
-		        									window.currentContextPath + "/images/icn_alert_error.png" ;
-		        	
-
-		        	$('#directreceivewidget .blockMsg .progressorpanel img').attr('src',iconurl);
-		        	
-		        	$('#directreceivewidget .blockMsg .progressorpanel .lbl').text(results.body.ErrorMessage);
-
-		        	if(window.directReceiveWdgt)
-		        	{
-		        		window.directReceiveUploadTimeout = setTimeout(function(){
-		        				window.directReceiveWdgt.unbind("click");
-		        				window.directReceiveWdgt.unblock();
-		        			},10000);
-		        		
-		        		
-		        		window.directReceiveWdgt.bind("click", function() { 
-		        			window.directReceiveWdgt.unbind("click");
-		        			clearTimeout(window.directReceiveUploadTimeout);
-		        			window.directReceiveWdgt.unblock(); 
-		        			window.directReceiveWdgt.attr('title','Click to hide this message.').click($.unblockUI); 
-			            });
-		        		
-		        	}
-		        	
-		        },
-		        
-		        error: function (request, status, error) {
-		        	var iconurl = window.currentContextPath + "/images/icn_alert_error.png" ;
-					
-					$('#directreceivewidget .blockMsg .progressorpanel img').attr('src',iconurl);
-		        	
-		        	$('#directreceivewidget .blockMsg .progressorpanel .lbl').text('Error sending sample C-CDA file.');
-					
-					if(window.directReceiveWdgt)
-		        	{
-		        		window.directReceiveUploadTimeout = setTimeout(function(){
-		        				window.directReceiveWdgt.unbind("click");
-		        				window.directReceiveWdgt.unblock();
-		        			},10000);
-		        		
-		        		
-		        		window.directReceiveWdgt.bind("click", function() { 
-		        			window.directReceiveWdgt.unbind("click");
-		        			clearTimeout(window.directReceiveUploadTimeout);
-		        			window.directReceiveWdgt.unblock(); 
-		        			window.directReceiveWdgt.attr('title','Click to hide this message.').click($.unblockUI); 
-			            });
-		        		
-		        	}
-		        },
-		        // Form data
-		        data: formData,
-		        //Options to tell JQuery not to process data or worry about content-type
-		        cache: false,
-		        contentType: false,
-		        processData: false
-		    });
-		}
-		else
-		{
-			$('#precannedform .precannedfilepathformError').prependTo('#precannederrorlock');
-		}
-		return false;
-	});
 	
-/*	
-$("#anchorsubmit").click(function(e){
-	    
-		var jform = $('#anchoruploadform');
-		jform.validationEngine('hideAll');
-		if(jform.validationEngine('validate'))
-		{
-			//block ui..
-			blockAnchorUploadWidget();
-			
-			var formData = $('#anchoruploadform').serializefiles();
-		    
-		    $.ajax({
-		        url: $('#anchoruploadform').attr('action'),
-		        
-		        type: 'POST',
-		        
-		        xhr: function() {  // custom xhr
-		            myXhr = $.ajaxSettings.xhr();
-		            if(myXhr.upload){ // check if upload property exists
-		                myXhr.upload.addEventListener('progressor', progressorHandlingFunction, false); // for handling the progressor of the upload
-		            }
-		            return myXhr;
-		        },
-		        
-		        success: function(data){
-		        	var results = JSON.parse(data);
-		        	
-		        	var iconurl = results.IsSuccess? window.currentContextPath + "/images/icn_alert_success.png" :
-		        									window.currentContextPath + "/images/icn_alert_error.png" ;
-		        	
-		        	$('#anchoruploadwidget .blockMsg .progressorpanel img').attr('src',iconurl);
-		        	
-		        	$('#anchoruploadwidget .blockMsg .progressorpanel .lbl').text(results.ErrorMessage);
-		        	
-		        	if(window.anchorUploadWidget)
-		        	{
-		        		window.anchorUploadWidget.unbind("click");
-		        		window.anchorUploadWidget.click(function() { 
-		        			window.anchorUploadWidget.unblock(); 
-			                $('#anchoruploadwidget .blockOverlay').attr('title','Click to hide this message.').click($.unblockUI); 
-			            });
-		        		setTimeout(function(){
-		        			window.anchorUploadWidget.unblock();
-		        		},10000);
-		        	}
-		        },
-		        
-		        error: function (request, status, error) {
-		        	alert("ajax error:"+ error);
-		        },
-		        // Form data
-		        data: formData,
-		        //Options to tell JQuery not to process data or worry about content-type
-		        cache: false,
-		        contentType: false,
-		        processData: false
-		    });
-		}
-	    return false;
-	});*/
+	
+
 });

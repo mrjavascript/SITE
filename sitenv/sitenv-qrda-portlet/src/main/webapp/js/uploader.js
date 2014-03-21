@@ -105,16 +105,17 @@ $(function() {
 	});
 	
 	
-	$('#qrdavalidate_btn').click(function(e) {
-		var jform = $('#QRDAValidationForm');
-		jform.validationEngine('hideAll');
-		jform.validationEngine({promptPosition:"centerRight", validateNonVisibleFields: true, updatePromptsPosition:true});
-		
-		
-		jform.validationEngine('validate');
-		
-		$('#QRDAValidationForm .qrdauploadfileformError').prependTo('#qrdauploaderrorlock');
-		
-	});
+	
+	$('#qrdauploadfile-btn').bind('click', function(e, data)
+			{
+				var dropdownvalue = $('#category').val();
+				$('#QRDAValidationForm').trigger('reset');
+				$('#qrdavalidate_btn').unbind("click");
+				
+				$('#qrdauploadfiles').empty();
+				
+				$('#category').val(dropdownvalue);
+				
+			});
 	
 });
