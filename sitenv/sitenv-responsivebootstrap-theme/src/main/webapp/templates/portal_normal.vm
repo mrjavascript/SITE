@@ -19,8 +19,11 @@
     <script src="$javascript_folder/vendor/bootstrap.min.js"></script>
 	<script src="$javascript_folder/removeNoJS.js"></script>
 	<script src="$javascript_folder/hoverMenu.js"></script>
+	<script src="$javascript_folder/thumbnailHover.js"></script>
+	
 	<script src="$javascript_folder/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
 	<script src="$javascript_folder/vendor/bowser.js"></script>
+	
    	$theme.include($top_head_include)
 </head>
 
