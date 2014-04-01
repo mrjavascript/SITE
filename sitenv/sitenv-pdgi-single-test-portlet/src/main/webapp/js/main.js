@@ -3,11 +3,14 @@ $(function() {
 		  e.preventDefault();
 		  
 		  var jform = $('#providerDirectoryTestForm');
-			jform.validationEngine('hideAll');
+		  
+		  
+		  
 			jform.validationEngine({promptPosition:"centerRight", validateNonVisibleFields: true, updatePromptsPosition:true});
 			if(jform.validationEngine('validate'))
 			{
-		  
+				//jform.validationEngine('hideAll');
+				$('#providerDirectoryTestForm .formError').hide(0);
 		  blockProviderDirectoryWidget();
 		  
 		  
@@ -47,6 +50,10 @@ $(function() {
 		        	}
 	          }
 	        });	
+			}
+			else 
+			{
+				$('#providerDirectoryTestForm .formError').show(0);
 			}
 	  });
   });

@@ -76,13 +76,15 @@ $(function() {
 
 			node.appendTo(data.context);
 		});
+		
+		
 
 		data.context = $('#qrdavalidate_btn').click(function(e) {
 			var jform = $('#QRDAValidationForm');
-			jform.validationEngine('hideAll');
 			jform.validationEngine({promptPosition:"centerRight", validateNonVisibleFields: true, updatePromptsPosition:true});
 			if(jform.validationEngine('validate'))
 			{
+				$('#QRDAValidationForm .formError').hide(0);
 				
 				BlockPortletUI('#qrdaWidget .well');
 						
@@ -91,7 +93,7 @@ $(function() {
 			else
 			{
 				//jform.validationEngine({validateNonVisibleFields: true, updatePromptsPosition:true});
-				
+				$('#QRDAValidationForm .formError').show(0);
 				$('#QRDAValidationForm .qrdauploadfileformError').prependTo('#qrdauploaderrorlock');
 			}
 		});
@@ -109,6 +111,7 @@ $(function() {
 	$('#qrdauploadfile-btn').bind('click', function(e, data)
 			{
 				var dropdownvalue = $('#category').val();
+				$('#QRDAValidationForm .formError').hide(0);
 				$('#QRDAValidationForm').trigger('reset');
 				$('#qrdavalidate_btn').unbind("click");
 				

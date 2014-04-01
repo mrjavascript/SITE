@@ -187,7 +187,7 @@
 	            	"func": function(field, rules, i, options) {
 	            		var uploadedFile = $('#anchoruploadfile');
 	            		
-	            		if (uploadedFile) {
+	            		if (uploadedFile  && $(uploadedFile).val()) {
 	                        var extensions = rules[i + 2];               
 	                        var mimeFilter = new RegExp(extensions, 'i');
 	                        
@@ -199,11 +199,25 @@
 	            	},
 	            	"alertText" : "* The selected certificate file must be a binary or Base64 encoded file file (.cer, .crt, .der, or .pem)."
 	            },
-	            "maxCCDAFileSize":{
+	            "maxCertFileSize":{
 	            	"func": function(field, rules, i, options) {
 	            		var uploadedFile = $('#anchoruploadfile')[0].files[0];
 	            		
-	            		if (uploadedFile && uploadedFile.size > (3*1024*1024)) {
+	            		if (uploadedFile  && $('#anchoruploadfile').val() && uploadedFile.size > (3*1024*1024)) {
+	            			return false;
+	                    }
+	                    else {
+	                        return true;
+	                    }     
+	            	},
+	            	"alertText" : "* The uploaded file exceeds the maximum file size of 3 MB."
+	            }
+	            ,
+	            "maxCCDAFileSize":{
+	            	"func": function(field, rules, i, options) {
+	            		var uploadedFile = $('#ccdauploadfile')[0].files[0];
+	            		
+	            		if (uploadedFile  && $('#ccdauploadfile').val() && uploadedFile.size > (3*1024*1024)) {
 	            			return false;
 	                    }
 	                    else {
