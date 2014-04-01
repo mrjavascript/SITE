@@ -125,14 +125,17 @@ $(function() {
 			node.appendTo(data.context);
 		});
 
+		
+		
 		data.context = $('#formSubmit').click(function(e) {
 			
 			var jform = $('#CCDAValidationForm');
 			jform.validationEngine({promptPosition:"centerRight", validateNonVisibleFields: true, updatePromptsPosition:true});
-			jform.validationEngine('hideAll');
+			//jform.validationEngine('hideAll');
 			
 			if(jform.validationEngine('validate'))
 			{
+				$('#CCDAValidationForm .formError').hide(0);
 				//switch back to tab1.
 				$( "#ValidationResult [href='#tabs-1']").trigger( "click" );
 				
@@ -153,6 +156,8 @@ $(function() {
 			}
 			else
 			{
+				$('#CCDAValidationForm .formError').show(0);
+				
 				$('#CCDAValidationForm .fileuploadformError').prependTo('#ccdauploaderrorlock');
 			}
 			
@@ -178,6 +183,7 @@ $(function() {
 	
 	$('#fileupload-btn').bind('click', function(e, data)
 	{
+		$('#CCDAValidationForm .formError').hide(0);
 		var dropdownvalue = $('#ccda_type_val').val();
 		$('#CCDAValidationForm').trigger('reset');
 		$('#formSubmit').unbind("click");

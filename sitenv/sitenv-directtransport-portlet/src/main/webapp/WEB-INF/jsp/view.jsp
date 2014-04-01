@@ -119,7 +119,7 @@
 				<span class="btn btn-success fileinput-button" id="anchoruploadfile-btn"> <i
 							class="glyphicon glyphicon-plus"></i>&nbsp;<span>Select a Certificate...</span>
 							<!-- The file input field used as target for the file upload widget -->
-							<input id="anchoruploadfile" type="file" name="anchoruploadfile" class="validate[required, custom[derencncodedfileextension[der|crt|cer|pem|DER|CRT|CER|PEM]], custom[maxCCDAFileSize]]"/>
+							<input id="anchoruploadfile" type="file" name="anchoruploadfile" class="validate[required, custom[derencncodedfileextension[der|crt|cer|pem|DER|CRT|CER|PEM]], custom[maxCertFileSize]]"/>
 					</span>
 					<div id="anchoruploadfiles" class="files"></div>
 			</div>

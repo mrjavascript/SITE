@@ -165,7 +165,7 @@ $(function() {
 		    		  "valid_children" : [ "none" ],
 		    		  "deselect_node" : function (node,e) {
 		    			  var jform = $('#precannedForm');
-		    			  jform.validationEngine('hideAll');
+		    			  $('#precannedForm .formError').hide(0);
 		    				
 		    			  
 		    			var textValue = $('#precannedemail').val();
@@ -180,22 +180,25 @@ $(function() {
 		    		  },
 		    		  "select_node" : function (node,e) {
 		    			  var jform = $('#precannedForm');
-		    			  jform.validationEngine('hideAll');
+		    			  //jform.validationEngine('hideAll');
+		    			  $('#precannedForm .formError').hide(0);
 		    			  //populate the textbox
 		    			  $("#precannedfilepath").val(node.data("serverpath"));
 		    			  $("#precannedfilePathOutput").text($("#precannedfilepath").val());
 		    	    	  //hide the drop down panel
 		    			  $('[data-toggle="dropdown"]').parent().removeClass('open');
 		    			  //hide all the errors
-		    			  $('#precannedCCDAsubmit').validationEngine('hideAll');
+		    			  //$('#precannedCCDAsubmit').validationEngine('hideAll');
+		    			  
 		    			  
 		    			  $("#precannedCCDAsubmit").click(function(e){
 		    				    
 		    					var jform = $('#precannedForm');
-		    					jform.validationEngine('hideAll');
 		    					jform.validationEngine({promptPosition:"centerRight", validateNonVisibleFields: true, updatePromptsPosition:true});
 		    					if(jform.validationEngine('validate'))
 		    					{
+		    						$('#precannedForm .formError').hide(0);
+		    						
 		    						//block ui..
 		    						blockDirectReceiveWidget();
 		    						
@@ -279,6 +282,8 @@ $(function() {
 		    					}
 		    					else
 		    					{
+		    						$('#precannedForm .formError').show(0);
+		    						
 		    						$('#precannedform .precannedfilepathformError').prependTo('#precannederrorlock');
 		    					}
 		    					return false;

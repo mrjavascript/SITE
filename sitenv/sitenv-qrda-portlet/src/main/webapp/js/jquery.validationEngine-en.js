@@ -186,7 +186,7 @@
 	            	"func": function(field, rules, i, options) {
 	            		var uploadedFile = $('#qrdauploadfile');
 	            		
-	            		if (uploadedFile) {
+	            		if (uploadedFile && $(uploadedFile).val()) {
 	                        var extensions = rules[i + 2];               
 	                        var mimeFilter = new RegExp(extensions, 'i');
 	                        
@@ -202,7 +202,7 @@
 	            	"func": function(field, rules, i, options) {
 	            		var uploadedFile = $('#qrdauploadfile')[0].files[0];
 	            		
-	            		if (uploadedFile && uploadedFile.size > (3*1024*1024)) {
+	            		if (uploadedFile  && $('#qrdauploadfile').val() && uploadedFile.size > (3*1024*1024)) {
 	            			return false;
 	                    }
 	                    else {
