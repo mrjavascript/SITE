@@ -74,13 +74,15 @@ $(function() {
 			node.appendTo(data.context);
 		});
 
+		$('#anchoruploadform .formError').hide(0);
+		
 		data.context = $('#anchoruploadsubmit').click(function(e) {
 			var jform = $('#anchoruploadform');
-			jform.validationEngine('hideAll');
+			//jform.validationEngine('hideAll');
 			jform.validationEngine({promptPosition:"centerRight", validateNonVisibleFields: true, updatePromptsPosition:true});
 			if(jform.validationEngine('validate'))
 			{
-				
+				$('#anchoruploadform .formError').hide(0);
 				
 				blockAnchorUploadWidget();
 						
@@ -89,6 +91,8 @@ $(function() {
 			else
 			{
 				//jform.validationEngine({validateNonVisibleFields: true, updatePromptsPosition:true});
+				
+				$('#anchoruploadform .formError').show(0);
 				
 				$('#anchoruploadform .anchoruploadfileformError').prependTo('#anchoruploaderrorlock');
 			}
@@ -199,14 +203,16 @@ $(function() {
 
 			node.appendTo(data.context);
 		});
+		
+		$('#ccdauploadform .formError').hide(0);
 
 		data.context = $('#ccdauploadsubmit').click(function(e) {
 			var jform = $('#ccdauploadform');
-			jform.validationEngine('hideAll');
+			//jform.validationEngine('hideAll');
 			jform.validationEngine({promptPosition:"centerRight", validateNonVisibleFields: true, updatePromptsPosition:true});
 			if(jform.validationEngine('validate'))
 			{
-				
+				$('#ccdauploadform .formError').hide(0);
 				
 				blockDirectReceiveWidget();
 						
@@ -215,6 +221,7 @@ $(function() {
 			else
 			{
 				//jform.validationEngine({validateNonVisibleFields: true, updatePromptsPosition:true});
+				$('#ccdauploadform .formError').show(0);
 				
 				$('#ccdauploadform .ccdauploadfileformError').prependTo('#ccdauploaderrorlock');
 			}
@@ -236,14 +243,14 @@ $(function() {
 				
 				$('#anchoruploadfiles').empty();
 				
-				var jform = $('#anchoruploadform');
-				jform.validationEngine('hideAll');
+				$('#anchoruploadform .formError').hide(0);
 				
 			});
 	
 	$('#ccdauploadfile-btn').bind('click', function(e, data)
 			{
 				var textValue = $('#ccdauploademail').val();
+				$('#ccdauploadform .formError').hide(0);
 				$('#ccdauploadform').trigger('reset');
 				$('#ccdauploadsubmit').unbind("click");
 				

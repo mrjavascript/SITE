@@ -203,7 +203,7 @@
 	            	"func": function(field, rules, i, options) {
 	            		var uploadedFile = $('#fileupload')[0].files[0];
 	            		
-	            		if (uploadedFile && uploadedFile.size > (3*1024*1024)) {
+	            		if (uploadedFile && $('#fileupload').val() && uploadedFile.size > (3*1024*1024)) {
 	            			return false;
 	                    }
 	                    else {
