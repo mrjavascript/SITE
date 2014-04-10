@@ -22,12 +22,12 @@ public class UserCreationHook extends BaseModelListener<User> {
 	       
 			StringBuilder templatesb = new StringBuilder();
 			templatesb.append("<h1><span style=\"font-size:14px;\">Dear Administrators,</span></h1><p>");
-			templatesb.append("A new user has applied for membership of SIT portal,</p>");
+			templatesb.append("A new user has applied for membership of SITE portal,</p>");
 			templatesb.append("<p>User Email:{@EMAIL}</p>");
 			templatesb.append("<p>User Screen Name:{@USERNAME}</p>");
 			templatesb.append("<p>User First Name:{@FIRSTNAME}</p>");
 			templatesb.append("<p>User Last Name:{@LASTNAME}</p>");
-			templatesb.append("<p>Please review the request and add user to the SIT platform site.</p>");
+			templatesb.append("<p>Please review the request and add user to the SITE portal.</p>");
 	       
 			
 			MailMessage mailMessage = new MailMessage();
@@ -42,12 +42,10 @@ public class UserCreationHook extends BaseModelListener<User> {
 	     		   );
 	        mailMessage.setHTMLFormat(true);
 	        try {
-	     	  mailMessage.setFrom(new InternetAddress("tangyedong@gmail.com","SIT SYS"));
-	     	  mailMessage.setSubject("New user has been created(SITPlatform).");
+	     	  mailMessage.setFrom(new InternetAddress("admin@sitenv.org","SITE Admin"));
+	     	  mailMessage.setSubject("New user has been created (SITE Portal).");
 	     	  mailMessage.setTo(new InternetAddress[]{
-	     			 new InternetAddress("nagesh.bashyam@drajer.com"),
-	     			 new InternetAddress("bdyer@pyramedresearch.com"),
-	     			 new InternetAddress("etang@ainq.com")
+	     			 new InternetAddress("admin@sitenv.org")
 	     	  });
 	     	  _log.trace("message constructed");
         }
