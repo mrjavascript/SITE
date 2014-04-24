@@ -11,25 +11,25 @@ $(function() {
 		contenttype : false,
 		replaceFileInput : false,
 		error: function (e, data) {
-			var iconurl = window.currentContextPath + "/images/icn_alert_error.png" ;
+			var iconurl = window.currentContextPath + "/css/icn_alert_error.png" ;
 			
 			$('.blockMsg .progressorpanel img').attr('src',iconurl);
         	
         	$('.blockMsg .progressorpanel .lbl').text('Error uploading file.');
 			
-			if(window.directReceiveWdgt)
+			if(window.validationpanel)
         	{
-        		window.directReceiveUploadTimeout = setTimeout(function(){
-        				window.directReceiveWdgt.unbind("click");
-        				window.directReceiveWdgt.unblock();
+        		window.validationPanelTimeout = setTimeout(function(){
+        				window.validationpanel.unbind("click");
+        				window.validationpanel.unblock();
         			},10000);
         		
         		
-        		window.directReceiveWdgt.bind("click", function() { 
-        			window.directReceiveWdgt.unbind("click");
-        			clearTimeout(window.directReceiveUploadTimeout);
-        			window.directReceiveWdgt.unblock(); 
-        			window.directReceiveWdgt.attr('title','Click to hide this message.').click($.unblockUI); 
+        		window.validationpanel.bind("click", function() { 
+        			window.validationpanel.unbind("click");
+        			clearTimeout(window.validationPanelTimeout);
+        			window.validationpanel.unblock(); 
+        			window.validationpanel.attr('title','Click to hide this message.').click($.unblockUI); 
 	            });
         		
         	}

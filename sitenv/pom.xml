@@ -99,6 +99,8 @@
     	<module>sitenv-qrda-portlet</module>
     	<module>sitenv-pdgi-single-test-portlet</module>
     	<module>sitenv-responsivebootstrap-theme</module>
-    <module>sitenv-responsivebootstrap-portlet-layouttpl</module>
-  </modules>
+    	<module>sitenv-responsivebootstrap-portlet-layouttpl</module>
+    	<module>sitenv-statistics</module>
+    	<module>sitenv-statistics-portlet</module>
+	</modules>
 </project>

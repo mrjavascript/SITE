@@ -264,6 +264,10 @@
 			<artifactId>sitenv-commonutilities</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
-
+		<dependency>
+			<groupId>org.sitenv</groupId>
+			<artifactId>sitenv-statistics</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
 	</dependencies>
 </project>

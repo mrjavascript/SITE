@@ -19,7 +19,8 @@ import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 import org.sitenv.common.utilities.controller.BaseController;
-import org.sitenv.portlets.uploadportlet.views.CCDAValidatorJsonView;
+import org.sitenv.statistics.manager.StatisticsManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +37,9 @@ public class SmartCCDAValidatorController extends BaseController {
 	
 	private String smartCcdaResponse = null;
 	private String smartCcdaRubricResponse = null;
+	
+	@Autowired
+	private StatisticsManager statisticsManager;
 
 	@ActionMapping(params = "javax.portlet.action=smartCCDA")
 	public void response(MultipartActionRequest request, ActionResponse response) throws IOException {
@@ -87,6 +91,7 @@ public class SmartCCDAValidatorController extends BaseController {
 			int code = relayResponse.getStatusLine().getStatusCode();
 			if (code != 200) {
 				// do the error handling.
+				throw new Exception("Could not Relay Request to Remote Service.");
 			}
 
 			smartCcdaResponse = handler.handleResponse(relayResponse);
@@ -97,11 +102,17 @@ public class SmartCCDAValidatorController extends BaseController {
 			code = getRubricResponse.getStatusLine().getStatusCode();
 			if (code != 200) {
 				// do the error handling.
+
+				throw new Exception("Could not Relay Request to Remote Rubric Service.");
 			}
 			smartCcdaRubricResponse = handler.handleResponse(getRubricResponse);
+			
+			statisticsManager.addSmartCcdaValidation(false);
 
 		} catch (Exception e) {
 			logger.error(e);
+
+			statisticsManager.addSmartCcdaValidation(true);
 		}
 
 		
@@ -119,4 +130,14 @@ public class SmartCCDAValidatorController extends BaseController {
 
 		return new ModelAndView("smartCCDAValidatorJsonView", map);
 	}
+
+	public StatisticsManager getStatisticsManager() {
+		return statisticsManager;
+	}
+
+	public void setStatisticsManager(StatisticsManager statisticsManager) {
+		this.statisticsManager = statisticsManager;
+	}
+	
+	
 }
