@@ -23,7 +23,22 @@
         </property>
     </bean>
     
-    <context:annotation-config/>
+    <!--context:property-placeholder location="classpath:db.properties" / -->
+	<context:annotation-config />
+	<context:component-scan base-package="org.sitenv" />
+	
+	<tx:annotation-driven transaction-manager="transactionManager"
+		proxy-target-class="true" />
+
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean">
+		<property name="persistenceUnitName" value="statistics" />
+	</bean>
+
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+    
 	
 	<!-- Inject the file validator -->
 	<bean id="fileValidator" class="org.sitenv.portlets.qrda.validator.FileValidator" />

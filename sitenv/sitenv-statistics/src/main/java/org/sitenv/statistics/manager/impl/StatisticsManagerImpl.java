@@ -1,6 +1,7 @@
 package org.sitenv.statistics.manager.impl;
 
 import org.sitenv.statistics.dao.CcdaValidationDAO;
+import org.sitenv.statistics.dao.QrdaValidationDAO;
 import org.sitenv.statistics.manager.StatisticsManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,9 @@ public class StatisticsManagerImpl implements StatisticsManager {
 
 	@Autowired
 	private CcdaValidationDAO ccdaValidationDAO;
+	
+	@Autowired
+	private QrdaValidationDAO qrdaValidationDAO;
 	
 	@Transactional
 	public void addCcdaValidation(Boolean hasErrors, Boolean hasWarnings,
@@ -79,6 +83,53 @@ public class StatisticsManagerImpl implements StatisticsManager {
 	
 	
 	
+	@Transactional
+	public void addQrdaValidation(Integer category, Boolean hasSchemaErrors, Boolean hasSchematronErrors, Boolean hasSchematronWarnings, Boolean hasHttpError){
+	
+		qrdaValidationDAO.createQrdaValidation(category, hasSchemaErrors, hasSchematronErrors, hasSchematronWarnings, hasHttpError);
+		
+	}
+
+	@Transactional
+	public Long getSuccessfulQrdaValidationCount(Integer category,
+			Integer numOfDays) {
+		
+		return qrdaValidationDAO.getTotalNonErrorCount(category, numOfDays);
+		
+	}
+
+	@Transactional
+	public Long getFailedQrdaValidationCount(Integer category, Integer numOfDays) {
+
+		return qrdaValidationDAO.getTotalErrorCount(category, numOfDays);
+		
+	}
+	
+	
+	@Transactional
+	public Long getWarningQrdaValidationCount(Integer category,
+			Integer numOfDays) {
+		
+		return qrdaValidationDAO.getSchematronWarningCount(category, true, numOfDays);
+		
+	}
+
+	@Transactional
+	public Long getTotalQrdaValidationCount(Integer category, Integer numOfDays) {
+		
+		return qrdaValidationDAO.getTotalCount(category, numOfDays);
+		
+	}
+	
+	@Transactional
+	public Long getHttpErrorQrdaValidationCount(Integer category,
+			Integer numOfDays) {
+		
+		return qrdaValidationDAO.getHttpErrorCount(category, true, numOfDays);
+		
+	}
+	
+	
 	public CcdaValidationDAO getCcdaValidationDAO() {
 		return ccdaValidationDAO;
 	}
@@ -86,6 +137,18 @@ public class StatisticsManagerImpl implements StatisticsManager {
 	public void setCcdaValidationDAO(CcdaValidationDAO ccdaValidationDAO) {
 		this.ccdaValidationDAO = ccdaValidationDAO;
 	}
+
+	public QrdaValidationDAO getQrdaValidationDAO() {
+		return qrdaValidationDAO;
+	}
+
+	public void setQrdaValidationDAO(QrdaValidationDAO qrdaValidationDAO) {
+		this.qrdaValidationDAO = qrdaValidationDAO;
+	}
+
+	
+
+	
 
 	
 	

@@ -21,3 +21,13 @@ CREATE TABLE ccda_download
 	download_pk	BIGSERIAL primary key not null,
 	download_time TIMESTAMP default current_timestamp
 );
+
+CREATE TABLE qrda_validations
+(
+	validation_pk	BIGSERIAL primary key not null,
+	validation_time TIMESTAMP default current_timestamp,
+	validation_errors boolean not null,
+	validation_warnings boolean not null,
+	validation_category integer not null,
+	validation_httperror boolean not null
+);

@@ -27,7 +27,7 @@
 
 
 <script type="text/javascript">
-	window.runTestsUrl = "<%=runTestsUrl%>";
+	window.runTestsUrl = "<%= runTestsUrl %>";
 
 	window.currentContextPath = "<%=request.getContextPath()%>";
 </script>

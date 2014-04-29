@@ -1,24 +1,18 @@
 package org.sitenv.statistics.dao.impl;
 
-import java.util.Calendar;
 import java.util.Date;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.sitenv.statistics.dao.CcdaValidationDAO;
 import org.sitenv.statistics.entity.CcdaDownloadEntity;
 import org.sitenv.statistics.entity.CcdaValidationEntity;
-import org.sitenv.statistics.entity.DateItemEntity;
 import org.sitenv.statistics.entity.SmartCcdaValidationEntity;
 import org.springframework.stereotype.Repository;
 
 @Repository(value="CcdaValidationDAO")
-public class CcdaValidationDAOImpl implements CcdaValidationDAO {
+public class CcdaValidationDAOImpl extends BaseDAOImpl implements CcdaValidationDAO {
 
-	@PersistenceContext
-	private EntityManager entityManager;
 	
 	public void createCcdaValidation(Boolean hasErrors, Boolean hasWarnings,
 			Boolean hasInfo, Boolean hasHttpError) {
@@ -46,15 +40,6 @@ public class CcdaValidationDAOImpl implements CcdaValidationDAO {
 		entityManager.persist(entity);
 	}
 	
-	/**
-	 * @return System date on DB server
-	 */
-	private Date getSystemDate() {
-	    Query query = entityManager.createNativeQuery(
-	            "SELECT CURRENT_TIMESTAMP as currtime", DateItemEntity.class);
-	    DateItemEntity dateItem = (DateItemEntity) query.getSingleResult();
-	    return dateItem.getDate();
-	}
 	
 	public Long getHttpErrorCount(Boolean hasHttpError, Integer numOfDays) {
 		
@@ -67,10 +52,7 @@ public class CcdaValidationDAOImpl implements CcdaValidationDAO {
 		} else {
 			
 			Date currentDbDate = this.getSystemDate();
-			Calendar cal = Calendar.getInstance();
-			cal.setTime(currentDbDate);
-			cal.add(Calendar.DAY_OF_YEAR, ((-1) * numOfDays));
-			Date pastDate = cal.getTime();
+			Date pastDate = this.getPreviousDate(currentDbDate, numOfDays);
 			
 			Query query = entityManager.createQuery("SELECT COUNT(t) FROM org.sitenv.statistics.entity.CcdaValidationEntity t WHERE t.httpError = :boolval AND t.timestamp < :currentDate AND t.timestamp > :prevDate");
 			query.setParameter("boolval", hasHttpError);
@@ -91,17 +73,14 @@ public class CcdaValidationDAOImpl implements CcdaValidationDAO {
 		
 		if (numOfDays == null) {
 			
-			errorCount = (Long) entityManager.createQuery("SELECT COUNT(t) FROM org.sitenv.statistics.entity.CcdaValidationEntity t WHERE t.errors = :boolval").setParameter("boolval", hasErrors).getSingleResult();
+			errorCount = (Long) entityManager.createQuery("SELECT COUNT(t) FROM org.sitenv.statistics.entity.CcdaValidationEntity t WHERE t.errors = :boolval AND t.httpError = false").setParameter("boolval", hasErrors).getSingleResult();
 			
 		} else {
 			
 			Date currentDbDate = this.getSystemDate();
-			Calendar cal = Calendar.getInstance();
-			cal.setTime(currentDbDate);
-			cal.add(Calendar.DAY_OF_YEAR, ((-1) * numOfDays));
-			Date pastDate = cal.getTime();
+			Date pastDate = this.getPreviousDate(currentDbDate, numOfDays);
 			
-			Query query = entityManager.createQuery("SELECT COUNT(t) FROM org.sitenv.statistics.entity.CcdaValidationEntity t WHERE t.errors = :boolval AND t.timestamp < :currentDate AND t.timestamp > :prevDate");
+			Query query = entityManager.createQuery("SELECT COUNT(t) FROM org.sitenv.statistics.entity.CcdaValidationEntity t WHERE t.errors = :boolval AND t.timestamp < :currentDate AND t.timestamp > :prevDate AND t.httpError = false");
 			query.setParameter("boolval", hasErrors);
 			query.setParameter("currentDate", currentDbDate);
 			query.setParameter("prevDate", pastDate);
@@ -120,17 +99,14 @@ public class CcdaValidationDAOImpl implements CcdaValidationDAO {
 		
 		if (numOfDays == null) {
 			
-			warnCount = (Long) entityManager.createQuery("SELECT COUNT(t) FROM org.sitenv.statistics.entity.CcdaValidationEntity t WHERE t.warnings = :boolval").setParameter("boolval", hasWarnings).getSingleResult();
+			warnCount = (Long) entityManager.createQuery("SELECT COUNT(t) FROM org.sitenv.statistics.entity.CcdaValidationEntity t WHERE t.warnings = :boolval AND t.httpError = false").setParameter("boolval", hasWarnings).getSingleResult();
 			
 		} else {
 			
 			Date currentDbDate = this.getSystemDate();
-			Calendar cal = Calendar.getInstance();
-			cal.setTime(currentDbDate);
-			cal.add(Calendar.DAY_OF_YEAR, ((-1) * numOfDays));
-			Date pastDate = cal.getTime();
+			Date pastDate = this.getPreviousDate(currentDbDate, numOfDays);
 			
-			Query query = entityManager.createQuery("SELECT COUNT(t) FROM org.sitenv.statistics.entity.CcdaValidationEntity t WHERE t.warnings = :boolval AND t.timestamp < :currentDate AND t.timestamp > :prevDate");
+			Query query = entityManager.createQuery("SELECT COUNT(t) FROM org.sitenv.statistics.entity.CcdaValidationEntity t WHERE t.warnings = :boolval AND t.timestamp < :currentDate AND t.timestamp > :prevDate AND t.httpError = false");
 			query.setParameter("boolval", hasWarnings);
 			query.setParameter("currentDate", currentDbDate);
 			query.setParameter("prevDate", pastDate);
@@ -148,17 +124,14 @@ public class CcdaValidationDAOImpl implements CcdaValidationDAO {
 		
 		if (numOfDays == null) {
 			
-			infoCount = (Long) entityManager.createQuery("SELECT COUNT(t) FROM org.sitenv.statistics.entity.CcdaValidationEntity t WHERE t.info = :boolval").setParameter("boolval", hasInfo).getSingleResult();
+			infoCount = (Long) entityManager.createQuery("SELECT COUNT(t) FROM org.sitenv.statistics.entity.CcdaValidationEntity t WHERE t.info = :boolval AND t.httpError = false").setParameter("boolval", hasInfo).getSingleResult();
 			
 		} else {
 			
 			Date currentDbDate = this.getSystemDate();
-			Calendar cal = Calendar.getInstance();
-			cal.setTime(currentDbDate);
-			cal.add(Calendar.DAY_OF_YEAR, ((-1) * numOfDays));
-			Date pastDate = cal.getTime();
+			Date pastDate = this.getPreviousDate(currentDbDate, numOfDays);
 			
-			Query query = entityManager.createQuery("SELECT COUNT(t) FROM org.sitenv.statistics.entity.CcdaValidationEntity t WHERE t.info = :boolval AND t.timestamp < :currentDate AND t.timestamp > :prevDate");
+			Query query = entityManager.createQuery("SELECT COUNT(t) FROM org.sitenv.statistics.entity.CcdaValidationEntity t WHERE t.info = :boolval AND t.timestamp < :currentDate AND t.timestamp > :prevDate AND t.httpError = false");
 			query.setParameter("boolval", hasInfo);
 			query.setParameter("currentDate", currentDbDate);
 			query.setParameter("prevDate", pastDate);
@@ -181,10 +154,7 @@ public class CcdaValidationDAOImpl implements CcdaValidationDAO {
 		} else {
 			
 			Date currentDbDate = this.getSystemDate();
-			Calendar cal = Calendar.getInstance();
-			cal.setTime(currentDbDate);
-			cal.add(Calendar.DAY_OF_YEAR, ((-1) * numOfDays));
-			Date pastDate = cal.getTime();
+			Date pastDate = this.getPreviousDate(currentDbDate, numOfDays);
 			
 			Query query = entityManager.createQuery("SELECT COUNT(t) FROM org.sitenv.statistics.entity.CcdaValidationEntity t WHERE  t.httpError = false AND t.timestamp < :currentDate AND t.timestamp > :prevDate");
 			query.setParameter("currentDate", currentDbDate);
@@ -210,10 +180,7 @@ public class CcdaValidationDAOImpl implements CcdaValidationDAO {
 		} else {
 			
 			Date currentDbDate = this.getSystemDate();
-			Calendar cal = Calendar.getInstance();
-			cal.setTime(currentDbDate);
-			cal.add(Calendar.DAY_OF_YEAR, ((-1) * numOfDays));
-			Date pastDate = cal.getTime();
+			Date pastDate = this.getPreviousDate(currentDbDate, numOfDays);
 			
 			Query query = entityManager.createQuery("SELECT COUNT(t) FROM org.sitenv.statistics.entity.CcdaDownloadEntity t WHERE  t.timestamp < :currentDate AND t.timestamp > :prevDate");
 			query.setParameter("currentDate", currentDbDate);
@@ -238,10 +205,7 @@ public class CcdaValidationDAOImpl implements CcdaValidationDAO {
 		} else {
 			
 			Date currentDbDate = this.getSystemDate();
-			Calendar cal = Calendar.getInstance();
-			cal.setTime(currentDbDate);
-			cal.add(Calendar.DAY_OF_YEAR, ((-1) * numOfDays));
-			Date pastDate = cal.getTime();
+			Date pastDate = this.getPreviousDate(currentDbDate, numOfDays);
 			
 			Query query = entityManager.createQuery("SELECT COUNT(t) FROM org.sitenv.statistics.entity.SmartCcdaValidationEntity t WHERE  t.httpError = :httperror AND t.timestamp < :currentDate AND t.timestamp > :prevDate");
 			query.setParameter("httperror", hasHttpError);
@@ -256,22 +220,4 @@ public class CcdaValidationDAOImpl implements CcdaValidationDAO {
 	
 	}
 	
-	
-	
-	
-	
-
-	public EntityManager getEntityManager() {
-		return entityManager;
-	}
-
-	public void setEntityManager(EntityManager entityManager) {
-		this.entityManager = entityManager;
-	}
-
-	
-	
-	
-	
-
 }
