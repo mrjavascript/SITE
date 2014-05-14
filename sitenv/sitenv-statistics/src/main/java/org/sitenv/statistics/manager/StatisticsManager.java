@@ -1,5 +1,9 @@
 package org.sitenv.statistics.manager;
 
+import java.util.List;
+
+import org.sitenv.statistics.dto.PdtiTestCase;
+
 public interface StatisticsManager {
 
 	public static final Integer QRDA_CATEGORY_I = new Integer(1);
@@ -30,5 +34,23 @@ public interface StatisticsManager {
 	public Long getWarningQrdaValidationCount(Integer category, Integer numOfDays);
 	public Long getTotalQrdaValidationCount(Integer category, Integer numOfDays);
 	public Long getHttpErrorQrdaValidationCount(Integer category, Integer numOfDays);
+	
+	
+	
+	public void addDirectReceive(Boolean uploaded, Boolean precanned, Boolean hasErrors);
+	public void addDirectTrustUpload(Boolean hasErrors);
+	public Long getSuccessfulDirectReceiveCount(Integer numOfDays);
+	public Long getFailedDirectReceiveCount(Integer numOfDays);
+	public Long getSuccessfulPrecannedDirectReceiveCount(Integer numOfDays);
+	public Long getSuccessfulUploadedDirectReceiveCount(Integer numOfDays);
+	public Long getSuccessfulTrustAnchorUploadCount(Integer numOfDays);
+	public Long getFailedTrustAnchorUploadCount(Integer numOfDays);
+	
+	
+	public void addPdtiTest(List<PdtiTestCase> testCases);
+	public Long getSuccessfulPdtiTestCount(Integer numOfDays);
+	public Long getFailedPdtiTestCount(Integer numOfDays);
+	public Long getTotalPdtiTestCount(Integer numOfDays);
+	public Long getHttpErrorPdtiTestCount(Integer numOfDays);
 	
 }

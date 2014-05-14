@@ -12,6 +12,10 @@
 		<class>org.sitenv.statistics.entity.SmartCcdaValidationEntity</class>
 		<class>org.sitenv.statistics.entity.CcdaDownloadEntity</class>
 		<class>org.sitenv.statistics.entity.QrdaValidationEntity</class>
+		<class>org.sitenv.statistics.entity.DirectReceiveEntity</class>
+		<class>org.sitenv.statistics.entity.DirectTrustUploadEntity</class>
+		<class>org.sitenv.statistics.entity.PdtiTestCaseEntity</class>
+		<class>org.sitenv.statistics.entity.PdtiTestGroupEntity</class>
 		<properties>
 			<property name="hibernate.show_sql" value="true" />
 			<property name="hibernate.format_sql" value="true" />

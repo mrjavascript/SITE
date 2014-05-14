@@ -1,7 +1,12 @@
 package org.sitenv.statistics.manager.impl;
 
+import java.util.List;
+
 import org.sitenv.statistics.dao.CcdaValidationDAO;
+import org.sitenv.statistics.dao.DirectTransmissionDAO;
+import org.sitenv.statistics.dao.PdtiTestDAO;
 import org.sitenv.statistics.dao.QrdaValidationDAO;
+import org.sitenv.statistics.dto.PdtiTestCase;
 import org.sitenv.statistics.manager.StatisticsManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +20,12 @@ public class StatisticsManagerImpl implements StatisticsManager {
 	
 	@Autowired
 	private QrdaValidationDAO qrdaValidationDAO;
+	
+	@Autowired
+	private DirectTransmissionDAO directTransmissionDAO;
+	
+	@Autowired
+	private PdtiTestDAO pdtiTestDAO;
 	
 	@Transactional
 	public void addCcdaValidation(Boolean hasErrors, Boolean hasWarnings,
@@ -130,6 +141,83 @@ public class StatisticsManagerImpl implements StatisticsManager {
 	}
 	
 	
+	@Transactional
+	public void addDirectReceive(Boolean uploaded, Boolean precanned,
+			Boolean hasErrors) {
+		directTransmissionDAO.createDirectReceive(precanned, uploaded, hasErrors);
+		
+	}
+	
+	@Transactional
+	public void addDirectTrustUpload(Boolean hasErrors) {
+		directTransmissionDAO.createDirectTrustUpload(hasErrors);
+	}
+
+	@Transactional
+	public Long getSuccessfulDirectReceiveCount(Integer numOfDays) {
+		
+		return directTransmissionDAO.getDirectReceiveCount(false, numOfDays);
+		
+	}
+
+	@Transactional
+	public Long getFailedDirectReceiveCount(Integer numOfDays) {
+		return directTransmissionDAO.getDirectReceiveCount(true, numOfDays);
+	}
+
+	@Transactional
+	public Long getSuccessfulPrecannedDirectReceiveCount(Integer numOfDays) {
+		return directTransmissionDAO.getDirectReceivePrecannedCount(true, false, numOfDays);
+	}
+
+	@Transactional
+	public Long getSuccessfulUploadedDirectReceiveCount(Integer numOfDays) {
+		return directTransmissionDAO.getDirectReceiveUploadCount(true, false, numOfDays);
+	}
+
+	@Transactional
+	public Long getSuccessfulTrustAnchorUploadCount(Integer numOfDays) {
+		return directTransmissionDAO.getDirectTrustUploadCount(false, numOfDays);
+		
+	}
+
+	@Transactional
+	public Long getFailedTrustAnchorUploadCount(Integer numOfDays) {
+		return directTransmissionDAO.getDirectTrustUploadCount(true, numOfDays);
+		
+	}
+	
+	
+	
+	
+	
+	@Transactional
+	public void addPdtiTest(List<PdtiTestCase> testCases) {
+		pdtiTestDAO.createPdtiTest(testCases);
+		
+	}
+
+	@Transactional
+	public Long getSuccessfulPdtiTestCount(Integer numOfDays) {
+		return pdtiTestDAO.getPdtiTestCaseCount(null, true, numOfDays);
+	}
+
+	@Transactional
+	public Long getFailedPdtiTestCount(Integer numOfDays) {
+		return pdtiTestDAO.getPdtiTestCaseCount(null, false, numOfDays);
+	}
+
+	@Transactional
+	public Long getTotalPdtiTestCount(Integer numOfDays) {
+		return pdtiTestDAO.getPdtiTestCaseCount(null, null, numOfDays);
+	}
+
+	@Transactional
+	public Long getHttpErrorPdtiTestCount(Integer numOfDays) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	public CcdaValidationDAO getCcdaValidationDAO() {
 		return ccdaValidationDAO;
 	}
@@ -145,6 +233,24 @@ public class StatisticsManagerImpl implements StatisticsManager {
 	public void setQrdaValidationDAO(QrdaValidationDAO qrdaValidationDAO) {
 		this.qrdaValidationDAO = qrdaValidationDAO;
 	}
+
+	public DirectTransmissionDAO getDirectTransmissionDAO() {
+		return directTransmissionDAO;
+	}
+
+	public void setDirectTransmissionDAO(DirectTransmissionDAO directTransmissionDAO) {
+		this.directTransmissionDAO = directTransmissionDAO;
+	}
+
+	public PdtiTestDAO getPdtiTestDAO() {
+		return pdtiTestDAO;
+	}
+
+	public void setPdtiTestDAO(PdtiTestDAO pdtiTestDAO) {
+		this.pdtiTestDAO = pdtiTestDAO;
+	}
+
+	
 
 	
 

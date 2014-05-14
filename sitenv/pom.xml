@@ -102,5 +102,6 @@
     	<module>sitenv-responsivebootstrap-portlet-layouttpl</module>
     	<module>sitenv-statistics</module>
     	<module>sitenv-statistics-portlet</module>
-	</modules>
+    <module>sitenv-providerdirectory-servlet</module>
+  </modules>
 </project>

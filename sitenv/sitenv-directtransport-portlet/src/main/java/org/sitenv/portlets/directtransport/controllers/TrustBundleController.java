@@ -36,6 +36,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.nhindirect.trustbundle.core.CreateUnSignedPKCS7;
 import org.sitenv.common.utilities.controller.BaseController;
+import org.sitenv.statistics.manager.StatisticsManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -60,6 +61,9 @@ public class TrustBundleController extends BaseController {
 
 	@Autowired
 	private PortletContext portletContext;
+	
+	@Autowired
+	private StatisticsManager statisticsManager;
 
 	private JSONArray fileJson = null;
 	private JSONObject result = null;
@@ -244,6 +248,7 @@ public class TrustBundleController extends BaseController {
 				uploadSuccess = true;
 
 			} catch (FileUploadException e) {
+				
 				if (e.getMessage().endsWith("bytes.")) {
 					errorMsg = "Maxiumum file size exceeeded. "
 							+ "Please return to the previous page and select a file that is less than "
@@ -254,6 +259,7 @@ public class TrustBundleController extends BaseController {
 				}
 				logger.error(errorMsg, e);
 			} catch (Exception e) {
+				
 				errorMsg = "Failed to upload your certificate due to error: "
 						+ e.getMessage();
 				logger.error(errorMsg, e);
@@ -278,19 +284,28 @@ public class TrustBundleController extends BaseController {
 				}
 
 				if (errorMsg != null) {
+					
 					result.put("IsSuccess", "false");
 					result.put("ErrorMessage", errorMsg);
+					
+					statisticsManager.addDirectTrustUpload(true);
 				} else {
+					
 					result.put("IsSuccess", "true");
 					result.put(
 							"ErrorMessage",
 							"Upload succeeded, it may take up to five minutes for the server to receive your trust anchor.(Click to hide this message)");
+					
+					statisticsManager.addDirectTrustUpload(false);
 				}
 			} else {
+				
 				result.put("IsSuccess", "false");
 				result.put("ErrorMessage", errorMsg);
+				statisticsManager.addDirectTrustUpload(true);
 			}
 		} catch (JSONException e) {
+			statisticsManager.addDirectTrustUpload(true);
 			throw new RuntimeException(e);
 		}
 	}
@@ -318,5 +333,14 @@ public class TrustBundleController extends BaseController {
 		return generator.getParameters(anchorDir, "Select Meta Data File",
 				file.getParent(), file.getName());
 	}
+
+	public StatisticsManager getStatisticsManager() {
+		return statisticsManager;
+	}
+
+	public void setStatisticsManager(StatisticsManager statisticsManager) {
+		this.statisticsManager = statisticsManager;
+	}
+	
 
 }
