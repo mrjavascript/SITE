@@ -4,7 +4,26 @@
 
 -- Dumped from database version 9.3.0
 -- Dumped by pg_dump version 9.3.1
--- Started on 2014-05-14 12:35:27 EDT
+-- Started on 2014-05-14 12:47:29 EDT
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- TOC entry 2303 (class 1262 OID 47289)
+-- Name: site_statistics; Type: DATABASE; Schema: -; Owner: LifeRaySys
+--
+
+CREATE DATABASE site_statistics WITH TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 'en_US.UTF-8' LC_CTYPE = 'en_US.UTF-8';
+
+
+ALTER DATABASE site_statistics OWNER TO "LifeRaySys";
+
+\connect site_statistics
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -22,7 +41,7 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 
 --
--- TOC entry 2323 (class 0 OID 0)
+-- TOC entry 2306 (class 0 OID 0)
 -- Dependencies: 187
 -- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
 --
@@ -65,7 +84,7 @@ CREATE SEQUENCE ccda_download_download_pk_seq
 ALTER TABLE public.ccda_download_download_pk_seq OWNER TO "LifeRaySys";
 
 --
--- TOC entry 2324 (class 0 OID 0)
+-- TOC entry 2307 (class 0 OID 0)
 -- Dependencies: 175
 -- Name: ccda_download_download_pk_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: LifeRaySys
 --
@@ -106,7 +125,7 @@ CREATE SEQUENCE ccda_validations_validation_pk_seq
 ALTER TABLE public.ccda_validations_validation_pk_seq OWNER TO "LifeRaySys";
 
 --
--- TOC entry 2325 (class 0 OID 0)
+-- TOC entry 2308 (class 0 OID 0)
 -- Dependencies: 171
 -- Name: ccda_validations_validation_pk_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: LifeRaySys
 --
@@ -146,7 +165,7 @@ CREATE SEQUENCE direct_receive_directreceive_pk_seq
 ALTER TABLE public.direct_receive_directreceive_pk_seq OWNER TO "LifeRaySys";
 
 --
--- TOC entry 2326 (class 0 OID 0)
+-- TOC entry 2309 (class 0 OID 0)
 -- Dependencies: 179
 -- Name: direct_receive_directreceive_pk_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: LifeRaySys
 --
@@ -184,7 +203,7 @@ CREATE SEQUENCE direct_trustupload_directtrust_pk_seq
 ALTER TABLE public.direct_trustupload_directtrust_pk_seq OWNER TO "LifeRaySys";
 
 --
--- TOC entry 2327 (class 0 OID 0)
+-- TOC entry 2310 (class 0 OID 0)
 -- Dependencies: 181
 -- Name: direct_trustupload_directtrust_pk_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: LifeRaySys
 --
@@ -236,7 +255,7 @@ CREATE SEQUENCE pdti_testcasegroup_group_pk_seq
 ALTER TABLE public.pdti_testcasegroup_group_pk_seq OWNER TO "LifeRaySys";
 
 --
--- TOC entry 2328 (class 0 OID 0)
+-- TOC entry 2311 (class 0 OID 0)
 -- Dependencies: 183
 -- Name: pdti_testcasegroup_group_pk_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: LifeRaySys
 --
@@ -277,7 +296,7 @@ CREATE SEQUENCE pdti_testcases_testcase_pk_seq
 ALTER TABLE public.pdti_testcases_testcase_pk_seq OWNER TO "LifeRaySys";
 
 --
--- TOC entry 2329 (class 0 OID 0)
+-- TOC entry 2312 (class 0 OID 0)
 -- Dependencies: 185
 -- Name: pdti_testcases_testcase_pk_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: LifeRaySys
 --
@@ -319,7 +338,7 @@ CREATE SEQUENCE qrda_validations_validation_pk_seq
 ALTER TABLE public.qrda_validations_validation_pk_seq OWNER TO "LifeRaySys";
 
 --
--- TOC entry 2330 (class 0 OID 0)
+-- TOC entry 2313 (class 0 OID 0)
 -- Dependencies: 177
 -- Name: qrda_validations_validation_pk_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: LifeRaySys
 --
@@ -357,7 +376,7 @@ CREATE SEQUENCE smartccda_validations_smartvalidation_pk_seq
 ALTER TABLE public.smartccda_validations_smartvalidation_pk_seq OWNER TO "LifeRaySys";
 
 --
--- TOC entry 2331 (class 0 OID 0)
+-- TOC entry 2314 (class 0 OID 0)
 -- Dependencies: 173
 -- Name: smartccda_validations_smartvalidation_pk_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: LifeRaySys
 --
@@ -427,233 +446,6 @@ ALTER TABLE ONLY qrda_validations ALTER COLUMN validation_pk SET DEFAULT nextval
 --
 
 ALTER TABLE ONLY smartccda_validations ALTER COLUMN smartvalidation_pk SET DEFAULT nextval('smartccda_validations_smartvalidation_pk_seq'::regclass);
-
-
---
--- TOC entry 2305 (class 0 OID 47340)
--- Dependencies: 176
--- Data for Name: ccda_download; Type: TABLE DATA; Schema: public; Owner: LifeRaySys
---
-
-COPY ccda_download (download_pk, download_time) FROM stdin;
-1	2014-04-22 11:34:43.846263
-2	2014-04-24 11:06:00.209532
-\.
-
-
---
--- TOC entry 2332 (class 0 OID 0)
--- Dependencies: 175
--- Name: ccda_download_download_pk_seq; Type: SEQUENCE SET; Schema: public; Owner: LifeRaySys
---
-
-SELECT pg_catalog.setval('ccda_download_download_pk_seq', 2, true);
-
-
---
--- TOC entry 2301 (class 0 OID 47318)
--- Dependencies: 172
--- Data for Name: ccda_validations; Type: TABLE DATA; Schema: public; Owner: LifeRaySys
---
-
-COPY ccda_validations (validation_pk, validation_time, validation_errors, validation_warnings, validation_info, validation_httperror) FROM stdin;
-2	2014-04-22 11:34:03.904435	t	t	t	f
-3	2014-04-22 12:06:55.517731	t	t	t	f
-4	2014-04-22 12:07:04.723363	t	t	t	f
-5	2014-04-22 12:51:51.609632	t	t	t	f
-6	2014-04-23 14:34:51.554417	t	t	t	f
-7	2014-04-23 15:15:42.611846	f	f	f	f
-8	2014-04-24 09:16:56.212775	f	f	f	f
-9	2014-04-24 09:42:24.914464	f	f	f	f
-10	2014-04-24 09:43:44.949173	f	f	f	f
-11	2014-04-24 09:44:10.754724	f	f	f	f
-12	2014-04-24 09:52:44.902022	t	t	t	f
-13	2014-04-24 09:55:34.001231	f	f	t	f
-14	2014-04-24 10:18:54.863735	f	f	t	f
-15	2014-04-24 10:25:40.834755	f	f	f	t
-16	2014-04-24 10:33:18.018035	f	f	t	f
-17	2014-04-24 10:37:28.399763	f	f	t	f
-18	2014-04-24 10:39:45.39788	f	t	t	f
-19	2014-04-24 10:40:23.906377	f	t	t	f
-20	2014-04-24 11:05:06.429791	f	t	t	f
-21	2014-04-29 18:53:28.177283	f	t	t	f
-22	2014-04-29 19:17:03.661101	f	t	t	f
-23	2014-05-06 13:30:00.931162	t	t	t	f
-\.
-
-
---
--- TOC entry 2333 (class 0 OID 0)
--- Dependencies: 171
--- Name: ccda_validations_validation_pk_seq; Type: SEQUENCE SET; Schema: public; Owner: LifeRaySys
---
-
-SELECT pg_catalog.setval('ccda_validations_validation_pk_seq', 23, true);
-
-
---
--- TOC entry 2309 (class 0 OID 55561)
--- Dependencies: 180
--- Data for Name: direct_receive; Type: TABLE DATA; Schema: public; Owner: LifeRaySys
---
-
-COPY direct_receive (directreceive_pk, directreceive_time, directreceive_errors, directreceive_precanned, directreceive_uploaded) FROM stdin;
-1	2014-05-06 13:24:59.95019	f	t	f
-2	2014-05-06 13:25:48.635127	f	f	t
-\.
-
-
---
--- TOC entry 2334 (class 0 OID 0)
--- Dependencies: 179
--- Name: direct_receive_directreceive_pk_seq; Type: SEQUENCE SET; Schema: public; Owner: LifeRaySys
---
-
-SELECT pg_catalog.setval('direct_receive_directreceive_pk_seq', 2, true);
-
-
---
--- TOC entry 2311 (class 0 OID 55570)
--- Dependencies: 182
--- Data for Name: direct_trustupload; Type: TABLE DATA; Schema: public; Owner: LifeRaySys
---
-
-COPY direct_trustupload (directtrust_pk, directtrust_time, directtrust_errors) FROM stdin;
-1	2014-05-06 13:24:13.868671	f
-\.
-
-
---
--- TOC entry 2335 (class 0 OID 0)
--- Dependencies: 181
--- Name: direct_trustupload_directtrust_pk_seq; Type: SEQUENCE SET; Schema: public; Owner: LifeRaySys
---
-
-SELECT pg_catalog.setval('direct_trustupload_directtrust_pk_seq', 1, true);
-
-
---
--- TOC entry 2336 (class 0 OID 0)
--- Dependencies: 170
--- Name: hibernate_sequence; Type: SEQUENCE SET; Schema: public; Owner: LifeRaySys
---
-
-SELECT pg_catalog.setval('hibernate_sequence', 19, true);
-
-
---
--- TOC entry 2313 (class 0 OID 55585)
--- Dependencies: 184
--- Data for Name: pdti_testcasegroup; Type: TABLE DATA; Schema: public; Owner: LifeRaySys
---
-
-COPY pdti_testcasegroup (group_pk, group_time) FROM stdin;
-1	2014-05-13 20:35:54.692001
-11	2014-05-13 21:02:20.435211
-12	2014-05-13 21:02:33.559356
-13	2014-05-13 21:04:28.365311
-14	2014-05-13 21:04:49.108689
-\.
-
-
---
--- TOC entry 2337 (class 0 OID 0)
--- Dependencies: 183
--- Name: pdti_testcasegroup_group_pk_seq; Type: SEQUENCE SET; Schema: public; Owner: LifeRaySys
---
-
-SELECT pg_catalog.setval('pdti_testcasegroup_group_pk_seq', 14, true);
-
-
---
--- TOC entry 2315 (class 0 OID 55596)
--- Dependencies: 186
--- Data for Name: pdti_testcases; Type: TABLE DATA; Schema: public; Owner: LifeRaySys
---
-
-COPY pdti_testcases (testcase_pk, testcase_time, testcase_name, testcase_pass, testcase_httperror, testcase_group) FROM stdin;
-7	2014-05-13 21:02:20.435211	search_provider_by_name	t	f	11
-8	2014-05-13 21:02:33.559356	search_provider_by_name	t	f	12
-9	2014-05-13 21:02:33.559356	search_org_by_id	t	f	12
-10	2014-05-13 21:02:33.559356	search_membership_by_provider	t	f	12
-11	2014-05-13 21:02:33.559356	search_service_by_id	t	f	12
-12	2014-05-13 21:02:33.559356	search_credential_by_id	t	f	12
-13	2014-05-13 21:02:33.559356	Find_Individual	t	f	12
-14	2014-05-13 21:02:33.559356	Find_Unique_Individual	t	f	12
-15	2014-05-13 21:02:33.559356	Find_Organization	t	f	12
-16	2014-05-13 21:02:33.559356	Find_Unique_Organization	t	f	12
-17	2014-05-13 21:02:33.559356	Find_Organizations_for_Unique_Individual	t	f	12
-18	2014-05-13 21:02:33.559356	Find_Individuals_for_Unique_Organization	t	f	12
-19	2014-05-13 21:02:33.559356	Find_Individuals_and_Organizations	t	f	12
-20	2014-05-13 21:02:33.559356	dup_req_id_federation_loop_test_hpdplus	t	f	12
-21	2014-05-13 21:04:28.365311	search_provider_by_name	t	f	13
-22	2014-05-13 21:04:49.108689	search_provider_by_name	t	f	14
-23	2014-05-13 21:04:49.108689	search_org_by_id	t	f	14
-24	2014-05-13 21:04:49.108689	search_membership_by_provider	t	f	14
-25	2014-05-13 21:04:49.108689	search_service_by_id	t	f	14
-26	2014-05-13 21:04:49.108689	search_credential_by_id	t	f	14
-27	2014-05-13 21:04:49.108689	Find_Individual	t	f	14
-28	2014-05-13 21:04:49.108689	Find_Unique_Individual	t	f	14
-29	2014-05-13 21:04:49.108689	Find_Organization	t	f	14
-30	2014-05-13 21:04:49.108689	Find_Unique_Organization	t	f	14
-31	2014-05-13 21:04:49.108689	Find_Organizations_for_Unique_Individual	t	f	14
-32	2014-05-13 21:04:49.108689	Find_Individuals_for_Unique_Organization	t	f	14
-33	2014-05-13 21:04:49.108689	Find_Individuals_and_Organizations	t	f	14
-34	2014-05-13 21:04:49.108689	dup_req_id_federation_loop_test_hpdplus	t	f	14
-\.
-
-
---
--- TOC entry 2338 (class 0 OID 0)
--- Dependencies: 185
--- Name: pdti_testcases_testcase_pk_seq; Type: SEQUENCE SET; Schema: public; Owner: LifeRaySys
---
-
-SELECT pg_catalog.setval('pdti_testcases_testcase_pk_seq', 34, true);
-
-
---
--- TOC entry 2307 (class 0 OID 47370)
--- Dependencies: 178
--- Data for Name: qrda_validations; Type: TABLE DATA; Schema: public; Owner: LifeRaySys
---
-
-COPY qrda_validations (validation_pk, validation_time, validation_schemaerrors, validation_schematronwarnings, validation_category, validation_httperror, validation_schematronerrors) FROM stdin;
-1	2014-04-29 18:53:55.171748	f	t	1	f	t
-2	2014-04-29 19:47:26.353934	f	t	1	f	t
-3	2014-05-13 14:39:23.499545	f	f	1	f	f
-4	2014-05-13 14:54:41.691532	f	f	1	f	f
-\.
-
-
---
--- TOC entry 2339 (class 0 OID 0)
--- Dependencies: 177
--- Name: qrda_validations_validation_pk_seq; Type: SEQUENCE SET; Schema: public; Owner: LifeRaySys
---
-
-SELECT pg_catalog.setval('qrda_validations_validation_pk_seq', 4, true);
-
-
---
--- TOC entry 2303 (class 0 OID 47331)
--- Dependencies: 174
--- Data for Name: smartccda_validations; Type: TABLE DATA; Schema: public; Owner: LifeRaySys
---
-
-COPY smartccda_validations (smartvalidation_pk, smartvalidation_time, smartvalidation_httperror) FROM stdin;
-1	2014-04-22 11:34:34.902156	f
-2	2014-04-24 11:05:32.772952	f
-\.
-
-
---
--- TOC entry 2340 (class 0 OID 0)
--- Dependencies: 173
--- Name: smartccda_validations_smartvalidation_pk_seq; Type: SEQUENCE SET; Schema: public; Owner: LifeRaySys
---
-
-SELECT pg_catalog.setval('smartccda_validations_smartvalidation_pk_seq', 2, true);
 
 
 --
@@ -946,7 +738,7 @@ ALTER TABLE ONLY pdti_testcases
 
 
 --
--- TOC entry 2322 (class 0 OID 0)
+-- TOC entry 2305 (class 0 OID 0)
 -- Dependencies: 5
 -- Name: public; Type: ACL; Schema: -; Owner: chris
 --
@@ -957,7 +749,7 @@ GRANT ALL ON SCHEMA public TO chris;
 GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
--- Completed on 2014-05-14 12:35:28 EDT
+-- Completed on 2014-05-14 12:47:30 EDT
 
 --
 -- PostgreSQL database dump complete
