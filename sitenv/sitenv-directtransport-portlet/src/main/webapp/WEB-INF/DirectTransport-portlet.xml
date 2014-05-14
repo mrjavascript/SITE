@@ -19,7 +19,29 @@
 		class="org.springframework.web.portlet.mvc.annotation.AnnotationMethodHandlerAdapter" />
 
 
-	<context:component-scan base-package="org.sitenv.portlets.directtransport" />
+	<bean class="org.springframework.web.portlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>
+
+    <bean class="org.springframework.web.portlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+    	<property name="webBindingInitializer">
+             <bean class="org.springframework.web.bind.support.ConfigurableWebBindingInitializer"/>
+        </property>
+    </bean>
+    
+    <!--context:property-placeholder location="classpath:db.properties" / -->
+	<context:annotation-config />
+	<context:component-scan base-package="org.sitenv" />
+	
+	<tx:annotation-driven transaction-manager="transactionManager"
+		proxy-target-class="true" />
+
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean">
+		<property name="persistenceUnitName" value="statistics" />
+	</bean>
+
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
 
 	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver"
 		p:order="1" />

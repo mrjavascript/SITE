@@ -14,19 +14,15 @@
  */
 --%>
 
-<%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
-<%@ taglib uri="http://liferay.com/tld/aui" prefix="aui" %>
-
-<%@ page import="javax.portlet.PortletSession" %>
+<%@ page import="javax.servlet.http.HttpSession" %>
 <%@ page import="java.util.List" %>
-<%@ page import="org.sitenv.portlets.singletest.TestCaseResultWrapper" %>
-<%@ page import="org.sitenv.portlets.singletest.SingleTestPortlet" %>
+<%@ page import="org.sitenv.servlets.providerdirectory.TestCaseResultWrapper" %>
+<%@ page import="org.sitenv.servlets.providerdirectory.SingleTestServlet" %>
 
-<portlet:defineObjects />
 
 <%
     HttpSession ps = request.getSession();
-    List<TestCaseResultWrapper> testResultList = (List<TestCaseResultWrapper>)ps.getAttribute("LIFERAY_SHARED_resultList");
+    List<TestCaseResultWrapper> testResultList = (List<TestCaseResultWrapper>)ps.getAttribute("resultList");
     
     if (testResultList != null) {
     	String accordionAttrs = "";
@@ -53,7 +49,7 @@
     	<span class="glyphicon glyphicon-remove"></span>
     	<% } %>
       	<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion<%=i%>" href="#collapse<%=i%>">
-       		<%= SingleTestPortlet.testCaseRealNames.get(wrapper.getName()) %> 
+       		<%= SingleTestServlet.testCaseRealNames.get(wrapper.getName()) %> 
        		<span class="label <%= (wrapper.getStatus().equals("PASSED")) ? "label-success" : "label-danger" %>" style="float: right; padding: .4em .6em .3em; width: 75px;"><%= wrapper.getStatus() %></span>
 		</a>
     </h3>

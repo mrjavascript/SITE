@@ -21,13 +21,10 @@
 
 <portlet:defineObjects />
 
-<portlet:resourceURL var="runTestsUrl">
-    <portlet:param name="mvcPath" value="/view.jsp" />
-</portlet:resourceURL>
 
 
 <script type="text/javascript">
-	window.runTestsUrl = "<%=runTestsUrl%>";
+	window.runTestsUrl = "/sitenv-providerdirectory-servlet/GetPDGISingleTest";
 
 	window.currentContextPath = "<%=request.getContextPath()%>";
 </script>
@@ -41,7 +38,7 @@
      <p>To execute test cases against your provider directory server implementation, please enter the publicly available WSDL URL for your PD endpoint, enter the base DN for your PD implementation, and select the test case that you wish to execute.<br/><br/>Please note: the test cases may take up to one minute to run.</p>
       	
 <div class="well">
-  <form action="<%= runTestsUrl %>" name="testForm" method="post" id="providerDirectoryTestForm">
+  <form action="/sitenv-providerdirectory-servlet/GetPDGISingleTest" name="testForm" method="post" id="providerDirectoryTestForm">
       
 <p>
 	  <label for="endpointUrl">Enter Your Endpoint URL:</label>

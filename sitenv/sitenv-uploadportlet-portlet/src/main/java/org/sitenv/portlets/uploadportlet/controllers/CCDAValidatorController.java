@@ -23,6 +23,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.sitenv.common.utilities.controller.BaseController;
+import org.sitenv.statistics.manager.StatisticsManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,6 +40,9 @@ public class CCDAValidatorController extends BaseController {
 
 	private JSONArray fileJson;
 	private String refinedResponseBody;
+	
+	@Autowired
+	private StatisticsManager statisticsManager;
 
 	@ActionMapping(params = "javax.portlet.action=uploadCCDA")
 	public void response(MultipartActionRequest request, ActionResponse response) throws IOException {
@@ -83,25 +88,54 @@ public class CCDAValidatorController extends BaseController {
 				
 				
 				post.setEntity(entity);
-
+				
 				HttpResponse relayResponse = client.execute(post);
 				//create the handler
 				ResponseHandler<String> handler = new BasicResponseHandler();
 				
 				int code = relayResponse.getStatusLine().getStatusCode();
 				
+				
 				if(code!=200) 
 				{
 					//do the error handling.
-				}
+					statisticsManager.addCcdaValidation(false, false, false, true);
+				} 
+				else
+				{
+					boolean hasErrors = true, hasWarnings = true, hasInfo = true;
+					
+					String body = handler.handleResponse(relayResponse);
+					
+					Document doc = Jsoup.parseBodyFragment(body);
+					
+					String bodyText = doc.text();
+					
+					if (!bodyText.matches("(?s).*?(The)\\s*(file)\\s*(has)\\s*(encountered)\\s*\\d*\\s*(error).*?"))
+					{
+						hasErrors = false;
+					}
+					if (!bodyText.matches("(?s).*?(The)\\s*(file)\\s*(has)\\s*(encountered)\\s*\\d*\\s*(warning).*?") &&
+							!bodyText.matches("(?s).*?(The)\\s*(file)\\s*(does)\\s*(contain)\\s*\\d*\\s*(warning).*?"))
+					{
+						hasWarnings = false;
+					}
+					if (!bodyText.matches("(?s).*?(The)\\s*(file)\\s*(has)\\s*(encountered)\\s*\\d*\\s*(info).*?"))
+					{
+						hasInfo = false;
+					}
+					
+					
+					Element bodyElm = doc.body();
+					refinedResponseBody = bodyElm.toString();
+					
+					statisticsManager.addCcdaValidation(hasErrors, hasWarnings, hasInfo, false);
+				}				
 				
-				String body = handler.handleResponse(relayResponse);
-				
-				Document doc = Jsoup.parseBodyFragment(body);
-				Element bodyElm = doc.body();
-				refinedResponseBody = bodyElm.toString();
 
 		} catch (Exception e) {
+			statisticsManager.addCcdaValidation(false, false, false, true);
+			
 			throw new RuntimeException(e);
 		} 
 		
@@ -131,5 +165,17 @@ public class CCDAValidatorController extends BaseController {
 
 		return modelAndView;
 	}
+
+	public StatisticsManager getStatisticsManager() {
+		return statisticsManager;
+	}
+
+	public void setStatisticsManager(StatisticsManager statisticsManager) {
+		this.statisticsManager = statisticsManager;
+	}
+
+	
+	
+	
 
 }

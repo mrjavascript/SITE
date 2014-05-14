@@ -12,6 +12,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.jsoup.Jsoup;
 import org.sitenv.common.utilities.controller.BaseController;
+import org.sitenv.statistics.manager.StatisticsManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
@@ -24,6 +26,9 @@ import com.liferay.portal.kernel.servlet.HttpHeaders;
 @RequestMapping("VIEW")
 public class DownloadCCDAController extends BaseController {
 
+	@Autowired
+	private StatisticsManager statisticsManager;
+	
 	@ResourceMapping("saveAsPDF")
 	public void serveResource(ResourceRequest resourceRequest, ResourceResponse res) throws PortletException, IOException {
 
@@ -101,10 +106,20 @@ public class DownloadCCDAController extends BaseController {
 		
 		out.close();
 		
+		statisticsManager.addCcdaDownload();
+		
 		}catch (Exception ex) {
 			ex.printStackTrace();
 		}
 
+	}
+
+	public StatisticsManager getStatisticsManager() {
+		return statisticsManager;
+	}
+
+	public void setStatisticsManager(StatisticsManager statisticsManager) {
+		this.statisticsManager = statisticsManager;
 	}
 
 	
