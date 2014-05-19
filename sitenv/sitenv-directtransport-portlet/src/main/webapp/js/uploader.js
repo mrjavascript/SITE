@@ -38,6 +38,8 @@ $(function() {
 	            });
         		
         	}
+        	
+        	Liferay.Portlet.refresh("#p_p_id_sitenvstatisticsportlet_WAR_sitenvstatisticsportlet_"); // refresh the counts
 
 			window.setTimeout(function() {
 				$('#anchoruploadprogress').fadeOut(400, function() {
@@ -168,6 +170,8 @@ $(function() {
 	            });
         		
         	}
+        	
+        	Liferay.Portlet.refresh("#p_p_id_sitenvstatisticsportlet_WAR_sitenvstatisticsportlet_"); // refresh the counts
 
 			window.setTimeout(function() {
 				$('#ccdauploadprogress').fadeOut(400, function() {

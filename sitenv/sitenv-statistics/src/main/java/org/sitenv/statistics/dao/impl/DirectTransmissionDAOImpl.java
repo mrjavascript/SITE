@@ -121,7 +121,7 @@ public class DirectTransmissionDAOImpl extends BaseDAOImpl implements DirectTran
 		} else {
 			if (numOfDays == null) {
 
-				Query query = entityManager.createQuery("SELECT COUNT(t) FROM org.sitenv.statistics.entity.DirectReceiveEntity t WHERE t.errors = :boolval and t.upload = :upload");
+				Query query = entityManager.createQuery("SELECT COUNT(t) FROM org.sitenv.statistics.entity.DirectReceiveEntity t WHERE t.errors = :boolval and t.uploaded = :upload");
 				
 				query.setParameter("boolval", hasErrors);
 				query.setParameter("upload", upload);
@@ -134,7 +134,7 @@ public class DirectTransmissionDAOImpl extends BaseDAOImpl implements DirectTran
 				Date pastDate = this.getPreviousDate(currentDbDate, numOfDays);
 
 				Query query = entityManager
-						.createQuery("SELECT COUNT(t) FROM org.sitenv.statistics.entity.DirectReceiveEntity t WHERE t.errors = :boolval AND t.timestamp < :currentDate AND t.timestamp > :prevDate AND t.upload = :upload");
+						.createQuery("SELECT COUNT(t) FROM org.sitenv.statistics.entity.DirectReceiveEntity t WHERE t.errors = :boolval AND t.timestamp < :currentDate AND t.timestamp > :prevDate AND t.uploaded = :upload");
 				query.setParameter("boolval", hasErrors);
 				query.setParameter("currentDate", currentDbDate);
 				query.setParameter("prevDate", pastDate);

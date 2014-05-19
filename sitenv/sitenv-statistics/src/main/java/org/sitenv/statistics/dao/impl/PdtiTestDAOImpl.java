@@ -49,7 +49,7 @@ public class PdtiTestDAOImpl extends BaseDAOImpl implements PdtiTestDAO {
 			{
 				if (numOfDays == null) {
 					
-					count = (Long) entityManager.createQuery("SELECT COUNT(t) FROM org.sitenv.statistics.entity.PdtiTestCaseEntity t WHERE t.httpError = false").setParameter("boolval", pass).getSingleResult();
+					count = (Long) entityManager.createQuery("SELECT COUNT(t) FROM org.sitenv.statistics.entity.PdtiTestCaseEntity t WHERE t.httpError = false").getSingleResult();
 					
 				} else {
 					
@@ -57,7 +57,6 @@ public class PdtiTestDAOImpl extends BaseDAOImpl implements PdtiTestDAO {
 					Date pastDate = this.getPreviousDate(currentDbDate, numOfDays);
 					
 					Query query = entityManager.createQuery("SELECT COUNT(t) FROM org.sitenv.statistics.entity.PdtiTestCaseEntity t WHERE t.timestamp < :currentDate AND t.timestamp > :prevDate AND t.httpError = false");
-					query.setParameter("boolval", pass);
 					query.setParameter("currentDate", currentDbDate);
 					query.setParameter("prevDate", pastDate);
 					
@@ -69,7 +68,6 @@ public class PdtiTestDAOImpl extends BaseDAOImpl implements PdtiTestDAO {
 				if (numOfDays == null) {
 					
 					Query query = entityManager.createQuery("SELECT COUNT(t) FROM org.sitenv.statistics.entity.PdtiTestCaseEntity t WHERE t.testCaseName = :testCaseName AND t.httpError = false");
-					query.setParameter("boolval", pass).getSingleResult();
 					query.setParameter("testCaseName", testcaseName).getSingleResult();
 					count = (Long) query.getSingleResult();
 					
@@ -79,7 +77,6 @@ public class PdtiTestDAOImpl extends BaseDAOImpl implements PdtiTestDAO {
 					Date pastDate = this.getPreviousDate(currentDbDate, numOfDays);
 					
 					Query query = entityManager.createQuery("SELECT COUNT(t) FROM org.sitenv.statistics.entity.PdtiTestCaseEntity t WHERE AND t.testCaseName = :testCaseName AND t.timestamp < :currentDate AND t.timestamp > :prevDate AND t.httpError = false");
-					query.setParameter("boolval", pass);
 					query.setParameter("testCaseName", testcaseName).getSingleResult();
 					query.setParameter("currentDate", currentDbDate);
 					query.setParameter("prevDate", pastDate);
