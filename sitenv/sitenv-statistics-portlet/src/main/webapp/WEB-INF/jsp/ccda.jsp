@@ -18,23 +18,20 @@
 
 <portlet:defineObjects />
 
-<div class="jumbotron">
-	<h1>
-		C-CDA Validator</h1>
-	<hr />
-	<div class="row">
-	<div class="col-md-4 col-md-offset-2">
-		<h1>${successfulCcdas}</h1>
+		
+	<div class="row well">
+	<div class="col-md-6" style="text-align: center;">
+		<h2>${successfulCcdas}</h2>
 		<p>c-cdas passed</p>
 	</div>
-	<div class="col-md-4">
-		<h1>${failedCcdas}</h1>
+	<div class="col-md-6" style="text-align: center;">
+		<h2>${failedCcdas}</h2>
 		<p>c-cdas failed</p>
 	</div>
-</div>
-<p>
-	<a class="btn btn-lg btn-success" href="statistics">See more stats.</a>
-</p>
-</div>
+	<div style="width:100%">
+		<a class="btn btn-success" href="statistics"  style="width: 100%;">See More Stats</a>
+	</div>
+	</div>
+
 
 

@@ -14,6 +14,7 @@ import java.util.Properties;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.ResourceResponse;
+import javax.swing.tree.FixedHeightLayoutCache;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -86,6 +87,15 @@ public class QrdaValiationController {
 
 	// default value.
 	protected String QRDA_VALIDATOR_URL = "http://localhost:7080/QrdaValidatorServices/QRDA/Validate";
+	
+	public static final String UTF8_BOM = "\uFEFF";
+	
+	private static String removeUTF8BOM(String s) {
+        if (s.startsWith(UTF8_BOM)) {
+            s = s.substring(1);
+        }
+        return s;
+    }
 
 	protected void loadProperties() throws IOException {
 		InputStream in = this.getClass().getClassLoader()
@@ -191,8 +201,10 @@ public class QrdaValiationController {
 				}
 			}
 
+			//////////  FIX HERE!!!!!
+			
 			if (!xpathMapping.isEmpty()) {
-				orgXml = StringEscapeUtils.escapeXml(InjectTags(orgXml,
+				orgXml = StringEscapeUtils.escapeXml(InjectTags(removeUTF8BOM(orgXml),
 						xpathMapping));
 			} else {
 				orgXml = StringEscapeUtils.escapeXml(orgXml);
@@ -448,9 +460,11 @@ public class QrdaValiationController {
 					}
 				}
 			}
+			
+			//////  FIX HERE
 
 			if (!xpathMapping.isEmpty()) {
-				orgXml = StringEscapeUtils.escapeXml(InjectTags(orgXml,
+				orgXml = StringEscapeUtils.escapeXml(InjectTags(removeUTF8BOM(orgXml),
 						xpathMapping));
 			}
 

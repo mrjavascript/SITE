@@ -18,21 +18,17 @@
 
 <portlet:defineObjects />
 
-<div class="jumbotron">
-	<h1>
-		QRDA Validator</h1>
-	<hr />
-	<div class="row">
-	<div class="col-md-4 col-md-offset-2">
-		<h1>${successQrda}</h1>
+
+	<div class="row well">
+	<div class="col-md-6" style="text-align: center;">
+		<h2>${successQrda}</h2>
 		<p>qrdas passed</p>
 	</div>
-	<div class="col-md-4">
-		<h1>${failedQrda}</h1>
+	<div class="col-md-6" style="text-align: center;">
+		<h2>${failedQrda}</h2>
 		<p>qrdas failed</p>
 	</div>
-</div>
-<p>
-	<a class="btn btn-lg btn-success" href="statistics">See more stats.</a>
-</p>
-</div>
+	<div style="width:100%">
+		<a class="btn btn-success" href="statistics"  style="width: 100%;">See More Stats</a>
+	</div>
+	</div>

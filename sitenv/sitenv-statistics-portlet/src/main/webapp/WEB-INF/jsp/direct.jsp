@@ -18,21 +18,17 @@
 
 <portlet:defineObjects />
 
-<div class="jumbotron">
-	<h1>
-		Direct Transport Test Tool</h1>
-	<hr />
-	<div class="row">
-	<div class="col-md-4 col-md-offset-2">
-		<h1>${precannedDirectCount}</h1>
+	<div class="row well">
+	<div class="col-md-6" style="text-align: center;">
+		<h2>${precannedDirectCount}</h2>
 		<p>precanned messages sent</p>
 	</div>
-	<div class="col-md-4">
-		<h1>${uploadedDirectCount}</h1>
+	<div class="col-md-6" style="text-align: center;">
+		<h2>${uploadedDirectCount}</h2>
 		<p>uploaded messages sent</p>
 	</div>
-</div>
-<p>
-	<a class="btn btn-lg btn-success" href="statistics">See more stats.</a>
-</p>
-</div>
+	<div style="width:100%">
+		<a class="btn btn-success" href="statistics"  style="width: 100%;">See More Stats</a>
+	</div>
+	</div>
+
