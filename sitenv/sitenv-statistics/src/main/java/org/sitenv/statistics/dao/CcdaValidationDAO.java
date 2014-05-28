@@ -2,7 +2,7 @@ package org.sitenv.statistics.dao;
 
 public interface CcdaValidationDAO {
 	
-	public void createCcdaValidation(Boolean hasErrors, Boolean hasWarnings, Boolean hasInfo, Boolean hasHttpError);
+	public void createCcdaValidation(String testType, Boolean hasErrors, Boolean hasWarnings, Boolean hasInfo, Boolean hasHttpError);
 	
 	public void createSmartCcdaValidation(Boolean hasHttpError);
 	

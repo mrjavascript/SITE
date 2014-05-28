@@ -28,10 +28,10 @@ public class StatisticsManagerImpl implements StatisticsManager {
 	private PdtiTestDAO pdtiTestDAO;
 	
 	@Transactional
-	public void addCcdaValidation(Boolean hasErrors, Boolean hasWarnings,
+	public void addCcdaValidation(String testType, Boolean hasErrors, Boolean hasWarnings,
 			Boolean hasInfo, Boolean hasHttpError) {
 		
-		ccdaValidationDAO.createCcdaValidation(hasErrors, hasWarnings, hasInfo, hasHttpError);
+		ccdaValidationDAO.createCcdaValidation(testType, hasErrors, hasWarnings, hasInfo, hasHttpError);
 		
 	}
 

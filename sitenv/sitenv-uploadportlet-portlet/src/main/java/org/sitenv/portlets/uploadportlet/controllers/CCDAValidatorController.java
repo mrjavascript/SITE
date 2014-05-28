@@ -47,6 +47,8 @@ public class CCDAValidatorController extends BaseController {
 	@ActionMapping(params = "javax.portlet.action=uploadCCDA")
 	public void response(MultipartActionRequest request, ActionResponse response) throws IOException {
 		
+		String ccda_type_value = null;
+		
 		if (this.props == null)
 		{
 			this.loadProperties();
@@ -70,7 +72,7 @@ public class CCDAValidatorController extends BaseController {
 				
 				// handle the data
 				
-				String ccda_type_value = request.getParameter("ccda_type_val");
+				ccda_type_value = request.getParameter("ccda_type_val");
 				if(ccda_type_value == null)
 				{
 					ccda_type_value = "";
@@ -99,7 +101,7 @@ public class CCDAValidatorController extends BaseController {
 				if(code!=200) 
 				{
 					//do the error handling.
-					statisticsManager.addCcdaValidation(false, false, false, true);
+					statisticsManager.addCcdaValidation(ccda_type_value, false, false, false, true);
 				} 
 				else
 				{
@@ -129,12 +131,12 @@ public class CCDAValidatorController extends BaseController {
 					Element bodyElm = doc.body();
 					refinedResponseBody = bodyElm.toString();
 					
-					statisticsManager.addCcdaValidation(hasErrors, hasWarnings, hasInfo, false);
+					statisticsManager.addCcdaValidation(ccda_type_value, hasErrors, hasWarnings, hasInfo, false);
 				}				
 				
 
 		} catch (Exception e) {
-			statisticsManager.addCcdaValidation(false, false, false, true);
+			statisticsManager.addCcdaValidation(ccda_type_value, false, false, false, true);
 			
 			throw new RuntimeException(e);
 		} 

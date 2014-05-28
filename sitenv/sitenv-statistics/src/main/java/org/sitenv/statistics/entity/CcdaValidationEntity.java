@@ -38,6 +38,9 @@ private Boolean info;
 @Column(name="validation_httperror")
 private Boolean httpError;
 
+@Column(name="validation_type")
+private String validationType;
+
 
 
 @Override
@@ -49,6 +52,8 @@ public int hashCode() {
 	result = prime * result + ((id == null) ? 0 : id.hashCode());
 	result = prime * result + ((info == null) ? 0 : info.hashCode());
 	result = prime * result + ((timestamp == null) ? 0 : timestamp.hashCode());
+	result = prime * result
+			+ ((validationType == null) ? 0 : validationType.hashCode());
 	result = prime * result + ((warnings == null) ? 0 : warnings.hashCode());
 	return result;
 }
@@ -86,6 +91,11 @@ public boolean equals(Object obj) {
 		if (other.timestamp != null)
 			return false;
 	} else if (!timestamp.equals(other.timestamp))
+		return false;
+	if (validationType == null) {
+		if (other.validationType != null)
+			return false;
+	} else if (!validationType.equals(other.validationType))
 		return false;
 	if (warnings == null) {
 		if (other.warnings != null)
@@ -141,6 +151,14 @@ public Boolean getInfo() {
 
 public void setInfo(Boolean info) {
 	this.info = info;
+}
+
+public String getValidationType() {
+	return validationType;
+}
+
+public void setValidationType(String validationType) {
+	this.validationType = validationType;
 }
 	
 

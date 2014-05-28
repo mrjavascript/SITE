@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 public class CcdaValidationDAOImpl extends BaseDAOImpl implements CcdaValidationDAO {
 
 	
-	public void createCcdaValidation(Boolean hasErrors, Boolean hasWarnings,
+	public void createCcdaValidation(String testType, Boolean hasErrors, Boolean hasWarnings,
 			Boolean hasInfo, Boolean hasHttpError) {
 		CcdaValidationEntity entity = new CcdaValidationEntity();
 		
@@ -22,6 +22,7 @@ public class CcdaValidationDAOImpl extends BaseDAOImpl implements CcdaValidation
 		entity.setWarnings(hasWarnings);
 		entity.setInfo(hasInfo);
 		entity.setHttpError(hasHttpError);
+		entity.setValidationType(testType);
 		
 		entityManager.persist(entity);
 	}
