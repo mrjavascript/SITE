@@ -8,8 +8,10 @@ import javax.persistence.Query;
 
 import org.sitenv.statistics.dao.PdtiTestDAO;
 import org.sitenv.statistics.dto.PdtiTestCase;
+import org.sitenv.statistics.dto.StatisticsCounts;
 import org.sitenv.statistics.entity.PdtiTestCaseEntity;
 import org.sitenv.statistics.entity.PdtiTestGroupEntity;
+import org.sitenv.statistics.entity.StatisticsCountsEntity;
 import org.springframework.stereotype.Repository;
 
 @Repository(value="PdtiTestDAO")
@@ -161,4 +163,39 @@ public class PdtiTestDAOImpl extends BaseDAOImpl implements PdtiTestDAO {
 		return errorCount;
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<StatisticsCounts> getTestCasesWeeklyCounts(Integer numOfWeeks) {
+		
+		List<StatisticsCounts> returnVal = null;
+		
+		Query query = entityManager.createNamedQuery("pdtiWeeklyCounts", StatisticsCountsEntity.class);
+		query.setParameter(1, numOfWeeks);
+		
+		List<StatisticsCountsEntity> results = query.getResultList();
+		
+		if (results != null) {
+			for(StatisticsCountsEntity result : results) {
+				if (returnVal == null)
+				{
+					returnVal = new ArrayList<StatisticsCounts>();
+				}
+				
+				StatisticsCounts count = new StatisticsCounts();
+				count.setEndDate(result.getEndDate());
+				count.setErrorCount(result.getErrorCount());
+				count.setFailedCount(result.getFailedCount());
+				count.setInterval(result.getInterval());
+				count.setStartDate(result.getStartDate());
+				count.setSuccessCount(result.getSuccessfulCount());
+				count.setYear(result.getYear());
+				
+				returnVal.add(count);
+				
+			}
+		}
+		
+		return returnVal;
+		
+	}
+	
 }

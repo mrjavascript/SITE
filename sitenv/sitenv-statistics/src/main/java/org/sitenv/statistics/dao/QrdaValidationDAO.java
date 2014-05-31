@@ -1,5 +1,9 @@
 package org.sitenv.statistics.dao;
 
+import java.util.List;
+
+import org.sitenv.statistics.dto.StatisticsCounts;
+
 public interface QrdaValidationDAO {
 
 	
@@ -19,4 +23,6 @@ public interface QrdaValidationDAO {
 	public Long getTotalCount(Integer category, Integer numOfDays);
 	
 	public Long getHttpErrorCount(Integer category, Boolean hasHttpError, Integer numOfDays);
+	
+	public List<StatisticsCounts> getQrdaValidationsWeeklyCounts(Integer numOfWeeks);
 }

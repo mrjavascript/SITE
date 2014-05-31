@@ -8,6 +8,7 @@ import javax.portlet.PortletPreferences;
 import javax.portlet.ReadOnlyException;
 import javax.portlet.ValidatorException;
 
+import org.sitenv.common.utilities.controller.BaseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +19,7 @@ import org.springframework.web.portlet.bind.annotation.RenderMapping;
 
 @Controller("statisticsConfigController")
 @RequestMapping("EDIT")
-public class StatisticsConfigController {
+public class StatisticsConfigController extends BaseController {
 
 	@RenderMapping
 	public String handleRenderRequest(Model model, PortletPreferences prefs) {

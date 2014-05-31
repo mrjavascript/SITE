@@ -3,6 +3,8 @@ package org.sitenv.statistics.manager;
 import java.util.List;
 
 import org.sitenv.statistics.dto.PdtiTestCase;
+import org.sitenv.statistics.dto.StatisticsCounts;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface StatisticsManager {
 
@@ -25,7 +27,10 @@ public interface StatisticsManager {
 	public Long getSmartCcdaWithHttpErrorCount(Integer numOfDays);
 	public Long getCcdaDownloadCount(Integer numOfDays);
 	
-	
+	public List<StatisticsCounts> getCcdaWeeklyCounts(Integer numOfWeeks);
+	public List<StatisticsCounts> getQrdaWeeklyCounts(Integer numOfWeeks);
+	public List<StatisticsCounts> getPdtiWeeklyCounts(Integer numOfWeeks);
+	public List<StatisticsCounts> getDirectReceiveWeeklyCounts(Integer numOfWeeks);
 	
 	
 	public void addQrdaValidation(Integer category, Boolean hasSchemaErrors, Boolean hasSchematronErrors, Boolean hasSchematronWarnings, Boolean hasHttpError);

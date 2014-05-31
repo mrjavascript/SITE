@@ -3,6 +3,7 @@ package org.sitenv.statistics.dao;
 import java.util.List;
 
 import org.sitenv.statistics.dto.PdtiTestCase;
+import org.sitenv.statistics.dto.StatisticsCounts;
 
 public interface PdtiTestDAO {
 
@@ -13,5 +14,5 @@ public interface PdtiTestDAO {
 	
 	public Long getHttpErrorCount(Boolean hasHttpError, Integer numOfDays);
 	
-	
+	public List<StatisticsCounts> getTestCasesWeeklyCounts(Integer numOfWeeks);
 }

@@ -7,6 +7,7 @@ import org.sitenv.statistics.dao.DirectTransmissionDAO;
 import org.sitenv.statistics.dao.PdtiTestDAO;
 import org.sitenv.statistics.dao.QrdaValidationDAO;
 import org.sitenv.statistics.dto.PdtiTestCase;
+import org.sitenv.statistics.dto.StatisticsCounts;
 import org.sitenv.statistics.manager.StatisticsManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -214,8 +215,27 @@ public class StatisticsManagerImpl implements StatisticsManager {
 
 	@Transactional
 	public Long getHttpErrorPdtiTestCount(Integer numOfDays) {
-		// TODO Auto-generated method stub
-		return null;
+		return pdtiTestDAO.getHttpErrorCount(true, numOfDays);
+	}
+	
+	@Transactional
+	public List<StatisticsCounts> getCcdaWeeklyCounts(Integer numOfWeeks) {
+		return ccdaValidationDAO.getCcdaWeeklyCounts(numOfWeeks);
+	}
+	
+	@Transactional
+	public List<StatisticsCounts> getQrdaWeeklyCounts(Integer numOfWeeks) {
+		return qrdaValidationDAO.getQrdaValidationsWeeklyCounts(numOfWeeks);
+	}
+	
+	@Transactional
+	public List<StatisticsCounts> getPdtiWeeklyCounts(Integer numOfWeeks) {
+		return pdtiTestDAO.getTestCasesWeeklyCounts(numOfWeeks);
+	}
+	
+	@Transactional
+	public List<StatisticsCounts> getDirectReceiveWeeklyCounts(Integer numOfWeeks) {
+		return directTransmissionDAO.getDirectReceiveWeeklyCounts(numOfWeeks);
 	}
 
 	public CcdaValidationDAO getCcdaValidationDAO() {
@@ -249,16 +269,6 @@ public class StatisticsManagerImpl implements StatisticsManager {
 	public void setPdtiTestDAO(PdtiTestDAO pdtiTestDAO) {
 		this.pdtiTestDAO = pdtiTestDAO;
 	}
-
-	
-
-	
-
-	
-
-	
-	
-	
 	
 
 }

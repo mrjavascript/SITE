@@ -15,23 +15,45 @@
 --%>
 
 <%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
+<%@ page import="com.liferay.portal.kernel.portlet.LiferayWindowState"%>
 
 <portlet:defineObjects />
 
+<portlet:actionURL var="ccdaWeeklyCounts" windowState="<%= LiferayWindowState.EXCLUSIVE.toString() %>">
+    <portlet:param name="javax.portlet.action" value="ccdaWeeklyCounts"/>
+</portlet:actionURL>
+
+
+
+<script>
+	
+	$(function() {
+		loadStatistics("${ccdaWeeklyCounts}", "Validations by Week", 195, ["#5cb85c", "#d9534f"]);
+	});
+
+</script>
 		
-	<div class="row well">
-	<div class="col-md-6" style="text-align: center;">
+<div class="row well">
+	<!--div class="col-md-6" style="text-align: center;">
 		<h2>${successfulCcdas}</h2>
 		<p>c-cdas passed</p>
 	</div>
 	<div class="col-md-6" style="text-align: center;">
 		<h2>${failedCcdas}</h2>
 		<p>c-cdas failed</p>
-	</div>
+	</div-->
+	<div id="canvas-svg"></div>
+	<% 
+	if (renderRequest.isUserInRole("administrator")) {
+	%>
 	<div style="width:100%">
 		<a class="btn btn-success" href="statistics"  style="width: 100%;">See More Stats</a>
 	</div>
-	</div>
+	<%
+	}
+	%>
+	
+</div>
 
 
 

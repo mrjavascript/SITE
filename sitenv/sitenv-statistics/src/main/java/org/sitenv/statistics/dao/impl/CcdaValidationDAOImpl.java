@@ -1,13 +1,17 @@
 package org.sitenv.statistics.dao.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Query;
 
 import org.sitenv.statistics.dao.CcdaValidationDAO;
+import org.sitenv.statistics.dto.StatisticsCounts;
 import org.sitenv.statistics.entity.CcdaDownloadEntity;
 import org.sitenv.statistics.entity.CcdaValidationEntity;
 import org.sitenv.statistics.entity.SmartCcdaValidationEntity;
+import org.sitenv.statistics.entity.StatisticsCountsEntity;
 import org.springframework.stereotype.Repository;
 
 @Repository(value="CcdaValidationDAO")
@@ -219,6 +223,41 @@ public class CcdaValidationDAOImpl extends BaseDAOImpl implements CcdaValidation
 		
 		return totalCount;
 	
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<StatisticsCounts> getCcdaWeeklyCounts(Integer numOfWeeks) {
+		
+		List<StatisticsCounts> returnVal = null;
+		
+		Query query = entityManager.createNamedQuery("ccdaValidationWeeklyCounts", StatisticsCountsEntity.class);
+		query.setParameter(1, numOfWeeks);
+		
+		List<StatisticsCountsEntity> results = query.getResultList();
+		
+		if (results != null) {
+			for(StatisticsCountsEntity result : results) {
+				if (returnVal == null)
+				{
+					returnVal = new ArrayList<StatisticsCounts>();
+				}
+				
+				StatisticsCounts count = new StatisticsCounts();
+				count.setEndDate(result.getEndDate());
+				count.setErrorCount(result.getErrorCount());
+				count.setFailedCount(result.getFailedCount());
+				count.setInterval(result.getInterval());
+				count.setStartDate(result.getStartDate());
+				count.setSuccessCount(result.getSuccessfulCount());
+				count.setYear(result.getYear());
+				
+				returnVal.add(count);
+				
+			}
+		}
+		
+		return returnVal;
+		
 	}
 	
 }

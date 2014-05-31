@@ -42,15 +42,15 @@
       
 <p>
 	  <label for="endpointUrl">Enter Your Endpoint URL:</label>
-      <input id="endpointUrl" name="endpointUrl" type="text" value="" class="validate[required,custom[url]]"/>
+      <input id="endpointUrl" name="endpointUrl" type="text" value="" class="validate[required,custom[url]] form-control"/>
 </p>
 <p>      
       <label for="baseDn">Enter Your Base DN:</label>
-      <input id="baseDn" name="baseDn" type="text" value="" class="validate[required]"/>
+      <input id="baseDn" name="baseDn" type="text" value="" class="validate[required] form-control"/>
 </p>
 <p>      
       <label for="testCase">Select a Test Case:</label>
-      <select id="testCase" name="testCase" class="validate[required]">
+      <select id="testCase" name="testCase" class="validate[required] form-control">
         <option value="run_all_test_cases">Run All Test Cases</option>
         <% for (String testCase : SingleTestPortlet.testCaseNames) { %>
         	<option value="<%= testCase %>"><%= SingleTestPortlet.testCaseRealNames.get(testCase) %></option>
