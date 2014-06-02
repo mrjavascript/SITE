@@ -255,3 +255,72 @@
 			</table>
 		</div>
 	</div>
+	
+	<div class="panel panel-default" id="JIRAStatistics">
+    <div class="panel-heading"><h3 class="panel-title">JIRA Statistics</h3></div>
+		<div class="table-responsive">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th style="width:35%"></th>
+						<th>Total Count</th>
+						<th>30 Day Count</th>
+						<th>60 Day Count</th>
+						<th>90 Day Count</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>JIRA Issues Created</td>
+						<td>${jiraIssuesCreated}</td>
+						<td>${jiraIssuesCreated30}</td>
+						<td>${jiraIssuesCreated60}</td>
+						<td>${jiraIssuesCreated90}</td>
+					</tr>
+					<tr>
+						<td>PJIRA Issues Resolved</td>
+						<td>${jiraIssuesResolved}</td>
+						<td>${jiraIssuesResolved30}</td>
+						<td>${jiraIssuesResolved60}</td>
+						<td>${jiraIssuesResolved90}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	
+	<div class="panel panel-default" id="GoogleAnalyticsStatistics">
+    <div class="panel-heading"><h3 class="panel-title">Google Analytics Statistics</h3></div>
+		<div class="table-responsive">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th style="width:35%"></th>
+						<th>Total Count</th>
+						<th>30 Day Count</th>
+						<th>60 Day Count</th>
+						<th>90 Day Count</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>Sessions</td>
+						<td>${GoogleAnalyticsSessions}</td>
+						<td>${GoogleAnalyticsSessions30}</td>
+						<td>${GoogleAnalyticsSessions60}</td>
+						<td>${GoogleAnalyticsSessions90}</td>
+					</tr>
+					<tr>
+						<td>Page Views</td>
+						<td>${GoogleAnalyticsPageViews}</td>
+						<td>${GoogleAnalyticsPageViews30}</td>
+						<td>${GoogleAnalyticsPageViews60}</td>
+						<td>${GoogleAnalyticsPageViews90}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	
+	
+	

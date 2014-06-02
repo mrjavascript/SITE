@@ -200,10 +200,45 @@ public class StatisticsController extends BaseController {
 			modelAndView.addObject("uploadedDirectCount60", statisticsManager.getSuccessfulUploadedDirectReceiveCount(60));
 			modelAndView.addObject("uploadedDirectCount90", statisticsManager.getSuccessfulUploadedDirectReceiveCount(90));
 			
-			
 			/*
 			 * End of Direct statistics
 			 */
+			
+			
+			/*
+			 * JIRA Statistics
+			 */
+			modelAndView.addObject("jiraIssuesCreated", statisticsManager.getJiraIssuesCreatedCount(0));
+			modelAndView.addObject("jiraIssuesCreated30", statisticsManager.getJiraIssuesCreatedCount(30));
+			modelAndView.addObject("jiraIssuesCreated60", statisticsManager.getJiraIssuesCreatedCount(60));
+			modelAndView.addObject("jiraIssuesCreated90", statisticsManager.getJiraIssuesCreatedCount(90));
+			
+			modelAndView.addObject("jiraIssuesResolved", statisticsManager.getJiraIssuesResolvedCount(0));
+			modelAndView.addObject("jiraIssuesResolved30", statisticsManager.getJiraIssuesResolvedCount(30));
+			modelAndView.addObject("jiraIssuesResolved60", statisticsManager.getJiraIssuesResolvedCount(60));
+			modelAndView.addObject("jiraIssuesResolved90", statisticsManager.getJiraIssuesResolvedCount(90));
+			
+			/*
+			 * End JIRA Statistics
+			 */
+			
+			
+			/*
+			 * Google Analytics Statistics
+			 */
+			modelAndView.addObject("GoogleAnalyticsSessions", statisticsManager.getGoogleAnalyticsSessionCount(0));
+			modelAndView.addObject("GoogleAnalyticsSessions30", statisticsManager.getGoogleAnalyticsSessionCount(30));
+			modelAndView.addObject("GoogleAnalyticsSessions60", statisticsManager.getGoogleAnalyticsSessionCount(60));
+			modelAndView.addObject("GoogleAnalyticsSessions90", statisticsManager.getGoogleAnalyticsSessionCount(90));
+			
+			modelAndView.addObject("GoogleAnalyticsPageViews", statisticsManager.getGoogleAnalyticsPageViewCount(0));
+			modelAndView.addObject("GoogleAnalyticsPageViews30", statisticsManager.getGoogleAnalyticsPageViewCount(30));
+			modelAndView.addObject("GoogleAnalyticsPageViews60", statisticsManager.getGoogleAnalyticsPageViewCount(60));
+			modelAndView.addObject("GoogleAnalyticsPageViews90", statisticsManager.getGoogleAnalyticsPageViewCount(90));
+			/*
+			 * End Google Analytics Statistics
+			 */
+
 			
 			modelAndView.setViewName("view");
 		}

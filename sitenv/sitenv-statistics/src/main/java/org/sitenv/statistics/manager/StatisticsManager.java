@@ -53,4 +53,11 @@ public interface StatisticsManager {
 	public Long getTotalPdtiTestCount(Integer numOfDays);
 	public Long getHttpErrorPdtiTestCount(Integer numOfDays);
 	
+	
+	public Long getJiraIssuesCreatedCount(Integer numOfDays);
+	public Long getJiraIssuesResolvedCount(Integer numOfDays);
+	
+	public Long getGoogleAnalyticsSessionCount(Integer numOfDays);
+	public Long getGoogleAnalyticsPageViewCount(Integer numOfDays);
+	
 }
