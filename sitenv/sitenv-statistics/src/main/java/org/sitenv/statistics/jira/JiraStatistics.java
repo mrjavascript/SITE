@@ -12,13 +12,20 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.log4j.Logger;
+
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+
 public class JiraStatistics {
 	
+	
 	private static final String jiraCredential = "c2l0ZXVzZXI6I3NpdGUh";
-
+	
+	private static final Logger logger = Logger.getLogger(JiraStatistics.class);
+	
+	
 	public JiraStatistics() {}
 	
 	public static Long getCreatedIssues(int numOfDays){
@@ -32,7 +39,7 @@ public class JiraStatistics {
 	private static Long jiraIssuesCount(int nDays, boolean nResolved){
 		
 		HttpClient client = new DefaultHttpClient();
-		//HttpPost post = new HttpPost("http://dev.oncprojectracking.org/rest/api/2/search");
+
 		HttpPost post = new HttpPost("http://jira.oncprojectracking.org/rest/api/2/search");
 		
 		post.addHeader("Authorization", "Basic "+jiraCredential);
@@ -72,7 +79,7 @@ public class JiraStatistics {
 			}
 			
 		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+			logger.debug("Error in JIRA API Call:", e);
 		}
 		query.setContentType("application/json");
 		post.setEntity(query);

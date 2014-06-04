@@ -57,7 +57,7 @@ public interface StatisticsManager {
 	public Long getJiraIssuesCreatedCount(Integer numOfDays);
 	public Long getJiraIssuesResolvedCount(Integer numOfDays);
 	
-	public Long getGoogleAnalyticsSessionCount(Integer numOfDays);
-	public Long getGoogleAnalyticsPageViewCount(Integer numOfDays);
+	public Long getGoogleAnalyticsSessionCount(Integer numOfDays, String p12CertPath);
+	public Long getGoogleAnalyticsPageViewCount(Integer numOfDays, String p12CertPath);
 	
 }

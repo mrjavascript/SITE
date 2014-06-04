@@ -278,7 +278,7 @@
 						<td>${jiraIssuesCreated90}</td>
 					</tr>
 					<tr>
-						<td>PJIRA Issues Resolved</td>
+						<td>JIRA Issues Resolved</td>
 						<td>${jiraIssuesResolved}</td>
 						<td>${jiraIssuesResolved30}</td>
 						<td>${jiraIssuesResolved60}</td>

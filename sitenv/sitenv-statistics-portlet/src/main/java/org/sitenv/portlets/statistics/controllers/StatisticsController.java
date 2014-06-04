@@ -1,9 +1,12 @@
 package org.sitenv.portlets.statistics.controllers;
 
+import java.io.IOException;
+
 import javax.portlet.PortletPreferences;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
+import org.apache.log4j.Logger;
 import org.sitenv.common.utilities.controller.BaseController;
 import org.sitenv.statistics.manager.StatisticsManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +15,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.ModelAndView;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 
+
+
 @Controller("statisticsController")
 
 @RequestMapping("VIEW")
 public class StatisticsController extends BaseController {
+	
+	
+	private static final Logger logger = Logger.getLogger(StatisticsController.class);
 
 	@Autowired
 	private StatisticsManager statisticsManager;
@@ -226,19 +234,31 @@ public class StatisticsController extends BaseController {
 			/*
 			 * Google Analytics Statistics
 			 */
-			modelAndView.addObject("GoogleAnalyticsSessions", statisticsManager.getGoogleAnalyticsSessionCount(0));
-			modelAndView.addObject("GoogleAnalyticsSessions30", statisticsManager.getGoogleAnalyticsSessionCount(30));
-			modelAndView.addObject("GoogleAnalyticsSessions60", statisticsManager.getGoogleAnalyticsSessionCount(60));
-			modelAndView.addObject("GoogleAnalyticsSessions90", statisticsManager.getGoogleAnalyticsSessionCount(90));
 			
-			modelAndView.addObject("GoogleAnalyticsPageViews", statisticsManager.getGoogleAnalyticsPageViewCount(0));
-			modelAndView.addObject("GoogleAnalyticsPageViews30", statisticsManager.getGoogleAnalyticsPageViewCount(30));
-			modelAndView.addObject("GoogleAnalyticsPageViews60", statisticsManager.getGoogleAnalyticsPageViewCount(60));
-			modelAndView.addObject("GoogleAnalyticsPageViews90", statisticsManager.getGoogleAnalyticsPageViewCount(90));
+			if (this.props == null)
+			{
+				
+				try {
+					this.loadProperties();
+				} catch (IOException e) {
+					logger.error("Properties could not be loaded:" ,e);
+				}
+			}
+			
+			String p12CertPath = this.props.getProperty("googleAnalyticsp12CertPath");
+			
+			modelAndView.addObject("GoogleAnalyticsSessions", statisticsManager.getGoogleAnalyticsSessionCount(0, p12CertPath));
+			modelAndView.addObject("GoogleAnalyticsSessions30", statisticsManager.getGoogleAnalyticsSessionCount(30, p12CertPath));
+			modelAndView.addObject("GoogleAnalyticsSessions60", statisticsManager.getGoogleAnalyticsSessionCount(60, p12CertPath));
+			modelAndView.addObject("GoogleAnalyticsSessions90", statisticsManager.getGoogleAnalyticsSessionCount(90, p12CertPath));
+			
+			modelAndView.addObject("GoogleAnalyticsPageViews", statisticsManager.getGoogleAnalyticsPageViewCount(0, p12CertPath));
+			modelAndView.addObject("GoogleAnalyticsPageViews30", statisticsManager.getGoogleAnalyticsPageViewCount(30, p12CertPath));
+			modelAndView.addObject("GoogleAnalyticsPageViews60", statisticsManager.getGoogleAnalyticsPageViewCount(60, p12CertPath));
+			modelAndView.addObject("GoogleAnalyticsPageViews90", statisticsManager.getGoogleAnalyticsPageViewCount(90, p12CertPath));
 			/*
 			 * End Google Analytics Statistics
 			 */
-
 			
 			modelAndView.setViewName("view");
 		}

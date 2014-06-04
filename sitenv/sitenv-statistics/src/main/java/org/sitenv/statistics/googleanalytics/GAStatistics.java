@@ -7,7 +7,6 @@ import java.security.GeneralSecurityException;
 import java.util.Arrays;
 import java.util.Calendar;
 
-
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.http.HttpTransport;
@@ -20,9 +19,12 @@ import com.google.api.services.analytics.model.GaData;
 import com.google.api.services.analytics.model.Profiles;
 import com.google.api.services.analytics.model.Webproperties;
 
+import org.apache.log4j.Logger;
+
 
 public class GAStatistics {
 	
+	private static final Logger logger = Logger.getLogger(GAStatistics.class);
 	
 	private static final HttpTransport TRANSPORT = new NetHttpTransport();
     private static final JsonFactory JSON_FACTORY = new JacksonFactory();
@@ -38,15 +40,17 @@ public class GAStatistics {
 		return analytics;
 	}
 	
-	private static GoogleCredential getCredential() throws GeneralSecurityException, IOException {
+	private static GoogleCredential getCredential(String p12CertPath) throws GeneralSecurityException, IOException {
 		
-	    GoogleCredential credential = new GoogleCredential.Builder()
-	      .setTransport(TRANSPORT)
-	      .setJsonFactory(JSON_FACTORY)
-	      .setServiceAccountId("860345658841-4qhnghvlfknrmkfjcri2d58fmo99r9go@developer.gserviceaccount.com")
-	      .setServiceAccountScopes(Arrays.asList(AnalyticsScopes.ANALYTICS_READONLY))
-	      .setServiceAccountPrivateKeyFromP12File(new File("C:\\Google\\dfe392e5fc170841f90a5324f3cf2fc5bb0a1a34-privatekey.p12"))
-	      .build();
+		
+		GoogleCredential credential = new GoogleCredential.Builder()
+			  .setTransport(TRANSPORT)
+			  .setJsonFactory(JSON_FACTORY)
+			  .setServiceAccountId("860345658841-4qhnghvlfknrmkfjcri2d58fmo99r9go@developer.gserviceaccount.com")
+			  //.setServiceAccountId("testtesttest@developer.gserviceaccount.com")
+			  .setServiceAccountScopes(Arrays.asList(AnalyticsScopes.ANALYTICS_READONLY))
+			  .setServiceAccountPrivateKeyFromP12File(new File(p12CertPath))
+			  .build();
 	    
 	    return credential;
 	}
@@ -58,7 +62,8 @@ public class GAStatistics {
 	    com.google.api.services.analytics.model.Accounts accounts = analytics.management().accounts().list().execute();
 
 	    if (accounts.getItems().isEmpty()) {
-	      System.err.println("No accounts found");
+	    	logger.error("No Google Analytics accounts found");
+	    	logger.info("No Google Analytics accounts found");
 	    } else {
 	      String firstAccountId = accounts.getItems().get(0).getId();
 	      
@@ -67,7 +72,8 @@ public class GAStatistics {
 	          .list(firstAccountId).execute();
 
 	      if (webproperties.getItems().isEmpty()) {
-	        System.err.println("No Webproperties found");
+	    	  logger.error("No Google Analytics Webproperties found");
+	    	  logger.info("No Google Analytics Webproperties found");
 	      } else {
 	        String firstWebpropertyId = webproperties.getItems().get(0).getId();
 	        
@@ -76,7 +82,8 @@ public class GAStatistics {
 	            .list(firstAccountId, firstWebpropertyId).execute();
 	        
 	        if (profiles.getItems().isEmpty()) {
-	          System.err.println("No views (profiles) found");
+	        	logger.error("No Google Analytics views (profiles) found");
+	        	logger.info("No Google Analytics views (profiles) found");
 	        } else {
 	        	// 1 for "SITE All Projects" 
 	          profileId = profiles.getItems().get(1).getId();
@@ -166,47 +173,112 @@ public class GAStatistics {
 		return new String[]{nDaysAgoDate, todayDate};
 	}
 	
-	public static Long getSessionCount(int numOfDays) throws GeneralSecurityException, IOException {
+	public static Long getSessionCount(int numOfDays, String p12CertPath) {
 		
-		Analytics analytics = getAnalytics(getCredential());
+		Long count = new Long(-1);
 		
-		String profileId = SITEProfileId(analytics);
+		Analytics analytics = null;
+		try {
+			analytics = getAnalytics(getCredential(p12CertPath));
+		} catch (GeneralSecurityException e) {
+			logger.error("Security exception while obtaining Google API Certificate:", e);
+		} catch (IOException e) {
+			logger.error("IO exception while obtaining Google API Certificate:", e);
+		}
+		if (analytics == null){
+			logger.error("Error while getting Google Analytics object");
+		}
+
+
+		
+		String profileId = null;
+		try {
+			profileId = SITEProfileId(analytics);
+		} catch (IOException e) {
+			logger.error("Error while getting Google Analytics Profile ID:", e);
+		}
+		if (profileId == null){
+			logger.error("Error while getting Google Analytics Profile ID");
+		}
+		
+		
 		
 		String sessionCount = null;
-		
-		if (numOfDays == 0){
+		if (analytics != null && profileId != null) {
 			
-			sessionCount = sessionCount(analytics, profileId, 
-					"2010-01-01", "today");
-			
-		} else {
-			
-			String[] formattedDates = dateRange(numOfDays);
-			sessionCount = sessionCount(analytics, profileId, 
-					formattedDates[0], formattedDates[1]);
+			try {
+				
+				if (numOfDays == 0){
+					
+					sessionCount = sessionCount(analytics, profileId, 
+								"2010-01-01", "today");				
+				} else {
+					
+					String[] formattedDates = dateRange(numOfDays);
+					sessionCount = sessionCount(analytics, profileId, 
+							formattedDates[0], formattedDates[1]);
+				}
+			}
+			catch (IOException e){
+				logger.error("IO error while getting GA session count", e);
+			}
+			count = Long.valueOf(sessionCount);
 		}
-		return Long.valueOf(sessionCount);
+		return count;
 	}
 	
-	public static Long getPageViewCount(int numOfDays) throws GeneralSecurityException, IOException {
+	public static Long getPageViewCount(int numOfDays, String p12CertPath) {
 		
-		Analytics analytics = getAnalytics(getCredential());
+		Long count = new Long(-1);
 		
-		String profileId = SITEProfileId(analytics);
+		Analytics analytics = null;
+		try {
+			analytics = getAnalytics(getCredential(p12CertPath));
+		} catch (GeneralSecurityException e) {
+			logger.error("Security exception while obtaining Google API Certificate:", e);
+		} catch (IOException e) {
+			logger.error("IO exception while obtaining Google API Certificate:", e);
+		}
+		if (analytics == null){
+			logger.error("Error while getting Google Analytics object");
+		}
+
+
+		
+		String profileId = null;
+		try {
+			profileId = SITEProfileId(analytics);
+		} catch (IOException e) {
+			logger.error("Error while getting Google Analytics Profile ID:", e);
+		}
+		if (profileId == null){
+			logger.error("Error while getting Google Analytics Profile ID");
+		}
+		
+		
 		
 		String pageViewCount = null;
-		
-		if (numOfDays == 0){
+		if (analytics != null && profileId != null) {
 			
-			pageViewCount = pageViewCount(analytics, profileId, 
-					"2010-01-01", "today");
-			
-		} else {
-			
-			String[] formattedDates = dateRange(numOfDays);
-			pageViewCount = pageViewCount(analytics, profileId, 
-					formattedDates[0], formattedDates[1]);
+			try {
+				
+				if (numOfDays == 0){
+					
+					pageViewCount = pageViewCount(analytics, profileId, 
+								"2010-01-01", "today");				
+				} else {
+					
+					String[] formattedDates = dateRange(numOfDays);
+					pageViewCount = pageViewCount(analytics, profileId, 
+							formattedDates[0], formattedDates[1]);
+				}
+			}
+			catch (IOException e){
+				logger.error("IO error while getting GA session count", e);
+			}
+			count = Long.valueOf(pageViewCount);
 		}
-		return Long.valueOf(pageViewCount);
+		return count;
 	}
+	
 }

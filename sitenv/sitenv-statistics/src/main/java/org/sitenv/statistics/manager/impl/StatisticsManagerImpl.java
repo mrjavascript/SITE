@@ -1,7 +1,6 @@
 package org.sitenv.statistics.manager.impl;
 
-import java.io.IOException;
-import java.security.GeneralSecurityException;
+
 import java.util.List;
 
 import org.sitenv.statistics.dao.CcdaValidationDAO;
@@ -266,28 +265,12 @@ public class StatisticsManagerImpl implements StatisticsManager {
 		return JiraStatistics.getResolvedIssues(numOfDays);
 	}
 	
-	public Long getGoogleAnalyticsSessionCount(Integer numOfDays){
-		Long result = new Long(-1);
-		try {
-			result = GAStatistics.getSessionCount(numOfDays);
-		} catch (GeneralSecurityException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return result;
+	public Long getGoogleAnalyticsSessionCount(Integer numOfDays, String p12CertPath){
+		return GAStatistics.getSessionCount(numOfDays, p12CertPath);
 	}
 	
-	public Long getGoogleAnalyticsPageViewCount(Integer numOfDays){
-		Long result = new Long(-1);
-		try {
-			result = GAStatistics.getPageViewCount(numOfDays);
-		} catch (GeneralSecurityException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return result;
+	public Long getGoogleAnalyticsPageViewCount(Integer numOfDays, String p12CertPath){
+		return GAStatistics.getPageViewCount(numOfDays, p12CertPath);
 	}
 	
 }
