@@ -6,8 +6,11 @@ import org.sitenv.statistics.dao.CcdaValidationDAO;
 import org.sitenv.statistics.dao.DirectTransmissionDAO;
 import org.sitenv.statistics.dao.PdtiTestDAO;
 import org.sitenv.statistics.dao.QrdaValidationDAO;
+import org.sitenv.statistics.dto.CcdaWeeklyCounts;
+import org.sitenv.statistics.dto.DirectWeeklyCounts;
 import org.sitenv.statistics.dto.PdtiTestCase;
-import org.sitenv.statistics.dto.StatisticsCounts;
+import org.sitenv.statistics.dto.PdtiWeeklyCounts;
+import org.sitenv.statistics.dto.QrdaWeeklyCounts;
 import org.sitenv.statistics.manager.StatisticsManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -143,9 +146,9 @@ public class StatisticsManagerImpl implements StatisticsManager {
 	
 	
 	@Transactional
-	public void addDirectReceive(Boolean uploaded, Boolean precanned,
+	public void addDirectReceive(String domain, Boolean uploaded, Boolean precanned,
 			Boolean hasErrors) {
-		directTransmissionDAO.createDirectReceive(precanned, uploaded, hasErrors);
+		directTransmissionDAO.createDirectReceive(domain, precanned, uploaded, hasErrors);
 		
 	}
 	
@@ -193,8 +196,8 @@ public class StatisticsManagerImpl implements StatisticsManager {
 	
 	
 	@Transactional
-	public void addPdtiTest(List<PdtiTestCase> testCases) {
-		pdtiTestDAO.createPdtiTest(testCases);
+	public void addPdtiTest(String endpointUrl, List<PdtiTestCase> testCases) {
+		pdtiTestDAO.createPdtiTest(endpointUrl, testCases);
 		
 	}
 
@@ -219,22 +222,22 @@ public class StatisticsManagerImpl implements StatisticsManager {
 	}
 	
 	@Transactional
-	public List<StatisticsCounts> getCcdaWeeklyCounts(Integer numOfWeeks) {
+	public List<CcdaWeeklyCounts> getCcdaWeeklyCounts(Integer numOfWeeks) {
 		return ccdaValidationDAO.getCcdaWeeklyCounts(numOfWeeks);
 	}
 	
 	@Transactional
-	public List<StatisticsCounts> getQrdaWeeklyCounts(Integer numOfWeeks) {
+	public List<QrdaWeeklyCounts> getQrdaWeeklyCounts(Integer numOfWeeks) {
 		return qrdaValidationDAO.getQrdaValidationsWeeklyCounts(numOfWeeks);
 	}
 	
 	@Transactional
-	public List<StatisticsCounts> getPdtiWeeklyCounts(Integer numOfWeeks) {
+	public List<PdtiWeeklyCounts> getPdtiWeeklyCounts(Integer numOfWeeks) {
 		return pdtiTestDAO.getTestCasesWeeklyCounts(numOfWeeks);
 	}
 	
 	@Transactional
-	public List<StatisticsCounts> getDirectReceiveWeeklyCounts(Integer numOfWeeks) {
+	public List<DirectWeeklyCounts> getDirectReceiveWeeklyCounts(Integer numOfWeeks) {
 		return directTransmissionDAO.getDirectReceiveWeeklyCounts(numOfWeeks);
 	}
 

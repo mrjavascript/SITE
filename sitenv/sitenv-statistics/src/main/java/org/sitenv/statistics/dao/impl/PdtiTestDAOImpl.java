@@ -7,17 +7,19 @@ import java.util.List;
 import javax.persistence.Query;
 
 import org.sitenv.statistics.dao.PdtiTestDAO;
+import org.sitenv.statistics.dto.CcdaWeeklyCounts;
 import org.sitenv.statistics.dto.PdtiTestCase;
-import org.sitenv.statistics.dto.StatisticsCounts;
+import org.sitenv.statistics.dto.PdtiWeeklyCounts;
+import org.sitenv.statistics.entity.CcdaWeeklyCountsEntity;
 import org.sitenv.statistics.entity.PdtiTestCaseEntity;
 import org.sitenv.statistics.entity.PdtiTestGroupEntity;
-import org.sitenv.statistics.entity.StatisticsCountsEntity;
+import org.sitenv.statistics.entity.PdtiWeeklyCountsEntity;
 import org.springframework.stereotype.Repository;
 
 @Repository(value="PdtiTestDAO")
 public class PdtiTestDAOImpl extends BaseDAOImpl implements PdtiTestDAO {
 
-	public void createPdtiTest(List<PdtiTestCase> testCases) {
+	public void createPdtiTest(String endpointUrl, List<PdtiTestCase> testCases) {
 		
 		if (testCases != null)
 		{
@@ -27,6 +29,7 @@ public class PdtiTestDAOImpl extends BaseDAOImpl implements PdtiTestDAO {
 				if (entity.getTestCases() == null)
 				{
 					entity.setTestCases(new ArrayList<PdtiTestCaseEntity>());
+					entity.setEndpointUrl(endpointUrl);
 				}
 				PdtiTestCaseEntity entityCase = new PdtiTestCaseEntity();
 				entityCase.setHttpError(test.getHttpError());
@@ -164,29 +167,29 @@ public class PdtiTestDAOImpl extends BaseDAOImpl implements PdtiTestDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<StatisticsCounts> getTestCasesWeeklyCounts(Integer numOfWeeks) {
+	public List<PdtiWeeklyCounts> getTestCasesWeeklyCounts(Integer numOfWeeks) {
 		
-		List<StatisticsCounts> returnVal = null;
+		List<PdtiWeeklyCounts> returnVal = null;
 		
-		Query query = entityManager.createNamedQuery("pdtiWeeklyCounts", StatisticsCountsEntity.class);
+		Query query = entityManager.createNamedQuery("pdtiWeeklyCounts", PdtiWeeklyCountsEntity.class);
 		query.setParameter(1, numOfWeeks);
 		
-		List<StatisticsCountsEntity> results = query.getResultList();
+		List<PdtiWeeklyCountsEntity> results = query.getResultList();
 		
 		if (results != null) {
-			for(StatisticsCountsEntity result : results) {
+			for(PdtiWeeklyCountsEntity result : results) {
 				if (returnVal == null)
 				{
-					returnVal = new ArrayList<StatisticsCounts>();
+					returnVal = new ArrayList<PdtiWeeklyCounts>();
 				}
 				
-				StatisticsCounts count = new StatisticsCounts();
-				count.setEndDate(result.getEndDate());
-				count.setErrorCount(result.getErrorCount());
-				count.setFailedCount(result.getFailedCount());
+				PdtiWeeklyCounts count = new PdtiWeeklyCounts();
+				count.setEndDate(result.getEndDate());;
 				count.setInterval(result.getInterval());
 				count.setStartDate(result.getStartDate());
-				count.setSuccessCount(result.getSuccessfulCount());
+				count.setTotalRequestCount(result.getTotalRequestCount());
+				count.setTotalTestCount(result.getTotalTestCount());
+				count.setTotalUniqueEndpointCount(result.getTotalUniqueEndpointCount());
 				count.setYear(result.getYear());
 				
 				returnVal.add(count);

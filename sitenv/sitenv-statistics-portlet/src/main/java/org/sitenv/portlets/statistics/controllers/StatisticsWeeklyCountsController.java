@@ -10,7 +10,10 @@ import javax.portlet.ActionResponse;
 import javax.portlet.RenderRequest;
 
 import org.sitenv.statistics.constants.StatisticsConstants;
-import org.sitenv.statistics.dto.StatisticsCounts;
+import org.sitenv.statistics.dto.CcdaWeeklyCounts;
+import org.sitenv.statistics.dto.DirectWeeklyCounts;
+import org.sitenv.statistics.dto.PdtiWeeklyCounts;
+import org.sitenv.statistics.dto.QrdaWeeklyCounts;
 import org.sitenv.statistics.manager.StatisticsManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -39,16 +42,16 @@ public class StatisticsWeeklyCountsController {
 	@RequestMapping(params = "javax.portlet.action=ccdaWeeklyCounts")
 	public ModelAndView processCcdaWeekly(RenderRequest request, Model model)
 			throws IOException {
-		List<StatisticsCounts> weeklyCounts = null;
+		List<CcdaWeeklyCounts> weeklyCounts = null;
 		
 		weeklyCounts = statisticsManager.getCcdaWeeklyCounts(StatisticsConstants.SMALL_WEEKLY_STATISTICS_LIMIT);
 		
 		Map map = new HashMap();
 		
-		map.put("headerLine", "Week,Passed,Failed\n");
+		
 		map.put("weeklyCounts", weeklyCounts);
 
-		return new ModelAndView("statisticsWeeklyCountsCsvView", map);
+		return new ModelAndView("ccdaWeeklyCountsCsvView", map);
 	}
 	
 	
@@ -64,16 +67,16 @@ public class StatisticsWeeklyCountsController {
 	@RequestMapping(params = "javax.portlet.action=pdtiWeeklyCounts")
 	public ModelAndView processPdtiWeekly(RenderRequest request, Model model)
 			throws IOException {
-		List<StatisticsCounts> weeklyCounts = null;
+		List<PdtiWeeklyCounts> weeklyCounts = null;
 		
 		weeklyCounts = statisticsManager.getPdtiWeeklyCounts(StatisticsConstants.SMALL_WEEKLY_STATISTICS_LIMIT);
 		
 		Map map = new HashMap();
 		
-		map.put("headerLine", "Week,Passed,Failed\n");
+		
 		map.put("weeklyCounts", weeklyCounts);
 
-		return new ModelAndView("statisticsWeeklyCountsCsvView", map);
+		return new ModelAndView("pdtiWeeklyCountsCsvView", map);
 	}
 	
 	@ActionMapping(params = "javax.portlet.action=directReceiveWeeklyCounts")
@@ -88,16 +91,16 @@ public class StatisticsWeeklyCountsController {
 	@RequestMapping(params = "javax.portlet.action=directReceiveWeeklyCounts")
 	public ModelAndView processDirectReceiveWeekly(RenderRequest request, Model model)
 			throws IOException {
-		List<StatisticsCounts> weeklyCounts = null;
+		List<DirectWeeklyCounts> weeklyCounts = null;
 		
 		weeklyCounts = statisticsManager.getDirectReceiveWeeklyCounts(StatisticsConstants.SMALL_WEEKLY_STATISTICS_LIMIT);
 		
 		Map map = new HashMap();
 		
-		map.put("headerLine", "Week,Precanned,Uploaded\n");
+		
 		map.put("weeklyCounts", weeklyCounts);
 
-		return new ModelAndView("statisticsWeeklyCountsCsvView", map);
+		return new ModelAndView("directWeeklyCountsCsvView", map);
 	}
 	
 	@ActionMapping(params = "javax.portlet.action=qrdaWeeklyCounts")
@@ -112,16 +115,16 @@ public class StatisticsWeeklyCountsController {
 	@RequestMapping(params = "javax.portlet.action=qrdaWeeklyCounts")
 	public ModelAndView processQrdaWeekly(RenderRequest request, Model model)
 			throws IOException {
-		List<StatisticsCounts> weeklyCounts = null;
+		List<QrdaWeeklyCounts> weeklyCounts = null;
 		
 		weeklyCounts = statisticsManager.getQrdaWeeklyCounts(StatisticsConstants.SMALL_WEEKLY_STATISTICS_LIMIT);
 		
 		Map map = new HashMap();
 		
-		map.put("headerLine", "Week,Passed,Failed\n");
+		
 		map.put("weeklyCounts", weeklyCounts);
 
-		return new ModelAndView("statisticsWeeklyCountsCsvView", map);
+		return new ModelAndView("qrdaWeeklyCountsCsvView", map);
 	}
 	
 }

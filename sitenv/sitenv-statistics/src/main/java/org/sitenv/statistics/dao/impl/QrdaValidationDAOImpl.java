@@ -7,9 +7,9 @@ import java.util.List;
 import javax.persistence.Query;
 
 import org.sitenv.statistics.dao.QrdaValidationDAO;
-import org.sitenv.statistics.dto.StatisticsCounts;
+import org.sitenv.statistics.dto.QrdaWeeklyCounts;
 import org.sitenv.statistics.entity.QrdaValidationEntity;
-import org.sitenv.statistics.entity.StatisticsCountsEntity;
+import org.sitenv.statistics.entity.QrdaWeeklyCountsEntity;
 import org.springframework.stereotype.Repository;
 
 @Repository(value = "QrdaValidationDAO")
@@ -425,30 +425,29 @@ public class QrdaValidationDAOImpl extends BaseDAOImpl implements
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<StatisticsCounts> getQrdaValidationsWeeklyCounts(Integer numOfWeeks) {
+	public List<QrdaWeeklyCounts> getQrdaValidationsWeeklyCounts(Integer numOfWeeks) {
 		
-		List<StatisticsCounts> returnVal = null;
+		List<QrdaWeeklyCounts> returnVal = null;
 		
-		Query query = entityManager.createNamedQuery("qrdaValidationWeeklyCounts", StatisticsCountsEntity.class);
+		Query query = entityManager.createNamedQuery("qrdaValidationWeeklyCounts", QrdaWeeklyCountsEntity.class);
 		query.setParameter(1, numOfWeeks);
 		
-		List<StatisticsCountsEntity> results = query.getResultList();
+		List<QrdaWeeklyCountsEntity> results = query.getResultList();
 		
 		if (results != null) {
-			for(StatisticsCountsEntity result : results) {
+			for(QrdaWeeklyCountsEntity result : results) {
 				if (returnVal == null)
 				{
-					returnVal = new ArrayList<StatisticsCounts>();
+					returnVal = new ArrayList<QrdaWeeklyCounts>();
 				}
 				
-				StatisticsCounts count = new StatisticsCounts();
+				QrdaWeeklyCounts count = new QrdaWeeklyCounts();
 				count.setEndDate(result.getEndDate());
-				count.setErrorCount(result.getErrorCount());
-				count.setFailedCount(result.getFailedCount());
 				count.setInterval(result.getInterval());
 				count.setStartDate(result.getStartDate());
-				count.setSuccessCount(result.getSuccessfulCount());
 				count.setYear(result.getYear());
+				count.setCategory1Count(result.getCategory1Count());
+				count.setCategory3Count(result.getCategory3Count());
 				
 				returnVal.add(count);
 				

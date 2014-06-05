@@ -7,11 +7,11 @@ import java.util.List;
 import javax.persistence.Query;
 
 import org.sitenv.statistics.dao.CcdaValidationDAO;
-import org.sitenv.statistics.dto.StatisticsCounts;
+import org.sitenv.statistics.dto.CcdaWeeklyCounts;
 import org.sitenv.statistics.entity.CcdaDownloadEntity;
 import org.sitenv.statistics.entity.CcdaValidationEntity;
 import org.sitenv.statistics.entity.SmartCcdaValidationEntity;
-import org.sitenv.statistics.entity.StatisticsCountsEntity;
+import org.sitenv.statistics.entity.CcdaWeeklyCountsEntity;
 import org.springframework.stereotype.Repository;
 
 @Repository(value="CcdaValidationDAO")
@@ -226,29 +226,27 @@ public class CcdaValidationDAOImpl extends BaseDAOImpl implements CcdaValidation
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<StatisticsCounts> getCcdaWeeklyCounts(Integer numOfWeeks) {
+	public List<CcdaWeeklyCounts> getCcdaWeeklyCounts(Integer numOfWeeks) {
 		
-		List<StatisticsCounts> returnVal = null;
+		List<CcdaWeeklyCounts> returnVal = null;
 		
-		Query query = entityManager.createNamedQuery("ccdaValidationWeeklyCounts", StatisticsCountsEntity.class);
+		Query query = entityManager.createNamedQuery("ccdaValidationWeeklyCounts", CcdaWeeklyCountsEntity.class);
 		query.setParameter(1, numOfWeeks);
 		
-		List<StatisticsCountsEntity> results = query.getResultList();
+		List<CcdaWeeklyCountsEntity> results = query.getResultList();
 		
 		if (results != null) {
-			for(StatisticsCountsEntity result : results) {
+			for(CcdaWeeklyCountsEntity result : results) {
 				if (returnVal == null)
 				{
-					returnVal = new ArrayList<StatisticsCounts>();
+					returnVal = new ArrayList<CcdaWeeklyCounts>();
 				}
 				
-				StatisticsCounts count = new StatisticsCounts();
+				CcdaWeeklyCounts count = new CcdaWeeklyCounts();
 				count.setEndDate(result.getEndDate());
-				count.setErrorCount(result.getErrorCount());
-				count.setFailedCount(result.getFailedCount());
+				count.setTotalCount(result.getTotalCount());
 				count.setInterval(result.getInterval());
 				count.setStartDate(result.getStartDate());
-				count.setSuccessCount(result.getSuccessfulCount());
 				count.setYear(result.getYear());
 				
 				returnVal.add(count);

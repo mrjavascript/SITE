@@ -16,6 +16,10 @@
 		<class>org.sitenv.statistics.entity.DirectTrustUploadEntity</class>
 		<class>org.sitenv.statistics.entity.PdtiTestCaseEntity</class>
 		<class>org.sitenv.statistics.entity.PdtiTestGroupEntity</class>
+		<class>org.sitenv.statistics.entity.CcdaWeeklyCountsEntity</class>
+		<class>org.sitenv.statistics.entity.QrdaWeeklyCountsEntity</class>
+		<class>org.sitenv.statistics.entity.PdtiWeeklyCountsEntity</class>
+		<class>org.sitenv.statistics.entity.DirectWeeklyCountsEntity</class>
 		<properties>
 			<property name="hibernate.show_sql" value="true" />
 			<property name="hibernate.format_sql" value="true" />

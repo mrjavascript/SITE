@@ -7,22 +7,23 @@ import java.util.List;
 import javax.persistence.Query;
 
 import org.sitenv.statistics.dao.DirectTransmissionDAO;
-import org.sitenv.statistics.dto.StatisticsCounts;
+import org.sitenv.statistics.dto.DirectWeeklyCounts;
 import org.sitenv.statistics.entity.DirectReceiveEntity;
 import org.sitenv.statistics.entity.DirectTrustUploadEntity;
-import org.sitenv.statistics.entity.StatisticsCountsEntity;
+import org.sitenv.statistics.entity.DirectWeeklyCountsEntity;
 import org.springframework.stereotype.Repository;
 
 @Repository(value="DirectTransmissionDAO")
 public class DirectTransmissionDAOImpl extends BaseDAOImpl implements DirectTransmissionDAO {
 
-	public void createDirectReceive(Boolean precanned, Boolean uploaded,
+	public void createDirectReceive(String domain, Boolean precanned, Boolean uploaded,
 			Boolean hasErrors) {
 		DirectReceiveEntity entity = new DirectReceiveEntity();
 
 		entity.setPrecanned(precanned);
 		entity.setUploaded(uploaded);
 		entity.setErrors(hasErrors);
+		entity.setDomain(domain);
 
 		entityManager.persist(entity);
 	}
@@ -212,29 +213,28 @@ public class DirectTransmissionDAOImpl extends BaseDAOImpl implements DirectTran
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<StatisticsCounts> getDirectReceiveWeeklyCounts(Integer numOfWeeks) {
+	public List<DirectWeeklyCounts> getDirectReceiveWeeklyCounts(Integer numOfWeeks) {
 		
-		List<StatisticsCounts> returnVal = null;
+		List<DirectWeeklyCounts> returnVal = null;
 		
-		Query query = entityManager.createNamedQuery("directWeeklyCounts", StatisticsCountsEntity.class);
+		Query query = entityManager.createNamedQuery("directWeeklyCounts", DirectWeeklyCountsEntity.class);
 		query.setParameter(1, numOfWeeks);
 		
-		List<StatisticsCountsEntity> results = query.getResultList();
+		List<DirectWeeklyCountsEntity> results = query.getResultList();
 		
 		if (results != null) {
-			for(StatisticsCountsEntity result : results) {
+			for(DirectWeeklyCountsEntity result : results) {
 				if (returnVal == null)
 				{
-					returnVal = new ArrayList<StatisticsCounts>();
+					returnVal = new ArrayList<DirectWeeklyCounts>();
 				}
 				
-				StatisticsCounts count = new StatisticsCounts();
+				DirectWeeklyCounts count = new DirectWeeklyCounts();
 				count.setEndDate(result.getEndDate());
-				count.setErrorCount(result.getErrorCount());
-				count.setFailedCount(result.getFailedCount());
 				count.setInterval(result.getInterval());
 				count.setStartDate(result.getStartDate());
-				count.setSuccessCount(result.getSuccessfulCount());
+				count.setTotalCount(result.getTotalCount());
+				count.setTotalUniqueDomainCount(result.getTotalUniqueDomainCount());
 				count.setYear(result.getYear());
 				
 				returnVal.add(count);

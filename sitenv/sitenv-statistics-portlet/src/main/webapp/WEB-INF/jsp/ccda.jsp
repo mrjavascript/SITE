@@ -28,7 +28,7 @@
 <script>
 	
 	$(function() {
-		loadStatistics("${ccdaWeeklyCounts}", "Validations by Week", 195, ["#5cb85c", "#d9534f"]);
+		loadStatistics("${ccdaWeeklyCounts}", "C-CDA Weekly Statistics", "#canvas-svg");
 	});
 
 </script>

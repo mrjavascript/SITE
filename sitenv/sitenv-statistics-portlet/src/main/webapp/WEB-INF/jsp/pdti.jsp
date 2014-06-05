@@ -28,7 +28,7 @@
 <script>
 	
 	$(function() {
-		loadStatistics("${pdtiWeeklyCounts}", "Test Cases by Week", 195, ["#5cb85c", "#d9534f"]);
+		loadStatistics("${pdtiWeeklyCounts}", "Provider Directory Weekly Statistics", "#canvas-svg");
 	});
 
 </script>

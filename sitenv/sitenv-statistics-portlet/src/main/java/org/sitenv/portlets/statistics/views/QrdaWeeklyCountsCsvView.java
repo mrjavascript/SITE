@@ -7,16 +7,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
-import org.sitenv.statistics.dto.StatisticsCounts;
+import org.sitenv.statistics.dto.QrdaWeeklyCounts;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.view.AbstractView;
 
-@Component("statisticsWeeklyCountsCsvView")
-public class StatisticsWeeklyCountsCsvView extends AbstractView {
+@Component("qrdaWeeklyCountsCsvView")
+public class QrdaWeeklyCountsCsvView extends AbstractView {
 
-private Logger logger = Logger.getLogger(StatisticsWeeklyCountsCsvView.class);
+private Logger logger = Logger.getLogger(QrdaWeeklyCountsCsvView.class);
 	
-	public StatisticsWeeklyCountsCsvView() {
+	public QrdaWeeklyCountsCsvView() {
 		super();
 		
 		setContentType("text/plain");
@@ -34,14 +34,16 @@ private Logger logger = Logger.getLogger(StatisticsWeeklyCountsCsvView.class);
     response.setCharacterEncoding("UTF-8");
     
     StringBuilder sbuilder = new StringBuilder();
-    sbuilder.append(map.get("headerLine"));
+    sbuilder.append("Week,Total Number of Category 1 Validations,Total Number of Category 3 Validations\n");
     
     if (map.get("weeklyCounts") != null)
     {
-    	for (StatisticsCounts count : (List<StatisticsCounts>) map.get("weeklyCounts")) {
-    		sbuilder.append(count.getStartDate() + "," + count.getSuccessCount() + "," + count.getFailedCount() + "\n");
+    	for (QrdaWeeklyCounts count : (List<QrdaWeeklyCounts>) map.get("weeklyCounts")) {
+    		sbuilder.append(count.getStartDate() + "," + count.getCategory1Count() + "," + count.getCategory3Count() + "\n");
     	}
     }
+    
+    logger.debug(sbuilder.toString());
     
     response.getWriter().write(sbuilder.toString());
     response.getWriter().flush();

@@ -28,7 +28,7 @@
 <script>
 	
 	$(function() {
-		loadStatistics("${qrdaWeeklyCounts}", "Validations by Week", 195, ["#5cb85c", "#d9534f"]);
+		loadStatistics("${qrdaWeeklyCounts}",  "QRDA Validator Weekly Statistics", "#canvas-svg");
 	});
 
 </script>

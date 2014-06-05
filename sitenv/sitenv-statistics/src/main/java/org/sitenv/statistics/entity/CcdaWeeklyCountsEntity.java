@@ -12,13 +12,9 @@ import javax.persistence.TemporalType;
 
 @Entity
 @NamedNativeQueries({
-	@NamedNativeQuery(name="ccdaValidationWeeklyCounts", query = "SELECT * FROM ccda_validation_weekly_counts(?)", resultClass = StatisticsCountsEntity.class),
-	@NamedNativeQuery(name="qrdaValidationWeeklyCounts", query = "SELECT * FROM qrda_validation_weekly_counts(?)", resultClass = StatisticsCountsEntity.class),
-	@NamedNativeQuery(name="directWeeklyCounts", query = "SELECT * FROM directreceive_weekly_counts(?)", resultClass = StatisticsCountsEntity.class),
-	@NamedNativeQuery(name="pdtiWeeklyCounts", query = "SELECT * FROM pdti_weekly_counts(?)", resultClass = StatisticsCountsEntity.class)
-
+	@NamedNativeQuery(name="ccdaValidationWeeklyCounts", query = "SELECT * FROM ccda_validation_weekly_counts(?)", resultClass = CcdaWeeklyCountsEntity.class)
 })
-public class StatisticsCountsEntity {
+public class CcdaWeeklyCountsEntity {
 	
 	@Id
 	@Column(name="start_date")
@@ -35,14 +31,8 @@ public class StatisticsCountsEntity {
 	@Column(name="range_year")
 	private Integer year;
 	
-	@Column(name="successful_count")
-	private Long successfulCount;
-	
-	@Column(name="failed_count")
-	private Long failedCount;
-	
-	@Column(name="error_count")
-	private Long errorCount;
+	@Column(name="total_count")
+	private Long totalCount;
 
 	@Override
 	public int hashCode() {
@@ -50,15 +40,11 @@ public class StatisticsCountsEntity {
 		int result = 1;
 		result = prime * result + ((endDate == null) ? 0 : endDate.hashCode());
 		result = prime * result
-				+ ((errorCount == null) ? 0 : errorCount.hashCode());
-		result = prime * result
-				+ ((failedCount == null) ? 0 : failedCount.hashCode());
-		result = prime * result
 				+ ((interval == null) ? 0 : interval.hashCode());
 		result = prime * result
 				+ ((startDate == null) ? 0 : startDate.hashCode());
 		result = prime * result
-				+ ((successfulCount == null) ? 0 : successfulCount.hashCode());
+				+ ((totalCount == null) ? 0 : totalCount.hashCode());
 		result = prime * result + ((year == null) ? 0 : year.hashCode());
 		return result;
 	}
@@ -71,21 +57,11 @@ public class StatisticsCountsEntity {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		StatisticsCountsEntity other = (StatisticsCountsEntity) obj;
+		CcdaWeeklyCountsEntity other = (CcdaWeeklyCountsEntity) obj;
 		if (endDate == null) {
 			if (other.endDate != null)
 				return false;
 		} else if (!endDate.equals(other.endDate))
-			return false;
-		if (errorCount == null) {
-			if (other.errorCount != null)
-				return false;
-		} else if (!errorCount.equals(other.errorCount))
-			return false;
-		if (failedCount == null) {
-			if (other.failedCount != null)
-				return false;
-		} else if (!failedCount.equals(other.failedCount))
 			return false;
 		if (interval == null) {
 			if (other.interval != null)
@@ -97,10 +73,10 @@ public class StatisticsCountsEntity {
 				return false;
 		} else if (!startDate.equals(other.startDate))
 			return false;
-		if (successfulCount == null) {
-			if (other.successfulCount != null)
+		if (totalCount == null) {
+			if (other.totalCount != null)
 				return false;
-		} else if (!successfulCount.equals(other.successfulCount))
+		} else if (!totalCount.equals(other.totalCount))
 			return false;
 		if (year == null) {
 			if (other.year != null)
@@ -142,30 +118,13 @@ public class StatisticsCountsEntity {
 		this.year = year;
 	}
 
-	public Long getSuccessfulCount() {
-		return successfulCount;
+	public Long getTotalCount() {
+		return totalCount;
 	}
 
-	public void setSuccessfulCount(Long successfulCount) {
-		this.successfulCount = successfulCount;
+	public void setTotalCount(Long totalCount) {
+		this.totalCount = totalCount;
 	}
-
-	public Long getFailedCount() {
-		return failedCount;
-	}
-
-	public void setFailedCount(Long failedCount) {
-		this.failedCount = failedCount;
-	}
-
-	public Long getErrorCount() {
-		return errorCount;
-	}
-
-	public void setErrorCount(Long errorCount) {
-		this.errorCount = errorCount;
-	}
-
 
 	
 }

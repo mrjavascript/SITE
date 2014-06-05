@@ -2,9 +2,11 @@ package org.sitenv.statistics.manager;
 
 import java.util.List;
 
+import org.sitenv.statistics.dto.CcdaWeeklyCounts;
+import org.sitenv.statistics.dto.DirectWeeklyCounts;
 import org.sitenv.statistics.dto.PdtiTestCase;
-import org.sitenv.statistics.dto.StatisticsCounts;
-import org.springframework.transaction.annotation.Transactional;
+import org.sitenv.statistics.dto.PdtiWeeklyCounts;
+import org.sitenv.statistics.dto.QrdaWeeklyCounts;
 
 public interface StatisticsManager {
 
@@ -27,10 +29,10 @@ public interface StatisticsManager {
 	public Long getSmartCcdaWithHttpErrorCount(Integer numOfDays);
 	public Long getCcdaDownloadCount(Integer numOfDays);
 	
-	public List<StatisticsCounts> getCcdaWeeklyCounts(Integer numOfWeeks);
-	public List<StatisticsCounts> getQrdaWeeklyCounts(Integer numOfWeeks);
-	public List<StatisticsCounts> getPdtiWeeklyCounts(Integer numOfWeeks);
-	public List<StatisticsCounts> getDirectReceiveWeeklyCounts(Integer numOfWeeks);
+	public List<CcdaWeeklyCounts> getCcdaWeeklyCounts(Integer numOfWeeks);
+	public List<QrdaWeeklyCounts> getQrdaWeeklyCounts(Integer numOfWeeks);
+	public List<PdtiWeeklyCounts> getPdtiWeeklyCounts(Integer numOfWeeks);
+	public List<DirectWeeklyCounts> getDirectReceiveWeeklyCounts(Integer numOfWeeks);
 	
 	
 	public void addQrdaValidation(Integer category, Boolean hasSchemaErrors, Boolean hasSchematronErrors, Boolean hasSchematronWarnings, Boolean hasHttpError);
@@ -42,7 +44,7 @@ public interface StatisticsManager {
 	
 	
 	
-	public void addDirectReceive(Boolean uploaded, Boolean precanned, Boolean hasErrors);
+	public void addDirectReceive(String domain, Boolean uploaded, Boolean precanned, Boolean hasErrors);
 	public void addDirectTrustUpload(Boolean hasErrors);
 	public Long getSuccessfulDirectReceiveCount(Integer numOfDays);
 	public Long getFailedDirectReceiveCount(Integer numOfDays);
@@ -52,7 +54,7 @@ public interface StatisticsManager {
 	public Long getFailedTrustAnchorUploadCount(Integer numOfDays);
 	
 	
-	public void addPdtiTest(List<PdtiTestCase> testCases);
+	public void addPdtiTest(String endpointUrl, List<PdtiTestCase> testCases);
 	public Long getSuccessfulPdtiTestCount(Integer numOfDays);
 	public Long getFailedPdtiTestCount(Integer numOfDays);
 	public Long getTotalPdtiTestCount(Integer numOfDays);

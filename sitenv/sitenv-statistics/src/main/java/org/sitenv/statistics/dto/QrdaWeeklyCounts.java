@@ -2,7 +2,7 @@ package org.sitenv.statistics.dto;
 
 import java.util.Date;
 
-public class StatisticsCounts {
+public class QrdaWeeklyCounts {
 	
 	private Date startDate;
 	
@@ -12,27 +12,23 @@ public class StatisticsCounts {
 	
 	private Integer year;
 	
-	private Long successCount;
+	private Long category1Count;
 	
-	private Long failedCount;
-	
-	private Long errorCount;
+	private Long category3Count;
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result
+				+ ((category1Count == null) ? 0 : category1Count.hashCode());
+		result = prime * result
+				+ ((category3Count == null) ? 0 : category3Count.hashCode());
 		result = prime * result + ((endDate == null) ? 0 : endDate.hashCode());
-		result = prime * result
-				+ ((errorCount == null) ? 0 : errorCount.hashCode());
-		result = prime * result
-				+ ((failedCount == null) ? 0 : failedCount.hashCode());
 		result = prime * result
 				+ ((interval == null) ? 0 : interval.hashCode());
 		result = prime * result
 				+ ((startDate == null) ? 0 : startDate.hashCode());
-		result = prime * result
-				+ ((successCount == null) ? 0 : successCount.hashCode());
 		result = prime * result + ((year == null) ? 0 : year.hashCode());
 		return result;
 	}
@@ -45,21 +41,21 @@ public class StatisticsCounts {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		StatisticsCounts other = (StatisticsCounts) obj;
+		QrdaWeeklyCounts other = (QrdaWeeklyCounts) obj;
+		if (category1Count == null) {
+			if (other.category1Count != null)
+				return false;
+		} else if (!category1Count.equals(other.category1Count))
+			return false;
+		if (category3Count == null) {
+			if (other.category3Count != null)
+				return false;
+		} else if (!category3Count.equals(other.category3Count))
+			return false;
 		if (endDate == null) {
 			if (other.endDate != null)
 				return false;
 		} else if (!endDate.equals(other.endDate))
-			return false;
-		if (errorCount == null) {
-			if (other.errorCount != null)
-				return false;
-		} else if (!errorCount.equals(other.errorCount))
-			return false;
-		if (failedCount == null) {
-			if (other.failedCount != null)
-				return false;
-		} else if (!failedCount.equals(other.failedCount))
 			return false;
 		if (interval == null) {
 			if (other.interval != null)
@@ -70,11 +66,6 @@ public class StatisticsCounts {
 			if (other.startDate != null)
 				return false;
 		} else if (!startDate.equals(other.startDate))
-			return false;
-		if (successCount == null) {
-			if (other.successCount != null)
-				return false;
-		} else if (!successCount.equals(other.successCount))
 			return false;
 		if (year == null) {
 			if (other.year != null)
@@ -116,28 +107,20 @@ public class StatisticsCounts {
 		this.year = year;
 	}
 
-	public Long getSuccessCount() {
-		return successCount;
+	public Long getCategory1Count() {
+		return category1Count;
 	}
 
-	public void setSuccessCount(Long successCount) {
-		this.successCount = successCount;
+	public void setCategory1Count(Long category1Count) {
+		this.category1Count = category1Count;
 	}
 
-	public Long getFailedCount() {
-		return failedCount;
+	public Long getCategory3Count() {
+		return category3Count;
 	}
 
-	public void setFailedCount(Long failedCount) {
-		this.failedCount = failedCount;
-	}
-
-	public Long getErrorCount() {
-		return errorCount;
-	}
-
-	public void setErrorCount(Long errorCount) {
-		this.errorCount = errorCount;
+	public void setCategory3Count(Long category3Count) {
+		this.category3Count = category3Count;
 	}
 	
 	

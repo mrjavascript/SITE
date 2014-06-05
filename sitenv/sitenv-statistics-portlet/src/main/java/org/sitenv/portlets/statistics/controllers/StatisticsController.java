@@ -8,7 +8,7 @@ import javax.portlet.RenderResponse;
 
 import org.sitenv.common.utilities.controller.BaseController;
 import org.sitenv.statistics.constants.StatisticsConstants;
-import org.sitenv.statistics.dto.StatisticsCounts;
+import org.sitenv.statistics.dto.CcdaWeeklyCounts;
 import org.sitenv.statistics.manager.StatisticsManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

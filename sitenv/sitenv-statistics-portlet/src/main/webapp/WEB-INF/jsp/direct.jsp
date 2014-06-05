@@ -28,7 +28,7 @@
 <script>
 	
 	$(function() {
-		loadStatistics("${directReceiveWeeklyCounts}", "Message Sent by Week", 210, ["#428bca", "#5cb85c"]);
+		loadStatistics("${directReceiveWeeklyCounts}", "Direct Receive Weekly Statistics", "#canvas-svg");
 	});
 
 </script>
