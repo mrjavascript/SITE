@@ -1,24 +1,29 @@
 package org.sitenv.statistics.dao.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Query;
 
 import org.sitenv.statistics.dao.DirectTransmissionDAO;
+import org.sitenv.statistics.dto.DirectWeeklyCounts;
 import org.sitenv.statistics.entity.DirectReceiveEntity;
 import org.sitenv.statistics.entity.DirectTrustUploadEntity;
+import org.sitenv.statistics.entity.DirectWeeklyCountsEntity;
 import org.springframework.stereotype.Repository;
 
 @Repository(value="DirectTransmissionDAO")
 public class DirectTransmissionDAOImpl extends BaseDAOImpl implements DirectTransmissionDAO {
 
-	public void createDirectReceive(Boolean precanned, Boolean uploaded,
+	public void createDirectReceive(String domain, Boolean precanned, Boolean uploaded,
 			Boolean hasErrors) {
 		DirectReceiveEntity entity = new DirectReceiveEntity();
 
 		entity.setPrecanned(precanned);
 		entity.setUploaded(uploaded);
 		entity.setErrors(hasErrors);
+		entity.setDomain(domain);
 
 		entityManager.persist(entity);
 	}
@@ -205,6 +210,40 @@ public class DirectTransmissionDAOImpl extends BaseDAOImpl implements DirectTran
 	
 
 	return errorCount;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<DirectWeeklyCounts> getDirectReceiveWeeklyCounts(Integer numOfWeeks) {
+		
+		List<DirectWeeklyCounts> returnVal = null;
+		
+		Query query = entityManager.createNamedQuery("directWeeklyCounts", DirectWeeklyCountsEntity.class);
+		query.setParameter(1, numOfWeeks);
+		
+		List<DirectWeeklyCountsEntity> results = query.getResultList();
+		
+		if (results != null) {
+			for(DirectWeeklyCountsEntity result : results) {
+				if (returnVal == null)
+				{
+					returnVal = new ArrayList<DirectWeeklyCounts>();
+				}
+				
+				DirectWeeklyCounts count = new DirectWeeklyCounts();
+				count.setEndDate(result.getEndDate());
+				count.setInterval(result.getInterval());
+				count.setStartDate(result.getStartDate());
+				count.setTotalCount(result.getTotalCount());
+				count.setTotalUniqueDomainCount(result.getTotalUniqueDomainCount());
+				count.setYear(result.getYear());
+				
+				returnVal.add(count);
+				
+			}
+		}
+		
+		return returnVal;
+		
 	}
 
 }

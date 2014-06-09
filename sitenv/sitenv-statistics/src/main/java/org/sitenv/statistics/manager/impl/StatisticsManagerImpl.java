@@ -7,9 +7,16 @@ import org.sitenv.statistics.dao.CcdaValidationDAO;
 import org.sitenv.statistics.dao.DirectTransmissionDAO;
 import org.sitenv.statistics.dao.PdtiTestDAO;
 import org.sitenv.statistics.dao.QrdaValidationDAO;
+import org.sitenv.statistics.dto.CcdaWeeklyCounts;
+import org.sitenv.statistics.dto.DirectWeeklyCounts;
 import org.sitenv.statistics.dto.PdtiTestCase;
+<<<<<<< HEAD
 import org.sitenv.statistics.googleanalytics.GAStatistics;
 import org.sitenv.statistics.jira.JiraStatistics;
+=======
+import org.sitenv.statistics.dto.PdtiWeeklyCounts;
+import org.sitenv.statistics.dto.QrdaWeeklyCounts;
+>>>>>>> f38e03b2f6cac4bd4288bafaf3bcfd0930d245b7
 import org.sitenv.statistics.manager.StatisticsManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -149,9 +156,9 @@ public class StatisticsManagerImpl implements StatisticsManager {
 	
 	
 	@Transactional
-	public void addDirectReceive(Boolean uploaded, Boolean precanned,
+	public void addDirectReceive(String domain, Boolean uploaded, Boolean precanned,
 			Boolean hasErrors) {
-		directTransmissionDAO.createDirectReceive(precanned, uploaded, hasErrors);
+		directTransmissionDAO.createDirectReceive(domain, precanned, uploaded, hasErrors);
 		
 	}
 	
@@ -199,8 +206,8 @@ public class StatisticsManagerImpl implements StatisticsManager {
 	
 	
 	@Transactional
-	public void addPdtiTest(List<PdtiTestCase> testCases) {
-		pdtiTestDAO.createPdtiTest(testCases);
+	public void addPdtiTest(String endpointUrl, List<PdtiTestCase> testCases) {
+		pdtiTestDAO.createPdtiTest(endpointUrl, testCases);
 		
 	}
 
@@ -221,8 +228,27 @@ public class StatisticsManagerImpl implements StatisticsManager {
 
 	@Transactional
 	public Long getHttpErrorPdtiTestCount(Integer numOfDays) {
-		// TODO Auto-generated method stub
-		return null;
+		return pdtiTestDAO.getHttpErrorCount(true, numOfDays);
+	}
+	
+	@Transactional
+	public List<CcdaWeeklyCounts> getCcdaWeeklyCounts(Integer numOfWeeks) {
+		return ccdaValidationDAO.getCcdaWeeklyCounts(numOfWeeks);
+	}
+	
+	@Transactional
+	public List<QrdaWeeklyCounts> getQrdaWeeklyCounts(Integer numOfWeeks) {
+		return qrdaValidationDAO.getQrdaValidationsWeeklyCounts(numOfWeeks);
+	}
+	
+	@Transactional
+	public List<PdtiWeeklyCounts> getPdtiWeeklyCounts(Integer numOfWeeks) {
+		return pdtiTestDAO.getTestCasesWeeklyCounts(numOfWeeks);
+	}
+	
+	@Transactional
+	public List<DirectWeeklyCounts> getDirectReceiveWeeklyCounts(Integer numOfWeeks) {
+		return directTransmissionDAO.getDirectReceiveWeeklyCounts(numOfWeeks);
 	}
 
 	public CcdaValidationDAO getCcdaValidationDAO() {
@@ -256,6 +282,7 @@ public class StatisticsManagerImpl implements StatisticsManager {
 	public void setPdtiTestDAO(PdtiTestDAO pdtiTestDAO) {
 		this.pdtiTestDAO = pdtiTestDAO;
 	}
+<<<<<<< HEAD
 	
 	public Long getJiraIssuesCreatedCount(Integer numOfDays){
 		return JiraStatistics.getCreatedIssues(numOfDays);
@@ -272,5 +299,7 @@ public class StatisticsManagerImpl implements StatisticsManager {
 	public Long getGoogleAnalyticsPageViewCount(Integer numOfDays, String p12CertPath){
 		return GAStatistics.getPageViewCount(numOfDays, p12CertPath);
 	}
+=======
+>>>>>>> f38e03b2f6cac4bd4288bafaf3bcfd0930d245b7
 	
 }

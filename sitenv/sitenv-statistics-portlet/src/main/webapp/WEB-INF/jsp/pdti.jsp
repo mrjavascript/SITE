@@ -15,20 +15,42 @@
 --%>
 
 <%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
+<%@ page import="com.liferay.portal.kernel.portlet.LiferayWindowState"%>
 
 <portlet:defineObjects />
 
+<portlet:actionURL var="pdtiWeeklyCounts" windowState="<%= LiferayWindowState.EXCLUSIVE.toString() %>">
+    <portlet:param name="javax.portlet.action" value="pdtiWeeklyCounts"/>
+</portlet:actionURL>
 
-	<div class="row well">
-	<div class="col-md-6" style="text-align: center;">
-		<h2>${successPdtiCount}</h2>
-		<p>test cases passed</p>
+
+
+<script>
+	
+	$(function() {
+		loadStatistics("${pdtiWeeklyCounts}", "Provider Directory Weekly Statistics", "#canvas-svg");
+	});
+
+</script>
+		
+<div class="row well">
+	<!--div class="col-md-6" style="text-align: center;">
+		<h2>${successfulCcdas}</h2>
+		<p>c-cdas passed</p>
 	</div>
 	<div class="col-md-6" style="text-align: center;">
-		<h2>${failedPdtiCount}</h2>
-		<p>test cases failed</p>
-	</div>
+		<h2>${failedCcdas}</h2>
+		<p>c-cdas failed</p>
+	</div-->
+	<div id="canvas-svg"></div>
+	<% 
+	if (renderRequest.isUserInRole("administrator")) {
+	%>
 	<div style="width:100%">
 		<a class="btn btn-success" href="statistics"  style="width: 100%;">See More Stats</a>
 	</div>
-	</div>
+	<%
+	}
+	%>
+	
+</div>

@@ -1,5 +1,9 @@
 package org.sitenv.statistics.dao;
 
+import java.util.List;
+
+import org.sitenv.statistics.dto.CcdaWeeklyCounts;
+
 public interface CcdaValidationDAO {
 	
 	public void createCcdaValidation(String testType, Boolean hasErrors, Boolean hasWarnings, Boolean hasInfo, Boolean hasHttpError);
@@ -23,4 +27,6 @@ public interface CcdaValidationDAO {
 	public Long getCcdaDownloadCount(Integer numOfDays);
 	
 	public Long getSmartCcdaCount(Boolean hasHttpError, Integer numOfDays);
+	
+	public List<CcdaWeeklyCounts> getCcdaWeeklyCounts(Integer numOfWeeks);
 }

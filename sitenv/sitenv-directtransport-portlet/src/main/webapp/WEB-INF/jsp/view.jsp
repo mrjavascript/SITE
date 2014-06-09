@@ -228,7 +228,7 @@
 				<p>
 				<label for="precannedemail">Enter Your Endpoint Name:</label><br/>
 					<input id="precannedemail"
-						class="validate[required,custom[email]]"
+						class="validate[required,custom[email]] form-control" 
 						data-errormessage-value-missing="end point is required!"
 						data-errormessage-custom-error="end point format is invalid (hint:example@test.org)"
 						name="precannedemail"
@@ -274,7 +274,7 @@
 				<p>
 					<label for="ccdauploademail">Enter Your Endpoint Name:</label><br/>
 					 <input id="ccdauploademail"
-						class="validate[required,custom[email]]"
+						class="validate[required,custom[email]] form-control"
 						data-errormessage-value-missing="end point is required!"
 						data-errormessage-custom-error="end point format is invalid (hint:example@test.org)"
 						name="ccdauploademail"

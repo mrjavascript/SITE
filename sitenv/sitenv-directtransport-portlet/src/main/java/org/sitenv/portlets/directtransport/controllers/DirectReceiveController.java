@@ -79,8 +79,11 @@ public class DirectReceiveController  extends BaseController
 			this.loadProperties();
 		}
 		
+		String delimiter = "@";
+
 		
 		String fromendpoint = props.getProperty("directFromEndpoint");
+		String domain = fromendpoint.split(delimiter)[1];
 		String smtphostname = props.getProperty("smtphostname");
 		String smtpport = props.getProperty("smtpport");
 		String smtpuser = props.getProperty("smtpusername");
@@ -115,19 +118,19 @@ public class DirectReceiveController  extends BaseController
 			
 		} catch (FileUploadException e) {
 			if(e.getMessage().endsWith("bytes.")) {
-				statisticsManager.addDirectReceive(true, false, true);
+				statisticsManager.addDirectReceive(domain, true, false, true);
 				uploadResult.put("IsSuccess", "false");
 				uploadResult.put("ErrorMessage", "Maxiumum file size exceeeded. " + 
 						"Please return to the previous page and select a file that is less than "
 						+ MAX_FILE_SIZE / 1024 / 1024 + "MB(s).");
 			} else {
-				statisticsManager.addDirectReceive(true, false, true);
+				statisticsManager.addDirectReceive(domain, true, false, true);
 				uploadResult.put("IsSuccess", "false");
 				uploadResult.put("ErrorMessage", "There was an error uploading the file: " + e.getMessage());
 				
 			}
 		} catch (Exception e) {
-			statisticsManager.addDirectReceive(true, false, true);
+			statisticsManager.addDirectReceive(domain, true, false, true);
 			uploadResult.put("IsSuccess", "false");
 			uploadResult.put("ErrorMessage", "There was an error saving the file: " + e.getMessage());
 		}
@@ -190,10 +193,10 @@ public class DirectReceiveController  extends BaseController
 	 
 				uploadResult.put("IsSuccess", "true");
 				uploadResult.put("ErrorMessage", "Mail sent.");
-				statisticsManager.addDirectReceive(true, false, false);
+				statisticsManager.addDirectReceive(domain, true, false, false);
 				
 			} catch (MessagingException e) {
-				statisticsManager.addDirectReceive(true, false, true);
+				statisticsManager.addDirectReceive(domain, true, false, true);
 				uploadResult.put("IsSuccess", "false");
 				uploadResult.put("ErrorMessage", "Failed to send email due to eror: " + e.getMessage());
 			} 
@@ -228,7 +231,11 @@ public class DirectReceiveController  extends BaseController
 		
 		String sampleCcdaDir = props.getProperty("sampleCcdaDir");
 		
+		String delimiter = "@";
+
+		
 		String fromendpoint = props.getProperty("directFromEndpoint");
+		String domain = fromendpoint.split(delimiter)[1];
 		String smtphostname = props.getProperty("smtphostname");
 		String smtpport = props.getProperty("smtpport");
 		String smtpuser = props.getProperty("smtpusername");
@@ -304,10 +311,10 @@ public class DirectReceiveController  extends BaseController
  
 			precannedResult.put("IsSuccess", "true");
 			precannedResult.put("ErrorMessage", "Mail sent.");
-			statisticsManager.addDirectReceive(false, true, false);
+			statisticsManager.addDirectReceive(domain, false, true, false);
 			
 		} catch (MessagingException e) {
-			statisticsManager.addDirectReceive(false, true, true);
+			statisticsManager.addDirectReceive(domain, false, true, true);
 			precannedResult.put("IsSuccess", "false");
 			precannedResult.put("ErrorMessage", "Failed to send email due to eror: " + e.getMessage());
 		} 

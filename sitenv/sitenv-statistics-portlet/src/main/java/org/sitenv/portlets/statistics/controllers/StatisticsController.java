@@ -1,6 +1,10 @@
 package org.sitenv.portlets.statistics.controllers;
 
+<<<<<<< HEAD
 import java.io.IOException;
+=======
+import java.util.List;
+>>>>>>> f38e03b2f6cac4bd4288bafaf3bcfd0930d245b7
 
 import javax.portlet.PortletPreferences;
 import javax.portlet.RenderRequest;
@@ -8,6 +12,8 @@ import javax.portlet.RenderResponse;
 
 import org.apache.log4j.Logger;
 import org.sitenv.common.utilities.controller.BaseController;
+import org.sitenv.statistics.constants.StatisticsConstants;
+import org.sitenv.statistics.dto.CcdaWeeklyCounts;
 import org.sitenv.statistics.manager.StatisticsManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -39,34 +45,19 @@ public class StatisticsController extends BaseController {
 		
 		
 		if (page.equals("ccda-stats"))
-		{
-			modelAndView.addObject("successfulCcdas", statisticsManager.getSuccessfulCcdaValidationCount(null));
-			modelAndView.addObject("failedCcdas", statisticsManager.getFailedCcdaValidationCount(null));
-			
-			
+		{	
 			modelAndView.setViewName("ccda");
 		}
 		else if (page.equals("qrda-stats"))
 		{
-			modelAndView.addObject("successQrda", statisticsManager.getSuccessfulQrdaValidationCount(null, null));
-			modelAndView.addObject("failedQrda", statisticsManager.getFailedQrdaValidationCount(null, null));
-			
-			
 			modelAndView.setViewName("qrda");
 		}
 		else if (page.equals("pdti-stats"))
 		{
-			modelAndView.addObject("successPdtiCount", statisticsManager.getSuccessfulPdtiTestCount(null));
-			modelAndView.addObject("failedPdtiCount", statisticsManager.getFailedPdtiTestCount(null));
-			
-			
 			modelAndView.setViewName("pdti");
 		}
 		else if (page.equals("direct-stats"))
 		{
-			modelAndView.addObject("precannedDirectCount", statisticsManager.getSuccessfulPrecannedDirectReceiveCount(null));
-			modelAndView.addObject("uploadedDirectCount", statisticsManager.getSuccessfulUploadedDirectReceiveCount(null));
-			
 			modelAndView.setViewName("direct");
 		}
 		else
