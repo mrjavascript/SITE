@@ -43,8 +43,7 @@ private Logger logger = Logger.getLogger(QrdaWeeklyCountsCsvView.class);
     	}
     }
     
-    logger.debug(sbuilder.toString());
-    
+   
     response.getWriter().write(sbuilder.toString());
     response.getWriter().flush();
     }
