@@ -10,13 +10,13 @@ import org.sitenv.statistics.dao.QrdaValidationDAO;
 import org.sitenv.statistics.dto.CcdaWeeklyCounts;
 import org.sitenv.statistics.dto.DirectWeeklyCounts;
 import org.sitenv.statistics.dto.PdtiTestCase;
-<<<<<<< HEAD
+
 import org.sitenv.statistics.googleanalytics.GAStatistics;
 import org.sitenv.statistics.jira.JiraStatistics;
-=======
+
 import org.sitenv.statistics.dto.PdtiWeeklyCounts;
 import org.sitenv.statistics.dto.QrdaWeeklyCounts;
->>>>>>> f38e03b2f6cac4bd4288bafaf3bcfd0930d245b7
+
 import org.sitenv.statistics.manager.StatisticsManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -282,7 +282,6 @@ public class StatisticsManagerImpl implements StatisticsManager {
 	public void setPdtiTestDAO(PdtiTestDAO pdtiTestDAO) {
 		this.pdtiTestDAO = pdtiTestDAO;
 	}
-<<<<<<< HEAD
 	
 	public Long getJiraIssuesCreatedCount(Integer numOfDays){
 		return JiraStatistics.getCreatedIssues(numOfDays);
@@ -299,7 +298,5 @@ public class StatisticsManagerImpl implements StatisticsManager {
 	public Long getGoogleAnalyticsPageViewCount(Integer numOfDays, String p12CertPath){
 		return GAStatistics.getPageViewCount(numOfDays, p12CertPath);
 	}
-=======
->>>>>>> f38e03b2f6cac4bd4288bafaf3bcfd0930d245b7
 	
 }

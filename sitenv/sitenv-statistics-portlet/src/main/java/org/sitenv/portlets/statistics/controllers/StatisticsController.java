@@ -1,10 +1,8 @@
 package org.sitenv.portlets.statistics.controllers;
 
-<<<<<<< HEAD
+
 import java.io.IOException;
-=======
 import java.util.List;
->>>>>>> f38e03b2f6cac4bd4288bafaf3bcfd0930d245b7
 
 import javax.portlet.PortletPreferences;
 import javax.portlet.RenderRequest;
