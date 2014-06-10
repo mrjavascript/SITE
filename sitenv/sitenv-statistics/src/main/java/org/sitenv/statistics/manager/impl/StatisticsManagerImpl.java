@@ -1,5 +1,6 @@
 package org.sitenv.statistics.manager.impl;
 
+
 import java.util.List;
 
 import org.sitenv.statistics.dao.CcdaValidationDAO;
@@ -9,12 +10,21 @@ import org.sitenv.statistics.dao.QrdaValidationDAO;
 import org.sitenv.statistics.dto.CcdaWeeklyCounts;
 import org.sitenv.statistics.dto.DirectWeeklyCounts;
 import org.sitenv.statistics.dto.PdtiTestCase;
+
+import org.sitenv.statistics.googleanalytics.GAStatistics;
+import org.sitenv.statistics.jira.JiraStatistics;
+
 import org.sitenv.statistics.dto.PdtiWeeklyCounts;
 import org.sitenv.statistics.dto.QrdaWeeklyCounts;
+
 import org.sitenv.statistics.manager.StatisticsManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+
+
+
 
 @Service
 public class StatisticsManagerImpl implements StatisticsManager {
@@ -273,5 +283,20 @@ public class StatisticsManagerImpl implements StatisticsManager {
 		this.pdtiTestDAO = pdtiTestDAO;
 	}
 	
-
+	public Long getJiraIssuesCreatedCount(Integer numOfDays){
+		return JiraStatistics.getCreatedIssues(numOfDays);
+	}
+	
+	public Long getJiraIssuesResolvedCount(Integer numOfDays){
+		return JiraStatistics.getResolvedIssues(numOfDays);
+	}
+	
+	public Long getGoogleAnalyticsSessionCount(Integer numOfDays, String p12CertPath){
+		return GAStatistics.getSessionCount(numOfDays, p12CertPath);
+	}
+	
+	public Long getGoogleAnalyticsPageViewCount(Integer numOfDays, String p12CertPath){
+		return GAStatistics.getPageViewCount(numOfDays, p12CertPath);
+	}
+	
 }

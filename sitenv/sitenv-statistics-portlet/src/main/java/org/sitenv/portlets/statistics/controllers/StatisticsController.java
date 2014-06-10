@@ -1,11 +1,14 @@
 package org.sitenv.portlets.statistics.controllers;
 
+
+import java.io.IOException;
 import java.util.List;
 
 import javax.portlet.PortletPreferences;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
+import org.apache.log4j.Logger;
 import org.sitenv.common.utilities.controller.BaseController;
 import org.sitenv.statistics.constants.StatisticsConstants;
 import org.sitenv.statistics.dto.CcdaWeeklyCounts;
@@ -16,10 +19,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.ModelAndView;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 
+
+
 @Controller("statisticsController")
 
 @RequestMapping("VIEW")
 public class StatisticsController extends BaseController {
+	
+	
+	private static final Logger logger = Logger.getLogger(StatisticsController.class);
 
 	@Autowired
 	private StatisticsManager statisticsManager;
@@ -189,9 +197,56 @@ public class StatisticsController extends BaseController {
 			modelAndView.addObject("uploadedDirectCount60", statisticsManager.getSuccessfulUploadedDirectReceiveCount(60));
 			modelAndView.addObject("uploadedDirectCount90", statisticsManager.getSuccessfulUploadedDirectReceiveCount(90));
 			
-			
 			/*
 			 * End of Direct statistics
+			 */
+			
+			
+			/*
+			 * JIRA Statistics
+			 */
+			modelAndView.addObject("jiraIssuesCreated", statisticsManager.getJiraIssuesCreatedCount(0));
+			modelAndView.addObject("jiraIssuesCreated30", statisticsManager.getJiraIssuesCreatedCount(30));
+			modelAndView.addObject("jiraIssuesCreated60", statisticsManager.getJiraIssuesCreatedCount(60));
+			modelAndView.addObject("jiraIssuesCreated90", statisticsManager.getJiraIssuesCreatedCount(90));
+			
+			modelAndView.addObject("jiraIssuesResolved", statisticsManager.getJiraIssuesResolvedCount(0));
+			modelAndView.addObject("jiraIssuesResolved30", statisticsManager.getJiraIssuesResolvedCount(30));
+			modelAndView.addObject("jiraIssuesResolved60", statisticsManager.getJiraIssuesResolvedCount(60));
+			modelAndView.addObject("jiraIssuesResolved90", statisticsManager.getJiraIssuesResolvedCount(90));
+			
+			/*
+			 * End JIRA Statistics
+			 */
+			
+			
+			/*
+			 * Google Analytics Statistics
+			 */
+			
+			if (this.props == null)
+			{
+				
+				try {
+					this.loadProperties();
+				} catch (IOException e) {
+					logger.error("Properties could not be loaded:" ,e);
+				}
+			}
+			
+			String p12CertPath = this.props.getProperty("googleAnalyticsp12CertPath");
+			
+			modelAndView.addObject("GoogleAnalyticsSessions", statisticsManager.getGoogleAnalyticsSessionCount(0, p12CertPath));
+			modelAndView.addObject("GoogleAnalyticsSessions30", statisticsManager.getGoogleAnalyticsSessionCount(30, p12CertPath));
+			modelAndView.addObject("GoogleAnalyticsSessions60", statisticsManager.getGoogleAnalyticsSessionCount(60, p12CertPath));
+			modelAndView.addObject("GoogleAnalyticsSessions90", statisticsManager.getGoogleAnalyticsSessionCount(90, p12CertPath));
+			
+			modelAndView.addObject("GoogleAnalyticsPageViews", statisticsManager.getGoogleAnalyticsPageViewCount(0, p12CertPath));
+			modelAndView.addObject("GoogleAnalyticsPageViews30", statisticsManager.getGoogleAnalyticsPageViewCount(30, p12CertPath));
+			modelAndView.addObject("GoogleAnalyticsPageViews60", statisticsManager.getGoogleAnalyticsPageViewCount(60, p12CertPath));
+			modelAndView.addObject("GoogleAnalyticsPageViews90", statisticsManager.getGoogleAnalyticsPageViewCount(90, p12CertPath));
+			/*
+			 * End Google Analytics Statistics
 			 */
 			
 			modelAndView.setViewName("view");

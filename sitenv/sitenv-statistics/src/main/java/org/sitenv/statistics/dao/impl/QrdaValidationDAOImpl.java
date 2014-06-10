@@ -168,7 +168,7 @@ public class QrdaValidationDAOImpl extends BaseDAOImpl implements
 						.createQuery("SELECT COUNT(t) FROM org.sitenv.statistics.entity.QrdaValidationEntity t WHERE (t.schematronErrors = true OR t.schemaErrors = true ) AND t.timestamp < :currentDate AND t.timestamp > :prevDate AND t.httpError = false");
 				query.setParameter("currentDate", currentDbDate);
 				query.setParameter("prevDate", pastDate);
-
+				
 				errorCount = (Long) query.getSingleResult();
 
 			}
