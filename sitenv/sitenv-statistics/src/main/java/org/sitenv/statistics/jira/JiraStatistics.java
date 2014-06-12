@@ -21,7 +21,6 @@ import com.google.gson.JsonParser;
 public class JiraStatistics {
 	
 	
-	private static final String jiraCredential = "c2l0ZXVzZXI6I3NpdGUh";
 	
 	private static final Logger logger = Logger.getLogger(JiraStatistics.class);
 	
@@ -42,7 +41,7 @@ public class JiraStatistics {
 
 		HttpPost post = new HttpPost("http://jira.oncprojectracking.org/rest/api/2/search");
 		
-		post.addHeader("Authorization", "Basic "+jiraCredential);
+		//post.addHeader("Authorization", "Basic "+jiraCredential);
 		post.addHeader("Content-Type", "application/json");
 		
 		StringEntity query = null;

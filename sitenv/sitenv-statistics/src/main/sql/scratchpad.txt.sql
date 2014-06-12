@@ -252,3 +252,100 @@ END;
 $$ LANGUAGE plpgsql;
 
 SELECT * FROM directreceive_weekly_counts(104);
+
+
+
+
+
+CREATE OR REPLACE FUNCTION aggregate_weekly_counts(limited INT) 
+RETURNS TABLE (
+	start_date DATE,
+	end_date DATE,
+	range_interval INT,
+	range_year INT,
+	ccda_count BIGINT,
+	qrda_count BIGINT,
+	pdtirequest_count BIGINT,
+	directreceive_count BIGINT)
+AS $$	
+BEGIN
+RETURN QUERY
+SELECT
+	CAST(c.generated_date + '-1 days' AS DATE) start_date,
+	CAST(c.generated_date + '5 days' AS DATE) end_date,
+	CAST(extract('week' FROM c.generated_date) AS INT) range_interval,
+	CAST(extract('isoyear' FROM c.generated_date) AS INT) range_year,
+	coalesce(v.total_count, 0) ccda_count,
+	coalesce(x.total_count, 0) qrda_count,
+	coalesce(y.total_count, 0) pdtirequest_count,
+	coalesce(z.total_count, 0) directreceive_count	
+FROM
+	(SELECT 
+		date_trunc('week', (current_date - offs)) as generated_date 
+	 FROM generate_series(0,(limited*7)+1,7) as offs
+	 ORDER BY generated_date DESC
+	 LIMIT limited) as c
+
+	LEFT OUTER JOIN	
+	(SELECT 
+		date_trunc('week', validation_time) week_start,
+		count(*) total_count
+	FROM 
+		ccda_validations
+	WHERE
+		validation_httperror = FALSE
+	GROUP BY
+		week_start
+	ORDER BY
+		week_start desc
+	LIMIT limited) as v ON c.generated_date = v.week_start
+	
+	
+	LEFT OUTER JOIN	
+	(SELECT 
+		date_trunc('week', validation_time) week_start,
+		count(*) total_count
+	FROM 
+		qrda_validations
+	WHERE
+		validation_httperror = FALSE
+	GROUP BY
+		week_start
+	ORDER BY
+		week_start desc
+	LIMIT limited) as x ON c.generated_date = x.week_start
+	
+	LEFT OUTER JOIN	
+	(SELECT 
+		date_trunc('week', testcase_time) week_start,
+		count(*) total_count
+	FROM 
+		pdti_testcases
+	WHERE
+		testcase_httperror = FALSE
+	GROUP BY
+		week_start
+	ORDER BY
+		week_start desc
+	LIMIT limited) as y ON c.generated_date = y.week_start
+	
+	LEFT OUTER JOIN	
+	(SELECT 
+		date_trunc('week', directreceive_time) week_start,
+		count(DISTINCT directreceive_domain) total_count
+	FROM 
+		direct_receive
+	WHERE
+		directreceive_errors = FALSE	 
+	GROUP BY
+		week_start
+	ORDER BY
+		week_start desc
+	LIMIT limited) as z ON c.generated_date = z.week_start
+	
+ORDER BY start_date DESC;
+
+END;
+$$ LANGUAGE plpgsql;
+
+SELECT * FROM aggregate_weekly_counts(104);

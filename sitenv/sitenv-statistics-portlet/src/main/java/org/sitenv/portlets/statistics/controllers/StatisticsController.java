@@ -1,17 +1,16 @@
 package org.sitenv.portlets.statistics.controllers;
 
 
+import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 import javax.portlet.PortletPreferences;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.sitenv.common.utilities.controller.BaseController;
-import org.sitenv.statistics.constants.StatisticsConstants;
-import org.sitenv.statistics.dto.CcdaWeeklyCounts;
 import org.sitenv.statistics.manager.StatisticsManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,6 +36,16 @@ public class StatisticsController extends BaseController {
 			RenderResponse response) {
 
 		ModelAndView modelAndView = new ModelAndView();
+		
+		if (this.props == null)
+		{
+			
+			try {
+				this.loadProperties();
+			} catch (IOException e) {
+				logger.error("Properties could not be loaded:" ,e);
+			}
+		}
 		
 		PortletPreferences prefs = request.getPreferences();
 		String page = prefs.getValue("viewPage", "all-stats");
@@ -201,19 +210,23 @@ public class StatisticsController extends BaseController {
 			 * End of Direct statistics
 			 */
 			
-			
 			/*
 			 * JIRA Statistics
 			 */
-			modelAndView.addObject("jiraIssuesCreated", statisticsManager.getJiraIssuesCreatedCount(0));
-			modelAndView.addObject("jiraIssuesCreated30", statisticsManager.getJiraIssuesCreatedCount(30));
-			modelAndView.addObject("jiraIssuesCreated60", statisticsManager.getJiraIssuesCreatedCount(60));
-			modelAndView.addObject("jiraIssuesCreated90", statisticsManager.getJiraIssuesCreatedCount(90));
 			
-			modelAndView.addObject("jiraIssuesResolved", statisticsManager.getJiraIssuesResolvedCount(0));
-			modelAndView.addObject("jiraIssuesResolved30", statisticsManager.getJiraIssuesResolvedCount(30));
-			modelAndView.addObject("jiraIssuesResolved60", statisticsManager.getJiraIssuesResolvedCount(60));
-			modelAndView.addObject("jiraIssuesResolved90", statisticsManager.getJiraIssuesResolvedCount(90));
+				
+				modelAndView.addObject("jiraIssuesCreated", statisticsManager.getJiraIssuesCreatedCount(0));
+				modelAndView.addObject("jiraIssuesCreated30", statisticsManager.getJiraIssuesCreatedCount(30));
+				modelAndView.addObject("jiraIssuesCreated60", statisticsManager.getJiraIssuesCreatedCount(60));
+				modelAndView.addObject("jiraIssuesCreated90", statisticsManager.getJiraIssuesCreatedCount(90));
+				
+				modelAndView.addObject("jiraIssuesResolved", statisticsManager.getJiraIssuesResolvedCount(0));
+				modelAndView.addObject("jiraIssuesResolved30", statisticsManager.getJiraIssuesResolvedCount(30));
+				modelAndView.addObject("jiraIssuesResolved60", statisticsManager.getJiraIssuesResolvedCount(60));
+				modelAndView.addObject("jiraIssuesResolved90", statisticsManager.getJiraIssuesResolvedCount(90));
+			
+			
+			
 			
 			/*
 			 * End JIRA Statistics
@@ -224,15 +237,7 @@ public class StatisticsController extends BaseController {
 			 * Google Analytics Statistics
 			 */
 			
-			if (this.props == null)
-			{
-				
-				try {
-					this.loadProperties();
-				} catch (IOException e) {
-					logger.error("Properties could not be loaded:" ,e);
-				}
-			}
+			
 			
 			String p12CertPath = this.props.getProperty("googleAnalyticsp12CertPath");
 			
@@ -245,6 +250,7 @@ public class StatisticsController extends BaseController {
 			modelAndView.addObject("GoogleAnalyticsPageViews30", statisticsManager.getGoogleAnalyticsPageViewCount(30, p12CertPath));
 			modelAndView.addObject("GoogleAnalyticsPageViews60", statisticsManager.getGoogleAnalyticsPageViewCount(60, p12CertPath));
 			modelAndView.addObject("GoogleAnalyticsPageViews90", statisticsManager.getGoogleAnalyticsPageViewCount(90, p12CertPath));
+		
 			/*
 			 * End Google Analytics Statistics
 			 */

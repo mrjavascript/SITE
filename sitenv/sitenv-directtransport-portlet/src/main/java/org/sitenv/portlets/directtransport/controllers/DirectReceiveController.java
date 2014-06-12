@@ -28,6 +28,7 @@ import javax.portlet.ActionResponse;
 import javax.portlet.RenderRequest;
 
 import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -87,7 +88,7 @@ public class DirectReceiveController  extends BaseController
 		String smtphostname = props.getProperty("smtphostname");
 		String smtpport = props.getProperty("smtpport");
 		String smtpuser = props.getProperty("smtpusername");
-		String smtppswrd = props.getProperty("smtppswd");
+		String smtppswrd = FileUtils.readFileToString(new File(props.getProperty("smtppswdPath")));
 		String enableSSL = props.getProperty("smtpenablessl");
 	
 		response.setRenderParameter("javax.portlet.action", "uploadCCDADirectReceive");
@@ -239,7 +240,7 @@ public class DirectReceiveController  extends BaseController
 		String smtphostname = props.getProperty("smtphostname");
 		String smtpport = props.getProperty("smtpport");
 		String smtpuser = props.getProperty("smtpusername");
-		String smtppswrd = props.getProperty("smtppswd");
+		String smtppswrd = FileUtils.readFileToString(new File(props.getProperty("smtppswdPath")));
 		String enableSSL = props.getProperty("smtpenablessl");
 	
 		response.setRenderParameter("javax.portlet.action", "precannedCCDADirectReceive");
