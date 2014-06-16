@@ -20,6 +20,7 @@
 		<class>org.sitenv.statistics.entity.QrdaWeeklyCountsEntity</class>
 		<class>org.sitenv.statistics.entity.PdtiWeeklyCountsEntity</class>
 		<class>org.sitenv.statistics.entity.DirectWeeklyCountsEntity</class>
+		<class>org.sitenv.statistics.entity.AggregateWeeklyCountsEntity</class>
 		<properties>
 			<property name="hibernate.show_sql" value="true" />
 			<property name="hibernate.format_sql" value="true" />

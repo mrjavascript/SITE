@@ -1,14 +1,13 @@
 package org.sitenv.portlets.statistics.controllers;
 
 
-import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
 
 import javax.portlet.PortletPreferences;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.sitenv.common.utilities.controller.BaseController;
 import org.sitenv.statistics.manager.StatisticsManager;
@@ -66,6 +65,16 @@ public class StatisticsController extends BaseController {
 		else if (page.equals("direct-stats"))
 		{
 			modelAndView.setViewName("direct");
+		}
+		else if (page.equals("aggregate-stats"))
+		{
+			String p12CertPath = this.props.getProperty("googleAnalyticsp12CertPath");
+			
+			modelAndView.addObject("GoogleAnalyticsSessions", format(statisticsManager.getGoogleAnalyticsSessionCount(0, p12CertPath)));
+			modelAndView.addObject("GoogleAnalyticsPageViews", format(statisticsManager.getGoogleAnalyticsPageViewCount(0, p12CertPath)));
+			modelAndView.addObject("jiraIssuesResolved", format(statisticsManager.getJiraIssuesResolvedCount(0)));
+			
+			modelAndView.setViewName("aggregate");
 		}
 		else
 		{
@@ -270,5 +279,15 @@ public class StatisticsController extends BaseController {
 	}
 	
 	
-	
+	private static String[] suffix = new String[]{"","k", "m", "b", "t"};
+	private static int MAX_LENGTH = 4;
+
+	private static String format(double number) {
+	    String r = new DecimalFormat("##0E0").format(number);
+	    r = r.replaceAll("E[0-9]", suffix[Character.getNumericValue(r.charAt(r.length() - 1)) / 3]);
+	    while(r.length() > MAX_LENGTH || r.matches("[0-9]+\\.[a-z]")){
+	        r = r.substring(0, r.length()-2) + r.substring(r.length() - 1);
+	    }
+	    return r;
+	}
 }

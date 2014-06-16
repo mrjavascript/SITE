@@ -28,7 +28,7 @@
 <script>
 	
 	$(function() {
-		loadStatistics("${ccdaWeeklyCounts}", "C-CDA Weekly Statistics", "#canvas-svg");
+		loadStatistics("${ccdaWeeklyCounts}", "C-CDA Weekly Statistics", "#canvas-svg", 330, 300);
 	});
 
 </script>

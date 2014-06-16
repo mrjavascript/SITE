@@ -2,6 +2,7 @@ package org.sitenv.statistics.manager;
 
 import java.util.List;
 
+import org.sitenv.statistics.dto.AggregateWeeklyCounts;
 import org.sitenv.statistics.dto.CcdaWeeklyCounts;
 import org.sitenv.statistics.dto.DirectWeeklyCounts;
 import org.sitenv.statistics.dto.PdtiTestCase;
@@ -60,6 +61,8 @@ public interface StatisticsManager {
 	public Long getTotalPdtiTestCount(Integer numOfDays);
 	public Long getHttpErrorPdtiTestCount(Integer numOfDays);
 	
+	
+	public List<AggregateWeeklyCounts> getAggregateWeeklyCounts(Integer numOfWeeks);
 	
 	public Long getJiraIssuesCreatedCount(Integer numOfDays);
 	public Long getJiraIssuesResolvedCount(Integer numOfDays);

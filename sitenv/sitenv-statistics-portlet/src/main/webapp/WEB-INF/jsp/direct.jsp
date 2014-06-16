@@ -28,7 +28,7 @@
 <script>
 	
 	$(function() {
-		loadStatistics("${directReceiveWeeklyCounts}", "Direct Receive Weekly Statistics", "#canvas-svg");
+		loadStatistics("${directReceiveWeeklyCounts}", "Direct Receive Weekly Statistics", "#canvas-svg", 330, 300);
 	});
 
 </script>

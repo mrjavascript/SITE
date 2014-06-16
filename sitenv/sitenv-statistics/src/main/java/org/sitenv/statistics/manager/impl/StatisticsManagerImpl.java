@@ -3,20 +3,19 @@ package org.sitenv.statistics.manager.impl;
 
 import java.util.List;
 
+import org.sitenv.statistics.dao.AggregateDAO;
 import org.sitenv.statistics.dao.CcdaValidationDAO;
 import org.sitenv.statistics.dao.DirectTransmissionDAO;
 import org.sitenv.statistics.dao.PdtiTestDAO;
 import org.sitenv.statistics.dao.QrdaValidationDAO;
+import org.sitenv.statistics.dto.AggregateWeeklyCounts;
 import org.sitenv.statistics.dto.CcdaWeeklyCounts;
 import org.sitenv.statistics.dto.DirectWeeklyCounts;
 import org.sitenv.statistics.dto.PdtiTestCase;
-
-import org.sitenv.statistics.googleanalytics.GAStatistics;
-import org.sitenv.statistics.jira.JiraStatistics;
-
 import org.sitenv.statistics.dto.PdtiWeeklyCounts;
 import org.sitenv.statistics.dto.QrdaWeeklyCounts;
-
+import org.sitenv.statistics.googleanalytics.GAStatistics;
+import org.sitenv.statistics.jira.JiraStatistics;
 import org.sitenv.statistics.manager.StatisticsManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,6 +39,10 @@ public class StatisticsManagerImpl implements StatisticsManager {
 	
 	@Autowired
 	private PdtiTestDAO pdtiTestDAO;
+	
+	@Autowired
+	private AggregateDAO aggregateDAO;
+	
 	
 	@Transactional
 	public void addCcdaValidation(String testType, Boolean hasErrors, Boolean hasWarnings,
@@ -251,6 +254,11 @@ public class StatisticsManagerImpl implements StatisticsManager {
 		return directTransmissionDAO.getDirectReceiveWeeklyCounts(numOfWeeks);
 	}
 
+	@Transactional
+	public List<AggregateWeeklyCounts> getAggregateWeeklyCounts(Integer numOfWeeks) {
+		return aggregateDAO.getAggregateWeeklyCounts(numOfWeeks);
+	}
+	
 	public CcdaValidationDAO getCcdaValidationDAO() {
 		return ccdaValidationDAO;
 	}
@@ -298,5 +306,15 @@ public class StatisticsManagerImpl implements StatisticsManager {
 	public Long getGoogleAnalyticsPageViewCount(Integer numOfDays, String p12CertPath){
 		return GAStatistics.getPageViewCount(numOfDays, p12CertPath);
 	}
+
+	public AggregateDAO getAggregateDAO() {
+		return aggregateDAO;
+	}
+
+	public void setAggregateDAO(AggregateDAO aggregateDAO) {
+		this.aggregateDAO = aggregateDAO;
+	}
+	
+	
 	
 }

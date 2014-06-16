@@ -49,7 +49,7 @@ public class JiraStatistics {
 			if (nDays == 0){
 				
 				if (nResolved == true){
-					query = new StringEntity("{\"jql\":\"project = SITE AND status = Resolved\",\"startAt\":0,\"maxResults\":0,\"fields\":[\"id\"]}");
+					query = new StringEntity("{\"jql\":\"project = SITE AND (status = Resolved OR status = Closed)\",\"startAt\":0,\"maxResults\":0,\"fields\":[\"id\"]}");
 				} else {
 					query = new StringEntity("{\"jql\":\"project = SITE\",\"startAt\":0,\"maxResults\":0,\"fields\":[\"id\"]}");
 				}

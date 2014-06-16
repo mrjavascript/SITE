@@ -1,11 +1,13 @@
-function loadStatistics(actionURL, statsTitle, statsDivId) {
+function loadStatistics(actionURL, statsTitle, statsDivId, width, height) {
 	var margin = {
 		top : 60,
 		right : 20,
 		bottom : 70,
 		left : 30
-	}, width = 330 - margin.left - margin.right, height = 300 - margin.top
-			- margin.bottom;
+	};
+	
+	width = width - margin.left - margin.right;
+	height = height - margin.top - margin.bottom;
 
 	// Parse the Week / time
 	var parseWeek = d3.time.format("%Y-%m-%d").parse;
@@ -104,10 +106,10 @@ function loadStatistics(actionURL, statsTitle, statsDivId) {
 
 	  var legend = svg.selectAll(".legend")
       .data(color.domain().slice())
-    .enter().append("g")
+      .enter().append("g")
       .attr("class", "legend")
       .attr("y", "10")
-      .attr("transform", function(d, i) { return "translate(0," + (-50 + (i * 15)) + ")"; });
+      .attr("transform", function(d, i) { return "translate("+ ((i > 2)?-250:0) +"," + ((i > 2)?(-50 + ((i-3) * 15)):(-50 + (i * 15))) + ")"; });
 
   legend.append("rect")
       .attr("x", width - 18)
@@ -126,3 +128,5 @@ function loadStatistics(actionURL, statsTitle, statsDivId) {
 	});
 
 }
+
+

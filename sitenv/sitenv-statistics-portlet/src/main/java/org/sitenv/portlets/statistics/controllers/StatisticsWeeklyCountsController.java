@@ -10,6 +10,7 @@ import javax.portlet.ActionResponse;
 import javax.portlet.RenderRequest;
 
 import org.sitenv.statistics.constants.StatisticsConstants;
+import org.sitenv.statistics.dto.AggregateWeeklyCounts;
 import org.sitenv.statistics.dto.CcdaWeeklyCounts;
 import org.sitenv.statistics.dto.DirectWeeklyCounts;
 import org.sitenv.statistics.dto.PdtiWeeklyCounts;
@@ -126,5 +127,33 @@ public class StatisticsWeeklyCountsController {
 
 		return new ModelAndView("qrdaWeeklyCountsCsvView", map);
 	}
+	
+	
+	@ActionMapping(params = "javax.portlet.action=aggregateWeeklyCounts")
+	public void aggregateWeeklyHandler(ActionRequest request, ActionResponse response)
+			throws IOException {
+		
+		response.setRenderParameter("javax.portlet.action", "aggregateWeeklyCounts");
+
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@RequestMapping(params = "javax.portlet.action=aggregateWeeklyCounts")
+	public ModelAndView processAggregateWeekly(RenderRequest request, Model model)
+			throws IOException {
+		List<AggregateWeeklyCounts> weeklyCounts = null;
+		
+		weeklyCounts = statisticsManager.getAggregateWeeklyCounts(StatisticsConstants.SMALL_WEEKLY_STATISTICS_LIMIT);
+		
+		Map map = new HashMap();
+		
+		
+		map.put("weeklyCounts", weeklyCounts);
+
+		return new ModelAndView("aggregateWeeklyCountsCsvView", map);
+	}
+	
+	
+	
 	
 }

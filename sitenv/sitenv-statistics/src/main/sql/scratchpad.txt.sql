@@ -15,6 +15,15 @@ CREATE TABLE pdti_testcases
 	constraint pdti_testcases_group_fk foreign key(testcase_group) references pdti_testcasegroup (group_pk) not null
 );
 
+CREATE TABLE direct_send
+(
+	directsend_pk	BIGSERIAL primary key not null,
+	directsend_count BIGINT not null,
+	directsend_date DATE not null,
+	directsend_email varchar(1000) not null,
+	directsend_domain varchar(1000) not null
+);
+
 CREATE OR REPLACE FUNCTION ccda_validation_weekly_counts(limited INT) 
 RETURNS TABLE (
 	start_date DATE,

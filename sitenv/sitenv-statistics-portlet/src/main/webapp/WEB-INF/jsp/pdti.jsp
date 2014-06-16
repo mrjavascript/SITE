@@ -28,7 +28,7 @@
 <script>
 	
 	$(function() {
-		loadStatistics("${pdtiWeeklyCounts}", "Provider Directory Weekly Statistics", "#canvas-svg");
+		loadStatistics("${pdtiWeeklyCounts}", "Provider Directory Weekly Statistics", "#canvas-svg", 330, 300);
 	});
 
 </script>

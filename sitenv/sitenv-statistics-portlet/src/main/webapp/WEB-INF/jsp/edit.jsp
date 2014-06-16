@@ -44,6 +44,7 @@
 				 	<option value="qrda-stats" <%= (request.getAttribute("viewPage").equals("qrda-stats") ? "selected=\"selected\"" : "") %>>QRDA Validator Statistics</option>
 				 	<option value="pdti-stats" <%= (request.getAttribute("viewPage").equals("pdti-stats") ? "selected=\"selected\"" : "") %>>Provider Directory Test Tool Statistics</option>
 				 	<option value="direct-stats" <%= (request.getAttribute("viewPage").equals("direct-stats") ? "selected=\"selected\"" : "") %>>Direct Test Tool Statistics</option>
+				 	<option value="aggregate-stats" <%= (request.getAttribute("viewPage").equals("aggregate-stats") ? "selected=\"selected\"" : "") %>>Main Page Aggregate Statistics</option>
 				 </select>
 				 <br />
 				<br /> 
