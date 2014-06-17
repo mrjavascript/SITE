@@ -213,11 +213,16 @@ public class DirectTransmissionDAOImpl extends BaseDAOImpl implements DirectTran
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<DirectWeeklyCounts> getDirectReceiveWeeklyCounts(Integer numOfWeeks) {
+	public List<DirectWeeklyCounts> getDirectWeeklyCounts(Integer numOfWeeks, Boolean send) {
 		
 		List<DirectWeeklyCounts> returnVal = null;
 		
-		Query query = entityManager.createNamedQuery("directWeeklyCounts", DirectWeeklyCountsEntity.class);
+		Query query;
+		
+		if (send)
+			query = entityManager.createNamedQuery("directSendWeeklyCounts", DirectWeeklyCountsEntity.class);
+		else
+			query = entityManager.createNamedQuery("directReceiveWeeklyCounts", DirectWeeklyCountsEntity.class);
 		query.setParameter(1, numOfWeeks);
 		
 		List<DirectWeeklyCountsEntity> results = query.getResultList();

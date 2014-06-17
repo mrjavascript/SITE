@@ -250,8 +250,8 @@ public class StatisticsManagerImpl implements StatisticsManager {
 	}
 	
 	@Transactional
-	public List<DirectWeeklyCounts> getDirectReceiveWeeklyCounts(Integer numOfWeeks) {
-		return directTransmissionDAO.getDirectReceiveWeeklyCounts(numOfWeeks);
+	public List<DirectWeeklyCounts> getDirectWeeklyCounts(Integer numOfWeeks, Boolean send) {
+		return directTransmissionDAO.getDirectWeeklyCounts(numOfWeeks, send);
 	}
 
 	@Transactional

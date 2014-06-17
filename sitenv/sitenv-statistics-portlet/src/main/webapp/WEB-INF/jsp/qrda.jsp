@@ -28,7 +28,11 @@
 <script>
 	
 	$(function() {
-		loadStatistics("${qrdaWeeklyCounts}",  "QRDA Validator Weekly Statistics", "#canvas-svg", 330, 300);
+		
+		d3.csv("${qrdaWeeklyCounts}").get().on("load", function(data) {
+			loadStatistics(data, "QRDA Validator Weekly Statistics", "#canvas-svg", 330, 300);
+			
+		});
 	});
 
 </script>

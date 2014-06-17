@@ -94,15 +94,43 @@ public class StatisticsWeeklyCountsController {
 			throws IOException {
 		List<DirectWeeklyCounts> weeklyCounts = null;
 		
-		weeklyCounts = statisticsManager.getDirectReceiveWeeklyCounts(StatisticsConstants.SMALL_WEEKLY_STATISTICS_LIMIT);
+		weeklyCounts = statisticsManager.getDirectWeeklyCounts(StatisticsConstants.SMALL_WEEKLY_STATISTICS_LIMIT, false);
 		
 		Map map = new HashMap();
 		
 		
 		map.put("weeklyCounts", weeklyCounts);
+		map.put("titles", "Total Number of Messages Sent,Total Number of Unique Domain Names");
 
 		return new ModelAndView("directWeeklyCountsCsvView", map);
 	}
+	
+	@ActionMapping(params = "javax.portlet.action=directSendWeeklyCounts")
+	public void directSendWeeklyHandler(ActionRequest request, ActionResponse response)
+			throws IOException {
+		
+		response.setRenderParameter("javax.portlet.action", "directSendWeeklyCounts");
+
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@RequestMapping(params = "javax.portlet.action=directSendWeeklyCounts")
+	public ModelAndView processDirectSendWeekly(RenderRequest request, Model model)
+			throws IOException {
+		List<DirectWeeklyCounts> weeklyCounts = null;
+		
+		weeklyCounts = statisticsManager.getDirectWeeklyCounts(StatisticsConstants.SMALL_WEEKLY_STATISTICS_LIMIT, true);
+		
+		Map map = new HashMap();
+		
+		
+		map.put("weeklyCounts", weeklyCounts);
+		map.put("titles", "Total Number of Messages Received,Total Number of Unique Domain Names");
+
+		return new ModelAndView("directWeeklyCountsCsvView", map);
+	}
+	
+	
 	
 	@ActionMapping(params = "javax.portlet.action=qrdaWeeklyCounts")
 	public void qrdaWeeklyHandler(ActionRequest request, ActionResponse response)

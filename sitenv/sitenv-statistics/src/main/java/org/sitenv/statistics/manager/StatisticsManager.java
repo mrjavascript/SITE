@@ -33,7 +33,7 @@ public interface StatisticsManager {
 	public List<CcdaWeeklyCounts> getCcdaWeeklyCounts(Integer numOfWeeks);
 	public List<QrdaWeeklyCounts> getQrdaWeeklyCounts(Integer numOfWeeks);
 	public List<PdtiWeeklyCounts> getPdtiWeeklyCounts(Integer numOfWeeks);
-	public List<DirectWeeklyCounts> getDirectReceiveWeeklyCounts(Integer numOfWeeks);
+	public List<DirectWeeklyCounts> getDirectWeeklyCounts(Integer numOfWeeks, Boolean send);
 	
 	
 	public void addQrdaValidation(Integer category, Boolean hasSchemaErrors, Boolean hasSchematronErrors, Boolean hasSchematronWarnings, Boolean hasHttpError);

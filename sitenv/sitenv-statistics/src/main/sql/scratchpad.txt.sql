@@ -262,8 +262,60 @@ $$ LANGUAGE plpgsql;
 
 SELECT * FROM directreceive_weekly_counts(104);
 
+CREATE OR REPLACE FUNCTION directsend_weekly_counts(limited INT) 
+RETURNS TABLE (
+	start_date DATE,
+	end_date DATE,
+	range_interval INT,
+	range_year INT,
+	total_count BIGINT,
+	uniquedomain_count BIGINT)
+AS $$	
+BEGIN
+RETURN QUERY
+SELECT
+	CAST(c.generated_date + '-1 days' AS DATE) start_date,
+	CAST(c.generated_date + '5 days' AS DATE) end_date,
+	CAST(extract('week' FROM c.generated_date) AS INT) range_interval,
+	CAST(extract('isoyear' FROM c.generated_date) AS INT) range_year,
+	coalesce(x.total_count, 0) total_count,
+	coalesce(y.total_count, 0) uniquedomain_count
+FROM
+	(SELECT 
+		date_trunc('week', (current_date - offs)) as generated_date 
+	 FROM generate_series(0,(limited*7)+1,7) as offs
+	 ORDER BY generated_date DESC
+	 LIMIT limited) as c
 
+	LEFT OUTER JOIN	
+	(SELECT 
+		date_trunc('week', directsend_date) week_start,
+		count(*) total_count
+	FROM 
+		direct_send
+	GROUP BY
+		week_start
+	ORDER BY
+		week_start desc
+	LIMIT limited) as x ON c.generated_date = x.week_start
+	LEFT OUTER JOIN	
+	(SELECT 
+		date_trunc('week', directsend_date) week_start,
+		count(DISTINCT directsend_domain) total_count
+	FROM 
+		direct_send	 
+	GROUP BY
+		week_start
+	ORDER BY
+		week_start desc
+	LIMIT limited) as y ON c.generated_date = y.week_start
+	
+ORDER BY start_date DESC;
 
+END;
+$$ LANGUAGE plpgsql;
+
+SELECT * FROM directsend_weekly_counts(104);
 
 
 CREATE OR REPLACE FUNCTION aggregate_weekly_counts(limited INT) 
@@ -272,6 +324,7 @@ RETURNS TABLE (
 	end_date DATE,
 	range_interval INT,
 	range_year INT,
+	directsent_count BIGINT,
 	ccda_count BIGINT,
 	qrda_count BIGINT,
 	pdtirequest_count BIGINT,
@@ -284,16 +337,29 @@ SELECT
 	CAST(c.generated_date + '5 days' AS DATE) end_date,
 	CAST(extract('week' FROM c.generated_date) AS INT) range_interval,
 	CAST(extract('isoyear' FROM c.generated_date) AS INT) range_year,
+	CAST(coalesce(u.total_count, 0) AS BIGINT) directsent_count,
 	coalesce(v.total_count, 0) ccda_count,
 	coalesce(x.total_count, 0) qrda_count,
 	coalesce(y.total_count, 0) pdtirequest_count,
-	coalesce(z.total_count, 0) directreceive_count	
+	coalesce(z.total_count, 0) directreceive_count
 FROM
 	(SELECT 
 		date_trunc('week', (current_date - offs)) as generated_date 
 	 FROM generate_series(0,(limited*7)+1,7) as offs
 	 ORDER BY generated_date DESC
 	 LIMIT limited) as c
+
+	LEFT OUTER JOIN	
+	(SELECT 
+		date_trunc('week', directsend_date) week_start,
+		SUM(directsend_count) total_count
+	FROM 
+		direct_send	 
+	GROUP BY
+		week_start
+	ORDER BY
+		week_start desc
+	LIMIT limited) as u ON c.generated_date = u.week_start
 
 	LEFT OUTER JOIN	
 	(SELECT 
@@ -326,12 +392,10 @@ FROM
 	
 	LEFT OUTER JOIN	
 	(SELECT 
-		date_trunc('week', testcase_time) week_start,
+		date_trunc('week', group_time) week_start,
 		count(*) total_count
 	FROM 
-		pdti_testcases
-	WHERE
-		testcase_httperror = FALSE
+		pdti_testcasegroup
 	GROUP BY
 		week_start
 	ORDER BY
@@ -341,7 +405,7 @@ FROM
 	LEFT OUTER JOIN	
 	(SELECT 
 		date_trunc('week', directreceive_time) week_start,
-		count(DISTINCT directreceive_domain) total_count
+		count(*) total_count
 	FROM 
 		direct_receive
 	WHERE

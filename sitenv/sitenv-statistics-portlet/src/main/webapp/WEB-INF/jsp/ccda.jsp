@@ -28,7 +28,11 @@
 <script>
 	
 	$(function() {
-		loadStatistics("${ccdaWeeklyCounts}", "C-CDA Weekly Statistics", "#canvas-svg", 330, 300);
+		
+		d3.csv("${ccdaWeeklyCounts}").get().on("load", function(data) {
+			loadStatistics(data, "C-CDA Weekly Statistics", "#canvas-svg", 330, 300);
+			
+		});
 	});
 
 </script>

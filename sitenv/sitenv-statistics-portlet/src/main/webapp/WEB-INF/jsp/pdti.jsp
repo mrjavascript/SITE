@@ -28,7 +28,11 @@
 <script>
 	
 	$(function() {
-		loadStatistics("${pdtiWeeklyCounts}", "Provider Directory Weekly Statistics", "#canvas-svg", 330, 300);
+		
+		d3.csv("${pdtiWeeklyCounts}").get().on("load", function(data) {
+			loadStatistics(data, "Provider Directory Weekly Statistics", "#canvas-svg", 330, 300);
+			
+		});
 	});
 
 </script>

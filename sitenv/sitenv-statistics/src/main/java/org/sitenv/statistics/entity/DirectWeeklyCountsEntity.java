@@ -12,8 +12,8 @@ import javax.persistence.TemporalType;
 
 @Entity
 @NamedNativeQueries({
-	@NamedNativeQuery(name="directWeeklyCounts", query = "SELECT * FROM directreceive_weekly_counts(?)", resultClass = DirectWeeklyCountsEntity.class)
-
+	@NamedNativeQuery(name="directReceiveWeeklyCounts", query = "SELECT * FROM directreceive_weekly_counts(?)", resultClass = DirectWeeklyCountsEntity.class),
+	@NamedNativeQuery(name="directSendWeeklyCounts", query = "SELECT * FROM directsend_weekly_counts(?)", resultClass = DirectWeeklyCountsEntity.class)
 })
 public class DirectWeeklyCountsEntity {
 	

@@ -23,12 +23,22 @@
     <portlet:param name="javax.portlet.action" value="directReceiveWeeklyCounts"/>
 </portlet:actionURL>
 
-
+<portlet:actionURL var="directSendWeeklyCounts" windowState="<%= LiferayWindowState.EXCLUSIVE.toString() %>">
+    <portlet:param name="javax.portlet.action" value="directSendWeeklyCounts"/>
+</portlet:actionURL>
 
 <script>
 	
 	$(function() {
-		loadStatistics("${directReceiveWeeklyCounts}", "Direct Receive Weekly Statistics", "#canvas-svg", 330, 300);
+		
+		d3.csv("${directSendWeeklyCounts}").get().on("load", function(data) {
+			loadStatistics(data, "Direct Send Weekly Statistics", "#canvas-svg-directsend", 330, 300);
+			d3.csv("${directReceiveWeeklyCounts}").get(function(error,data) {
+				loadStatistics(data, "Direct Receive Weekly Statistics", "#canvas-svg-directreceive", 330, 300);
+			});
+		});
+
+		
 	});
 
 </script>
@@ -42,8 +52,12 @@
 		<h2>${failedCcdas}</h2>
 		<p>c-cdas failed</p>
 	</div-->
-	<div id="canvas-svg"></div>
-	<% 
+	<div id="canvas-svg-directsend"></div>
+</div>
+<div class="row well">
+	<div id="canvas-svg-directreceive"></div>
+</div>
+<% 
 	if (renderRequest.isUserInRole("administrator")) {
 	%>
 	<div style="width:100%">
@@ -52,5 +66,3 @@
 	<%
 	}
 	%>
-	
-</div>

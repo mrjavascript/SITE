@@ -21,5 +21,5 @@ public interface DirectTransmissionDAO {
 	public Long getDirectTrustUploadCount(Boolean hasErrors, Integer numberOfDays);
 	
 	
-	public List<DirectWeeklyCounts> getDirectReceiveWeeklyCounts(Integer numOfWeeks);
+	public List<DirectWeeklyCounts> getDirectWeeklyCounts(Integer numOfWeeks, Boolean send);
 }

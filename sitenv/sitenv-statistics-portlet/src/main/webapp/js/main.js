@@ -1,45 +1,44 @@
-function loadStatistics(actionURL, statsTitle, statsDivId, width, height) {
-	var margin = {
-		top : 60,
-		right : 20,
-		bottom : 70,
-		left : 30
-	};
+function loadStatistics(data, statsTitle, statsDivId, width, height) {
 	
-	width = width - margin.left - margin.right;
-	height = height - margin.top - margin.bottom;
+			var margin = {
+				top : 60,
+				right : 20,
+				bottom : 70,
+				left : 30
+			};
+			
+			width = width - margin.left - margin.right;
+			height = height - margin.top - margin.bottom;
 
-	// Parse the Week / time
-	var parseWeek = d3.time.format("%Y-%m-%d").parse;
+			// Parse the Week / time
+			var parseWeek = d3.time.format("%Y-%m-%d").parse;
 
-	var color = d3.scale.category10();
-	
-	// Set the ranges
-	var x = d3.time.scale().range([ 0, width ]);
-	var y = d3.scale.linear().range([ height, 0 ]);
+			var color = d3.scale.category10();
+			
+			// Set the ranges
+			var x = d3.time.scale().range([ 0, width ]);
+			var y = d3.scale.linear().range([ height, 0 ]);
 
-	var formatDate = d3.time.format("%e %b");
+			var formatDate = d3.time.format("%e %b");
 
-	// Define the axes
-	var xAxis = d3.svg.axis().scale(x).orient("bottom").tickFormat(formatDate);
+			// Define the axes
+			var xAxis = d3.svg.axis().scale(x).orient("bottom").tickFormat(formatDate);
 
-	var yAxis = d3.svg.axis().scale(y).orient("left").ticks(5).tickFormat(
-			d3.format("2s"));
+			var yAxis = d3.svg.axis().scale(y).orient("left").ticks(5).tickFormat(
+					d3.format("2s"));
 
-	
-	var line = d3.svg.line()
-    .interpolate("basis")
-    .x(function(d) { return x(d.Week); })
-    .y(function(d) { return y(d.value); });
-	
-	// Adds the svg canvas
-	var svg = d3.select(statsDivId).append("svg").attr("width",
-			width + margin.left + margin.right).attr("height",
-			height + margin.top + margin.bottom).append("g").attr("transform",
-			"translate(" + margin.left + "," + margin.top + ")");
-
-	// Get the data
-	d3.csv(actionURL, function(error, data) {
+			
+			var line = d3.svg.line()
+		    .interpolate("basis")
+		    .x(function(d) { return x(d.Week); })
+		    .y(function(d) { return y(d.value); });
+			
+			// Adds the svg canvas
+			var svg = d3.select(statsDivId).append("svg").attr("width",
+					width + margin.left + margin.right).attr("height",
+					height + margin.top + margin.bottom).append("g").attr("transform",
+					"translate(" + margin.left + "," + margin.top + ")");
+		
 		color.domain(d3.keys(data[0]).filter(function(key) { 
 			return key !== "Week"; 
 		}));
@@ -125,8 +124,7 @@ function loadStatistics(actionURL, statsTitle, statsDivId, width, height) {
       .style("font-size", ".75em")
       .text(function(d) { return d; });
 
-	});
-
 }
+
 
 
