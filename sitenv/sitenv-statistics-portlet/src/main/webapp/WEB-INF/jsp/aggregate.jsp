@@ -30,7 +30,7 @@
 		
 		
 		d3.csv("${aggregateWeeklyCounts}").get().on("load", function(data) {
-			loadStatistics(data, "SITE Weekly Statistics", "#canvas-svg", 768, 300);
+			loadStatistics(data, "Weekly Statistics for SITE", "#canvas-svg", 730, 300);
 			
 		});
 		
@@ -40,9 +40,9 @@
 			$('#statsModal').modal('show');
 		});
 		
-		window.totalGoogleSessions = '${GoogleAnalyticsSessions}';
-		window.totalJiraResolved = '${jiraIssuesResolved}';
-		window.totalGooglePages = '${GoogleAnalyticsPageViews}';
+		window.totalGoogleSessions = '${GoogleAnalyticsSessionsFormat}';
+		window.totalJiraResolved = '${jiraIssuesResolvedFormat}';
+		window.totalGooglePages = '${GoogleAnalyticsPageViewsFormat}';
 		
 		$('#totalGoogleSessions').text(window.totalGoogleSessions);
 		$('#totalJiraResolved').text(window.totalJiraResolved);
@@ -54,16 +54,65 @@
 
 
 
-<div class="modal fade" id="statsModal" tabindex="-1" role="dialog" aria-labelledby="statsModalLabel" aria-hidden="true">
+<div class="modal modal-wide fade" id="statsModal" tabindex="-1" role="dialog" aria-labelledby="statsModalLabel" aria-hidden="true">
 	      <div class="modal-dialog" style="width:800px;">
 			<div class="modal-content">
 				<div class="modal-header">
 									<button type="button" class="close" data-dismiss="modal"
 						aria-hidden="true">&times;</button>
-					<h4>SITE Weekly Statistics</h4>
+					<h4>SITE Statistics Dashboard</h4>
 			</div>
 			<div class="modal-body" style="text-align: center;">
-				<div id="canvas-svg"></div>
+				<div class="well">
+					<div id="canvas-svg"></div>
+				</div>
+				<br/>
+				<div class="panel panel-default" id="GoogleAnalyticsStatistics" style="text-align:left;">
+			    <div class="panel-heading"><h3 class="panel-title">Community Activity Statistics</h3></div>
+					<div class="table-responsive">
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th style="width:35%;"></th>
+									<th>Total</th>
+									<th>Last 30 Days</th>
+									<th>Last 60 Days</th>
+									<th>Last 90 Days</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>Unique User Visits</td>
+									<td>${GoogleAnalyticsSessions}</td>
+									<td>${GoogleAnalyticsSessions30}</td>
+									<td>${GoogleAnalyticsSessions60}</td>
+									<td>${GoogleAnalyticsSessions90}</td>
+								</tr>
+								<tr>
+									<td>Individual Page Views</td>
+									<td>${GoogleAnalyticsPageViews}</td>
+									<td>${GoogleAnalyticsPageViews30}</td>
+									<td>${GoogleAnalyticsPageViews60}</td>
+									<td>${GoogleAnalyticsPageViews90}</td>
+								</tr>
+								<tr>
+									<td>Issues Created</td>
+									<td>${jiraIssuesCreated}</td>
+									<td>${jiraIssuesCreated30}</td>
+									<td>${jiraIssuesCreated60}</td>
+									<td>${jiraIssuesCreated90}</td>
+								</tr>
+								<tr>
+									<td>Issues Resolved</td>
+									<td>${jiraIssuesResolved}</td>
+									<td>${jiraIssuesResolved30}</td>
+									<td>${jiraIssuesResolved60}</td>
+									<td>${jiraIssuesResolved90}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
 			</div>
 			<div class="modal-footer">
 		        <button type="button" class="btn btn-default" data-dismiss="modal">Close Results</button>

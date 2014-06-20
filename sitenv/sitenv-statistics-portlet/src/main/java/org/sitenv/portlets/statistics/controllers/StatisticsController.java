@@ -70,9 +70,34 @@ public class StatisticsController extends BaseController {
 		{
 			String p12CertPath = this.props.getProperty("googleAnalyticsp12CertPath");
 			
-			modelAndView.addObject("GoogleAnalyticsSessions", format(statisticsManager.getGoogleAnalyticsSessionCount(0, p12CertPath)));
-			modelAndView.addObject("GoogleAnalyticsPageViews", format(statisticsManager.getGoogleAnalyticsPageViewCount(0, p12CertPath)));
-			modelAndView.addObject("jiraIssuesResolved", format(statisticsManager.getJiraIssuesResolvedCount(0)));
+			Long sessionCount = statisticsManager.getGoogleAnalyticsSessionCount(0, p12CertPath);
+			Long pageCount	= statisticsManager.getGoogleAnalyticsPageViewCount(0, p12CertPath);
+			Long jiraResolvedCount = statisticsManager.getJiraIssuesResolvedCount(0);
+			
+			modelAndView.addObject("GoogleAnalyticsSessionsFormat", format(sessionCount));
+			modelAndView.addObject("GoogleAnalyticsPageViewsFormat", format(pageCount));
+			modelAndView.addObject("jiraIssuesResolvedFormat", format(jiraResolvedCount));
+			
+			
+			modelAndView.addObject("GoogleAnalyticsSessions", sessionCount);
+			modelAndView.addObject("GoogleAnalyticsSessions30", statisticsManager.getGoogleAnalyticsSessionCount(30, p12CertPath));
+			modelAndView.addObject("GoogleAnalyticsSessions60", statisticsManager.getGoogleAnalyticsSessionCount(60, p12CertPath));
+			modelAndView.addObject("GoogleAnalyticsSessions90", statisticsManager.getGoogleAnalyticsSessionCount(90, p12CertPath));
+			
+			modelAndView.addObject("GoogleAnalyticsPageViews", pageCount);
+			modelAndView.addObject("GoogleAnalyticsPageViews30", statisticsManager.getGoogleAnalyticsPageViewCount(30, p12CertPath));
+			modelAndView.addObject("GoogleAnalyticsPageViews60", statisticsManager.getGoogleAnalyticsPageViewCount(60, p12CertPath));
+			modelAndView.addObject("GoogleAnalyticsPageViews90", statisticsManager.getGoogleAnalyticsPageViewCount(90, p12CertPath));
+			
+			modelAndView.addObject("jiraIssuesCreated", statisticsManager.getJiraIssuesCreatedCount(0));
+			modelAndView.addObject("jiraIssuesCreated30", statisticsManager.getJiraIssuesCreatedCount(30));
+			modelAndView.addObject("jiraIssuesCreated60", statisticsManager.getJiraIssuesCreatedCount(60));
+			modelAndView.addObject("jiraIssuesCreated90", statisticsManager.getJiraIssuesCreatedCount(90));
+			
+			modelAndView.addObject("jiraIssuesResolved", jiraResolvedCount);
+			modelAndView.addObject("jiraIssuesResolved30", statisticsManager.getJiraIssuesResolvedCount(30));
+			modelAndView.addObject("jiraIssuesResolved60", statisticsManager.getJiraIssuesResolvedCount(60));
+			modelAndView.addObject("jiraIssuesResolved90", statisticsManager.getJiraIssuesResolvedCount(90));
 			
 			modelAndView.setViewName("aggregate");
 		}

@@ -34,7 +34,7 @@
 		d3.csv("${directSendWeeklyCounts}").get().on("load", function(data) {
 			loadStatistics(data, "Direct Send Weekly Statistics", "#canvas-svg-directsend", 330, 300);
 			d3.csv("${directReceiveWeeklyCounts}").get(function(error,data) {
-				loadStatistics(data, "Direct Receive Weekly Statistics", "#canvas-svg-directreceive", 330, 300);
+				loadStatistics(data, "Direct Receive Weekly Statistics", "#canvas-svg-directreceive", 330, 300, true);
 			});
 		});
 

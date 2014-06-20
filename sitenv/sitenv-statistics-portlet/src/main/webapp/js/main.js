@@ -1,4 +1,4 @@
-function loadStatistics(data, statsTitle, statsDivId, width, height) {
+function loadStatistics(data, statsTitle, statsDivId, width, height, invert) {
 	
 			var margin = {
 				top : 60,
@@ -14,6 +14,11 @@ function loadStatistics(data, statsTitle, statsDivId, width, height) {
 			var parseWeek = d3.time.format("%Y-%m-%d").parse;
 
 			var color = d3.scale.category10();
+			
+			if (invert)
+			{
+				color = d3.scale.category20c();
+			}
 			
 			// Set the ranges
 			var x = d3.time.scale().range([ 0, width ]);

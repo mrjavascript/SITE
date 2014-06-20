@@ -49,9 +49,9 @@ public class JiraStatistics {
 			if (nDays == 0){
 				
 				if (nResolved == true){
-					query = new StringEntity("{\"jql\":\"project = SITE AND (status = Resolved OR status = Closed)\",\"startAt\":0,\"maxResults\":0,\"fields\":[\"id\"]}");
+					query = new StringEntity("{\"jql\":\"project IN (QRDA, CCDA) AND (status = Resolved OR status = Closed)\",\"startAt\":0,\"maxResults\":0,\"fields\":[\"id\"]}");
 				} else {
-					query = new StringEntity("{\"jql\":\"project = SITE\",\"startAt\":0,\"maxResults\":0,\"fields\":[\"id\"]}");
+					query = new StringEntity("{\"jql\":\"project IN (QRDA, CCDA)\",\"startAt\":0,\"maxResults\":0,\"fields\":[\"id\"]}");
 				}
 				
 			} else {
@@ -71,9 +71,9 @@ public class JiraStatistics {
 				String nDaysAgoDate = nDaysAgoYear + "/" + nDaysAgoMonth + "/" + nDaysAgoDay;
 				
 				if (nResolved == true){
-					query = new StringEntity("{\"jql\":\"project = SITE AND resolved >= \'"+nDaysAgoDate+"\' AND resolved <= \'"+todayDate+"\'\",\"startAt\":0,\"maxResults\":0, \"fields\":[\"id\"]}");
+					query = new StringEntity("{\"jql\":\"project IN (QRDA, CCDA) AND resolved >= \'"+nDaysAgoDate+"\' AND resolved <= \'"+todayDate+"\'\",\"startAt\":0,\"maxResults\":0, \"fields\":[\"id\"]}");
 				} else {
-					query = new StringEntity("{\"jql\":\"project = SITE AND created >= \'"+nDaysAgoDate+"\' AND created <= \'"+todayDate+"\'\",\"startAt\":0,\"maxResults\":0, \"fields\":[\"id\"]}");
+					query = new StringEntity("{\"jql\":\"project IN (QRDA, CCDA) AND created >= \'"+nDaysAgoDate+"\' AND created <= \'"+todayDate+"\'\",\"startAt\":0,\"maxResults\":0, \"fields\":[\"id\"]}");
 				}
 			}
 			
