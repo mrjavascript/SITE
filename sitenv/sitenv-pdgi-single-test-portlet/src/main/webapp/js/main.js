@@ -23,6 +23,8 @@ $(function() {
 	        	  
 	        	  $("#resultsDialog").modal("show");
 	        	  
+	        	  Liferay.Portlet.refresh("#p_p_id_sitenvstatisticsportlet_WAR_sitenvstatisticsportlet_"); // refresh the counts
+	        	  
 	        	  unblockProviderDirectoryWidget();
 	          },
 	          error: function(jqXHR, textStatus, errorThrown) {

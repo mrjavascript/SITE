@@ -2,14 +2,20 @@ package org.sitenv.statistics.manager;
 
 import java.util.List;
 
+import org.sitenv.statistics.dto.AggregateWeeklyCounts;
+import org.sitenv.statistics.dto.CcdaWeeklyCounts;
+import org.sitenv.statistics.dto.DirectWeeklyCounts;
+import org.sitenv.statistics.dto.GoogleAnalyticsData;
 import org.sitenv.statistics.dto.PdtiTestCase;
+import org.sitenv.statistics.dto.PdtiWeeklyCounts;
+import org.sitenv.statistics.dto.QrdaWeeklyCounts;
 
 public interface StatisticsManager {
 
 	public static final Integer QRDA_CATEGORY_I = new Integer(1);
 	public static final Integer QRDA_CATEGORY_III = new Integer(3);
 	
-	public void addCcdaValidation(Boolean hasErrors, Boolean hasWarnings, Boolean hasInfo, Boolean hasHttpError);
+	public void addCcdaValidation(String testType, Boolean hasErrors, Boolean hasWarnings, Boolean hasInfo, Boolean hasHttpError);
 	public void addSmartCcdaValidation(Boolean hasHttpError);
 	public void addCcdaDownload();
 	
@@ -25,7 +31,10 @@ public interface StatisticsManager {
 	public Long getSmartCcdaWithHttpErrorCount(Integer numOfDays);
 	public Long getCcdaDownloadCount(Integer numOfDays);
 	
-	
+	public List<CcdaWeeklyCounts> getCcdaWeeklyCounts(Integer numOfWeeks);
+	public List<QrdaWeeklyCounts> getQrdaWeeklyCounts(Integer numOfWeeks);
+	public List<PdtiWeeklyCounts> getPdtiWeeklyCounts(Integer numOfWeeks);
+	public List<DirectWeeklyCounts> getDirectWeeklyCounts(Integer numOfWeeks, Boolean send);
 	
 	
 	public void addQrdaValidation(Integer category, Boolean hasSchemaErrors, Boolean hasSchematronErrors, Boolean hasSchematronWarnings, Boolean hasHttpError);
@@ -37,7 +46,7 @@ public interface StatisticsManager {
 	
 	
 	
-	public void addDirectReceive(Boolean uploaded, Boolean precanned, Boolean hasErrors);
+	public void addDirectReceive(String domain, Boolean uploaded, Boolean precanned, Boolean hasErrors);
 	public void addDirectTrustUpload(Boolean hasErrors);
 	public Long getSuccessfulDirectReceiveCount(Integer numOfDays);
 	public Long getFailedDirectReceiveCount(Integer numOfDays);
@@ -47,10 +56,18 @@ public interface StatisticsManager {
 	public Long getFailedTrustAnchorUploadCount(Integer numOfDays);
 	
 	
-	public void addPdtiTest(List<PdtiTestCase> testCases);
+	public void addPdtiTest(String endpointUrl, List<PdtiTestCase> testCases);
 	public Long getSuccessfulPdtiTestCount(Integer numOfDays);
 	public Long getFailedPdtiTestCount(Integer numOfDays);
 	public Long getTotalPdtiTestCount(Integer numOfDays);
 	public Long getHttpErrorPdtiTestCount(Integer numOfDays);
+	
+	
+	public List<AggregateWeeklyCounts> getAggregateWeeklyCounts(Integer numOfWeeks);
+	
+	public Long getJiraIssuesCreatedCount(Integer numOfDays);
+	public Long getJiraIssuesResolvedCount(Integer numOfDays);
+	
+	public GoogleAnalyticsData getGoogleAnalyticsData(String p12CertPath);
 	
 }

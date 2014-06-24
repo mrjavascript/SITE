@@ -1,20 +1,24 @@
 package org.sitenv.statistics.dao.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Query;
 
 import org.sitenv.statistics.dao.CcdaValidationDAO;
+import org.sitenv.statistics.dto.CcdaWeeklyCounts;
 import org.sitenv.statistics.entity.CcdaDownloadEntity;
 import org.sitenv.statistics.entity.CcdaValidationEntity;
 import org.sitenv.statistics.entity.SmartCcdaValidationEntity;
+import org.sitenv.statistics.entity.CcdaWeeklyCountsEntity;
 import org.springframework.stereotype.Repository;
 
 @Repository(value="CcdaValidationDAO")
 public class CcdaValidationDAOImpl extends BaseDAOImpl implements CcdaValidationDAO {
 
 	
-	public void createCcdaValidation(Boolean hasErrors, Boolean hasWarnings,
+	public void createCcdaValidation(String testType, Boolean hasErrors, Boolean hasWarnings,
 			Boolean hasInfo, Boolean hasHttpError) {
 		CcdaValidationEntity entity = new CcdaValidationEntity();
 		
@@ -22,6 +26,7 @@ public class CcdaValidationDAOImpl extends BaseDAOImpl implements CcdaValidation
 		entity.setWarnings(hasWarnings);
 		entity.setInfo(hasInfo);
 		entity.setHttpError(hasHttpError);
+		entity.setValidationType(testType);
 		
 		entityManager.persist(entity);
 	}
@@ -218,6 +223,39 @@ public class CcdaValidationDAOImpl extends BaseDAOImpl implements CcdaValidation
 		
 		return totalCount;
 	
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<CcdaWeeklyCounts> getCcdaWeeklyCounts(Integer numOfWeeks) {
+		
+		List<CcdaWeeklyCounts> returnVal = null;
+		
+		Query query = entityManager.createNamedQuery("ccdaValidationWeeklyCounts", CcdaWeeklyCountsEntity.class);
+		query.setParameter(1, numOfWeeks);
+		
+		List<CcdaWeeklyCountsEntity> results = query.getResultList();
+		
+		if (results != null) {
+			for(CcdaWeeklyCountsEntity result : results) {
+				if (returnVal == null)
+				{
+					returnVal = new ArrayList<CcdaWeeklyCounts>();
+				}
+				
+				CcdaWeeklyCounts count = new CcdaWeeklyCounts();
+				count.setEndDate(result.getEndDate());
+				count.setTotalCount(result.getTotalCount());
+				count.setInterval(result.getInterval());
+				count.setStartDate(result.getStartDate());
+				count.setYear(result.getYear());
+				
+				returnVal.add(count);
+				
+			}
+		}
+		
+		return returnVal;
+		
 	}
 	
 }

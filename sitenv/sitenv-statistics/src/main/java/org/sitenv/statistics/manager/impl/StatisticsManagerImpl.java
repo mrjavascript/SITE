@@ -1,16 +1,30 @@
 package org.sitenv.statistics.manager.impl;
 
+
 import java.util.List;
 
+import org.sitenv.statistics.dao.AggregateDAO;
 import org.sitenv.statistics.dao.CcdaValidationDAO;
 import org.sitenv.statistics.dao.DirectTransmissionDAO;
 import org.sitenv.statistics.dao.PdtiTestDAO;
 import org.sitenv.statistics.dao.QrdaValidationDAO;
+import org.sitenv.statistics.dto.AggregateWeeklyCounts;
+import org.sitenv.statistics.dto.CcdaWeeklyCounts;
+import org.sitenv.statistics.dto.DirectWeeklyCounts;
+import org.sitenv.statistics.dto.GoogleAnalyticsData;
 import org.sitenv.statistics.dto.PdtiTestCase;
+import org.sitenv.statistics.dto.PdtiWeeklyCounts;
+import org.sitenv.statistics.dto.QrdaWeeklyCounts;
+import org.sitenv.statistics.googleanalytics.GAStatistics;
+import org.sitenv.statistics.jira.JiraStatistics;
 import org.sitenv.statistics.manager.StatisticsManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+
+
+
 
 @Service
 public class StatisticsManagerImpl implements StatisticsManager {
@@ -27,11 +41,15 @@ public class StatisticsManagerImpl implements StatisticsManager {
 	@Autowired
 	private PdtiTestDAO pdtiTestDAO;
 	
+	@Autowired
+	private AggregateDAO aggregateDAO;
+	
+	
 	@Transactional
-	public void addCcdaValidation(Boolean hasErrors, Boolean hasWarnings,
+	public void addCcdaValidation(String testType, Boolean hasErrors, Boolean hasWarnings,
 			Boolean hasInfo, Boolean hasHttpError) {
 		
-		ccdaValidationDAO.createCcdaValidation(hasErrors, hasWarnings, hasInfo, hasHttpError);
+		ccdaValidationDAO.createCcdaValidation(testType, hasErrors, hasWarnings, hasInfo, hasHttpError);
 		
 	}
 
@@ -142,9 +160,9 @@ public class StatisticsManagerImpl implements StatisticsManager {
 	
 	
 	@Transactional
-	public void addDirectReceive(Boolean uploaded, Boolean precanned,
+	public void addDirectReceive(String domain, Boolean uploaded, Boolean precanned,
 			Boolean hasErrors) {
-		directTransmissionDAO.createDirectReceive(precanned, uploaded, hasErrors);
+		directTransmissionDAO.createDirectReceive(domain, precanned, uploaded, hasErrors);
 		
 	}
 	
@@ -192,8 +210,8 @@ public class StatisticsManagerImpl implements StatisticsManager {
 	
 	
 	@Transactional
-	public void addPdtiTest(List<PdtiTestCase> testCases) {
-		pdtiTestDAO.createPdtiTest(testCases);
+	public void addPdtiTest(String endpointUrl, List<PdtiTestCase> testCases) {
+		pdtiTestDAO.createPdtiTest(endpointUrl, testCases);
 		
 	}
 
@@ -214,10 +232,34 @@ public class StatisticsManagerImpl implements StatisticsManager {
 
 	@Transactional
 	public Long getHttpErrorPdtiTestCount(Integer numOfDays) {
-		// TODO Auto-generated method stub
-		return null;
+		return pdtiTestDAO.getHttpErrorCount(true, numOfDays);
+	}
+	
+	@Transactional
+	public List<CcdaWeeklyCounts> getCcdaWeeklyCounts(Integer numOfWeeks) {
+		return ccdaValidationDAO.getCcdaWeeklyCounts(numOfWeeks);
+	}
+	
+	@Transactional
+	public List<QrdaWeeklyCounts> getQrdaWeeklyCounts(Integer numOfWeeks) {
+		return qrdaValidationDAO.getQrdaValidationsWeeklyCounts(numOfWeeks);
+	}
+	
+	@Transactional
+	public List<PdtiWeeklyCounts> getPdtiWeeklyCounts(Integer numOfWeeks) {
+		return pdtiTestDAO.getTestCasesWeeklyCounts(numOfWeeks);
+	}
+	
+	@Transactional
+	public List<DirectWeeklyCounts> getDirectWeeklyCounts(Integer numOfWeeks, Boolean send) {
+		return directTransmissionDAO.getDirectWeeklyCounts(numOfWeeks, send);
 	}
 
+	@Transactional
+	public List<AggregateWeeklyCounts> getAggregateWeeklyCounts(Integer numOfWeeks) {
+		return aggregateDAO.getAggregateWeeklyCounts(numOfWeeks);
+	}
+	
 	public CcdaValidationDAO getCcdaValidationDAO() {
 		return ccdaValidationDAO;
 	}
@@ -249,16 +291,29 @@ public class StatisticsManagerImpl implements StatisticsManager {
 	public void setPdtiTestDAO(PdtiTestDAO pdtiTestDAO) {
 		this.pdtiTestDAO = pdtiTestDAO;
 	}
-
+	
+	public Long getJiraIssuesCreatedCount(Integer numOfDays){
+		return JiraStatistics.getCreatedIssues(numOfDays);
+	}
+	
+	public Long getJiraIssuesResolvedCount(Integer numOfDays){
+		return JiraStatistics.getResolvedIssues(numOfDays);
+	}
+	
+	public GoogleAnalyticsData getGoogleAnalyticsData(String p12CertPath){
+		return GAStatistics.getData(p12CertPath);
+	}
+	
 	
 
-	
+	public AggregateDAO getAggregateDAO() {
+		return aggregateDAO;
+	}
 
+	public void setAggregateDAO(AggregateDAO aggregateDAO) {
+		this.aggregateDAO = aggregateDAO;
+	}
 	
-
 	
 	
-	
-	
-
 }

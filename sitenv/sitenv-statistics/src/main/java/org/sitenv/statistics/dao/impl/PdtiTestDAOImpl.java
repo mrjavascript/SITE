@@ -7,15 +7,19 @@ import java.util.List;
 import javax.persistence.Query;
 
 import org.sitenv.statistics.dao.PdtiTestDAO;
+import org.sitenv.statistics.dto.CcdaWeeklyCounts;
 import org.sitenv.statistics.dto.PdtiTestCase;
+import org.sitenv.statistics.dto.PdtiWeeklyCounts;
+import org.sitenv.statistics.entity.CcdaWeeklyCountsEntity;
 import org.sitenv.statistics.entity.PdtiTestCaseEntity;
 import org.sitenv.statistics.entity.PdtiTestGroupEntity;
+import org.sitenv.statistics.entity.PdtiWeeklyCountsEntity;
 import org.springframework.stereotype.Repository;
 
 @Repository(value="PdtiTestDAO")
 public class PdtiTestDAOImpl extends BaseDAOImpl implements PdtiTestDAO {
 
-	public void createPdtiTest(List<PdtiTestCase> testCases) {
+	public void createPdtiTest(String endpointUrl, List<PdtiTestCase> testCases) {
 		
 		if (testCases != null)
 		{
@@ -25,6 +29,7 @@ public class PdtiTestDAOImpl extends BaseDAOImpl implements PdtiTestDAO {
 				if (entity.getTestCases() == null)
 				{
 					entity.setTestCases(new ArrayList<PdtiTestCaseEntity>());
+					entity.setEndpointUrl(endpointUrl);
 				}
 				PdtiTestCaseEntity entityCase = new PdtiTestCaseEntity();
 				entityCase.setHttpError(test.getHttpError());
@@ -49,7 +54,7 @@ public class PdtiTestDAOImpl extends BaseDAOImpl implements PdtiTestDAO {
 			{
 				if (numOfDays == null) {
 					
-					count = (Long) entityManager.createQuery("SELECT COUNT(t) FROM org.sitenv.statistics.entity.PdtiTestCaseEntity t WHERE t.httpError = false").setParameter("boolval", pass).getSingleResult();
+					count = (Long) entityManager.createQuery("SELECT COUNT(t) FROM org.sitenv.statistics.entity.PdtiTestCaseEntity t WHERE t.httpError = false").getSingleResult();
 					
 				} else {
 					
@@ -57,7 +62,6 @@ public class PdtiTestDAOImpl extends BaseDAOImpl implements PdtiTestDAO {
 					Date pastDate = this.getPreviousDate(currentDbDate, numOfDays);
 					
 					Query query = entityManager.createQuery("SELECT COUNT(t) FROM org.sitenv.statistics.entity.PdtiTestCaseEntity t WHERE t.timestamp < :currentDate AND t.timestamp > :prevDate AND t.httpError = false");
-					query.setParameter("boolval", pass);
 					query.setParameter("currentDate", currentDbDate);
 					query.setParameter("prevDate", pastDate);
 					
@@ -69,7 +73,6 @@ public class PdtiTestDAOImpl extends BaseDAOImpl implements PdtiTestDAO {
 				if (numOfDays == null) {
 					
 					Query query = entityManager.createQuery("SELECT COUNT(t) FROM org.sitenv.statistics.entity.PdtiTestCaseEntity t WHERE t.testCaseName = :testCaseName AND t.httpError = false");
-					query.setParameter("boolval", pass).getSingleResult();
 					query.setParameter("testCaseName", testcaseName).getSingleResult();
 					count = (Long) query.getSingleResult();
 					
@@ -79,7 +82,6 @@ public class PdtiTestDAOImpl extends BaseDAOImpl implements PdtiTestDAO {
 					Date pastDate = this.getPreviousDate(currentDbDate, numOfDays);
 					
 					Query query = entityManager.createQuery("SELECT COUNT(t) FROM org.sitenv.statistics.entity.PdtiTestCaseEntity t WHERE AND t.testCaseName = :testCaseName AND t.timestamp < :currentDate AND t.timestamp > :prevDate AND t.httpError = false");
-					query.setParameter("boolval", pass);
 					query.setParameter("testCaseName", testcaseName).getSingleResult();
 					query.setParameter("currentDate", currentDbDate);
 					query.setParameter("prevDate", pastDate);
@@ -164,4 +166,39 @@ public class PdtiTestDAOImpl extends BaseDAOImpl implements PdtiTestDAO {
 		return errorCount;
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<PdtiWeeklyCounts> getTestCasesWeeklyCounts(Integer numOfWeeks) {
+		
+		List<PdtiWeeklyCounts> returnVal = null;
+		
+		Query query = entityManager.createNamedQuery("pdtiWeeklyCounts", PdtiWeeklyCountsEntity.class);
+		query.setParameter(1, numOfWeeks);
+		
+		List<PdtiWeeklyCountsEntity> results = query.getResultList();
+		
+		if (results != null) {
+			for(PdtiWeeklyCountsEntity result : results) {
+				if (returnVal == null)
+				{
+					returnVal = new ArrayList<PdtiWeeklyCounts>();
+				}
+				
+				PdtiWeeklyCounts count = new PdtiWeeklyCounts();
+				count.setEndDate(result.getEndDate());;
+				count.setInterval(result.getInterval());
+				count.setStartDate(result.getStartDate());
+				count.setTotalRequestCount(result.getTotalRequestCount());
+				count.setTotalTestCount(result.getTotalTestCount());
+				count.setTotalUniqueEndpointCount(result.getTotalUniqueEndpointCount());
+				count.setYear(result.getYear());
+				
+				returnVal.add(count);
+				
+			}
+		}
+		
+		return returnVal;
+		
+	}
+	
 }

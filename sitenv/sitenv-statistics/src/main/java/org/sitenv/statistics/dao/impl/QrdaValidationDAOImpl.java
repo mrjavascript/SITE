@@ -1,11 +1,15 @@
 package org.sitenv.statistics.dao.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Query;
 
 import org.sitenv.statistics.dao.QrdaValidationDAO;
+import org.sitenv.statistics.dto.QrdaWeeklyCounts;
 import org.sitenv.statistics.entity.QrdaValidationEntity;
+import org.sitenv.statistics.entity.QrdaWeeklyCountsEntity;
 import org.springframework.stereotype.Repository;
 
 @Repository(value = "QrdaValidationDAO")
@@ -164,7 +168,7 @@ public class QrdaValidationDAOImpl extends BaseDAOImpl implements
 						.createQuery("SELECT COUNT(t) FROM org.sitenv.statistics.entity.QrdaValidationEntity t WHERE (t.schematronErrors = true OR t.schemaErrors = true ) AND t.timestamp < :currentDate AND t.timestamp > :prevDate AND t.httpError = false");
 				query.setParameter("currentDate", currentDbDate);
 				query.setParameter("prevDate", pastDate);
-
+				
 				errorCount = (Long) query.getSingleResult();
 
 			}
@@ -418,6 +422,39 @@ public class QrdaValidationDAOImpl extends BaseDAOImpl implements
 		}
 
 		return httpErrorCount;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<QrdaWeeklyCounts> getQrdaValidationsWeeklyCounts(Integer numOfWeeks) {
+		
+		List<QrdaWeeklyCounts> returnVal = null;
+		
+		Query query = entityManager.createNamedQuery("qrdaValidationWeeklyCounts", QrdaWeeklyCountsEntity.class);
+		query.setParameter(1, numOfWeeks);
+		
+		List<QrdaWeeklyCountsEntity> results = query.getResultList();
+		
+		if (results != null) {
+			for(QrdaWeeklyCountsEntity result : results) {
+				if (returnVal == null)
+				{
+					returnVal = new ArrayList<QrdaWeeklyCounts>();
+				}
+				
+				QrdaWeeklyCounts count = new QrdaWeeklyCounts();
+				count.setEndDate(result.getEndDate());
+				count.setInterval(result.getInterval());
+				count.setStartDate(result.getStartDate());
+				count.setYear(result.getYear());
+				count.setCategory1Count(result.getCategory1Count());
+				count.setCategory3Count(result.getCategory3Count());
+				
+				returnVal.add(count);
+				
+			}
+		}
+		
+		return returnVal;
 	}
 
 }

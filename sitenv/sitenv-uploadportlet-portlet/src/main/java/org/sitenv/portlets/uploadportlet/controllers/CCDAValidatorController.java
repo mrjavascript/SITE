@@ -39,13 +39,15 @@ import org.springframework.web.portlet.multipart.MultipartActionRequest;
 public class CCDAValidatorController extends BaseController {
 
 	private JSONArray fileJson;
-	private String refinedResponseBody;
+	private JSONObject JSONResponseBody;
 	
 	@Autowired
 	private StatisticsManager statisticsManager;
 
 	@ActionMapping(params = "javax.portlet.action=uploadCCDA")
 	public void response(MultipartActionRequest request, ActionResponse response) throws IOException {
+		
+		String ccda_type_value = null;
 		
 		if (this.props == null)
 		{
@@ -70,22 +72,32 @@ public class CCDAValidatorController extends BaseController {
 				
 				// handle the data
 				
-				String ccda_type_value = request.getParameter("ccda_type_val");
+				ccda_type_value = request.getParameter("ccda_type_val");
+				
+				//System.out.println(ccda_type_value);
+				
 				if(ccda_type_value == null)
 				{
 					ccda_type_value = "";
 				}
 				
 				HttpClient client = new DefaultHttpClient();
-				HttpPost post = new HttpPost(this.props.getProperty("CCDAValidationServiceURL"));
+				
+				String ccdaURL = this.props.getProperty("CCDAValidationServiceURL");
+				
+				
+				HttpPost post = new HttpPost(ccdaURL);
 
 				MultipartEntity entity = new MultipartEntity();
 				// set the file content
 				entity.addPart("file", new InputStreamBody(file.getInputStream() , file.getOriginalFilename()));
 				// set the CCDA type
 				
-					entity.addPart("ccdaType",new StringBody(ccda_type_value));
+				entity.addPart("ccda_type",new StringBody(ccda_type_value));
 				
+				
+				entity.addPart("return_json_param", new StringBody("true"));
+				entity.addPart("debug_mode", new StringBody("true"));
 				
 				post.setEntity(entity);
 				
@@ -98,9 +110,10 @@ public class CCDAValidatorController extends BaseController {
 				
 				if(code!=200) 
 				{
+					
 					//do the error handling.
-					statisticsManager.addCcdaValidation(false, false, false, true);
-				} 
+					statisticsManager.addCcdaValidation(ccda_type_value, false, false, false, true);
+				}
 				else
 				{
 					boolean hasErrors = true, hasWarnings = true, hasInfo = true;
@@ -109,37 +122,26 @@ public class CCDAValidatorController extends BaseController {
 					
 					Document doc = Jsoup.parseBodyFragment(body);
 					
-					String bodyText = doc.text();
+					Element json = doc.select("pre").first();
 					
-					if (!bodyText.matches("(?s).*?(The)\\s*(file)\\s*(has)\\s*(encountered)\\s*\\d*\\s*(error).*?"))
-					{
-						hasErrors = false;
-					}
-					if (!bodyText.matches("(?s).*?(The)\\s*(file)\\s*(has)\\s*(encountered)\\s*\\d*\\s*(warning).*?") &&
-							!bodyText.matches("(?s).*?(The)\\s*(file)\\s*(does)\\s*(contain)\\s*\\d*\\s*(warning).*?"))
-					{
-						hasWarnings = false;
-					}
-					if (!bodyText.matches("(?s).*?(The)\\s*(file)\\s*(has)\\s*(encountered)\\s*\\d*\\s*(info).*?"))
-					{
-						hasInfo = false;
-					}
+					JSONObject jsonbody = new JSONObject(json.text());
 					
+					JSONObject report = jsonbody.getJSONObject("report");
+					hasErrors = report.getBoolean("hasErrors");
+					hasWarnings = report.getBoolean("hasWarnings");
+					hasInfo = report.getBoolean("hasInfo");
 					
-					Element bodyElm = doc.body();
-					refinedResponseBody = bodyElm.toString();
+					JSONResponseBody = jsonbody;
 					
-					statisticsManager.addCcdaValidation(hasErrors, hasWarnings, hasInfo, false);
+					statisticsManager.addCcdaValidation(ccda_type_value, hasErrors, hasWarnings, hasInfo, false);
 				}				
 				
 
 		} catch (Exception e) {
-			statisticsManager.addCcdaValidation(false, false, false, true);
+			statisticsManager.addCcdaValidation(ccda_type_value, false, false, false, true);
 			
 			throw new RuntimeException(e);
 		} 
-		
-		
 		
 	}
 
@@ -150,7 +152,7 @@ public class CCDAValidatorController extends BaseController {
 
 		map.put("files", fileJson);
 		
-		map.put("body", refinedResponseBody);
+		map.put("body", JSONResponseBody);
 		
 		return new ModelAndView("cCDAValidatorJsonView", map);
 	}
@@ -173,9 +175,4 @@ public class CCDAValidatorController extends BaseController {
 	public void setStatisticsManager(StatisticsManager statisticsManager) {
 		this.statisticsManager = statisticsManager;
 	}
-
-	
-	
-	
-
 }

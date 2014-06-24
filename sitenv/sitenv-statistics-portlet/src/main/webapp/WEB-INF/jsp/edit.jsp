@@ -14,8 +14,51 @@
  */
 --%>
 
-<%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
+<%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet"%>
+
+
+<%@ taglib uri="http://liferay.com/tld/portlet" prefix="liferay-portlet"%>
+<%@ page import="com.liferay.portal.kernel.util.*"%>
+<%@ page import="com.liferay.portal.kernel.util.*"%>
+<%@ page import="com.liferay.portlet.*"%>
+
+<%@ page import="javax.portlet.*"%>
 
 <portlet:defineObjects />
-
-This is the <b>sitenv-statistics-portlet</b>.
+<div class="panel panel-default" id="qrdaWidget">
+	<div class="panel-heading">
+		<h3 class="panel-title">SITE Statistics Configuration Editor</h3>
+	</div>
+	<div class="panel-body">
+		<p>
+			Select the type of Statistics portlet to display
+		</p>
+		<div class="well">
+			<form
+				action="<liferay-portlet:actionURL portletConfiguration="true" />"
+				method="post" name="<portlet:namespace />fm">
+				<label for="<portlet:namespace />viewPage">Statistics Type:</label><br/>
+				 <select  name="<portlet:namespace />viewPage">
+				 	<option value="all-stats" >All Statistics</option>
+				 	<option value="ccda-stats" <%= (request.getAttribute("viewPage").equals("ccda-stats") ? "selected=\"selected\"" : "") %>>C-CDA Validator Statistics</option>
+				 	<option value="qrda-stats" <%= (request.getAttribute("viewPage").equals("qrda-stats") ? "selected=\"selected\"" : "") %>>QRDA Validator Statistics</option>
+				 	<option value="pdti-stats" <%= (request.getAttribute("viewPage").equals("pdti-stats") ? "selected=\"selected\"" : "") %>>Provider Directory Test Tool Statistics</option>
+				 	<option value="direct-stats" <%= (request.getAttribute("viewPage").equals("direct-stats") ? "selected=\"selected\"" : "") %>>Direct Test Tool Statistics</option>
+				 	<option value="aggregate-stats" <%= (request.getAttribute("viewPage").equals("aggregate-stats") ? "selected=\"selected\"" : "") %>>Main Page Aggregate Statistics</option>
+				 </select>
+				 <br />
+				<br /> 
+				
+				
+				
+				<input type="hidden" name="action" value="save">
+				
+				<button id="qrdavalidate_btn" type="submit"
+					class="btn btn-primary start" onclick="submitForm(document.<portlet:namespace />fm);"">
+					<i class="glyphicon glyphicon-ok"></i> <span>Save Config</span>
+				</button>
+			
+			</form>
+		</div>
+	</div>
+</div>

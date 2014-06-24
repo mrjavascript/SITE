@@ -351,7 +351,7 @@ public class SingleTestServlet extends HttpServlet {
     				
     				ArrayList<PdtiTestCase> testList = new ArrayList<PdtiTestCase>();
     				testList.add(testCase);
-    				statisticsManager.addPdtiTest(testList);
+    				statisticsManager.addPdtiTest(wsdlUrl,testList);
 
     			} catch (Exception e) {
     				e.printStackTrace();
@@ -470,7 +470,7 @@ public class SingleTestServlet extends HttpServlet {
 	    //session.setAttribute("LIFERAY_SHARED_resultList", testResultList, PortletSession.APPLICATION_SCOPE);
         session.setAttribute("resultList", testResultList);
         
-        statisticsManager.addPdtiTest(pdtiCases);
+        statisticsManager.addPdtiTest(project.getPropertyValue(URL_PROPERTY),pdtiCases);
     }
 
 	public StatisticsManager getStatisticsManager() {
