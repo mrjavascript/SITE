@@ -1,11 +1,15 @@
 package org.sitenv.statistics.googleanalytics;
 
 
-import java.io.IOException;
 import java.io.File;
+import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.sitenv.statistics.dto.GoogleAnalyticsData;
 
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
@@ -18,8 +22,6 @@ import com.google.api.services.analytics.AnalyticsScopes;
 import com.google.api.services.analytics.model.GaData;
 import com.google.api.services.analytics.model.Profiles;
 import com.google.api.services.analytics.model.Webproperties;
-
-import org.apache.log4j.Logger;
 
 
 public class GAStatistics {
@@ -57,13 +59,12 @@ public class GAStatistics {
 	
 	private static String SITEProfileId(Analytics analytics) throws IOException {
 	    String profileId = null;
-
+	    
 	    // Query accounts collection.
 	    com.google.api.services.analytics.model.Accounts accounts = analytics.management().accounts().list().execute();
 
 	    if (accounts.getItems().isEmpty()) {
 	    	logger.error("No Google Analytics accounts found");
-	    	logger.info("No Google Analytics accounts found");
 	    } else {
 	      String firstAccountId = accounts.getItems().get(0).getId();
 	      
@@ -73,7 +74,6 @@ public class GAStatistics {
 
 	      if (webproperties.getItems().isEmpty()) {
 	    	  logger.error("No Google Analytics Webproperties found");
-	    	  logger.info("No Google Analytics Webproperties found");
 	      } else {
 	        String firstWebpropertyId = webproperties.getItems().get(0).getId();
 	        
@@ -83,7 +83,6 @@ public class GAStatistics {
 	        
 	        if (profiles.getItems().isEmpty()) {
 	        	logger.error("No Google Analytics views (profiles) found");
-	        	logger.info("No Google Analytics views (profiles) found");
 	        } else {
 	        	// 1 for "SITE All Projects" 
 	          profileId = profiles.getItems().get(1).getId();
@@ -93,29 +92,7 @@ public class GAStatistics {
 	    return profileId;
 	}
 	
-	/**
-	 * @param analytics
-	 * @param profileId
-	 * @param startDate format = YYYY-mm-DD
-	 * @param endDate format = YYYY-mm-DD
-	 * @return
-	 * @throws IOException
-	 */
-	private static String sessionCount(Analytics analytics, 
-			  String profileId,
-			  String startDate,
-			  String endDate) throws IOException 
-	{
-		GaData sessionData = analytics.data().ga()
-				.get("ga:" + profileId, 		// Table Id. ga: + profile id.
-						startDate,					// Start date.
-						endDate,					// End date.
-						"ga:sessions")				// Metrics.
-		        .execute();
-		    
-		String sessionCount = sessionData.getRows().get(0).get(0);//.toString();
-		return sessionCount;
-	}
+	
 	  
 	/**
 	 * @param analytics
@@ -125,7 +102,7 @@ public class GAStatistics {
 	 * @return
 	 * @throws IOException
 	 */
-	private static String pageViewCount(Analytics analytics, 
+	private static GaData getData(Analytics analytics, 
 			String profileId,
 			String startDate,
 			String endDate) throws IOException 
@@ -134,11 +111,11 @@ public class GAStatistics {
 				.get("ga:" + profileId, 		// Table Id. ga: + profile id.
 						startDate,					// Start date
 						endDate,					// End date.
-			            "ga:pageviews")				// Metrics.
+			            "ga:pageviews,ga:sessions")
+			    .setDimensions("ga:date").setSort("-ga:date")				// Metrics.
 			    .execute();
 			    
-		String sessionCount = sessionData.getRows().get(0).get(0);//.toString();
-		return sessionCount;
+		return sessionData;
 	}
 		  
 	private static String[] dateRange(int ndays){
@@ -173,63 +150,9 @@ public class GAStatistics {
 		return new String[]{nDaysAgoDate, todayDate};
 	}
 	
-	public static Long getSessionCount(int numOfDays, String p12CertPath) {
+	public static GoogleAnalyticsData getData(String p12CertPath) {
 		
-		Long count = new Long(-1);
-		
-		Analytics analytics = null;
-		try {
-			analytics = getAnalytics(getCredential(p12CertPath));
-		} catch (GeneralSecurityException e) {
-			logger.error("Security exception while obtaining Google API Certificate:", e);
-		} catch (IOException e) {
-			logger.error("IO exception while obtaining Google API Certificate:", e);
-		}
-		if (analytics == null){
-			logger.error("Error while getting Google Analytics object");
-		}
-
-
-		
-		String profileId = null;
-		try {
-			profileId = SITEProfileId(analytics);
-		} catch (IOException e) {
-			logger.error("Error while getting Google Analytics Profile ID:", e);
-		}
-		if (profileId == null){
-			logger.error("Error while getting Google Analytics Profile ID");
-		}
-		
-		
-		
-		String sessionCount = null;
-		if (analytics != null && profileId != null) {
-			
-			try {
-				
-				if (numOfDays == 0){
-					
-					sessionCount = sessionCount(analytics, profileId, 
-								"2010-01-01", "today");				
-				} else {
-					
-					String[] formattedDates = dateRange(numOfDays);
-					sessionCount = sessionCount(analytics, profileId, 
-							formattedDates[0], formattedDates[1]);
-				}
-			}
-			catch (IOException e){
-				logger.error("IO error while getting GA session count", e);
-			}
-			count = Long.valueOf(sessionCount);
-		}
-		return count;
-	}
-	
-	public static Long getPageViewCount(int numOfDays, String p12CertPath) {
-		
-		Long count = new Long(-1);
+		GoogleAnalyticsData gaData = null;
 		
 		Analytics analytics = null;
 		try {
@@ -255,30 +178,48 @@ public class GAStatistics {
 			logger.error("Error while getting Google Analytics Profile ID");
 		}
 		
-		
-		
-		String pageViewCount = null;
-		if (analytics != null && profileId != null) {
+		try {
+			GaData data = getData(analytics, profileId, "2010-01-01", "today");
 			
-			try {
+			if (data != null)
+			{
+				gaData = new GoogleAnalyticsData();
 				
-				if (numOfDays == 0){
+				gaData.setTotalPageViews(Long.parseLong(data.getTotalsForAllResults().get("ga:pageviews")));
+				gaData.setTotalSessions(Long.parseLong(data.getTotalsForAllResults().get("ga:sessions")));
+				
+				for (int count = 0; count < 90; count++)
+				{
+					List<String> row = data.getRows().get(count);
 					
-					pageViewCount = pageViewCount(analytics, profileId, 
-								"2010-01-01", "today");				
-				} else {
+					if (count < 30)
+					{
+						gaData.setPageViews30(gaData.getPageViews30() + Long.parseLong(row.get(1)));
+						gaData.setSessions30(gaData.getSessions30() + Long.parseLong(row.get(2)));
+					}
 					
-					String[] formattedDates = dateRange(numOfDays);
-					pageViewCount = pageViewCount(analytics, profileId, 
-							formattedDates[0], formattedDates[1]);
+					if (count < 60)
+					{
+						gaData.setPageViews60(gaData.getPageViews60() + Long.parseLong(row.get(1)));
+						gaData.setSessions60(gaData.getSessions60() + Long.parseLong(row.get(2)));
+					}
+					
+					if (count < 90)
+					{
+						gaData.setPageViews90(gaData.getPageViews90() + Long.parseLong(row.get(1)));
+						gaData.setSessions90(gaData.getSessions90() + Long.parseLong(row.get(2)));
+					}
 				}
+				
 			}
-			catch (IOException e){
-				logger.error("IO error while getting GA session count", e);
-			}
-			count = Long.valueOf(pageViewCount);
+			
+		} catch (IOException e)
+		{
+			logger.error("Error while getting Google Analytics Data.", e);
 		}
-		return count;
+		
+		
+		return gaData;
 	}
 	
 }

@@ -11,6 +11,7 @@ import org.sitenv.statistics.dao.QrdaValidationDAO;
 import org.sitenv.statistics.dto.AggregateWeeklyCounts;
 import org.sitenv.statistics.dto.CcdaWeeklyCounts;
 import org.sitenv.statistics.dto.DirectWeeklyCounts;
+import org.sitenv.statistics.dto.GoogleAnalyticsData;
 import org.sitenv.statistics.dto.PdtiTestCase;
 import org.sitenv.statistics.dto.PdtiWeeklyCounts;
 import org.sitenv.statistics.dto.QrdaWeeklyCounts;
@@ -299,13 +300,11 @@ public class StatisticsManagerImpl implements StatisticsManager {
 		return JiraStatistics.getResolvedIssues(numOfDays);
 	}
 	
-	public Long getGoogleAnalyticsSessionCount(Integer numOfDays, String p12CertPath){
-		return GAStatistics.getSessionCount(numOfDays, p12CertPath);
+	public GoogleAnalyticsData getGoogleAnalyticsData(String p12CertPath){
+		return GAStatistics.getData(p12CertPath);
 	}
 	
-	public Long getGoogleAnalyticsPageViewCount(Integer numOfDays, String p12CertPath){
-		return GAStatistics.getPageViewCount(numOfDays, p12CertPath);
-	}
+	
 
 	public AggregateDAO getAggregateDAO() {
 		return aggregateDAO;

@@ -5,6 +5,7 @@ import java.util.List;
 import org.sitenv.statistics.dto.AggregateWeeklyCounts;
 import org.sitenv.statistics.dto.CcdaWeeklyCounts;
 import org.sitenv.statistics.dto.DirectWeeklyCounts;
+import org.sitenv.statistics.dto.GoogleAnalyticsData;
 import org.sitenv.statistics.dto.PdtiTestCase;
 import org.sitenv.statistics.dto.PdtiWeeklyCounts;
 import org.sitenv.statistics.dto.QrdaWeeklyCounts;
@@ -67,7 +68,6 @@ public interface StatisticsManager {
 	public Long getJiraIssuesCreatedCount(Integer numOfDays);
 	public Long getJiraIssuesResolvedCount(Integer numOfDays);
 	
-	public Long getGoogleAnalyticsSessionCount(Integer numOfDays, String p12CertPath);
-	public Long getGoogleAnalyticsPageViewCount(Integer numOfDays, String p12CertPath);
+	public GoogleAnalyticsData getGoogleAnalyticsData(String p12CertPath);
 	
 }

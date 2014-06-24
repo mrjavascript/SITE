@@ -42,7 +42,6 @@ private Boolean httpError;
 private String validationType;
 
 
-
 @Override
 public int hashCode() {
 	final int prime = 31;

@@ -88,9 +88,9 @@ public class JiraStatistics {
 		try {
 			searchResults = client.execute(post);
 		} catch (ClientProtocolException e) {
-			e.printStackTrace();
+			logger.debug("Error in JIRA API Call:", e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.debug("Error in JIRA API Call:", e);
 		}
 		
 		ResponseHandler<String> handler = new BasicResponseHandler();
@@ -98,9 +98,9 @@ public class JiraStatistics {
 		try {
 			body = handler.handleResponse(searchResults);
 		} catch (ClientProtocolException e) {
-			e.printStackTrace();
+			logger.debug("Error in JIRA API Call:", e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.debug("Error in JIRA API Call:", e);
 		}
 		
 		JsonParser parser = new JsonParser();

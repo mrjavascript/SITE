@@ -83,17 +83,17 @@
 							<tbody>
 								<tr>
 									<td>Unique User Visits</td>
-									<td>${GoogleAnalyticsSessions}</td>
-									<td>${GoogleAnalyticsSessions30}</td>
-									<td>${GoogleAnalyticsSessions60}</td>
-									<td>${GoogleAnalyticsSessions90}</td>
+									<td>${GoogleAnalyticsData.totalSessions}</td>
+									<td>${GoogleAnalyticsData.sessions30}</td>
+									<td>${GoogleAnalyticsData.sessions60}</td>
+									<td>${GoogleAnalyticsData.sessions90}</td>
 								</tr>
 								<tr>
 									<td>Individual Page Views</td>
-									<td>${GoogleAnalyticsPageViews}</td>
-									<td>${GoogleAnalyticsPageViews30}</td>
-									<td>${GoogleAnalyticsPageViews60}</td>
-									<td>${GoogleAnalyticsPageViews90}</td>
+									<td>${GoogleAnalyticsData.totalPageViews}</td>
+									<td>${GoogleAnalyticsData.pageViews30}</td>
+									<td>${GoogleAnalyticsData.pageViews60}</td>
+									<td>${GoogleAnalyticsData.pageViews90}</td>
 								</tr>
 								<tr>
 									<td>Issues Created</td>

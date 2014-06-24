@@ -3,6 +3,7 @@ package org.sitenv.portlets.statistics.controllers;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.concurrent.atomic.AtomicLong;
 
 import javax.portlet.PortletPreferences;
 import javax.portlet.RenderRequest;
@@ -10,6 +11,7 @@ import javax.portlet.RenderResponse;
 
 import org.apache.log4j.Logger;
 import org.sitenv.common.utilities.controller.BaseController;
+import org.sitenv.statistics.dto.GoogleAnalyticsData;
 import org.sitenv.statistics.manager.StatisticsManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,6 +28,17 @@ public class StatisticsController extends BaseController {
 	
 	
 	private static final Logger logger = Logger.getLogger(StatisticsController.class);
+	
+	private static AtomicLong GASessionsAllTime = new AtomicLong(-1);
+	private static AtomicLong GASessions30 = new AtomicLong(-1);
+	private static AtomicLong GASessions60 = new AtomicLong(-1);
+	private static AtomicLong GASessions90 = new AtomicLong(-1);
+	
+	private static AtomicLong GAPageViewsAllTime = new AtomicLong(-1);
+	private static AtomicLong GAPageViews30 = new AtomicLong(-1);
+	private static AtomicLong GAPageViews60 = new AtomicLong(-1);
+	private static AtomicLong GAPageViews90 = new AtomicLong(-1);
+	
 
 	@Autowired
 	private StatisticsManager statisticsManager;
@@ -70,24 +83,12 @@ public class StatisticsController extends BaseController {
 		{
 			String p12CertPath = this.props.getProperty("googleAnalyticsp12CertPath");
 			
-			Long sessionCount = statisticsManager.getGoogleAnalyticsSessionCount(0, p12CertPath);
-			Long pageCount	= statisticsManager.getGoogleAnalyticsPageViewCount(0, p12CertPath);
+			
 			Long jiraResolvedCount = statisticsManager.getJiraIssuesResolvedCount(0);
 			
-			modelAndView.addObject("GoogleAnalyticsSessionsFormat", format(sessionCount));
-			modelAndView.addObject("GoogleAnalyticsPageViewsFormat", format(pageCount));
+			
 			modelAndView.addObject("jiraIssuesResolvedFormat", format(jiraResolvedCount));
 			
-			
-			modelAndView.addObject("GoogleAnalyticsSessions", sessionCount);
-			modelAndView.addObject("GoogleAnalyticsSessions30", statisticsManager.getGoogleAnalyticsSessionCount(30, p12CertPath));
-			modelAndView.addObject("GoogleAnalyticsSessions60", statisticsManager.getGoogleAnalyticsSessionCount(60, p12CertPath));
-			modelAndView.addObject("GoogleAnalyticsSessions90", statisticsManager.getGoogleAnalyticsSessionCount(90, p12CertPath));
-			
-			modelAndView.addObject("GoogleAnalyticsPageViews", pageCount);
-			modelAndView.addObject("GoogleAnalyticsPageViews30", statisticsManager.getGoogleAnalyticsPageViewCount(30, p12CertPath));
-			modelAndView.addObject("GoogleAnalyticsPageViews60", statisticsManager.getGoogleAnalyticsPageViewCount(60, p12CertPath));
-			modelAndView.addObject("GoogleAnalyticsPageViews90", statisticsManager.getGoogleAnalyticsPageViewCount(90, p12CertPath));
 			
 			modelAndView.addObject("jiraIssuesCreated", statisticsManager.getJiraIssuesCreatedCount(0));
 			modelAndView.addObject("jiraIssuesCreated30", statisticsManager.getJiraIssuesCreatedCount(30));
@@ -98,6 +99,45 @@ public class StatisticsController extends BaseController {
 			modelAndView.addObject("jiraIssuesResolved30", statisticsManager.getJiraIssuesResolvedCount(30));
 			modelAndView.addObject("jiraIssuesResolved60", statisticsManager.getJiraIssuesResolvedCount(60));
 			modelAndView.addObject("jiraIssuesResolved90", statisticsManager.getJiraIssuesResolvedCount(90));
+			
+			GoogleAnalyticsData gaData = null;
+			
+			try {
+				gaData = statisticsManager.getGoogleAnalyticsData(p12CertPath);
+			} catch (Exception e) {
+				//ignored
+			}
+				
+			if (gaData != null)
+			{
+				GASessionsAllTime.set(gaData.getTotalSessions());
+				GASessions30.set(gaData.getSessions30());
+				GASessions60.set(gaData.getSessions60());
+				GASessions90.set(gaData.getSessions90());
+				
+				GAPageViewsAllTime.set(gaData.getTotalPageViews());
+				GAPageViews30.set(gaData.getPageViews30());
+				GAPageViews60.set(gaData.getPageViews60());
+				GAPageViews90.set(gaData.getPageViews90());
+			}
+			else
+			{
+				gaData = new GoogleAnalyticsData();
+				gaData.setTotalSessions(GASessionsAllTime.get());
+				gaData.setSessions30(GASessions30.get());
+				gaData.setSessions60(GASessions60.get());
+				gaData.setSessions90(GASessions90.get());
+				
+				gaData.setTotalPageViews(GAPageViewsAllTime.get());
+				gaData.setPageViews30(GAPageViews30.get());
+				gaData.setPageViews60(GAPageViews60.get());
+				gaData.setPageViews90(GAPageViews90.get());
+			}
+			
+			modelAndView.addObject("GoogleAnalyticsData",gaData);
+			
+			modelAndView.addObject("GoogleAnalyticsSessionsFormat", format(gaData.getTotalSessions()));
+			modelAndView.addObject("GoogleAnalyticsPageViewsFormat", format(gaData.getTotalPageViews()));
 			
 			modelAndView.setViewName("aggregate");
 		}
@@ -271,20 +311,44 @@ public class StatisticsController extends BaseController {
 			 * Google Analytics Statistics
 			 */
 			
-			
-			
 			String p12CertPath = this.props.getProperty("googleAnalyticsp12CertPath");
 			
-			modelAndView.addObject("GoogleAnalyticsSessions", statisticsManager.getGoogleAnalyticsSessionCount(0, p12CertPath));
-			modelAndView.addObject("GoogleAnalyticsSessions30", statisticsManager.getGoogleAnalyticsSessionCount(30, p12CertPath));
-			modelAndView.addObject("GoogleAnalyticsSessions60", statisticsManager.getGoogleAnalyticsSessionCount(60, p12CertPath));
-			modelAndView.addObject("GoogleAnalyticsSessions90", statisticsManager.getGoogleAnalyticsSessionCount(90, p12CertPath));
 			
-			modelAndView.addObject("GoogleAnalyticsPageViews", statisticsManager.getGoogleAnalyticsPageViewCount(0, p12CertPath));
-			modelAndView.addObject("GoogleAnalyticsPageViews30", statisticsManager.getGoogleAnalyticsPageViewCount(30, p12CertPath));
-			modelAndView.addObject("GoogleAnalyticsPageViews60", statisticsManager.getGoogleAnalyticsPageViewCount(60, p12CertPath));
-			modelAndView.addObject("GoogleAnalyticsPageViews90", statisticsManager.getGoogleAnalyticsPageViewCount(90, p12CertPath));
-		
+GoogleAnalyticsData gaData = null;
+			
+			try {
+				gaData = statisticsManager.getGoogleAnalyticsData(p12CertPath);
+			} catch (Exception e) {
+				//ignored
+			}
+				
+			if (gaData != null)
+			{
+				GASessionsAllTime.set(gaData.getTotalSessions());
+				GASessions30.set(gaData.getSessions30());
+				GASessions60.set(gaData.getSessions60());
+				GASessions90.set(gaData.getSessions90());
+				
+				GAPageViewsAllTime.set(gaData.getTotalPageViews());
+				GAPageViews30.set(gaData.getPageViews30());
+				GAPageViews60.set(gaData.getPageViews60());
+				GAPageViews90.set(gaData.getPageViews90());
+			}
+			else
+			{
+				gaData = new GoogleAnalyticsData();
+				gaData.setTotalSessions(GASessionsAllTime.get());
+				gaData.setSessions30(GASessions30.get());
+				gaData.setSessions60(GASessions60.get());
+				gaData.setSessions90(GASessions90.get());
+				
+				gaData.setTotalPageViews(GAPageViewsAllTime.get());
+				gaData.setPageViews30(GAPageViews30.get());
+				gaData.setPageViews60(GAPageViews60.get());
+				gaData.setPageViews90(GAPageViews90.get());
+			}
+			
+			modelAndView.addObject("GoogleAnalyticsData", gaData);
 			/*
 			 * End Google Analytics Statistics
 			 */
