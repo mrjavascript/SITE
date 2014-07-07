@@ -248,3 +248,59 @@ a.thumbnail.active {
 .firefox_fix {
 	position: relative;
 }
+
+@media (min-width: 768px){
+    .navbar-nav{
+        margin: 0 auto;
+        display: table;
+        table-layout: fixed;
+        float:none;
+        width:100%
+    }
+    .navbar-nav>li {
+        width:20%;
+        text-align:center;
+    }
+    .navbar-nav>li>a{
+    	border-left: 1px solid #fff;
+		border-right: 1px solid #d5d5d5;
+    }
+    .navbar-nav>.active>a{
+    	border-left: 0;
+		border-right: 1px solid #d5d5d5;
+    }
+    .navbar-nav>li:first-child > a {
+    	border-left: 0;
+		border-right: 1px solid #d5d5d5;
+    }
+    .navbar-nav>li:last-child>a{
+    	border-left: 0;
+		border-right: 0;
+    }
+    .navbar-nav>li ul {
+        text-align:left;
+    }
+    #title {
+		display: block;
+	}
+	.navbar-brand {
+		display: none;
+	}
+	.navbar-collapse {
+		padding-right: 0px;
+		padding-left: 0px;
+	}
+}
+@media (max-width: 767px){
+    
+	#title {
+		display: none;
+	}
+	.navbar-brand {
+		display: block;
+	}
+}
+
+.navbar-default {
+border-color: #d5d5d5;
+}

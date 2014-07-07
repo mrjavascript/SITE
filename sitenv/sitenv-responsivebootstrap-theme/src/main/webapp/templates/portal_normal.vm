@@ -46,11 +46,25 @@ $theme.include($body_top_include)
 				<a href="$sign_in_url" id="sign-in" rel="nofollow">$sign_in_text</a>
 			</div>
 			#end
-        	<h3 class="text-muted"><img src="
-$images_folder/site/SITP_Logo_Small_WhiteBG.png" alt="SITE logo"/>$site_name</h3>
+        	<h3 class="text-muted" id="title"><img src="$images_folder/site/SITP_Logo_Small_WhiteBG.png" alt="SITE logo"/>$site_name</h3>
 			
 			#if ($has_navigation || $is_signed_in)
-				#parse ("$full_templates_path/navigation.vm")
+				<div class="navbar navbar-default" role="navigation">
+					<div class="containter-fluid">
+						<div class="navbar-header">
+				            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+				              <span class="sr-only">Toggle navigation</span>
+				              <span class="icon-bar"></span>
+				              <span class="icon-bar"></span>
+				              <span class="icon-bar"></span>
+				            </button>
+				            <a class="navbar-brand" href="#">SITE</a>
+				         </div>
+				
+						#parse ("$full_templates_path/navigation.vm")
+				
+					</div>
+				</div>
 			#end
 		</div>
 		
