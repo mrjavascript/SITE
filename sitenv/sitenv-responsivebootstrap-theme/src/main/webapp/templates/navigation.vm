@@ -1,5 +1,6 @@
-<nav class="$nav_css_class" id="navigation">
-	<ul class="nav nav-justified">
+
+<nav class="$nav_css_class navbar-collapse collapse" id="navigation">
+	<ul class="nav navbar-nav">
 		#foreach ($nav_item in $nav_items)
 			#if ($nav_item.isSelected())
 				#if ($nav_item.hasChildren())

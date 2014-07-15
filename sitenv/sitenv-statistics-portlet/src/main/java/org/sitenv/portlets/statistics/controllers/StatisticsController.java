@@ -47,7 +47,11 @@ public class StatisticsController extends BaseController {
 	public ModelAndView handleRenderRequest(RenderRequest request,
 			RenderResponse response) {
 
+		
+			
 		ModelAndView modelAndView = new ModelAndView();
+		
+		try {
 		
 		if (this.props == null)
 		{
@@ -354,6 +358,9 @@ GoogleAnalyticsData gaData = null;
 			 */
 			
 			modelAndView.setViewName("view");
+		}
+		} catch (Exception e) {
+			modelAndView.setViewName("unavailable");
 		}
 		
 		return modelAndView;
