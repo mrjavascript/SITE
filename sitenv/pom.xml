@@ -73,6 +73,12 @@
 			<artifactId>log4j</artifactId>
 			<version>1.2.17</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>apache-log4j-extras</artifactId>
+			<version>1.2.17</version>
+		</dependency>
 		<dependency>
 			<groupId>commons-fileupload</groupId>
 			<artifactId>commons-fileupload</artifactId>
@@ -99,6 +105,9 @@
     	<module>sitenv-qrda-portlet</module>
     	<module>sitenv-pdgi-single-test-portlet</module>
     	<module>sitenv-responsivebootstrap-theme</module>
-    <module>sitenv-responsivebootstrap-portlet-layouttpl</module>
+    	<module>sitenv-responsivebootstrap-portlet-layouttpl</module>
+    	<module>sitenv-statistics</module>
+    	<module>sitenv-statistics-portlet</module>
+    <module>sitenv-providerdirectory-servlet</module>
   </modules>
 </project>

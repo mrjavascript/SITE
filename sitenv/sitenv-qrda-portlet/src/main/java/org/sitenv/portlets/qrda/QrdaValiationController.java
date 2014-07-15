@@ -14,6 +14,7 @@ import java.util.Properties;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.ResourceResponse;
+import javax.swing.tree.FixedHeightLayoutCache;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -41,6 +42,7 @@ import org.sitenv.portlets.qrda.models.QRDASchemaError;
 import org.sitenv.portlets.qrda.models.QRDAValidationEnhancedResult;
 import org.sitenv.portlets.qrda.models.QRDAValidationResponse;
 import org.sitenv.portlets.qrda.models.UploadedFile;
+import org.sitenv.statistics.manager.StatisticsManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -76,11 +78,24 @@ public class QrdaValiationController {
 
 	private static final Log logger = LogFactoryUtil
 			.getLog(QrdaValiationController.class);
+	
 
+	@Autowired
+	private StatisticsManager statisticsManager;
+	
 	protected Properties props;
 
 	// default value.
 	protected String QRDA_VALIDATOR_URL = "http://localhost:7080/QrdaValidatorServices/QRDA/Validate";
+	
+	public static final String UTF8_BOM = "\uFEFF";
+	
+	private static String removeUTF8BOM(String s) {
+        if (s.startsWith(UTF8_BOM)) {
+            s = s.substring(1);
+        }
+        return s;
+    }
 
 	protected void loadProperties() throws IOException {
 		InputStream in = this.getClass().getClassLoader()
@@ -126,6 +141,8 @@ public class QrdaValiationController {
 					.println("Responding ajax call, relay the request to url:"
 							+ QRDA_VALIDATOR_URL);
 			System.out.println("category1:" + selectedCategory);
+			
+			
 
 			String fileName = uploadRequest.getFileName("qrdauploadfile");
 			InputStream inputStream = uploadRequest.getFileAsStream("qrdauploadfile");
@@ -184,8 +201,10 @@ public class QrdaValiationController {
 				}
 			}
 
+			//////////  FIX HERE!!!!!
+			
 			if (!xpathMapping.isEmpty()) {
-				orgXml = StringEscapeUtils.escapeXml(InjectTags(orgXml,
+				orgXml = StringEscapeUtils.escapeXml(InjectTags(removeUTF8BOM(orgXml),
 						xpathMapping));
 			} else {
 				orgXml = StringEscapeUtils.escapeXml(orgXml);
@@ -441,15 +460,18 @@ public class QrdaValiationController {
 					}
 				}
 			}
+			
+			//////  FIX HERE
 
 			if (!xpathMapping.isEmpty()) {
-				orgXml = StringEscapeUtils.escapeXml(InjectTags(orgXml,
+				orgXml = StringEscapeUtils.escapeXml(InjectTags(removeUTF8BOM(orgXml),
 						xpathMapping));
 			}
 
 			response.setOrgXml(orgXml);
 
 		} catch (Exception e) {
+			
 			response.setSuccess(false);
 			response.setErrorMessage(e.getMessage() + PrintStackStrace(e));
 			response.setNote(QRDA_VALIDATOR_URL);
@@ -514,6 +536,8 @@ public class QrdaValiationController {
 			InputStream doc2validate, String docFileName, String category)
 			throws ClientProtocolException, IOException {
 
+		Integer cat = null;
+		
 		HttpClient client = new DefaultHttpClient();
 		HttpPost post = new HttpPost(QRDA_VALIDATOR_URL);
 
@@ -523,6 +547,15 @@ public class QrdaValiationController {
 		// set the QRDA category
 		entity.addPart("category", new StringBody(category));
 
+		if (category.equalsIgnoreCase("categoryI"))
+		{
+			cat = StatisticsManager.QRDA_CATEGORY_I;
+		}
+		else
+		{
+			cat = StatisticsManager.QRDA_CATEGORY_III;
+		}
+		
 		post.setEntity(entity);
 
 		HttpResponse relayResponse = client.execute(post);
@@ -532,6 +565,9 @@ public class QrdaValiationController {
 		int code = relayResponse.getStatusLine().getStatusCode();
 
 		if (code != 200) {
+			
+			statisticsManager.addQrdaValidation(cat, false, false, false, true);
+			
 			QRDAValidationResponse r = new QRDAValidationResponse();
 			r.setSuccess(false);
 			r.setErrorMessage(String
@@ -542,6 +578,25 @@ public class QrdaValiationController {
 
 		String body = handler.handleResponse(relayResponse);
 		Gson gson = new Gson();
-		return gson.fromJson(body, QRDAValidationResponse.class);
+		QRDAValidationResponse response = gson.fromJson(body, QRDAValidationResponse.class);
+		
+		statisticsManager.addQrdaValidation(cat, 
+				(response.getSchemaErrors() != null && response.getSchemaErrors().size() > 0) ? true : false, 
+				(response.getSchematronErrors() != null && response.getSchematronErrors().size() > 0) ? true : false, 
+				(response.getSchematronWarnings() != null && response.getSchematronWarnings().size() > 0) ? true : false, 
+				false);
+		
+		return response;
 	}
+
+	public StatisticsManager getStatisticsManager() {
+		return statisticsManager;
+	}
+
+	public void setStatisticsManager(StatisticsManager statisticsManager) {
+		this.statisticsManager = statisticsManager;
+	}
+	
+	
+	
 }

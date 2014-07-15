@@ -21,13 +21,10 @@
 
 <portlet:defineObjects />
 
-<portlet:resourceURL var="runTestsUrl">
-    <portlet:param name="mvcPath" value="/view.jsp" />
-</portlet:resourceURL>
 
 
 <script type="text/javascript">
-	window.runTestsUrl = "<%=runTestsUrl%>";
+	window.runTestsUrl = "/sitenv-providerdirectory-servlet/GetPDGISingleTest";
 
 	window.currentContextPath = "<%=request.getContextPath()%>";
 </script>
@@ -41,19 +38,19 @@
      <p>To execute test cases against your provider directory server implementation, please enter the publicly available WSDL URL for your PD endpoint, enter the base DN for your PD implementation, and select the test case that you wish to execute.<br/><br/>Please note: the test cases may take up to one minute to run.</p>
       	
 <div class="well">
-  <form action="<%= runTestsUrl %>" name="testForm" method="post" id="providerDirectoryTestForm">
+  <form action="/sitenv-providerdirectory-servlet/GetPDGISingleTest" name="testForm" method="post" id="providerDirectoryTestForm">
       
 <p>
 	  <label for="endpointUrl">Enter Your Endpoint URL:</label>
-      <input id="endpointUrl" name="endpointUrl" type="text" value="" class="validate[required,custom[url]]"/>
+      <input id="endpointUrl" name="endpointUrl" type="text" value="" class="validate[required,custom[url]] form-control"/>
 </p>
 <p>      
       <label for="baseDn">Enter Your Base DN:</label>
-      <input id="baseDn" name="baseDn" type="text" value="" class="validate[required]"/>
+      <input id="baseDn" name="baseDn" type="text" value="" class="validate[required] form-control"/>
 </p>
 <p>      
       <label for="testCase">Select a Test Case:</label>
-      <select id="testCase" name="testCase" class="validate[required]">
+      <select id="testCase" name="testCase" class="validate[required] form-control">
         <option value="run_all_test_cases">Run All Test Cases</option>
         <% for (String testCase : SingleTestPortlet.testCaseNames) { %>
         	<option value="<%= testCase %>"><%= SingleTestPortlet.testCaseRealNames.get(testCase) %></option>

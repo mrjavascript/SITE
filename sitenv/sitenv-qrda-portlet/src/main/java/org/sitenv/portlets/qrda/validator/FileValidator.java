@@ -6,12 +6,10 @@ import org.springframework.validation.Validator;
 
 public class FileValidator implements Validator {
 
-	@Override
 	public boolean supports(Class clazz) {
 		return UploadedFile.class.equals(clazz);
 	}
 
-	@Override
 	public void validate(Object uploadedFile, Errors errors) {
 
 		UploadedFile file = (UploadedFile) uploadedFile;

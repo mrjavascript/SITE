@@ -28,11 +28,14 @@ import javax.portlet.ActionResponse;
 import javax.portlet.RenderRequest;
 
 import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.sitenv.common.utilities.controller.BaseController;
 import org.sitenv.common.utilities.encryption.DesEncrypter;
+import org.sitenv.statistics.manager.StatisticsManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -61,6 +64,9 @@ public class DirectReceiveController  extends BaseController
 	private JSONObject uploadResult = null;
 	private JSONObject precannedResult = null;
 	
+	@Autowired
+	private StatisticsManager statisticsManager;
+	
 	@ActionMapping(params = "javax.portlet.action=uploadCCDADirectReceive")
 	public void uploadCCDADirectReceive(MultipartActionRequest request, ActionResponse response) throws IOException, JSONException {
 		
@@ -74,12 +80,15 @@ public class DirectReceiveController  extends BaseController
 			this.loadProperties();
 		}
 		
+		String delimiter = "@";
+
 		
 		String fromendpoint = props.getProperty("directFromEndpoint");
+		String domain = fromendpoint.split(delimiter)[1];
 		String smtphostname = props.getProperty("smtphostname");
 		String smtpport = props.getProperty("smtpport");
 		String smtpuser = props.getProperty("smtpusername");
-		String smtppswrd = props.getProperty("smtppswd");
+		String smtppswrd = FileUtils.readFileToString(new File(props.getProperty("smtppswdPath")));
 		String enableSSL = props.getProperty("smtpenablessl");
 	
 		response.setRenderParameter("javax.portlet.action", "uploadCCDADirectReceive");
@@ -110,16 +119,19 @@ public class DirectReceiveController  extends BaseController
 			
 		} catch (FileUploadException e) {
 			if(e.getMessage().endsWith("bytes.")) {
+				statisticsManager.addDirectReceive(domain, true, false, true);
 				uploadResult.put("IsSuccess", "false");
 				uploadResult.put("ErrorMessage", "Maxiumum file size exceeeded. " + 
 						"Please return to the previous page and select a file that is less than "
 						+ MAX_FILE_SIZE / 1024 / 1024 + "MB(s).");
 			} else {
+				statisticsManager.addDirectReceive(domain, true, false, true);
 				uploadResult.put("IsSuccess", "false");
 				uploadResult.put("ErrorMessage", "There was an error uploading the file: " + e.getMessage());
 				
 			}
 		} catch (Exception e) {
+			statisticsManager.addDirectReceive(domain, true, false, true);
 			uploadResult.put("IsSuccess", "false");
 			uploadResult.put("ErrorMessage", "There was an error saving the file: " + e.getMessage());
 		}
@@ -182,9 +194,10 @@ public class DirectReceiveController  extends BaseController
 	 
 				uploadResult.put("IsSuccess", "true");
 				uploadResult.put("ErrorMessage", "Mail sent.");
+				statisticsManager.addDirectReceive(domain, true, false, false);
 				
 			} catch (MessagingException e) {
-				
+				statisticsManager.addDirectReceive(domain, true, false, true);
 				uploadResult.put("IsSuccess", "false");
 				uploadResult.put("ErrorMessage", "Failed to send email due to eror: " + e.getMessage());
 			} 
@@ -219,11 +232,15 @@ public class DirectReceiveController  extends BaseController
 		
 		String sampleCcdaDir = props.getProperty("sampleCcdaDir");
 		
+		String delimiter = "@";
+
+		
 		String fromendpoint = props.getProperty("directFromEndpoint");
+		String domain = fromendpoint.split(delimiter)[1];
 		String smtphostname = props.getProperty("smtphostname");
 		String smtpport = props.getProperty("smtpport");
 		String smtpuser = props.getProperty("smtpusername");
-		String smtppswrd = props.getProperty("smtppswd");
+		String smtppswrd = FileUtils.readFileToString(new File(props.getProperty("smtppswdPath")));
 		String enableSSL = props.getProperty("smtpenablessl");
 	
 		response.setRenderParameter("javax.portlet.action", "precannedCCDADirectReceive");
@@ -295,9 +312,10 @@ public class DirectReceiveController  extends BaseController
  
 			precannedResult.put("IsSuccess", "true");
 			precannedResult.put("ErrorMessage", "Mail sent.");
+			statisticsManager.addDirectReceive(domain, false, true, false);
 			
 		} catch (MessagingException e) {
-			
+			statisticsManager.addDirectReceive(domain, false, true, true);
 			precannedResult.put("IsSuccess", "false");
 			precannedResult.put("ErrorMessage", "Failed to send email due to eror: " + e.getMessage());
 		} 
@@ -352,6 +370,16 @@ public class DirectReceiveController  extends BaseController
         public OutputStream getOutputStream() throws IOException {  
             throw new IOException("Cannot write to this read-only resource");  
         }  
-    }  
+    }
+
+	public StatisticsManager getStatisticsManager() {
+		return statisticsManager;
+	}
+
+	public void setStatisticsManager(StatisticsManager statisticsManager) {
+		this.statisticsManager = statisticsManager;
+	}  
+	
+	
 
 }

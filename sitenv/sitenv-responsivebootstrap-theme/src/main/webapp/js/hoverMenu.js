@@ -1,11 +1,13 @@
 $(function($) {
  $('.nav .dropdown-parent').hover(function() {
- $(this).find('.dropdown-menu').first().stop(true, true).delay(250).slideDown();
-
+	 if ($(window).width() >= 768) {
+		 $(this).find('.dropdown-menu').first().stop(true, true).delay(250).slideDown();
+	 }
  
 }, function() {
- $(this).find('.dropdown-menu').first().stop(true, true).delay(100).slideUp();
-
+	if ($(window).width() >= 768) {
+		$(this).find('.dropdown-menu').first().stop(true, true).delay(100).slideUp();
+	}
  
 });
 

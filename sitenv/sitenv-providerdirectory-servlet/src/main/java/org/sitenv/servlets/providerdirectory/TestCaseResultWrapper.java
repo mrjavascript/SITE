@@ -1,4 +1,4 @@
-package org.sitenv.portlets.singletest;
+package org.sitenv.servlets.providerdirectory;
 
 import java.io.Serializable;
 

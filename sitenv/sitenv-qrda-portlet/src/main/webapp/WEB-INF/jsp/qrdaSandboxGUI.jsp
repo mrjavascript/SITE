@@ -35,7 +35,7 @@
 				action="${ajaxuploadactionurl}">
 				
 				<label for="category">Select a QRDA Category:</label><br/>
-				<select id="category" name="category">
+				<select id="category" name="category" class="form-control">
 					<option value="categoryI">Category I</option>
 					<option value="categoryIII">Category III</option>      				
 				</select>

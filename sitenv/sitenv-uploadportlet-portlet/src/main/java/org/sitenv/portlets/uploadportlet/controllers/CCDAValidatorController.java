@@ -23,6 +23,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.sitenv.common.utilities.controller.BaseController;
+import org.sitenv.statistics.manager.StatisticsManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,10 +39,15 @@ import org.springframework.web.portlet.multipart.MultipartActionRequest;
 public class CCDAValidatorController extends BaseController {
 
 	private JSONArray fileJson;
-	private String refinedResponseBody;
+	private JSONObject JSONResponseBody;
+	
+	@Autowired
+	private StatisticsManager statisticsManager;
 
 	@ActionMapping(params = "javax.portlet.action=uploadCCDA")
 	public void response(MultipartActionRequest request, ActionResponse response) throws IOException {
+		
+		String ccda_type_value = null;
 		
 		if (this.props == null)
 		{
@@ -65,47 +72,76 @@ public class CCDAValidatorController extends BaseController {
 				
 				// handle the data
 				
-				String ccda_type_value = request.getParameter("ccda_type_val");
+				ccda_type_value = request.getParameter("ccda_type_val");
+				
+				//System.out.println(ccda_type_value);
+				
 				if(ccda_type_value == null)
 				{
 					ccda_type_value = "";
 				}
 				
 				HttpClient client = new DefaultHttpClient();
-				HttpPost post = new HttpPost(this.props.getProperty("CCDAValidationServiceURL"));
+				
+				String ccdaURL = this.props.getProperty("CCDAValidationServiceURL");
+				
+				
+				HttpPost post = new HttpPost(ccdaURL);
 
 				MultipartEntity entity = new MultipartEntity();
 				// set the file content
 				entity.addPart("file", new InputStreamBody(file.getInputStream() , file.getOriginalFilename()));
 				// set the CCDA type
 				
-					entity.addPart("ccdaType",new StringBody(ccda_type_value));
+				entity.addPart("ccda_type",new StringBody(ccda_type_value));
 				
+				
+				entity.addPart("return_json_param", new StringBody("true"));
+				entity.addPart("debug_mode", new StringBody("true"));
 				
 				post.setEntity(entity);
-
+				
 				HttpResponse relayResponse = client.execute(post);
 				//create the handler
 				ResponseHandler<String> handler = new BasicResponseHandler();
 				
 				int code = relayResponse.getStatusLine().getStatusCode();
 				
+				
 				if(code!=200) 
 				{
+					
 					//do the error handling.
+					statisticsManager.addCcdaValidation(ccda_type_value, false, false, false, true);
 				}
+				else
+				{
+					boolean hasErrors = true, hasWarnings = true, hasInfo = true;
+					
+					String body = handler.handleResponse(relayResponse);
+					
+					Document doc = Jsoup.parseBodyFragment(body);
+					
+					Element json = doc.select("pre").first();
+					
+					JSONObject jsonbody = new JSONObject(json.text());
+					
+					JSONObject report = jsonbody.getJSONObject("report");
+					hasErrors = report.getBoolean("hasErrors");
+					hasWarnings = report.getBoolean("hasWarnings");
+					hasInfo = report.getBoolean("hasInfo");
+					
+					JSONResponseBody = jsonbody;
+					
+					statisticsManager.addCcdaValidation(ccda_type_value, hasErrors, hasWarnings, hasInfo, false);
+				}				
 				
-				String body = handler.handleResponse(relayResponse);
-				
-				Document doc = Jsoup.parseBodyFragment(body);
-				Element bodyElm = doc.body();
-				refinedResponseBody = bodyElm.toString();
 
 		} catch (Exception e) {
+			statisticsManager.addCcdaValidation(ccda_type_value, false, false, false, true);
+			
 			throw new RuntimeException(e);
 		} 
-		
-		
 		
 	}
 
@@ -116,7 +152,7 @@ public class CCDAValidatorController extends BaseController {
 
 		map.put("files", fileJson);
 		
-		map.put("body", refinedResponseBody);
+		map.put("body", JSONResponseBody);
 		
 		return new ModelAndView("cCDAValidatorJsonView", map);
 	}
@@ -132,4 +168,11 @@ public class CCDAValidatorController extends BaseController {
 		return modelAndView;
 	}
 
+	public StatisticsManager getStatisticsManager() {
+		return statisticsManager;
+	}
+
+	public void setStatisticsManager(StatisticsManager statisticsManager) {
+		this.statisticsManager = statisticsManager;
+	}
 }

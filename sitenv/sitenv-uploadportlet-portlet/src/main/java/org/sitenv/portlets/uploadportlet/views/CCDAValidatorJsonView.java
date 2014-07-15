@@ -32,7 +32,7 @@ public class CCDAValidatorJsonView extends AbstractView {
     jsonObj.put("body", map.get("body"));
     
     logger.info(jsonObj.toString());
-
+    
     logger.info("content Type = " + getContentType());
     response.setContentType("text/plain");
     response.setCharacterEncoding("UTF-8");

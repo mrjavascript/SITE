@@ -99,12 +99,10 @@ public class LiferayDefaultMultipartActionRequest extends ActionRequestWrapper
 		return parameterValues;
 	}
 
-	@Override
 	public MultipartFile getFile(String name) {
 		return multipartActionRequest.getFile(portletNamespace + name);
 	}
 
-	@Override
 	public Map<String, MultipartFile> getFileMap() {
 
 		Map<String, MultipartFile> newMap = new LinkedHashMap<String, MultipartFile>();
@@ -122,12 +120,10 @@ public class LiferayDefaultMultipartActionRequest extends ActionRequestWrapper
 		return newMap;
 	}
 
-	@Override
 	public Iterator<String> getFileNames() {
 
 		return transform(multipartActionRequest.getFileNames(),
 				new Function<String, String>() {
-					@Override
 					public String apply(String fileName) {
 						if (fileName != null
 								&& fileName.startsWith(portletNamespace)) {
@@ -138,12 +134,10 @@ public class LiferayDefaultMultipartActionRequest extends ActionRequestWrapper
 				});
 	}
 
-	@Override
 	public List<MultipartFile> getFiles(String name) {
 		return multipartActionRequest.getFiles(portletNamespace + name);
 	}
 
-	@Override
 	public MultiValueMap<String, MultipartFile> getMultiFileMap() {
 
 		LinkedMultiValueMap<String, MultipartFile> newMap = new LinkedMultiValueMap<String, MultipartFile>();
@@ -162,7 +156,6 @@ public class LiferayDefaultMultipartActionRequest extends ActionRequestWrapper
 		return newMap;
 	}
 
-	@Override
 	public String getMultipartContentType(String arg0) {
 		// TODO Auto-generated method stub
 		return null;

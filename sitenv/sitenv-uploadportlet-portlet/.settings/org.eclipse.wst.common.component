@@ -7,6 +7,9 @@
         <dependent-module archiveName="sitenv-commonutilities-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/sitenv-commonutilities/sitenv-commonutilities">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="sitenv-statistics-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/sitenv-statistics/sitenv-statistics">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="context-root" value="UploadPortlet-portlet"/>
         <property name="java-output-path" value="/sitenv-uploadportlet-portlet/target/classes"/>
     </wb-module>
