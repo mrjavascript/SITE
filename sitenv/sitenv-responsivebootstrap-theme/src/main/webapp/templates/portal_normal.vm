@@ -13,9 +13,9 @@
 	<meta name="viewport" content="width=device-width">
 	
 	
-	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-	<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
-	<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="$javascript_folder/vendor/jquery.min.js"></script>
+	<link rel="stylesheet" href="$css_folder/jquery-ui.css" />
+	<script src="$javascript_folder/vendor/jquery-ui.min.js"></script>
     <script src="$javascript_folder/vendor/bootstrap.min.js"></script>
 	<script src="$javascript_folder/removeNoJS.js"></script>
 	<script src="$javascript_folder/hoverMenu.js"></script>
