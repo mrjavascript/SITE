@@ -16,8 +16,6 @@ import javax.ws.rs.Produces;
 
 
 
-
-
 import org.apache.cxf.jaxrs.ext.multipart.Attachment;
 import org.apache.cxf.jaxrs.ext.multipart.MultipartBody;
 import org.apache.http.HttpResponse;
@@ -30,6 +28,7 @@ import org.apache.http.entity.mime.content.InputStreamBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.json.JSONException;
@@ -170,7 +169,7 @@ public class CCDAService {
 			entity.addPart("file", new InputStreamBody(is , "testFile"));
 			
 			// set the CCDA type
-			entity.addPart("ccda_type_val",new StringBody("TransitionsOfCareAmbulatorySummary"));
+			entity.addPart("type_val",new StringBody("TransitionsOfCareAmbulatorySummary"));
 			
 			post.setEntity(entity);
 			HttpResponse relayResponse = client.execute(post);
@@ -213,13 +212,13 @@ public class CCDAService {
 			}
 		}
 		
-		String ccda_type_value = null;
+		String mu2_ccda_type_value = null;
 		
-		ccda_type_value = body.getAttachmentObject("ccda_type_val", String.class);
+		mu2_ccda_type_value = body.getAttachmentObject("type_val", String.class);
 		
-		if(ccda_type_value == null)
+		if(mu2_ccda_type_value == null)
 		{
-			ccda_type_value = "";
+			mu2_ccda_type_value = "";
 		}
 		
 		
@@ -230,6 +229,8 @@ public class CCDAService {
 		JSONObject json = null;
 		
 		try {
+			
+			
 			
 			HttpClient client = new DefaultHttpClient();
 			String ccdaURL = this.props.getProperty("CCDAValidationServiceURL");
@@ -242,7 +243,7 @@ public class CCDAService {
 			entity.addPart("file", new InputStreamBody(fileHandler.getInputStream() , fileHandler.getName()));
 			
 			// set the CCDA type
-			entity.addPart("ccda_type",new StringBody(ccda_type_value));
+			entity.addPart("ccda_type",new StringBody(mu2_ccda_type_value));
 			
 			
 			entity.addPart("return_json_param", new StringBody("true"));
@@ -252,18 +253,17 @@ public class CCDAService {
 			
 			HttpResponse relayResponse = client.execute(post);
 			
-			json = handleCCDAResponse(relayResponse);
+			json = handleCCDAResponse(relayResponse, mu2_ccda_type_value);
 			
 	    } catch (Exception e) {
-	    	//statisticsManager.addCcdaValidation(ccda_type_value, false, false, false, true);
-	    	
+	    	statisticsManager.addCcdaValidation(mu2_ccda_type_value, false, false, false, true);
 	    	throw new RuntimeException(e);
 	    }
 		return json.toString();
     }
     
     
-    private JSONObject handleCCDAResponse(HttpResponse relayResponse) throws ClientProtocolException, IOException, JSONException{
+    private JSONObject handleCCDAResponse(HttpResponse relayResponse, String mu2_ccda_type_value) throws ClientProtocolException, IOException, JSONException{
     	
     	ResponseHandler<String> handler = new BasicResponseHandler();
 		
@@ -275,7 +275,10 @@ public class CCDAService {
 		{
 			
 			//do the error handling.
-			//statisticsManager.addCcdaValidation(ccda_type_value, false, false, false, true);
+			logger.log(Level.ERROR, "Error while accessing CCDA service: "
+			+ code + ": "
+			+ relayResponse.getStatusLine().getReasonPhrase());
+			statisticsManager.addCcdaValidation(mu2_ccda_type_value, false, false, false, true);
 		}
 		else
 		{
@@ -293,7 +296,7 @@ public class CCDAService {
 			hasWarnings = report.getBoolean("hasWarnings");
 			hasInfo = report.getBoolean("hasInfo");
 			//JSONResponseBody = jsonbody;
-			//statisticsManager.addCcdaValidation(ccda_type_value, hasErrors, hasWarnings, hasInfo, false);	
+			statisticsManager.addCcdaValidation(mu2_ccda_type_value, hasErrors, hasWarnings, hasInfo, false);	
 		}
 		return jsonbody;
     }
