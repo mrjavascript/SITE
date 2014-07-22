@@ -73,7 +73,7 @@
 						<table class="table table-striped">
 							<thead>
 								<tr>
-									<th style="width:35%;"></th>
+									<th style="width:35%;">Description</th>
 									<th>Total</th>
 									<th>Last 30 Days</th>
 									<th>Last 60 Days</th>
