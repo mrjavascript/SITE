@@ -100,15 +100,15 @@ $(function() {
 		e.stopPropagation();
 	});
 	
-	$('#uploadFormWrapper').toggle(false);
 	
-	$('input[name="directMessageType"]').bind('change',function(){
-	    var showOrHide = ($(this).val() == "precanned") ? true : false;
-	    $('#precannedFormWrapper').toggle(showOrHide);
-	    $('#uploadFormWrapper').toggle(!showOrHide);
-	    $('#precannedCCDAsubmit').validationEngine('hideAll');
-	    $('#ccdauploadsubmit').validationEngine('hideAll');
-	 });
+	$('#directMessageType a').click(function (e) {
+		  e.preventDefault();
+		  $(this).tab('show');
+
+		    $('#precannedCCDAsubmit').validationEngine('hideAll');
+		    $('#ccdauploadsubmit').validationEngine('hideAll');
+		});
+	
 	
 	$('#precannedemail').bind('change',function(){
 	    $('#ccdauploademail').val($(this).val());
@@ -189,7 +189,9 @@ $(function() {
 		    			  $('[data-toggle="dropdown"]').parent().removeClass('open');
 		    			  //hide all the errors
 		    			  //$('#precannedCCDAsubmit').validationEngine('hideAll');
-		    			  
+		    			   
+		    			  $('#dLabel').focus();
+		    			  $('#dLabel').dropdown("toggle");
 		    			  
 		    			  $("#precannedCCDAsubmit").click(function(e){
 		    				    
@@ -299,7 +301,8 @@ $(function() {
 		    	      },
 		    		  "valid_children" : [ "file" ],
 		    		  "select_node" : function (e) {
-		    	    	  this.toggle_node(e);
+		    	    	  e.find('a:first').focus();
+		    			  this.toggle_node(e);
 		    	    	  return false;
 		    	      }
 		    	  }
@@ -308,6 +311,10 @@ $(function() {
 	    "plugins" : [ "themes", "json_data", "ui", "types" ]
 	}).bind('loaded.jstree', function(e, data) {
 		isfiletreeloaded = true;
+		
+		$('#ccdafiletreepanel').find('a').each(function() {
+		    $(this).attr('tabindex', '1');
+		});
 	});
 	
 	

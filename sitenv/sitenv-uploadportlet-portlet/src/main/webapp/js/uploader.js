@@ -328,13 +328,17 @@ $(function() {
 	$('#fileupload-btn').bind('click', function(e, data)
 	{
 		$('#CCDAValidationForm .formError').hide(0);
-		var dropdownvalue = $('#ccda_type_val').val();
+		var selectedText = $("#ccda_type_val :selected").text();
 		$('#CCDAValidationForm').trigger('reset');
 		$('#formSubmit').unbind("click");
 		
 		$('#files').empty();
 		
-		$('#ccda_type_val').val(dropdownvalue);
+		$("#ccda_type_val option").each(function() {
+			  if($(this).text() == selectedText) {
+			    $(this).attr('selected', 'selected');            
+			  }                        
+			});
 		
 	});
 	

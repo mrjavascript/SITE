@@ -19,7 +19,7 @@
 				
 				
 				#if ($nav_item.hasChildren())
-					<a href="$nav_item.getURL()" $nav_item.getTarget()><span>$nav_item.icon() $nav_item.getName()</span></a>
+					<a href="$nav_item.getURL()" $nav_item.getTarget()  tabindex="1"><span>$nav_item.icon() $nav_item.getName()</span></a>
 					<div class="firefox_fix">
 					<ul class="dropdown-menu">
 						#foreach ($nav_child in $nav_item.getChildren())
@@ -28,13 +28,13 @@
 							#else
 								<li>
 							#end
-								<a href="$nav_child.getURL()" $nav_child.getTarget()>$nav_child.getName()</a>
+								<a href="$nav_child.getURL()" $nav_child.getTarget()  tabindex="1">$nav_child.getName()</a>
 							</li>
 						#end
 					</ul>
 					</div>
 				#else
-					<a href="$nav_item.getURL()" $nav_item.getTarget()><span>$nav_item.icon() $nav_item.getName()</span></a>
+					<a href="$nav_item.getURL()" $nav_item.getTarget()  tabindex="1"><span>$nav_item.icon() $nav_item.getName()</span></a>
 				#end
 			</li>
 		#end
