@@ -1,5 +1,6 @@
 package org.sitenv.services.ccda;
 
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -36,8 +37,8 @@ import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.sitenv.services.ccda.beans.CCDAValidationResponse;
-import org.sitenv.statistics.manager.StatisticsManager;
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.sitenv.statistics.manager.StatisticsManager;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
@@ -51,8 +52,8 @@ public class CCDAService {
 	
 	protected Properties props;
 	
-	@Autowired
-	private StatisticsManager statisticsManager;
+	//@Autowired
+	//private StatisticsManager statisticsManager;
 	
 	
     
@@ -160,7 +161,7 @@ public class CCDAService {
 			
 			
 			HttpClient client = new DefaultHttpClient();
-			String URL = "http://localhost:8080/CcdaValidatorServices/CCDA/Validate/";	
+			String URL = "http://localhost:7080/CcdaValidatorServices/CCDA/Validate/";	
 			HttpPost post = new HttpPost(URL);
 			
 			MultipartEntity entity = new MultipartEntity();
@@ -230,13 +231,18 @@ public class CCDAService {
 		
 		try {
 			
+			String mu2CcdaURL = null;
+			
+			if (mu2_ccda_type_value.equals("MU2")) {
+				mu2CcdaURL = this.props.getProperty("MU2ValidationServiceURL");
+			} else {
+				mu2CcdaURL = this.props.getProperty("CCDAValidationServiceURL");
+			}
 			
 			
 			HttpClient client = new DefaultHttpClient();
-			String ccdaURL = this.props.getProperty("CCDAValidationServiceURL");
+			HttpPost post = new HttpPost(mu2CcdaURL);
 			
-			HttpPost post = new HttpPost(ccdaURL);
-
 			MultipartEntity entity = new MultipartEntity();
 			
 			// set the file content
@@ -244,7 +250,6 @@ public class CCDAService {
 			
 			// set the CCDA type
 			entity.addPart("ccda_type",new StringBody(mu2_ccda_type_value));
-			
 			
 			entity.addPart("return_json_param", new StringBody("true"));
 			entity.addPart("debug_mode", new StringBody("true"));
@@ -256,7 +261,7 @@ public class CCDAService {
 			json = handleCCDAResponse(relayResponse, mu2_ccda_type_value);
 			
 	    } catch (Exception e) {
-	    	statisticsManager.addCcdaValidation(mu2_ccda_type_value, false, false, false, true);
+	    	//statisticsManager.addCcdaValidation(mu2_ccda_type_value, false, false, false, true);
 	    	throw new RuntimeException(e);
 	    }
 		return json.toString();
@@ -264,6 +269,7 @@ public class CCDAService {
     
     
     private JSONObject handleCCDAResponse(HttpResponse relayResponse, String mu2_ccda_type_value) throws ClientProtocolException, IOException, JSONException{
+    	
     	
     	ResponseHandler<String> handler = new BasicResponseHandler();
 		
@@ -278,7 +284,7 @@ public class CCDAService {
 			logger.log(Level.ERROR, "Error while accessing CCDA service: "
 			+ code + ": "
 			+ relayResponse.getStatusLine().getReasonPhrase());
-			statisticsManager.addCcdaValidation(mu2_ccda_type_value, false, false, false, true);
+			//statisticsManager.addCcdaValidation(mu2_ccda_type_value, false, false, false, true);
 		}
 		else
 		{
@@ -296,8 +302,111 @@ public class CCDAService {
 			hasWarnings = report.getBoolean("hasWarnings");
 			hasInfo = report.getBoolean("hasInfo");
 			//JSONResponseBody = jsonbody;
-			statisticsManager.addCcdaValidation(mu2_ccda_type_value, hasErrors, hasWarnings, hasInfo, false);	
+			//statisticsManager.addCcdaValidation(mu2_ccda_type_value, hasErrors, hasWarnings, hasInfo, false);	
 		}
 		return jsonbody;
     }
 }
+
+
+
+/*
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.UUID;
+
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.xml.XMLConstants;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Source;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathFactory;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.SystemUtils;
+import org.apache.cxf.jaxrs.ext.multipart.MultipartBody;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.ErrorHandler;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
+
+@Path("/CCDA/")
+@Produces("text/xml")
+public class CCDAService {
+    
+	Logger logger = LogManager.getLogger(CCDAService.class.getName());
+	
+	public static final String DEFAULT_PROPERTIES_FILE = "environment.properties";
+	
+	protected Properties props;
+	
+	
+	public CCDAService() throws IOException {
+    }
+	
+	
+	public static Element getPreviousSiblingElement(Node node) {
+	      Node prevSibling = node.getPreviousSibling();
+	      while (prevSibling != null) {
+	          if (prevSibling.getNodeType() == Node.ELEMENT_NODE) {
+	              return (Element) prevSibling;
+	          }
+	          prevSibling = prevSibling.getPreviousSibling();
+	      }
+
+	      return null;  
+	} 
+	
+	
+    public static Element getDirectChild(Element parent, String name)
+    {
+        for(Node child = parent.getFirstChild(); child != null; child = child.getNextSibling())
+        {
+            if(child instanceof Element && name.equals(child.getNodeName())) return (Element) child;
+        }
+        return null;
+    }
+    
+    @GET
+    @Path("/About")
+    @Produces("application/xml")
+    public String About(){
+    	return "<h2>CCDA validator version 1.0</h2>";
+    }
+    
+}
+*/
