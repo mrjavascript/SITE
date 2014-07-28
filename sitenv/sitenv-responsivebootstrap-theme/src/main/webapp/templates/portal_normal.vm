@@ -35,22 +35,58 @@ $theme.include($body_top_include)
    #dockbar()
 #end
 
-
-
-<div id="wrapper">
-	<div class="container">
-		
-      	<div class="masthead">
-      		#if (!$is_signed_in)
-			<div id="login" class="login">
-				<a href="$sign_in_url" id="sign-in" rel="nofollow">$sign_in_text</a>
+<header>
+			<div class="navbar navbar-inverse navbar-static-top">
+				<div class="navbar-inner external">
+					<div class="container">
+						<nav class="nav">
+							<li><a href="http://www.healthit.gov/">HealthIT.gov</a></li>
+							<li>
+								<ul class="social">
+									<div id="fb-root"></div>
+									<script>(function(d, s, id) {
+									  var js, fjs = d.getElementsByTagName(s)[0];
+									  if (d.getElementById(id)) return;
+									  js = d.createElement(s); js.id = id;
+									  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=408132609248724&version=v2.0";
+									  fjs.parentNode.insertBefore(js, fjs);
+									}(document, 'script', 'facebook-jssdk'));</script>
+									<li><div class="fb-like" data-href="http://sitenv.org" data-layout="button_count" data-action="like" data-show-faces="false" data-share="false"></div></li>
+									<li class="rss">
+										<a href="http://feeds.feedburner.com/healthitgov" title="Subscribe/RSS"><img src="$images_folder/rss.png" alt="Subscribe to ONC RSS feed"></a>
+									</li>
+									<li class="twitter">
+										<a class="fix-transparency" title="Follow ONC on Twitter" href="http://twitter.com/ONC_HealthIT/"><img src="$images_folder/twitter.png" alt="Follow ONC on Twitter"></a>
+									</li>
+									<li class="youtube">
+										<a class="fix-transparency" title="Follow Project ONC on Youtube" href="http://www.youtube.com/user/HHSONC"><img src="$images_folder/youtube.png" alt="Subscribe to ONC on YouTube"></a>
+									</li>
+									<li class="linkedin">
+										<a class="fix-transparency" title="Follow ONC on LinkedIn" href="http://www.linkedin.com/title/office+coordinator/in-us-97-Washington-D.C.-Metro-Area/"><img src="$images_folder/linkedin.png" alt="Follow ONC on Linkedin"></a>
+									</li>
+									<li class="flickr">
+										<a class="fix-transparency" title="Find ONC Photos on Flickr" href="http://www.flickr.com/photos/healthit/"><img src="$images_folder/flickr.png" alt="Find ONC Photos on Flickr"></a>
+									</li>	
+									<li class="slideshare">
+										<a class="fix-transparency" title="Find ONC Presentations on SlideShare" href="http://www.slideshare.net/HealthIT"><img src="$images_folder/slideshare.png" alt="Find ONC Presentations on SlideShare"></a>
+									</li>
+									<li class="googleplus">
+										<a class="fix-transparency" title="Find ONC on Google Plus" href="https://plus.google.com/115897569896631074599/posts"><img src="$images_folder/gplus.png" alt="Follow ONC on Google Plus"></a>
+									</li>
+								</ul>
+							</li>
+						</nav>
+					</div>
+				</div>
 			</div>
-			#end
-        	<h3 class="text-muted" id="title"><img src="$images_folder/site/SITP_Logo_Small_WhiteBG.png" alt="SITE logo"/>$site_name</h3>
-			
+			<div class="jumbotron">
+				<div class="container"></div>
+			</div>
+		</header>
 			#if ($has_navigation || $is_signed_in)
-				<div class="navbar navbar-default" role="navigation">
-					<div class="containter-fluid">
+				<div class="top-navbar navbar-default">
+				<div class="navbar" role="navigation">
+					<div class="navbar-container container">
 						<div class="navbar-header">
 				            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 				              <span class="sr-only">Toggle navigation</span>
@@ -58,16 +94,31 @@ $theme.include($body_top_include)
 				              <span class="icon-bar"></span>
 				              <span class="icon-bar"></span>
 				            </button>
-				            <a class="navbar-brand" href="#">SITE</a>
 				         </div>
 				
 						#parse ("$full_templates_path/navigation.vm")
 				
 					</div>
 				</div>
+				</div>
 			#end
-		</div>
+<div id="wrapper">
+	<div class="container">
 		
+      	<div class="masthead">
+      		<!--
+      		#if (!$is_signed_in)
+			<div id="login" class="login">
+				<a href="$sign_in_url" id="sign-in" rel="nofollow">$sign_in_text</a>
+			</div>
+			#end
+        	<h3 class="text-muted" id="title"><img src="$images_folder/site/SITP_Logo_Small_WhiteBG.png" alt="SITE logo"/>$site_name</h3>
+			
+			-->
+			
+			
+			
+		</div>
 		
 
 		<div id="content">
@@ -83,15 +134,28 @@ $theme.include($body_top_include)
 			#end
 		</div>
 	
+	<!--
 		<div class="footer">
 	       <div style="float:left;"><p>&copy; SITE 2014</p></div>
 	       <div style="float:right;"><p>For any inquiries or questions, please send an email to <a href="mailto:admin@sitenv.org">admin@sitenv.org</a></p></div>
 	    </div>
+	  -->  
+	   
+	    
 	
 	</div>
 </div>
 
-	
+<footer>
+			<div class="container">
+				<div class="row">
+					<div>
+						<p>This project was funded by a contract from the <a href="http://healthit.hhs.gov">Office of the National Coordinator for Health Information Technology (ONC)</a></p>
+						<p><a href="http://www.hhs.gov/Privacy.html">Privacy Policy</a> | <a href="http://www.hhs.gov/Disclaimer.html">Disclaimer</a></p>
+					</div>
+				</div>
+			</div>
+		</footer>
 
 $theme.include($body_bottom_include)
 
