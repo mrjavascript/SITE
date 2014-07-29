@@ -74,12 +74,12 @@
 					</span>
 					<ul>
 						<li>
-							SITE's Direct instantiation synchronizes with the <a href="https://secure.bluebuttontrust.org/" target="_blank">BlueButton</a>
+							SITE's Direct instantiation synchronizes with the <a href="https://secure.bluebuttontrust.org/" target="_blank"  tabindex="1">BlueButton</a>
 							 Patient and Provider Test bundles every minute. 
-							The SITE's Trust Anchor is already part of the <a href="https://secure.bluebuttontrust.org/" target="_blank">BlueButton</a> Patient and Provider Test bundles.
+							The SITE's Trust Anchor is already part of the <a href="https://secure.bluebuttontrust.org/" target="_blank" tabindex="1">BlueButton</a> Patient and Provider Test bundles.
 							<ul>
-								<li>Implementers can download the SITE Trust Anchor from the <a href="https://secure.bluebuttontrust.org/" target="_blank">BlueButton</a> bundles.</li> 
-								<li>Implementers can submit their Trust Anchors on the <a href="https://secure.bluebuttontrust.org/" target="_blank">BlueButton</a> website.</li>
+								<li>Implementers can download the SITE Trust Anchor from the <a href="https://secure.bluebuttontrust.org/" target="_blank" tabindex="1">BlueButton</a> bundles.</li> 
+								<li>Implementers can submit their Trust Anchors on the <a href="https://secure.bluebuttontrust.org/" target="_blank" tabindex="1">BlueButton</a> website.</li>
 							</ul>
 						</li>
 					</ul>
@@ -91,7 +91,7 @@
 					<ul>
 						<li>
 							Download the Trust Anchor for the Sandbox 
-							<a href="<%=request.getContextPath()%>/Certificates/PublicKeys/direct.sitenv.org_ca.der">(direct.sitenv.org Certificate)</a> and import the trust anchor into your trust store.
+							<a href="<%=request.getContextPath()%>/Certificates/PublicKeys/direct.sitenv.org_ca.der" tabindex="1">(direct.sitenv.org Certificate)</a> and import the trust anchor into your trust store.
 						</li>
 						<li>
 							Please upload your Trust Anchor by selecting your Trust Anchor. 
@@ -99,8 +99,8 @@
 						</li>
 						<li>
 							Uploading the Trust Anchor causes an update to the 
-							<a href="/trustBundle/TrustBundle.p7b">Trust Bundle</a> of 
-							<a href="http://direct.sitenv.org" target="_blank">direct.sitenv.org</a> 
+							<a href="/trustBundle/TrustBundle.p7b" tabindex="1">Trust Bundle</a> of 
+							<a href="http://direct.sitenv.org" target="_blank" tabindex="1">direct.sitenv.org</a> 
 							which is refreshed every five minutes and is only used for testing purposes. Once a Trust Anchor is uploaded, users can test with the Direct sandbox after five minutes. 
 						</li>
 					</ul>
@@ -111,7 +111,7 @@
       		
 			<!-- The fileinput-button span is used to style the file input field as button -->
 			
-			<noscript><input type="hidden" name="redirect" value="true" /></noscript>
+			<noscript><input type="hidden" name="redirect" value="true" tabindex="1" /></noscript>
 			<div id="anchoruploaderrorlock" style="position:relative;">
 				<div class="row">
 					<div class="col-md-12">
@@ -119,7 +119,7 @@
 				<span class="btn btn-success fileinput-button" id="anchoruploadfile-btn"> <i
 							class="glyphicon glyphicon-plus"></i>&nbsp;<span>Select a Certificate...</span>
 							<!-- The file input field used as target for the file upload widget -->
-							<input id="anchoruploadfile" type="file" name="anchoruploadfile" class="validate[required, custom[derencncodedfileextension[der|crt|cer|pem|DER|CRT|CER|PEM]], custom[maxCertFileSize]]"/>
+							<input id="anchoruploadfile" type="file" name="anchoruploadfile" class="validate[required, custom[derencncodedfileextension[der|crt|cer|pem|DER|CRT|CER|PEM]], custom[maxCertFileSize]]"  tabindex="1"/>
 					</span>
 					<div id="anchoruploadfiles" class="files"></div>
 			</div>
@@ -127,7 +127,7 @@
 				</div>
 			</div>
 			<hr/>
-			<button id="anchoruploadsubmit" type="submit" class="btn btn-primary start" onclick="return false;">
+			<button id="anchoruploadsubmit" type="submit" class="btn btn-primary start" onclick="return false;"  tabindex="1">
 				<i class="glyphicon glyphicon-ok"></i> <span>Submit Anchor</span>
 			</button>
 			
@@ -135,36 +135,7 @@
       	</form>
       	
       	</div>
-		<!-- 
-		<form id="anchoruploadform" enctype="multipart/form-data" action="<%=serviceContext %>/UploadTrustAnchorService">
-			<table border="0" cellpadding="0" cellspacing="0"  id="id-form">
-			<colgroup>
-	       		<col span="1" style="width:150px;">
-	       		<col span="1" style="width:380px;">
-	       		<col span="1" style="width:70%;">
-			</colgroup>
-			<tr>
-				<td>Upload Trust Anchor:</td>
-				<td>
-					<input placeholder="Your CA Certificate" id="anchoruploadfile" type="file" name="anchoruploadfile" />
-				</td>
-				<td>
-					<div class="tooltip-wrapper">
-						<div class="bubble-left"></div>
-						<div class="bubble-inner">binary or base64-encoded certificates</div>
-						<div class="bubble-right"></div>
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<td>&nbsp;</td>
-				<td valign="top">
-					<input id="anchorsubmit" type="button" value="" class="form-submit" />
-				</td>
-				<td></td>
-			</tr>
-			</table>
-		</form>-->
+
 		<div class="clear"></div>
 	</div>
 </div>
@@ -199,9 +170,9 @@
 						<u>Choose your own content:</u> Developers can use their own files as the payload of the Direct message sent from the Sandbox. 
 									This provides the ability to verify the file they chosen and that the contents were decrypted appropriately.
 					</li>
-					<p style='text-indent:0.25;'>
+					<li>
 						<u>Choose pre-canned content:</u> Provides a list of files that you can choose from as the payload of the Direct message.
-					</p>
+					</li>
 					<li>
 						<u>Enter your end point name:</u> The name of the Direct address where you would like to receive the message. Ensure that the Trust Anchor corresponding to the end point has already been uploaded.
 					</li>
@@ -211,19 +182,19 @@
 					</li>
 				</ul>
 			</p>
+			<br/><br/>
+			<!-- Nav tabs -->
+			<ul id="directMessageType" class="nav nav-tabs" role="tablist">
+			  <li class="active"><a href="#precanned" role="tab" data-toggle="tab"  tabindex="1">Choose Precanned Content</a></li>
+			  <li><a href="#choosecontent" role="tab" data-toggle="tab"  tabindex="1">Choose Your Own Content</a></li>
+			</ul>
 			<div class="well">
 			
-			<label for="directMessageType">Select C-CDA Content Source:</label><br/>
 			
-			<div class="btn-group" data-toggle="buttons">
-				<label class="btn btn-default active">
-				<input type="radio" id="precanned" name="directMessageType" value="precanned" checked/>Choose Precanned Content</label>
-				<label class="btn btn-default">
-				<input type="radio" id="choosecontent" name="directMessageType" value="choosecontent"/>Choose Your Own Content</label>
-			</div>
-			<br/><br/>
 		
-		<div id="precannedFormWrapper">
+		<div class="tab-content">
+  			<div class="tab-pane active" id="precanned">
+  				<div id="precannedFormWrapper">
 			<form id="precannedForm"  action="${precannedCCDADirectReceive}" method="POST">
 				<p>
 				<label for="precannedemail">Enter Your Endpoint Name:</label><br/>
@@ -233,17 +204,18 @@
 						data-errormessage-custom-error="end point format is invalid (hint:example@test.org)"
 						name="precannedemail"
 						placeholder="recipient direct email address"
-						style="display: inline;" type="text" />
+						style="display: inline;" type="text"  tabindex="1"/>
 				</p>
+				
 				<br />
-				<noscript><input type="hidden" name="redirect" value="true" /></noscript>
+				<noscript><input type="hidden" name="redirect" value="true"  /></noscript>
 				<div id="precannederrorlock" style="position: relative;">
 					<div class="row">
 					<div class="col-md-12">
 					<label for="dLabel">Select a Precanned Sample C-CDA File to Send:</label><br/>
 									<div class="dropdown">
 										<button id="dLabel" data-toggle="dropdown"
-											class="btn btn-success dropdown-toggle validate[funcCall[precannedRequired]]" type="button">
+											class="btn btn-success dropdown-toggle validate[funcCall[precannedRequired]]" type="button" 	tabindex="1">
 											Pick Sample <i class="glyphicon glyphicon-play"></i>
 										</button>
 
@@ -261,7 +233,7 @@
 				</div>
 				<hr />
 				<button id="precannedCCDAsubmit" type="submit"
-					class="btn btn-primary start" onclick="return false;">
+					class="btn btn-primary start" onclick="return false;"  tabindex="1">
 					<i class="glyphicon glyphicon-envelope"></i> <span>Send
 						Message</span>
 				</button>
@@ -269,7 +241,9 @@
 						name="precannedfilepath" type="hidden">
 			</form>
 		</div>
-		<div id="uploadFormWrapper">
+  			</div>
+  			<div class="tab-pane" id="choosecontent">
+  			<div id="uploadFormWrapper">
 			<form id="ccdauploadform" action="${uploadCCDADirectReceive}" method="POST" enctype="multipart/form-data">
 				<p>
 					<label for="ccdauploademail">Enter Your Endpoint Name:</label><br/>
@@ -279,7 +253,7 @@
 						data-errormessage-custom-error="end point format is invalid (hint:example@test.org)"
 						name="ccdauploademail"
 						placeholder="recipient direct email address"
-						style="display: inline;" type="text" />
+						style="display: inline;" type="text"  tabindex="1"/>
 				</p>
 				<br />
 				<noscript><input type="hidden" name="redirect" value="true" /></noscript>
@@ -291,7 +265,7 @@
 								class="btn btn-success fileinput-button" id="ccdauploadfile-btn"> <i
 									class="glyphicon glyphicon-plus"></i>&nbsp;<span>Upload C-CDA</span> <!-- The file input field used as target for the file upload widget -->
 									<input id="ccdauploadfile" type="file"
-									name="ccdauploadfile" class="validate[required, custom[maxCCDAFileSize]]"/>
+									name="ccdauploadfile" class="validate[required, custom[maxCCDAFileSize]]"  tabindex="1"/>
 							</span>
 							
 								<div id="ccdauploadfiles" class="files"></div>
@@ -300,11 +274,15 @@
 				</div>
 				<hr />
 				<button id="ccdauploadsubmit" type="submit"
-					class="btn btn-primary start" onclick="return false;">
+					class="btn btn-primary start" onclick="return false;"  tabindex="1">
 					<i class="glyphicon glyphicon-envelope"></i> <span>Send Message</span>
 				</button>
 			</form>
 		</div>
+  			</div>
+		</div>
+		
+		
 		</div>
 		<br/>
 			

@@ -35,7 +35,7 @@
 				action="${ajaxuploadactionurl}">
 				
 				<label for="category">Select a QRDA Category:</label><br/>
-				<select id="category" name="category" class="form-control">
+				<select id="category" name="category" class="form-control" tabindex="1">
 					<option value="categoryI">Category I</option>
 					<option value="categoryIII">Category III</option>      				
 				</select>
@@ -60,7 +60,7 @@
 					<span class="btn btn-success fileinput-button" id="qrdauploadfile-btn"> <i
 								class="glyphicon glyphicon-plus"></i>&nbsp;<span>Select a QRDA...</span>
 								<!-- The file input field used as target for the file upload widget -->
-								<input id="qrdauploadfile" type="file" name="qrdauploadfile" class="validate[required, custom[xmlfileextension[xml|XML]], custom[maxCCDAFileSize]]" />
+								<input id="qrdauploadfile" type="file" name="qrdauploadfile" class="validate[required, custom[xmlfileextension[xml|XML]], custom[maxCCDAFileSize]]"  tabindex="1"/>
 						</span>
 						<div id="qrdauploadfiles" class="files"></div>
 				</div>
@@ -68,7 +68,7 @@
 				</div>
 				<hr/>
 				<button id="qrdavalidate_btn" type="submit"
-					class="btn btn-primary start" onclick="return false;">
+					class="btn btn-primary start" onclick="return false;"  tabindex="1">
 					<i class="glyphicon glyphicon-ok"></i> <span>Validate Document</span>
 				</button>
 			</form:form>
