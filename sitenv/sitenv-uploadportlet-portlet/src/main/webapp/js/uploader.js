@@ -328,17 +328,21 @@ $(function() {
 	$('#fileupload-btn').bind('click', function(e, data)
 	{
 		$('#CCDAValidationForm .formError').hide(0);
+		
 		var selectedText = $("#ccda_type_val :selected").text();
+		$("#ccda_type_val option").each(function() {
+			  if($(this).text() == selectedText) {
+			    $(this).attr('selected', 'selected');            
+			  } else {
+				$(this).removeAttr('selected');
+			  }                    
+			});
+		
 		$('#CCDAValidationForm').trigger('reset');
 		$('#formSubmit').unbind("click");
 		
 		$('#files').empty();
 		
-		$("#ccda_type_val option").each(function() {
-			  if($(this).text() == selectedText) {
-			    $(this).attr('selected', 'selected');            
-			  }                        
-			});
 		
 	});
 	
