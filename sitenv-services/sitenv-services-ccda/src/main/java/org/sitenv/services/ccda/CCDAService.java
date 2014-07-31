@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.Date;
 import java.util.Properties;
 
 import javax.activation.DataHandler;
@@ -17,8 +18,12 @@ import javax.ws.rs.Produces;
 
 
 
+
+
+
 import org.apache.cxf.jaxrs.ext.multipart.Attachment;
 import org.apache.cxf.jaxrs.ext.multipart.MultipartBody;
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -29,6 +34,7 @@ import org.apache.http.entity.mime.content.InputStreamBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.HttpParams;
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -170,7 +176,9 @@ public class CCDAService {
 			entity.addPart("file", new InputStreamBody(is , "testFile"));
 			
 			// set the CCDA type
-			entity.addPart("type_val",new StringBody("TransitionsOfCareAmbulatorySummary"));
+			//entity.addPart("type_val",new StringBody("TransitionsOfCareAmbulatorySummary"));
+			entity.addPart("type_val",new StringBody("NonSpecificCCDA"));
+			
 			
 			post.setEntity(entity);
 			HttpResponse relayResponse = client.execute(post);
@@ -233,8 +241,8 @@ public class CCDAService {
 			
 			String mu2CcdaURL = null;
 			
-			if (mu2_ccda_type_value.equals("MU2")) {
-				mu2CcdaURL = this.props.getProperty("MU2ValidationServiceURL");
+			if (mu2_ccda_type_value.equals("NonSpecificCCDA")) {
+				mu2CcdaURL = this.props.getProperty("NonSpecificCCDAValidationServiceURL");
 			} else {
 				mu2CcdaURL = this.props.getProperty("CCDAValidationServiceURL");
 			}
@@ -258,6 +266,7 @@ public class CCDAService {
 			
 			HttpResponse relayResponse = client.execute(post);
 			
+			
 			json = handleCCDAResponse(relayResponse, mu2_ccda_type_value);
 			
 	    } catch (Exception e) {
@@ -270,6 +279,7 @@ public class CCDAService {
     
     private JSONObject handleCCDAResponse(HttpResponse relayResponse, String mu2_ccda_type_value) throws ClientProtocolException, IOException, JSONException{
     	
+    	    	
     	
     	ResponseHandler<String> handler = new BasicResponseHandler();
 		
@@ -277,7 +287,7 @@ public class CCDAService {
 		
 		JSONObject jsonbody = null;
 		
-		if(code!=200) 
+		if(code!=200)
 		{
 			
 			//do the error handling.
@@ -290,6 +300,28 @@ public class CCDAService {
 		{
 			boolean hasErrors = true, hasWarnings = true, hasInfo = true;
 			
+			
+	    	org.apache.http.Header[] timeAndDateHeaders = relayResponse.getHeaders("response_time_and_date");
+	    	
+	    	String timeAndDate = "";
+	    	
+	    	if (timeAndDateHeaders.length > 0){
+	    		org.apache.http.Header timeAndDateHeader = timeAndDateHeaders[0];
+	    		timeAndDate = timeAndDateHeader.getValue();
+	    	}
+	    	
+	    	org.apache.http.Header[] processingTimeHeaders = relayResponse.getHeaders("round_trip_response_time");
+	    	String processingTime = "";
+	    	
+	    	if (timeAndDateHeaders.length > 0){
+	    		org.apache.http.Header processingTimeHeader = processingTimeHeaders[0];
+	    		processingTime = processingTimeHeader.getValue();
+	    	}
+	    	
+	    	JSONObject performance_object = new JSONObject().put("dateTimeOfRequest", timeAndDate);
+	    	performance_object.put("processingTime", processingTime);
+			
+	    	
 			String body = handler.handleResponse(relayResponse);
 			
 			Document doc = Jsoup.parseBodyFragment(body);
@@ -301,112 +333,10 @@ public class CCDAService {
 			hasErrors = report.getBoolean("hasErrors");
 			hasWarnings = report.getBoolean("hasWarnings");
 			hasInfo = report.getBoolean("hasInfo");
-			//JSONResponseBody = jsonbody;
+			
+			jsonbody.put("performance", performance_object);
 			//statisticsManager.addCcdaValidation(mu2_ccda_type_value, hasErrors, hasWarnings, hasInfo, false);	
 		}
 		return jsonbody;
     }
 }
-
-
-
-/*
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.UUID;
-
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.xml.XMLConstants;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.Source;
-import javax.xml.transform.stream.StreamSource;
-import javax.xml.validation.Schema;
-import javax.xml.validation.SchemaFactory;
-import javax.xml.validation.Validator;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpression;
-import javax.xml.xpath.XPathFactory;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.SystemUtils;
-import org.apache.cxf.jaxrs.ext.multipart.MultipartBody;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.ErrorHandler;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
-
-@Path("/CCDA/")
-@Produces("text/xml")
-public class CCDAService {
-    
-	Logger logger = LogManager.getLogger(CCDAService.class.getName());
-	
-	public static final String DEFAULT_PROPERTIES_FILE = "environment.properties";
-	
-	protected Properties props;
-	
-	
-	public CCDAService() throws IOException {
-    }
-	
-	
-	public static Element getPreviousSiblingElement(Node node) {
-	      Node prevSibling = node.getPreviousSibling();
-	      while (prevSibling != null) {
-	          if (prevSibling.getNodeType() == Node.ELEMENT_NODE) {
-	              return (Element) prevSibling;
-	          }
-	          prevSibling = prevSibling.getPreviousSibling();
-	      }
-
-	      return null;  
-	} 
-	
-	
-    public static Element getDirectChild(Element parent, String name)
-    {
-        for(Node child = parent.getFirstChild(); child != null; child = child.getNextSibling())
-        {
-            if(child instanceof Element && name.equals(child.getNodeName())) return (Element) child;
-        }
-        return null;
-    }
-    
-    @GET
-    @Path("/About")
-    @Produces("application/xml")
-    public String About(){
-    	return "<h2>CCDA validator version 1.0</h2>";
-    }
-    
-}
-*/
