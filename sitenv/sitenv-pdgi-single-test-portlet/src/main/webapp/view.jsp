@@ -42,15 +42,15 @@
       
 <p>
 	  <label for="endpointUrl">Enter Your Endpoint URL:</label>
-      <input id="endpointUrl" name="endpointUrl" type="text" value="" class="validate[required,custom[url]] form-control"/>
+      <input id="endpointUrl" name="endpointUrl" type="text" value="" class="validate[required,custom[url]] form-control"  tabindex="1"/>
 </p>
 <p>      
       <label for="baseDn">Enter Your Base DN:</label>
-      <input id="baseDn" name="baseDn" type="text" value="" class="validate[required] form-control"/>
+      <input id="baseDn" name="baseDn" type="text" value="" class="validate[required] form-control"  tabindex="1"/>
 </p>
 <p>      
       <label for="testCase">Select a Test Case:</label>
-      <select id="testCase" name="testCase" class="validate[required] form-control">
+      <select id="testCase" name="testCase" class="validate[required] form-control"  tabindex="1">
         <option value="run_all_test_cases">Run All Test Cases</option>
         <% for (String testCase : SingleTestPortlet.testCaseNames) { %>
         	<option value="<%= testCase %>"><%= SingleTestPortlet.testCaseRealNames.get(testCase) %></option>
@@ -59,7 +59,7 @@
 </p>
 <p> 
 	<hr/>     
-      <button id="querySubmit" type="submit" class="btn btn-primary start" onclick="return false;">
+      <button id="querySubmit" type="submit" class="btn btn-primary start" onclick="return false;"  tabindex="1">
       	<span class="glyphicon glyphicon-ok"></span>
           <span>Run Test Case</span>
       </button>

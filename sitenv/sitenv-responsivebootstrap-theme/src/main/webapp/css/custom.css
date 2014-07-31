@@ -1,4 +1,26 @@
-navbar-default {
+body.modal-open {
+    overflow: hidden;
+}
+
+
+.screenreader
+{ 
+position:absolute; 
+left:-10000px; 
+top:auto; 
+width:1px; 
+height:1px; 
+overflow:hidden;
+} 
+ 
+.screenreader:focus
+{ 
+position:static; 
+width:auto; 
+height:auto; 
+} 
+
+.navbar-default {
 	border-radius: 0;
 	
 }
@@ -440,9 +462,6 @@ h2 {
 	width: 90%;
 }
 
-.modal-wide .modal-body {
-	overflow-y: auto;
-}
 
 @media ( min-width : 1200px) {
 	.main-link {
