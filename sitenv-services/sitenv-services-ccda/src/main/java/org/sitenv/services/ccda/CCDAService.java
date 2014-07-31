@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.util.Date;
 import java.util.Properties;
 
 import javax.activation.DataHandler;
@@ -16,14 +15,8 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
-
-
-
-
-
 import org.apache.cxf.jaxrs.ext.multipart.Attachment;
 import org.apache.cxf.jaxrs.ext.multipart.MultipartBody;
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -34,7 +27,6 @@ import org.apache.http.entity.mime.content.InputStreamBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.HttpParams;
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -43,8 +35,8 @@ import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.sitenv.services.ccda.beans.CCDAValidationResponse;
-//import org.sitenv.statistics.manager.StatisticsManager;
-//import org.springframework.beans.factory.annotation.Autowired;
+import org.sitenv.statistics.manager.StatisticsManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
@@ -121,7 +113,7 @@ public class CCDAService {
     @Path("/TEST/")
     @Consumes("multipart/form-data")
     @Produces("application/json")
-    public CCDAValidationResponse Test() 
+    public CCDAValidationResponse Test()
     {
     	
     	logger.info("hit test");
@@ -134,30 +126,11 @@ public class CCDAService {
     	return r;
     }
     
-    @GET
-    @Path("/Test2")
-    @Consumes("multipart/form-data")
-    @Produces("application/json")
-    public String Test2() 
-    {
-    	String str = "{\"menu\": {"
-    			+" \"id\": \"file\","
-    			+ "\"value\": \"File\"}}";
-    	
-    	JSONObject json = null;
-		try {
-			json = new JSONObject(str);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-    	
-    	return json.toString();
-    }
     
     @GET
     @Path("/TestValidate")
     @Produces("application/json")
-    public String TestValidate() 
+    public String TestValidate()
     {	
     	String json = null;
 		try {
