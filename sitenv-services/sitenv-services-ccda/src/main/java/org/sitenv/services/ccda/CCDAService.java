@@ -34,7 +34,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.sitenv.services.ccda.beans.CCDAValidationResponse;
+//import org.sitenv.services.ccda.beans.CCDAValidationResponse;
 import org.sitenv.statistics.manager.StatisticsManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.w3c.dom.Element;
@@ -50,8 +50,8 @@ public class CCDAService {
 	
 	protected Properties props;
 	
-	//@Autowired
-	//private StatisticsManager statisticsManager;
+	@Autowired
+	private StatisticsManager statisticsManager;
 	
 	
     
@@ -107,23 +107,6 @@ public class CCDAService {
     @Produces("application/xml")
     public String About(){
     	return "<h2>CCDA validator version 1.0</h2>";
-    }
-    
-    @GET
-    @Path("/TEST/")
-    @Consumes("multipart/form-data")
-    @Produces("application/json")
-    public CCDAValidationResponse Test()
-    {
-    	
-    	logger.info("hit test");
-    	CCDAValidationResponse r = new CCDAValidationResponse();
-    	
-    	r.setNote("Hello World!");
-    	r.setSuccess(true);
-    	
-    	
-    	return r;
     }
     
     
@@ -243,7 +226,7 @@ public class CCDAService {
 			json = handleCCDAResponse(relayResponse, mu2_ccda_type_value);
 			
 	    } catch (Exception e) {
-	    	//statisticsManager.addCcdaValidation(mu2_ccda_type_value, false, false, false, true);
+	    	statisticsManager.addCcdaValidation(mu2_ccda_type_value, false, false, false, true);
 	    	throw new RuntimeException(e);
 	    }
 		return json.toString();
@@ -267,7 +250,7 @@ public class CCDAService {
 			logger.log(Level.ERROR, "Error while accessing CCDA service: "
 			+ code + ": "
 			+ relayResponse.getStatusLine().getReasonPhrase());
-			//statisticsManager.addCcdaValidation(mu2_ccda_type_value, false, false, false, true);
+			statisticsManager.addCcdaValidation(mu2_ccda_type_value, false, false, false, true);
 		}
 		else
 		{
@@ -308,7 +291,7 @@ public class CCDAService {
 			hasInfo = report.getBoolean("hasInfo");
 			
 			jsonbody.put("performance", performance_object);
-			//statisticsManager.addCcdaValidation(mu2_ccda_type_value, hasErrors, hasWarnings, hasInfo, false);	
+			statisticsManager.addCcdaValidation(mu2_ccda_type_value, hasErrors, hasWarnings, hasInfo, false);	
 		}
 		return jsonbody;
     }

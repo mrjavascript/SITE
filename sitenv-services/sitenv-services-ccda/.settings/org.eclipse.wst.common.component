@@ -4,11 +4,10 @@
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/java"/>
         <dependent-module archiveName="sitenv-statistics-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/sitenv-statistics/sitenv-statistics">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <property name="context-root" value="QrdaValidatorServices"/>
         <property name="java-output-path" value="/sitenv-services-qrda/target/classes"/>
+        <property name="context-root" value="CcdaValidatorServices"/>
     </wb-module>
 </project-modules>
