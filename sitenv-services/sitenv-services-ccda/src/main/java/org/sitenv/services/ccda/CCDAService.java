@@ -34,7 +34,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-//import org.sitenv.services.ccda.beans.CCDAValidationResponse;
 import org.sitenv.statistics.manager.StatisticsManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.w3c.dom.Element;
@@ -70,35 +69,8 @@ public class CCDAService {
 		}
 	}
 	
-	
-	
 	public CCDAService() throws IOException {
-		//load the property file.
         loadProperties();
-        //load the properties.
-    }
-	
-	
-	public static Element getPreviousSiblingElement(Node node) {
-	      Node prevSibling = node.getPreviousSibling();
-	      while (prevSibling != null) {
-	          if (prevSibling.getNodeType() == Node.ELEMENT_NODE) {
-	              return (Element) prevSibling;
-	          }
-	          prevSibling = prevSibling.getPreviousSibling();
-	      }
-
-	      return null;  
-	}
-    
-    
-    public static Element getDirectChild(Element parent, String name)
-    {
-        for(Node child = parent.getFirstChild(); child != null; child = child.getNextSibling())
-        {
-            if(child instanceof Element && name.equals(child.getNodeName())) return (Element) child;
-        }
-        return null;
     }
     
     
@@ -123,7 +95,7 @@ public class CCDAService {
 			
 			
 			HttpClient client = new DefaultHttpClient();
-			String URL = "http://localhost:7080/CcdaValidatorServices/CCDA/Validate/";	
+			String URL = "http://localhost:7080/CcdaValidatorServices/CCDA/Validate/";
 			HttpPost post = new HttpPost(URL);
 			
 			MultipartEntity entity = new MultipartEntity();
@@ -168,14 +140,8 @@ public class CCDAService {
     @Produces("application/json")
     public String Validate(MultipartBody body){
     	
-		if (this.props == null)
-		{
-			try {
-				this.loadProperties();
-			} catch (IOException e) {
-				throw new RuntimeException(e);
-			}
-		}
+    	
+		JSONObject json = null;
 		
 		String mu2_ccda_type_value = null;
 		
@@ -191,9 +157,13 @@ public class CCDAService {
 		
 		DataHandler fileHandler = file.getDataHandler();
 		
-		JSONObject json = null;
-		
 		try {
+			
+			
+			if (this.props == null)
+			{
+				this.loadProperties();
+			}
 			
 			String mu2CcdaURL = null;
 			
@@ -216,26 +186,28 @@ public class CCDAService {
 			entity.addPart("ccda_type",new StringBody(mu2_ccda_type_value));
 			
 			entity.addPart("return_json_param", new StringBody("true"));
+			
+			//Change this to "false" in production:
 			entity.addPart("debug_mode", new StringBody("true"));
 			
 			post.setEntity(entity);
-			
 			HttpResponse relayResponse = client.execute(post);
-			
-			
 			json = handleCCDAResponse(relayResponse, mu2_ccda_type_value);
 			
 	    } catch (Exception e) {
 	    	statisticsManager.addCcdaValidation(mu2_ccda_type_value, false, false, false, true);
-	    	throw new RuntimeException(e);
+	    	logger.error("Error while accessing CCDA service: ",  e);
+	    	try {
+				json = new JSONObject("{ \"error\" : {\"message\":"+"\""+e.getMessage()+"\""+"}}");
+			} catch (JSONException e1) {
+				logger.error("Error while creating error JSON output: ",  e1);
+			}
 	    }
 		return json.toString();
     }
     
     
     private JSONObject handleCCDAResponse(HttpResponse relayResponse, String mu2_ccda_type_value) throws ClientProtocolException, IOException, JSONException{
-    	
-    	    	
     	
     	ResponseHandler<String> handler = new BasicResponseHandler();
 		
@@ -250,6 +222,10 @@ public class CCDAService {
 			logger.log(Level.ERROR, "Error while accessing CCDA service: "
 			+ code + ": "
 			+ relayResponse.getStatusLine().getReasonPhrase());
+			
+			jsonbody = new JSONObject("{ \"error\" : {\"message\": Error while accessing CCDA service - "
+			+"\""+code +"-"+relayResponse.getStatusLine().getReasonPhrase() +"\""+"}}");
+			
 			statisticsManager.addCcdaValidation(mu2_ccda_type_value, false, false, false, true);
 		}
 		else
@@ -279,10 +255,9 @@ public class CCDAService {
 			
 	    	
 			String body = handler.handleResponse(relayResponse);
-			
 			Document doc = Jsoup.parseBodyFragment(body);
-			
 			org.jsoup.nodes.Element json = doc.select("pre").first();
+			
 			
 			jsonbody = new JSONObject(json.text());
 			JSONObject report = jsonbody.getJSONObject("report");
