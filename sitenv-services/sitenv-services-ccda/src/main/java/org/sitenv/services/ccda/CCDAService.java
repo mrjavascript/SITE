@@ -1,11 +1,11 @@
 package org.sitenv.services.ccda;
 
 
-import java.io.FileInputStream;
+//import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
+//import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 
 import javax.activation.DataHandler;
@@ -36,8 +36,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.sitenv.statistics.manager.StatisticsManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
 @Path("/CCDA/")
 @Produces("text/xml")
@@ -80,59 +78,7 @@ public class CCDAService {
     public String About(){
     	return "<h2>CCDA validator version 1.0</h2>";
     }
-    
-    
-    @GET
-    @Path("/TestValidate")
-    @Produces("application/json")
-    public String TestValidate()
-    {	
-    	String json = null;
-		try {
-			 
-			String fileLoc = "C:\\CWWorkspace\\SITE\\CCDA\\CCDA_Ambulatory.xml";
-			InputStream is = new FileInputStream(fileLoc);
-			
-			
-			HttpClient client = new DefaultHttpClient();
-			String URL = "http://localhost:7080/CcdaValidatorServices/CCDA/Validate/";
-			HttpPost post = new HttpPost(URL);
-			
-			MultipartEntity entity = new MultipartEntity();
-			
-			// set the file content
-			entity.addPart("file", new InputStreamBody(is , "testFile"));
-			
-			// set the CCDA type
-			//entity.addPart("type_val",new StringBody("TransitionsOfCareAmbulatorySummary"));
-			entity.addPart("type_val",new StringBody("NonSpecificCCDA"));
-			
-			
-			post.setEntity(entity);
-			HttpResponse relayResponse = client.execute(post);
-			
-			ResponseHandler<String> handler = new BasicResponseHandler();
-			
-			String body = handler.handleResponse(relayResponse);
-			json = body;
-			
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	return json;
-    }
-    
-    
+     
     
     @POST
     @Path("/Validate/")
@@ -173,7 +119,6 @@ public class CCDAService {
 				mu2CcdaURL = this.props.getProperty("CCDAValidationServiceURL");
 			}
 			
-			
 			HttpClient client = new DefaultHttpClient();
 			HttpPost post = new HttpPost(mu2CcdaURL);
 			
@@ -184,7 +129,6 @@ public class CCDAService {
 			
 			// set the CCDA type
 			entity.addPart("ccda_type",new StringBody(mu2_ccda_type_value));
-			
 			entity.addPart("return_json_param", new StringBody("true"));
 			
 			//Change this to "false" in production:
@@ -270,4 +214,58 @@ public class CCDAService {
 		}
 		return jsonbody;
     }
+    
+    
+    /*
+    @GET
+    @Path("/TestValidate")
+    @Produces("application/json")
+    public String TestValidate()
+    {	
+    	String json = null;
+		try {
+			 
+			String fileLoc = "C:\\CWWorkspace\\SITE\\CCDA\\CCDA_Ambulatory.xml";
+			InputStream is = new FileInputStream(fileLoc);
+			
+			
+			HttpClient client = new DefaultHttpClient();
+			String URL = "http://localhost:7080/CcdaValidatorServices/CCDA/Validate/";
+			HttpPost post = new HttpPost(URL);
+			
+			MultipartEntity entity = new MultipartEntity();
+			
+			// set the file content
+			entity.addPart("file", new InputStreamBody(is , "testFile"));
+			
+			// set the CCDA type
+			//entity.addPart("type_val",new StringBody("TransitionsOfCareAmbulatorySummary"));
+			entity.addPart("type_val",new StringBody("NonSpecificCCDA"));
+			
+			
+			post.setEntity(entity);
+			HttpResponse relayResponse = client.execute(post);
+			
+			ResponseHandler<String> handler = new BasicResponseHandler();
+			
+			String body = handler.handleResponse(relayResponse);
+			json = body;
+			
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return json;
+    }
+    */
+    
 }
