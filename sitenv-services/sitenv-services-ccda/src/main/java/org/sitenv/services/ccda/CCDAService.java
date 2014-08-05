@@ -5,6 +5,7 @@ package org.sitenv.services.ccda;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 //import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 
@@ -86,6 +87,7 @@ public class CCDAService {
     @Produces("application/json")
     public String Validate(MultipartBody body){
     	
+    	Date requestStart = new Date(); 
     	
 		JSONObject json = null;
 		
@@ -147,6 +149,20 @@ public class CCDAService {
 				logger.error("Error while creating error JSON output: ",  e1);
 			}
 	    }
+		
+		Date requestFinish = new Date();
+		
+		String logMessage = "";
+		try {
+			JSONObject error = json.getJSONObject("error");
+			String message = error.getString("message");
+			logMessage = "[Failure] RequestTime: "+requestStart.toString()+" ResponseTime:"+requestFinish+" Message:"+message;
+			
+		} catch (JSONException e) {
+			logMessage = "[Success] RequestTime: "+requestStart.toString()+" ResponseTime:"+requestFinish;
+		}
+		logger.info(logMessage);
+		
 		return json.toString();
     }
     
