@@ -109,5 +109,6 @@
     	<module>sitenv-statistics</module>
     	<module>sitenv-statistics-portlet</module>
     <module>sitenv-providerdirectory-servlet</module>
-  </modules>
+    <module>sitenv-xdrvalidator-portlet</module>
+	</modules>
 </project>
