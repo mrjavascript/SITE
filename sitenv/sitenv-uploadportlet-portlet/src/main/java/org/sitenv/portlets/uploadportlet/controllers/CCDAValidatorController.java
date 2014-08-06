@@ -149,7 +149,7 @@ public class CCDAValidatorController extends BaseController {
 	public ModelAndView process(RenderRequest request, Model model)
 			throws IOException {
 		Map map = new HashMap();
-
+		
 		map.put("files", fileJson);
 		
 		map.put("body", JSONResponseBody);
