@@ -67,7 +67,7 @@
 											<echo message="...Uploaded." />
 										<echo message="Deploying to tomcat7..." />
 										<exec executable="ssh">
-											<arg value="site-dev-liferay" />
+											<arg value="site-dev-ccda" />
 											<arg
 												value="echo ${deploy.password} | sudo -S mv ~/CCDAValidatorServices.war /opt/tomcat7/webapps" />
 										</exec>
@@ -91,7 +91,7 @@
 											<echo message="...Uploaded." />
 											<echo message="Deploying to tomcat7..." />
 											<exec executable="ssh">
-												<arg value="site-prod-liferay" />
+												<arg value="site-prod-ccda" />
 												<arg
 													value="echo ${deploy.password} | sudo -S mv ~/CCDAValidatorServices.war /opt/tomcat7/webapps" />
 											</exec>
@@ -273,7 +273,7 @@
 		
     </dependencies>
     <properties>
-        <org.springframework.version>3.0.0.RELEASE</org.springframework.version>
+        <org.springframework.version>3.1.1.RELEASE</org.springframework.version>
         <cxf.version>2.7.7</cxf.version>
     </properties>
   
