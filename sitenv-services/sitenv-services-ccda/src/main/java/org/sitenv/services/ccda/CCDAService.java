@@ -38,7 +38,7 @@ import org.jsoup.nodes.Document;
 import org.sitenv.statistics.manager.StatisticsManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@Path("/CCDA/")
+@Path("/")
 @Produces("text/xml")
 public class CCDAService {
     
@@ -75,9 +75,9 @@ public class CCDAService {
     
     @GET
     @Path("/About")
-    @Produces("application/xml")
+    @Produces("text/html")
     public String About(){
-    	return "<h2>CCDA validator version 1.0</h2>";
+    	return "<html><head><title>CCDA Validator</title></head><body><h2>CCDA validator version 1.0</h2></body></html>";
     }
      
     
