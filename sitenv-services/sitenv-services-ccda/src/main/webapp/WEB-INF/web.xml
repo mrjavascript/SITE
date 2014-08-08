@@ -19,35 +19,6 @@
         <display-name>CXF Servlet</display-name>
         <servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
         
-       <!--
-        <init-param>
-        	<param-name>static-welcome-file</param-name>
-      		<param-value>/About.html</param-value>
-   		</init-param> 
-   		<init-param>
-      		<param-name>static-resources-list</param-name>
-      		<param-value>/About.html</param-value>
-   		</init-param>
-        -->
-        <!--
-        <init-param>
-        	
-        	<param-name>redirects-list</param-name>
-      		<param-value>
-         	/About1
-      		</param-value>
-      	</init-param>
-   		<init-param>
-       		<param-name>redirect-attributes</param-name>
-       		<param-value>
-         		javax.servlet.include.request_uri
-      		</param-value>
-   		</init-param>
-   		<init-param>
-       		<param-name>redirect-servlet-name</param-name>
-       		<param-value>default</param-value>
-   		</init-param>
-   		-->
       <load-on-startup>1</load-on-startup>
     </servlet>
 
@@ -66,11 +37,4 @@
     	<url-pattern>/About</url-pattern>
 	</servlet-mapping>
     
-    
-    
-    <!--
-    <welcome-file-list>
-    	<welcome-file>About.html</welcome-file>
-    </welcome-file-list>
-    -->
 </web-app>

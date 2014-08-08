@@ -72,14 +72,7 @@ public class CCDAService {
         loadProperties();
     }
     
-    /*
-    @GET
-    @Path("/About")
-    @Produces("text/html")
-    public String About(){
-    	return "<html><head><title>CCDA Validator</title></head><body><h2>CCDA validator version 1.0</h2></body></html>";
-    }
-    */
+    
     
     @POST
     @Path("/Validate/")
