@@ -93,11 +93,7 @@ public class CCDAValidatorController extends BaseController {
 				entity.addPart("file", new InputStreamBody(file.getInputStream() , file.getOriginalFilename()));
 				// set the CCDA type
 				
-				entity.addPart("ccda_type",new StringBody(ccda_type_value));
-				
-				
-				entity.addPart("return_json_param", new StringBody("true"));
-				entity.addPart("debug_mode", new StringBody("true"));
+				entity.addPart("type_val",new StringBody(ccda_type_value));
 				
 				post.setEntity(entity);
 				
@@ -110,7 +106,6 @@ public class CCDAValidatorController extends BaseController {
 				
 				if(code!=200) 
 				{
-					
 					//do the error handling.
 					statisticsManager.addCcdaValidation(ccda_type_value, false, false, false, true);
 				}
@@ -118,13 +113,9 @@ public class CCDAValidatorController extends BaseController {
 				{
 					boolean hasErrors = true, hasWarnings = true, hasInfo = true;
 					
-					String body = handler.handleResponse(relayResponse);
+					String json = handler.handleResponse(relayResponse);
 					
-					Document doc = Jsoup.parseBodyFragment(body);
-					
-					Element json = doc.select("pre").first();
-					
-					JSONObject jsonbody = new JSONObject(json.text());
+					JSONObject jsonbody = new JSONObject(json);
 					
 					JSONObject report = jsonbody.getJSONObject("report");
 					hasErrors = report.getBoolean("hasErrors");
