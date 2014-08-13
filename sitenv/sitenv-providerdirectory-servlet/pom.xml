@@ -62,11 +62,8 @@
 									<equals arg1="${environment.name}" arg2="test" />
 									<then>
 											<echo message="Copying file (${project.build.directory}/${project.artifactId}.war) to location: ${liferay.auto.deploy.dir}"/>
-										<exec executable="cp">
-											<arg
-												value="${project.build.directory}/${project.artifactId}.war" />
-											<arg value="${liferay.auto.deploy.dir}/${project.artifactId}.war" />
-										</exec>
+										<copy file="${project.build.directory}/${project.artifactId}.war" tofile="${liferay.auto.deploy.dir}/${project.artifactId}.war" />
+
 										<echo message="Uploading file to location: ${deploy.location}" />
 										<exec executable="scp">
 											<arg
@@ -86,11 +83,8 @@
 										<equals arg1="${environment.name}" arg2="production" />
 										<then>
 											<echo message="Copying file (${project.build.directory}/${project.artifactId}.war) to location: ${liferay.auto.deploy.dir}"/>
-										<exec executable="cp">
-											<arg
-												value="${project.build.directory}/${project.artifactId}.war" />
-											<arg value="${liferay.auto.deploy.dir}/${project.artifactId}.war" />
-										</exec>
+										<copy file="${project.build.directory}/${project.artifactId}.war" tofile="${liferay.auto.deploy.dir}/${project.artifactId}.war" />
+										
 										<echo message="Uploading file to location: ${deploy.location}" />
 										<exec executable="scp">
 											<arg
@@ -110,10 +104,7 @@
 									<else>
 
 										<echo message="Uploading file to location: ${deploy.location}" />
-										<exec executable="cp">
-											<arg value="target/${project.artifactId}.war" />
-											<arg value="${deploy.location}" />
-										</exec>
+										<copy file="target/${project.artifactId}.war" todir="${deploy.location}" />
 										<echo message="...Uploaded." />
 
 									</else>
