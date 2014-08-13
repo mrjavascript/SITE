@@ -8,6 +8,6 @@
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="java-output-path" value="/sitenv-services-qrda/target/classes"/>
-        <property name="context-root" value="ccdavalidator"/>
+        <property name="context-root" value="CCDAValidatorServices"/>
     </wb-module>
 </project-modules>
