@@ -84,7 +84,7 @@ public class DirectReceiveController  extends BaseController
 
 		
 		String fromendpoint = props.getProperty("directFromEndpoint");
-		String domain = fromendpoint.split(delimiter)[1];
+		
 		String smtphostname = props.getProperty("smtphostname");
 		String smtpport = props.getProperty("smtpport");
 		String smtpuser = props.getProperty("smtpusername");
@@ -95,6 +95,7 @@ public class DirectReceiveController  extends BaseController
 		MultipartFile file = request.getFile("ccdauploadfile");
 		
 		endPointEmail = request.getParameter("ccdauploademail");
+		String domain = endPointEmail.split(delimiter)[1];
 		
 		fileJson = new JSONArray();
 		
@@ -236,7 +237,7 @@ public class DirectReceiveController  extends BaseController
 
 		
 		String fromendpoint = props.getProperty("directFromEndpoint");
-		String domain = fromendpoint.split(delimiter)[1];
+		
 		String smtphostname = props.getProperty("smtphostname");
 		String smtpport = props.getProperty("smtpport");
 		String smtpuser = props.getProperty("smtpusername");
@@ -250,7 +251,7 @@ public class DirectReceiveController  extends BaseController
 		String serverFilePath = sampleCcdaDir + "/" + precannedfile;
 		
 		endPointEmail = request.getParameter("precannedemail");
-		
+		String domain = endPointEmail.split(delimiter)[1];
 		
 		precannedResult = new JSONObject();
 		
