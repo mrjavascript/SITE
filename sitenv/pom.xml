@@ -94,20 +94,18 @@
 
 	</dependencies>
 	<modules>
-		<module>sitenv-customvelocity-hook</module>
-		<module>sitenv-main-theme</module>
+		<module>sitenv-showdockbar-hook</module>
 		<module>sitenv-directtransport-portlet</module>
-		<module>sitenv-testlayout-layouttpl</module>
-		<module>sitenv-uploadportlet-portlet</module>
-		<module>sitenv-usercreation-hook</module>
+		<module>sitenv-ccdavalidator-portlet</module>
+		<module>sitenv-usercreationalert-hook</module>
 		<module>sitenv-directmailbox-portlet</module>
 		<module>sitenv-commonutilities</module>
     	<module>sitenv-qrda-portlet</module>
-    	<module>sitenv-pdgi-single-test-portlet</module>
+    	<module>sitenv-providerdirectory-portlet</module>
+    	<module>sitenv-providerdirectory-servlet</module>
     	<module>sitenv-responsivebootstrap-theme</module>
     	<module>sitenv-responsivebootstrap-portlet-layouttpl</module>
     	<module>sitenv-statistics-portlet</module>
-    <module>sitenv-providerdirectory-servlet</module>
-    <module>sitenv-xdrvalidator-portlet</module>
+    	<module>sitenv-xdrvalidator-portlet</module>
 	</modules>
 </project>
