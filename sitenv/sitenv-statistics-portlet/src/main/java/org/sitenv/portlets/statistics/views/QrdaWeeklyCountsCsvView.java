@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
-import org.sitenv.statistics.dto.QrdaWeeklyCounts;
+import org.sitenv.common.statistics.dto.QrdaWeeklyCounts;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.view.AbstractView;
 

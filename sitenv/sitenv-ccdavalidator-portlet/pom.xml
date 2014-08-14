@@ -260,13 +260,13 @@
 			<version>4.2.3</version>
 		</dependency>
 		<dependency>
-			<groupId>org.sitenv</groupId>
-			<artifactId>sitenv-commonutilities</artifactId>
+			<groupId>org.sitenv.common</groupId>
+			<artifactId>site-common-utilities</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.sitenv</groupId>
-			<artifactId>sitenv-statistics</artifactId>
+			<groupId>org.sitenv.common</groupId>
+			<artifactId>site-common-statistics</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
 	</dependencies>

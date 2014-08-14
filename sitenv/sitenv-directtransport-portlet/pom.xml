@@ -232,11 +232,6 @@
 			<version>1.1</version>
 		</dependency>
 		<dependency>
-			<groupId>org.sitenv</groupId>
-			<artifactId>sitenv-commonutilities</artifactId>
-			<version>${project.parent.version}</version>
-		</dependency>
-		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
@@ -276,9 +271,15 @@
 			<artifactId>mail</artifactId>
 			<version>1.4.7</version>
 		</dependency>
+		
 		<dependency>
-			<groupId>org.sitenv</groupId>
-			<artifactId>sitenv-statistics</artifactId>
+			<groupId>org.sitenv.common</groupId>
+			<artifactId>site-common-utilities</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.sitenv.common</groupId>
+			<artifactId>site-common-statistics</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
 	</dependencies>

@@ -18,8 +18,8 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.xmlbeans.XmlException;
-import org.sitenv.statistics.dto.PdtiTestCase;
-import org.sitenv.statistics.manager.StatisticsManager;
+import org.sitenv.common.statistics.dto.PdtiTestCase;
+import org.sitenv.common.statistics.manager.StatisticsManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import org.springframework.web.context.support.WebApplicationContextUtils;

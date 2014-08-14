@@ -42,7 +42,7 @@ import org.sitenv.portlets.qrda.models.QRDASchemaError;
 import org.sitenv.portlets.qrda.models.QRDAValidationEnhancedResult;
 import org.sitenv.portlets.qrda.models.QRDAValidationResponse;
 import org.sitenv.portlets.qrda.models.UploadedFile;
-import org.sitenv.statistics.manager.StatisticsManager;
+import org.sitenv.common.statistics.manager.StatisticsManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

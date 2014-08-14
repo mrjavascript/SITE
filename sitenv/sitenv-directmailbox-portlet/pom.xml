@@ -199,10 +199,16 @@
 			<artifactId>gson</artifactId>
 			<version>2.2.4</version>
 		</dependency>
+		
 		<dependency>
-			<groupId>org.sitenv</groupId>
-			<artifactId>sitenv-commonutilities</artifactId>
-			<version>${parent.version}</version>
+			<groupId>org.sitenv.common</groupId>
+			<artifactId>site-common-utilities</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.sitenv.common</groupId>
+			<artifactId>site-common-statistics</artifactId>
+			<version>${project.parent.version}</version>
 		</dependency>
 		
 		<dependency>

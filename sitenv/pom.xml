@@ -99,7 +99,6 @@
 		<module>sitenv-ccdavalidator-portlet</module>
 		<module>sitenv-usercreationalert-hook</module>
 		<module>sitenv-directmailbox-portlet</module>
-		<module>sitenv-commonutilities</module>
     	<module>sitenv-qrda-portlet</module>
     	<module>sitenv-providerdirectory-portlet</module>
     	<module>sitenv-providerdirectory-servlet</module>

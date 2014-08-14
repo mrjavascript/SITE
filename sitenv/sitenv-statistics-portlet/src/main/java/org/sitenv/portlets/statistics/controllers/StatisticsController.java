@@ -11,8 +11,8 @@ import javax.portlet.RenderResponse;
 
 import org.apache.log4j.Logger;
 import org.sitenv.common.utilities.controller.BaseController;
-import org.sitenv.statistics.dto.GoogleAnalyticsData;
-import org.sitenv.statistics.manager.StatisticsManager;
+import org.sitenv.common.statistics.dto.GoogleAnalyticsData;
+import org.sitenv.common.statistics.manager.StatisticsManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

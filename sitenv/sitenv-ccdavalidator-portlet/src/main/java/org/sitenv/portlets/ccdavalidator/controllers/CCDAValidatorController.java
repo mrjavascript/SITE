@@ -1,4 +1,4 @@
-package org.sitenv.portlets.xdrvalidator.controllers;
+package org.sitenv.portlets.ccdavalidator.controllers;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -34,19 +34,20 @@ import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 import org.springframework.web.portlet.multipart.MultipartActionRequest;
 
-@Controller(value = "xdr")
+@Controller
 @RequestMapping("VIEW")
-public class XdrValidationController extends BaseController {
+public class CCDAValidatorController extends BaseController {
 
 	private JSONArray fileJson;
-	private JSONObject jsonResponseBody;
+	private JSONObject JSONResponseBody;
 	
 	@Autowired
 	private StatisticsManager statisticsManager;
 
-	@ActionMapping(params = "javax.portlet.action=uploadXDR")
+	@ActionMapping(params = "javax.portlet.action=uploadCCDA")
 	public void response(MultipartActionRequest request, ActionResponse response) throws IOException {
 		
+		String ccda_type_value = null;
 		
 		if (this.props == null)
 		{
@@ -55,12 +56,11 @@ public class XdrValidationController extends BaseController {
 		
 		// handle the files:
 		
-		response.setRenderParameter("javax.portlet.action", "uploadXDR");
+		response.setRenderParameter("javax.portlet.action", "uploadCCDA");
 		MultipartFile file = request.getFile("file");
-
+		
 		fileJson = new JSONArray();
 		
-		jsonResponseBody = new JSONObject();
 		
 		try {
 
@@ -71,31 +71,81 @@ public class XdrValidationController extends BaseController {
 				fileJson.put(jsono);
 				
 				// handle the data
-				jsonResponseBody.put("IsSuccess", "true");
-				jsonResponseBody.put("ErrorMessage", "Message Sent Successfully!");
+				
+				ccda_type_value = request.getParameter("ccda_type_val");
+				
+				//System.out.println(ccda_type_value);
+				
+				if(ccda_type_value == null)
+				{
+					ccda_type_value = "";
+				}
+				
+				HttpClient client = new DefaultHttpClient();
+				
+				String ccdaURL = this.props.getProperty("CCDAValidationServiceURL");
 				
 				
+				HttpPost post = new HttpPost(ccdaURL);
+
+				MultipartEntity entity = new MultipartEntity();
+				// set the file content
+				entity.addPart("file", new InputStreamBody(file.getInputStream() , file.getOriginalFilename()));
+				// set the CCDA type
 				
+				entity.addPart("type_val",new StringBody(ccda_type_value));
+				
+				post.setEntity(entity);
+				
+				HttpResponse relayResponse = client.execute(post);
+				//create the handler
+				ResponseHandler<String> handler = new BasicResponseHandler();
+				
+				int code = relayResponse.getStatusLine().getStatusCode();
+				
+				
+				if(code!=200) 
+				{
+					//do the error handling.
+					statisticsManager.addCcdaValidation(ccda_type_value, false, false, false, true);
+				}
+				else
+				{
+					boolean hasErrors = true, hasWarnings = true, hasInfo = true;
+					
+					String json = handler.handleResponse(relayResponse);
+					
+					JSONObject jsonbody = new JSONObject(json);
+					
+					JSONObject report = jsonbody.getJSONObject("report");
+					hasErrors = report.getBoolean("hasErrors");
+					hasWarnings = report.getBoolean("hasWarnings");
+					hasInfo = report.getBoolean("hasInfo");
+					
+					JSONResponseBody = jsonbody;
+					
+					statisticsManager.addCcdaValidation(ccda_type_value, hasErrors, hasWarnings, hasInfo, false);
+				}				
 				
 
 		} catch (Exception e) {
-			//statisticsManager.addCcdaValidation(ccda_type_value, false, false, false, true);
+			statisticsManager.addCcdaValidation(ccda_type_value, false, false, false, true);
 			
 			throw new RuntimeException(e);
 		} 
 		
 	}
 
-	@RequestMapping(params = "javax.portlet.action=uploadXDR")
+	@RequestMapping(params = "javax.portlet.action=uploadCCDA")
 	public ModelAndView process(RenderRequest request, Model model)
 			throws IOException {
 		Map map = new HashMap();
-
+		
 		map.put("files", fileJson);
-		map.put("result", jsonResponseBody);
 		
+		map.put("body", JSONResponseBody);
 		
-		return new ModelAndView("xdrValidatorJsonView", map);
+		return new ModelAndView("cCDAValidatorJsonView", map);
 	}
 
 	@RenderMapping()
@@ -108,5 +158,12 @@ public class XdrValidationController extends BaseController {
 
 		return modelAndView;
 	}
-	
+
+	public StatisticsManager getStatisticsManager() {
+		return statisticsManager;
+	}
+
+	public void setStatisticsManager(StatisticsManager statisticsManager) {
+		this.statisticsManager = statisticsManager;
+	}
 }

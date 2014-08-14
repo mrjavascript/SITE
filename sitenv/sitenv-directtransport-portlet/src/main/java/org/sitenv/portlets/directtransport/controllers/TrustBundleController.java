@@ -36,7 +36,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.nhindirect.trustbundle.core.CreateUnSignedPKCS7;
 import org.sitenv.common.utilities.controller.BaseController;
-import org.sitenv.statistics.manager.StatisticsManager;
+import org.sitenv.common.statistics.manager.StatisticsManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

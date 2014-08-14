@@ -4,7 +4,7 @@
 	<portlet>
 		<portlet-name>sitenv-pdgi-single-test-portlet</portlet-name>
 		<display-name>Test Cases</display-name>
-		<portlet-class>org.sitenv.portlets.singletest.SingleTestPortlet</portlet-class>
+		<portlet-class>org.sitenv.portlets.providerdirectory.SingleTestPortlet</portlet-class>
 		<init-param>
 			<name>view-jsp</name>
 			<value>/view.jsp</value>
