@@ -3,7 +3,7 @@
 
 <liferay-portlet-app>
 	<portlet>
-		<portlet-name>sitenv-pdgi-single-test-portlet</portlet-name>
+		<portlet-name>ProviderDirectory</portlet-name>
 		<icon>/icon.png</icon>
 		<instanceable>false</instanceable>
 		<private-session-attributes>false</private-session-attributes>

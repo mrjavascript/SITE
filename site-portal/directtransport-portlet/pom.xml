@@ -13,7 +13,6 @@
 
 
 	<build>
-		<finalName>DirectTransport-portlet</finalName>
 		<plugins>
 			<plugin>
 				<artifactId>maven-antrun-plugin</artifactId>
@@ -55,14 +54,14 @@
 									<then>
 										<echo message="Uploading file to location: ${deploy.location}"/>
 										<exec executable="scp">
-										 	<arg value="${liferay.auto.deploy.dir}/DirectTransport-portlet.war"/>
+										 	<arg value="${liferay.auto.deploy.dir}/${artifactId}-${version}.war"/>
 										 	<arg value="${deploy.location}" />
 										</exec>
 										<echo message="...Uploaded."/>
 										<echo message="Deploying to tomcat7..."/>
 										<exec executable="ssh">
 											<arg value="site-dev-liferay" />
-											<arg value="echo ${deploy.password} | sudo -S mv ~/DirectTransport-portlet.war /opt/tomcat7/deploy"/>
+											<arg value="echo ${deploy.password} | sudo -S mv ~/${artifactId}-${version}.war /opt/tomcat7/deploy"/>
 										</exec>
 										<echo message="...Deployed."/>
 									</then>
@@ -72,7 +71,7 @@
 											<echo message="Uploading file to location: ${deploy.location}" />
 											<exec executable="scp">
 												<arg
-													value="${liferay.auto.deploy.dir}/DirectTransport-portlet.war" />
+													value="${liferay.auto.deploy.dir}/${artifactId}-${version}.war" />
 												<arg value="${deploy.location}" />
 											</exec>
 											<echo message="...Uploaded." />
@@ -80,7 +79,7 @@
 											<exec executable="ssh">
 												<arg value="site-prod-liferay" />
 												<arg
-													value="echo ${deploy.password} | sudo -S mv ~/DirectTransport-portlet.war /opt/tomcat7/deploy" />
+													value="echo ${deploy.password} | sudo -S mv ~/${artifactId}-${version}.war /opt/tomcat7/deploy" />
 											</exec>
 											<echo message="...Deployed." />
 										</then>

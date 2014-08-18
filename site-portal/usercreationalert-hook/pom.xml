@@ -10,7 +10,6 @@
 	<packaging>war</packaging>
 	<name>SITE User Creation Alert Hook</name>
 	<build>
-		<finalName>UserCreationHook-hook</finalName>
 		<plugins>
 			<plugin>
 				<artifactId>maven-antrun-plugin</artifactId>
@@ -48,22 +47,20 @@
 								<taskdef resource="net/sf/antcontrib/antlib.xml"
 									classpathref="maven.plugin.classpath" />
 								<if>
-									<equals arg1="${environment.name}" arg2="test"/>
+									<equals arg1="${environment.name}" arg2="test" />
 									<then>
-										<echo message="Uploading file to location: ${deploy.location}" />
+										<echo message="Uploading file to location: ${deploy.location}"/>
 										<exec executable="scp">
-											<arg
-												value="${liferay.auto.deploy.dir}/UserCreationHook-hook.war" />
-											<arg value="${deploy.location}" />
+										 	<arg value="${liferay.auto.deploy.dir}/${artifactId}-${version}.war"/>
+										 	<arg value="${deploy.location}" />
 										</exec>
-										<echo message="...Uploaded." />
-										<echo message="Deploying to tomcat7..." />
+										<echo message="...Uploaded."/>
+										<echo message="Deploying to tomcat7..."/>
 										<exec executable="ssh">
 											<arg value="site-dev-liferay" />
-											<arg
-												value="echo ${deploy.password} | sudo -S mv ~/UserCreationHook-hook.war /opt/tomcat7/deploy" />
+											<arg value="echo ${deploy.password} | sudo -S mv ~/${artifactId}-${version}.war /opt/tomcat7/deploy"/>
 										</exec>
-										<echo message="...Deployed." />
+										<echo message="...Deployed."/>
 									</then>
 									<elseif>
 									<equals arg1="${environment.name}" arg2="production"/>
@@ -71,7 +68,7 @@
 											<echo message="Uploading file to location: ${deploy.location}" />
 											<exec executable="scp">
 												<arg
-													value="${liferay.auto.deploy.dir}/UserCreationHook-hook.war" />
+													value="${liferay.auto.deploy.dir}/${artifactId}-${version}.war" />
 												<arg value="${deploy.location}" />
 											</exec>
 											<echo message="...Uploaded." />
@@ -79,7 +76,7 @@
 											<exec executable="ssh">
 												<arg value="site-prod-liferay" />
 												<arg
-													value="echo ${deploy.password} | sudo -S mv ~/UserCreationHook-hook.war /opt/tomcat7/deploy" />
+													value="echo ${deploy.password} | sudo -S mv ~/${artifactId}-${version}.war /opt/tomcat7/deploy" />
 											</exec>
 											<echo message="...Deployed." />
 										</then>

@@ -11,7 +11,6 @@
 	<packaging>war</packaging>
 	<name>SITE CCDA Validator Portlet</name>
 	<build>
-		<finalName>UploadPortlet-portlet</finalName>
 		<plugins>
 			<plugin>
 				<artifactId>maven-antrun-plugin</artifactId>
@@ -51,20 +50,18 @@
 								<if>
 									<equals arg1="${environment.name}" arg2="test" />
 									<then>
-										<echo message="Uploading file to location: ${deploy.location}" />
+										<echo message="Uploading file to location: ${deploy.location}"/>
 										<exec executable="scp">
-											<arg
-												value="${liferay.auto.deploy.dir}/UploadPortlet-portlet.war" />
-											<arg value="${deploy.location}" />
+										 	<arg value="${liferay.auto.deploy.dir}/${artifactId}-${version}.war"/>
+										 	<arg value="${deploy.location}" />
 										</exec>
-										<echo message="...Uploaded." />
-										<echo message="Deploying to tomcat7..." />
+										<echo message="...Uploaded."/>
+										<echo message="Deploying to tomcat7..."/>
 										<exec executable="ssh">
 											<arg value="site-dev-liferay" />
-											<arg
-												value="echo ${deploy.password} | sudo -S mv ~/UploadPortlet-portlet.war /opt/tomcat7/deploy" />
+											<arg value="echo ${deploy.password} | sudo -S mv ~/${artifactId}-${version}.war /opt/tomcat7/deploy"/>
 										</exec>
-										<echo message="...Deployed." />
+										<echo message="...Deployed."/>
 									</then>
 									<elseif>
 									<equals arg1="${environment.name}" arg2="production"/>
@@ -72,7 +69,7 @@
 											<echo message="Uploading file to location: ${deploy.location}" />
 											<exec executable="scp">
 												<arg
-													value="${liferay.auto.deploy.dir}/UploadPortlet-portlet.war" />
+													value="${liferay.auto.deploy.dir}/${artifactId}-${version}.war" />
 												<arg value="${deploy.location}" />
 											</exec>
 											<echo message="...Uploaded." />
@@ -80,7 +77,7 @@
 											<exec executable="ssh">
 												<arg value="site-prod-liferay" />
 												<arg
-													value="echo ${deploy.password} | sudo -S mv ~/UploadPortlet-portlet.war /opt/tomcat7/deploy" />
+													value="echo ${deploy.password} | sudo -S mv ~/${artifactId}-${version}.war /opt/tomcat7/deploy" />
 											</exec>
 											<echo message="...Deployed." />
 										</then>

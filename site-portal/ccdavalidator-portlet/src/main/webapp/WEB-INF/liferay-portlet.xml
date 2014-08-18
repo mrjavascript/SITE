@@ -3,7 +3,7 @@
 
 <liferay-portlet-app>
 	<portlet>
-		<portlet-name>CCDValidator</portlet-name>
+		<portlet-name>CCDAValidator</portlet-name>
 		<icon>/icon.png</icon>
 		<instanceable>true</instanceable>
 		<private-session-attributes>false</private-session-attributes>
@@ -23,7 +23,7 @@
 		<footer-portlet-javascript>/js/uploader.js</footer-portlet-javascript>
 		<footer-portlet-javascript>/js/jquery.validationEngine-en.js</footer-portlet-javascript>
 		<footer-portlet-javascript>/js/jquery.validationEngine.js</footer-portlet-javascript>
-		<css-class-wrapper>UploadPortlet-portlet</css-class-wrapper>
+		<css-class-wrapper>CCDAValidator-portlet</css-class-wrapper>
 	</portlet>
 	<role-mapper>
 		<role-name>administrator</role-name>
