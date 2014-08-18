@@ -13,8 +13,131 @@
   
   
   <build>
-        <finalName>qrdavalidator</finalName>
+        <finalName>QrdaValidatorServices</finalName>
         <plugins>
+        	<plugin>
+            	<groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.1.1</version>
+            </plugin>
+        	<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>properties</id>
+						<phase>test</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<tasks>
+								<delete
+									file="${project.build.outputDirectory}/environment.properties" />
+								<copy
+									file="src/main/resources/environment.${environment.name}.properties"
+									tofile="${project.build.outputDirectory}/environment.properties" />
+								<delete
+									file="${project.build.outputDirectory}/environment.development.properties" />
+								<delete
+									file="${project.build.outputDirectory}/environment.test.properties" />
+								<delete
+									file="${project.build.outputDirectory}/environment.production.properties" />
+							</tasks>
+						</configuration>
+					</execution>
+					<execution>
+						<id>scp-to-env</id>
+						<phase>package</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<tasks>
+								<taskdef resource="net/sf/antcontrib/antlib.xml"
+									classpathref="maven.plugin.classpath" />
+								<if>
+									<equals arg1="${environment.name}" arg2="test" />
+									<then>
+											<echo message="Copying file (${project.build.directory}/QrdaValidatorServices.war) to location: ${liferay.auto.deploy.dir}"/>
+										<exec executable="cp">
+											<arg
+												value="${project.build.directory}/QrdaValidatorServices.war" />
+											<arg value="${liferay.auto.deploy.dir}/QrdaValidatorServices.war" />
+										</exec>
+										<echo message="Uploading file to location: ${deploy.location}" />
+										<exec executable="scp">
+											<arg
+												value="${liferay.auto.deploy.dir}/QrdaValidatorServices.war" />
+											<arg value="${deploy.location}" />
+										</exec>
+											<echo message="...Uploaded." />
+										<echo message="Deploying to tomcat7..." />
+										<exec executable="ssh">
+											<arg value="site-dev-ccda" />
+											<arg
+												value="echo ${deploy.password} | sudo -S mv ~/QrdaValidatorServices.war /opt/tomcat7/webapps" />
+										</exec>
+										<echo message="...Deployed." />
+									</then>
+									<elseif>
+										<equals arg1="${environment.name}" arg2="production" />
+										<then>
+											<echo message="Copying file (${project.build.directory}/QrdaValidatorServices.war) to location: ${liferay.auto.deploy.dir}"/>
+										<exec executable="cp">
+											<arg
+												value="${project.build.directory}/QrdaValidatorServices.war" />
+											<arg value="${liferay.auto.deploy.dir}/QrdaValidatorServices.war" />
+										</exec>
+										<echo message="Uploading file to location: ${deploy.location}" />
+										<exec executable="scp">
+											<arg
+												value="${liferay.auto.deploy.dir}/QrdaValidatorServices.war" />
+											<arg value="${deploy.location}" />
+										</exec>
+											<echo message="...Uploaded." />
+											<echo message="Deploying to tomcat7..." />
+											<exec executable="ssh">
+												<arg value="site-prod-ccda" />
+												<arg
+													value="echo ${deploy.password} | sudo -S mv ~/QrdaValidatorServices.war /opt/tomcat7/webapps" />
+											</exec>
+											<echo message="...Deployed." />
+										</then>
+									</elseif>
+									<else>
+
+										<echo message="Uploading file to location: ${deploy.location}" />
+										<exec executable="cp">
+											<arg value="target/QrdaValidatorServices.war" />
+											<arg value="${deploy.location}" />
+										</exec>
+										<echo message="...Uploaded." />
+
+									</else>
+								</if>
+							</tasks>
+						</configuration>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>ant-contrib</groupId>
+						<artifactId>ant-contrib</artifactId>
+						<version>1.0b3</version>
+						<exclusions>
+							<exclusion>
+								<groupId>ant</groupId>
+								<artifactId>ant</artifactId>
+							</exclusion>
+						</exclusions>
+					</dependency>
+					<dependency>
+						<groupId>org.apache.ant</groupId>
+						<artifactId>ant-nodeps</artifactId>
+						<version>1.8.1</version>
+					</dependency>
+				</dependencies>
+			</plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -24,15 +147,7 @@
                     <target>1.7</target>
                 </configuration>
             </plugin>
-            <plugin>
-            	<groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>2.1.1</version>
-                <configuration>
-                    <outputDirectory>webapps</outputDirectory>
-                    <warName>QrdaValidatorServices</warName>
-                </configuration>
-            </plugin>
+            
         </plugins>
         <directory>${project.basedir}/target</directory>
     </build>
