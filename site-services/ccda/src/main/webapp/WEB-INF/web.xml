@@ -24,7 +24,7 @@
     
     <servlet>
     	<servlet-name>AboutPage</servlet-name>
-    	<jsp-file>/About.html</jsp-file>
+    	<jsp-file>/WEB-INF/jsp/about.jsp</jsp-file>
 	</servlet>
 
 

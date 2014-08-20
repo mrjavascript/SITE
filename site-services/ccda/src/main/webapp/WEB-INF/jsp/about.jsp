@@ -181,8 +181,8 @@ analyzed</p>
 
 <p ><b>Example Usage:</b></p>
 
-<p >curl -D- -X POST -F “file=@myfile.xml” –F ”type_val=TransitionsOfCareInpatientSummary&quot;
- http://myURL</p>
+<p >curl -D- -X POST -F &quot;file=@myfile.xml&quot; -F &quot;type_val=TransitionsOfCareInpatientSummary&quot;
+<%= request.getRequestURL().toString().replace("About", "Validate/") %></p>
 
 <p >&nbsp;</p>
 
