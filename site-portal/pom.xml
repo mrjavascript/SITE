@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>org.sitenv</groupId>
+	<artifactId>site-portal</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<name>SITE Portal Project</name>
+	<url>http://www.sitenv.org</url>
+
+	<properties>
+		<liferay.auto.deploy.dir/>
+		<liferay.version>6.1.1</liferay.version>
+		<local.maven.repository>file://C:/liferay/maven</local.maven.repository>
+		<environment.name/>
+		<deploy.location/>
+		<deploy.password/>
+		<org.springframework.version>3.0.0.RELEASE</org.springframework.version>
+	</properties>
+
+	<distributionManagement>
+		<repository>
+			<id>maven-repository</id>
+			<url>${local.maven.repository}</url>
+		</repository>
+	</distributionManagement>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.liferay.portal</groupId>
+			<artifactId>portal-client</artifactId>
+			<version>6.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.liferay.portal</groupId>
+			<artifactId>portal-impl</artifactId>
+			<version>6.1.1</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.liferay.portal</groupId>
+			<artifactId>portal-service</artifactId>
+			<version>6.1.1</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.liferay.portal</groupId>
+			<artifactId>portal-web</artifactId>
+			<version>6.1.1</version>
+			<type>war</type>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.liferay.portal</groupId>
+			<artifactId>util-bridges</artifactId>
+			<version>6.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.liferay.portal</groupId>
+			<artifactId>util-java</artifactId>
+			<version>6.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.liferay.portal</groupId>
+			<artifactId>util-taglib</artifactId>
+			<version>6.1.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>apache-log4j-extras</artifactId>
+			<version>1.2.17</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.2.2</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>1.4</version>
+		</dependency>
+
+		
+
+	</dependencies>
+	<modules>
+		<module>showdockbar-hook</module>
+		<module>directtransport-portlet</module>
+		<module>ccdavalidator-portlet</module>
+		<module>usercreationalert-hook</module>
+		<module>directmailbox-portlet</module>
+    	<module>qrda-portlet</module>
+    	<module>providerdirectory-portlet</module>
+    	<module>providerdirectory-servlet</module>
+    	<module>responsivebootstrap-theme</module>
+    	<module>responsivebootstrap-portlet-layouttpl</module>
+    	<module>statistics-portlet</module>
+    	<module>xdrvalidator-portlet</module>
+	</modules>
+</project>
