@@ -225,7 +225,7 @@ $(function() {
 		    $("#resultModalTabs a[href='#tabs-2']").hide();
 		    $("#resultModalTabs a[href='#tabs-3']").hide();
 			
-		    Liferay.Portlet.refresh("#p_p_id_sitenvstatisticsportlet_WAR_sitenvstatisticsportlet_"); // refresh the counts
+		    Liferay.Portlet.refresh("#p_p_id_Statistics_WAR_siteportalstatisticsportlet_"); // refresh the counts
 		    
 		    //clean up the links
 		    /*$("#ValidationResult #tabs #tabs-1 b:first, #ValidationResult #tabs #tabs-1 a:first").remove();*/

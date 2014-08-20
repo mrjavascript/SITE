@@ -15,7 +15,7 @@ $(function() {
 			var result = data.result;
         	qrdaAjaxValidationResultHandler(result.body);
         	
-        	Liferay.Portlet.refresh("#p_p_id_sitenvstatisticsportlet_WAR_sitenvstatisticsportlet_"); // refresh the counts
+        	Liferay.Portlet.refresh("#p_p_id_Statistics_WAR_siteportalstatisticsportlet_"); // refresh the counts
         	
 			/*
 			var results = data.result.body;
