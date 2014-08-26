@@ -22,7 +22,7 @@ contains attachments must be &quot;file&quot;</p>
 <p >type_val = a parameter indicating the type of document being
 analyzed</p>
 
-<table Table border=0 cellspacing=0 cellpadding=0 width=822
+<table border=0 cellspacing=0 cellpadding=0 width=822
  style='width:493.0pt;border-collapse:collapse'>
  <tr style='height:.2in'>
   <td width=523 nowrap valign=bottom style='width:314.0pt;border:solid windowtext 1.0pt;
