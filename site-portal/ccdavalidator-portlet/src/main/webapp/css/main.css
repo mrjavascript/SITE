@@ -231,3 +231,31 @@ h6
 	background-image: none!important;
 	margin: 0px 1px 0px 0px!important;
 }
+
+
+
+.nav-tabs li.active a:hover {
+background-color: lightgray;
+text-decoration: underline;
+}
+.nav-tabs li.active a:focus {
+background-color: lightgray;
+text-decoration: underline;
+}
+.nav-tabs li.active a {
+background-color: lightgray;
+}
+
+.nav-tabs li a {
+background-color: #eeeeee;
+}
+
+.nav-tabs li a:hover {
+background-color: #eeeeee;
+text-decoration: underline;
+}
+.nav-tabs li a:focus {
+background-color: #eeeeee;
+text-decoration: underline;
+}
+

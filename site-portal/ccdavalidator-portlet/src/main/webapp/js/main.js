@@ -23,7 +23,7 @@ function fileSelected()
 
 function BlockPortletUI()
 {
-	window.validationpanel = $('#CCDAValidationForm').closest('div[class="well"]');
+	window.validationpanel = $('#CCDAvalidator');
 	
 	var ajaximgpath = window.currentContextPath + "/css/ajax-loader.gif";
 	
@@ -102,7 +102,16 @@ function smartCCDAValidation()
 {
 	var ajaximgpath = window.currentContextPath + "/css/ajax-loader.gif";
 	
-	$.blockUI({ 
+	var selector = null;
+	var ccda11isActive = $('#tabCCDA11').hasClass('active');
+	if (ccda11isActive){
+		selector = '#CCDA1ValidationForm';
+	} else {
+		selector = '#CCDA2ValidationForm';
+	}
+	
+	
+	$.blockUI({
 		css: { 
 	        border: 'none', 
 	        padding: '15px', 
@@ -117,8 +126,8 @@ function smartCCDAValidation()
 		
 	});
 	
-	var formData = $('#CCDAValidationForm').serializefiles();
-	var serviceUrl = $('#CCDAValidationForm').attr("relay");
+	var formData = $(selector).serializefiles();
+	var serviceUrl = $(selector).attr("relay");
 	$.ajax({
         url: serviceUrl,
         type: 'POST',
@@ -197,6 +206,9 @@ function smartCCDAValidation()
 $(function(){
 	
 	
+	$('#smartCCDAValidationBtn').bind('click', function(e, data) {
+		smartCCDAValidation();
+	});
 	
 	$('#reportSaveAsQuestion button').button();
 	
@@ -281,6 +293,8 @@ $(function(){
 	    });
 	    return false;
 	});
+	
+	
 	
 });
 

@@ -185,7 +185,8 @@
 	            },
 	            "xmlfileextension":{
 	            	"func": function(field, rules, i, options) {
-	            		var uploadedFile = $('#fileupload');
+	            		//var uploadedFile = $('#fileupload');
+	            		var uploadedFile = field;
 	            		
 	            		if (uploadedFile && $(uploadedFile).val()) {
 	                        var extensions = rules[i + 2];               
@@ -201,14 +202,23 @@
 	            },
 	            "maxCCDAFileSize":{
 	            	"func": function(field, rules, i, options) {
-	            		var uploadedFile = $('#fileupload')[0].files[0];
 	            		
-	            		if (uploadedFile && $('#fileupload').val() && uploadedFile.size > (3*1024*1024)) {
+	            		var uploadedFile = field[0].files[0];
+	            		
+	            		if (uploadedFile && field.val() && uploadedFile.size > (3*1024*1024)) {
 	            			return false;
 	                    }
 	                    else {
 	                        return true;
-	                    }     
+	                    }	            		
+	            		//var uploadedFile = $('#fileupload')[0].files[0];
+	            		
+	            		//if (uploadedFile && $('#fileupload').val() && uploadedFile.size > (3*1024*1024)) {
+	            		//	return false;
+	                    //}
+	                    //else {
+	                    //    return true;
+	                    //}     
 	            	},
 	            	"alertText" : "* The uploaded file exceeds the maximum file size of 3 MB."
 	            }

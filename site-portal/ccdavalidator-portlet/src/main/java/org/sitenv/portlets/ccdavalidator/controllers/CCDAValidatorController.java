@@ -44,8 +44,8 @@ public class CCDAValidatorController extends BaseController {
 	@Autowired
 	private StatisticsManager statisticsManager;
 
-	@ActionMapping(params = "javax.portlet.action=uploadCCDA")
-	public void response(MultipartActionRequest request, ActionResponse response) throws IOException {
+	@ActionMapping(params = "javax.portlet.action=uploadCCDA1")
+	public void responseCCDA1(MultipartActionRequest request, ActionResponse response) throws IOException {
 		
 		String ccda_type_value = null;
 		
@@ -56,7 +56,7 @@ public class CCDAValidatorController extends BaseController {
 		
 		// handle the files:
 		
-		response.setRenderParameter("javax.portlet.action", "uploadCCDA");
+		response.setRenderParameter("javax.portlet.action", "uploadCCDA1");
 		MultipartFile file = request.getFile("file");
 		
 		fileJson = new JSONArray();
@@ -136,8 +136,103 @@ public class CCDAValidatorController extends BaseController {
 		
 	}
 
-	@RequestMapping(params = "javax.portlet.action=uploadCCDA")
-	public ModelAndView process(RenderRequest request, Model model)
+	
+	@ActionMapping(params = "javax.portlet.action=uploadCCDA2")
+	public void responseCCDA2(MultipartActionRequest request, ActionResponse response) throws IOException {
+		
+		String ccda_type_value = null;
+		
+		if (this.props == null)
+		{
+			this.loadProperties();
+		}
+		
+		// handle the files:
+		
+		response.setRenderParameter("javax.portlet.action", "uploadCCDA2");
+		MultipartFile file = request.getFile("file");
+		
+		fileJson = new JSONArray();
+		
+		
+		try {
+
+				JSONObject jsono = new JSONObject();
+				jsono.put("name", file.getOriginalFilename());
+				jsono.put("size", file.getSize());
+				
+				fileJson.put(jsono);
+				
+				// handle the data
+				
+				ccda_type_value = request.getParameter("ccda_type_val");
+				
+				//System.out.println(ccda_type_value);
+				
+				if(ccda_type_value == null)
+				{
+					ccda_type_value = "";
+				}
+				
+				HttpClient client = new DefaultHttpClient();
+				
+				String ccdaURL = this.props.getProperty("CCDAValidationServiceURL");
+				
+				
+				HttpPost post = new HttpPost(ccdaURL);
+
+				MultipartEntity entity = new MultipartEntity();
+				// set the file content
+				entity.addPart("file", new InputStreamBody(file.getInputStream() , file.getOriginalFilename()));
+				// set the CCDA type
+				
+				entity.addPart("type_val",new StringBody(ccda_type_value));
+				
+				post.setEntity(entity);
+				
+				HttpResponse relayResponse = client.execute(post);
+				//create the handler
+				ResponseHandler<String> handler = new BasicResponseHandler();
+				
+				int code = relayResponse.getStatusLine().getStatusCode();
+				
+				
+				if(code!=200) 
+				{
+					//do the error handling.
+					statisticsManager.addCcdaValidation(ccda_type_value, false, false, false, true);
+				}
+				else
+				{
+					boolean hasErrors = true, hasWarnings = true, hasInfo = true;
+					
+					String json = handler.handleResponse(relayResponse);
+					
+					JSONObject jsonbody = new JSONObject(json);
+					
+					JSONObject report = jsonbody.getJSONObject("report");
+					hasErrors = report.getBoolean("hasErrors");
+					hasWarnings = report.getBoolean("hasWarnings");
+					hasInfo = report.getBoolean("hasInfo");
+					
+					JSONResponseBody = jsonbody;
+					
+					statisticsManager.addCcdaValidation(ccda_type_value, hasErrors, hasWarnings, hasInfo, false);
+				}				
+				
+
+		} catch (Exception e) {
+			statisticsManager.addCcdaValidation(ccda_type_value, false, false, false, true);
+			
+			throw new RuntimeException(e);
+		}
+	}
+	
+	
+	
+	
+	@RequestMapping(params = "javax.portlet.action=uploadCCDA1")
+	public ModelAndView processCCDA1(RenderRequest request, Model model)
 			throws IOException {
 		Map map = new HashMap();
 		
@@ -147,6 +242,20 @@ public class CCDAValidatorController extends BaseController {
 		
 		return new ModelAndView("cCDAValidatorJsonView", map);
 	}
+	
+	
+	@RequestMapping(params = "javax.portlet.action=uploadCCDA2")
+	public ModelAndView processCCDA2(RenderRequest request, Model model)
+			throws IOException {
+		Map map = new HashMap();
+		
+		map.put("files", fileJson);
+		
+		map.put("body", JSONResponseBody);
+		
+		return new ModelAndView("cCDAValidatorJsonView", map);
+	}
+	
 
 	@RenderMapping()
 	public ModelAndView handleRenderRequest(RenderRequest request,
