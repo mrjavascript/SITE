@@ -25,7 +25,7 @@
 								<delete
 									file="${project.build.outputDirectory}/environment.properties" />
 								<copy
-									file="src/main/resources/environment.${environment.name}-${developer}.properties"
+									file="src/main/resources/environment.${environment.name}.properties"
 									tofile="${project.build.outputDirectory}/environment.properties" />
 								<delete>
 									<fileset dir="${project.build.outputDirectory}" includes="**/environment.development-*.properties" />
@@ -120,7 +120,7 @@
 								<delete
 									file="${project.build.outputDirectory}/environment.properties" />
 								<copy
-									file="src/main/resources/environment.${environment.name}-${developer}.properties"
+									file="src/main/resources/environment.${environment.name}.properties"
 									tofile="${project.build.outputDirectory}/environment.properties" />
 								<delete>
 									<fileset dir="${project.build.outputDirectory}" includes="**/environment.development-*.properties" />
