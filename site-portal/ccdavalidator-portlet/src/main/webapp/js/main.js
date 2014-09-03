@@ -245,7 +245,7 @@ $(function(){
 				$.unblockUI(); 
             },
             failCallback: function (responseHtml, url) {
-            	alert("Sever error:" + responseHtml);
+            	alert("Server error:" + responseHtml);
             	$.unblockUI(); 
             },
 	        httpMethod: "POST",

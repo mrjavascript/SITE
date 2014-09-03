@@ -4,13 +4,13 @@
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
-        <dependent-module archiveName="site-common-utilities-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/site-common-utilities/site-common-utilities">
+        <dependent-module archiveName="site-common-utilities-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/sitenv-commonutilities/sitenv-commonutilities">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="site-common-statistics-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/site-common-statistics/site-common-statistics">
+        <dependent-module archiveName="site-common-statistics-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/sitenv-statistics/sitenv-statistics">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <property name="context-root" value="DirectTransport-portlet"/>
         <property name="java-output-path" value="/sitenv-directtransport-portlet/target/classes"/>
+        <property name="context-root" value="site-portal-directtransport-portlet"/>
     </wb-module>
 </project-modules>
