@@ -107,10 +107,7 @@
 									<else>
 
 										<echo message="Uploading file to location: ${deploy.location}" />
-										<exec executable="cp">
-											<arg value="target/CCDAValidatorServices.war" />
-											<arg value="${deploy.location}" />
-										</exec>
+										<copy file="target/CCDAValidatorServices.war" todir="${deploy.location}" />
 										<echo message="...Uploaded." />
 
 									</else>
