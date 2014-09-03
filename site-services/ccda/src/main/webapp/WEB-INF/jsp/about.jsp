@@ -61,7 +61,7 @@ analyzed</p>
   border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
   padding:0in 5.4pt 0in 5.4pt;height:.4in'>
   <p  style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
-  normal'><span style='color:black'>TransitionsOfCareAmbulatorySummary</span></p>
+  normal'><span style='color:black'>TransitionsOfCareAmbulatorySummaryb2</span></p>
   </td>
  </tr>
  <tr style='height:.4in'>
@@ -75,7 +75,7 @@ analyzed</p>
   border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
   padding:0in 5.4pt 0in 5.4pt;height:.4in'>
   <p  style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
-  normal'><span style='color:black'>TransitionsOfCareAmbulatorySummary</span></p>
+  normal'><span style='color:black'>TransitionsOfCareAmbulatorySummaryb7</span></p>
   </td>
  </tr>
  <tr style='height:.4in'>
@@ -89,7 +89,7 @@ analyzed</p>
   border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
   padding:0in 5.4pt 0in 5.4pt;height:.4in'>
   <p  style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
-  normal'><span style='color:black'>TransitionsOfCareAmbulatorySummary</span></p>
+  normal'><span style='color:black'>TransitionsOfCareAmbulatorySummaryb1</span></p>
   </td>
  </tr>
  <tr style='height:.4in'>
@@ -103,7 +103,7 @@ analyzed</p>
   border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
   padding:0in 5.4pt 0in 5.4pt;height:.4in'>
   <p  style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
-  normal'><span style='color:black'>TransitionsOfCareInpatientSummary</span></p>
+  normal'><span style='color:black'>TransitionsOfCareInpatientSummaryb2</span></p>
   </td>
  </tr>
  <tr style='height:.4in'>
@@ -117,7 +117,7 @@ analyzed</p>
   border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
   padding:0in 5.4pt 0in 5.4pt;height:.4in'>
   <p  style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
-  normal'><span style='color:black'>TransitionsOfCareInpatientSummary</span></p>
+  normal'><span style='color:black'>TransitionsOfCareInpatientSummaryb7</span></p>
   </td>
  </tr>
  <tr style='height:.4in'>
@@ -131,7 +131,7 @@ analyzed</p>
   border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
   padding:0in 5.4pt 0in 5.4pt;height:.4in'>
   <p  style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
-  normal'><span style='color:black'>TransitionsOfCareInpatientSummary</span></p>
+  normal'><span style='color:black'>TransitionsOfCareInpatientSummaryb1</span></p>
   </td>
  </tr>
  <tr style='height:.4in'>
