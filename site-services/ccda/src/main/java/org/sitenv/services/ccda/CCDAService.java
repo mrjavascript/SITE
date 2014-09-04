@@ -1,8 +1,8 @@
 package org.sitenv.services.ccda;
 
 
-import java.io.FileInputStream;
-import java.io.UnsupportedEncodingException;
+//import java.io.FileInputStream;
+//import java.io.UnsupportedEncodingException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,7 +14,7 @@ import java.util.Properties;
 
 import javax.activation.DataHandler;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
+//import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -59,9 +59,11 @@ public class CCDAService {
         tpMap.put("TransitionsOfCareAmbulatorySummaryb2", "TransitionsOfCareAmbulatorySummary");
         tpMap.put("TransitionsOfCareAmbulatorySummaryb7", "TransitionsOfCareAmbulatorySummary");
         tpMap.put("TransitionsOfCareAmbulatorySummaryb1", "TransitionsOfCareAmbulatorySummary");
+        tpMap.put("TransitionsOfCareAmbulatorySummary", "TransitionsOfCareAmbulatorySummary");
         tpMap.put("TransitionsOfCareInpatientSummaryb2", "TransitionsOfCareInpatientSummary");
         tpMap.put("TransitionsOfCareInpatientSummaryb7", "TransitionsOfCareInpatientSummary");
         tpMap.put("TransitionsOfCareInpatientSummaryb1", "TransitionsOfCareInpatientSummary");
+        tpMap.put("TransitionsOfCareInpatientSummary", "TransitionsOfCareInpatientSummary");
         tpMap.put("VDTAmbulatorySummary", "VDTAmbulatorySummary");
         tpMap.put("VDTInpatientSummary", "VDTInpatientSummary");
         tpMap.put("NonSpecificCCDA", "NonSpecificCCDA");
