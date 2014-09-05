@@ -1,0 +1,6 @@
+#surefire
+#Thu Aug 07 16:03:34 EDT 2014
+environment.name=development
+user.dir=C\:\\Users\\cwatson\\git\\SITE\\sitenv-services\\sitenv-services-ccda
+localRepository=C\:\\Users\\cwatson\\.m2\\repository
+basedir=C\:\\Users\\cwatson\\git\\SITE\\sitenv-services\\sitenv-services-ccda

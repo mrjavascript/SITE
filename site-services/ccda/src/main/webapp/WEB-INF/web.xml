@@ -26,6 +26,7 @@
     	<servlet-name>AboutPage</servlet-name>
     	<jsp-file>/WEB-INF/jsp/about.jsp</jsp-file>
 	</servlet>
+	
 
 
     <servlet-mapping>
@@ -38,5 +39,7 @@
     	<servlet-name>AboutPage</servlet-name>
     	<url-pattern>/About</url-pattern>
 	</servlet-mapping>
+	
+	
     
 </web-app>

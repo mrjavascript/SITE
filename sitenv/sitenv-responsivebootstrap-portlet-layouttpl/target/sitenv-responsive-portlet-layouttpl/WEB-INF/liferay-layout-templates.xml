@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<!DOCTYPE layout-templates PUBLIC "-//Liferay//DTD Layout Templates 6.1.0//EN" "http://www.liferay.com/dtd/liferay-layout-templates_6_1_0.dtd">
+
+<layout-templates>
+	<custom>
+		<layout-template id="sitenv-responsivebootstrap-portlet-layouttpl" name="sitenv-responsivebootstrap-portlet-layouttpl">
+			<template-path>/sitenv-responsivebootstrap-portlet-layouttpl.tpl</template-path>
+			<wap-template-path>/sitenv-responsivebootstrap-portlet-layouttpl.wap.tpl</wap-template-path>
+			<thumbnail-path>/sitenv-responsivebootstrap-portlet-layouttpl.png</thumbnail-path>
+		</layout-template>
+	</custom>
+</layout-templates>

@@ -2,16 +2,19 @@ package org.sitenv.services.ccda;
 
 
 //import java.io.FileInputStream;
+//import java.io.UnsupportedEncodingException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.Date;
-//import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.activation.DataHandler;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
+//import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -48,11 +51,38 @@ public class CCDAService {
 	
 	protected Properties props;
 	
+    private static final Map<String, String> typeValMap;
+    static {
+        Map<String, String> tpMap = new HashMap<String, String>();
+        
+        tpMap.put("ClinicalOfficeVisitSummary", "ClinicalOfficeVisitSummary");
+        tpMap.put("TransitionsOfCareAmbulatorySummaryb2", "TransitionsOfCareAmbulatorySummary");
+        tpMap.put("TransitionsOfCareAmbulatorySummaryb7", "TransitionsOfCareAmbulatorySummary");
+        tpMap.put("TransitionsOfCareAmbulatorySummaryb1", "TransitionsOfCareAmbulatorySummary");
+        tpMap.put("TransitionsOfCareAmbulatorySummary", "TransitionsOfCareAmbulatorySummary");
+        tpMap.put("TransitionsOfCareInpatientSummaryb2", "TransitionsOfCareInpatientSummary");
+        tpMap.put("TransitionsOfCareInpatientSummaryb7", "TransitionsOfCareInpatientSummary");
+        tpMap.put("TransitionsOfCareInpatientSummaryb1", "TransitionsOfCareInpatientSummary");
+        tpMap.put("TransitionsOfCareInpatientSummary", "TransitionsOfCareInpatientSummary");
+        tpMap.put("VDTAmbulatorySummary", "VDTAmbulatorySummary");
+        tpMap.put("VDTInpatientSummary", "VDTInpatientSummary");
+        tpMap.put("NonSpecificCCDA", "NonSpecificCCDA");
+        
+        typeValMap = Collections.unmodifiableMap(tpMap);
+    }
+	
+	
+	
+	
+	
 	@Autowired
 	private StatisticsManager statisticsManager;
 	
 	
     
+	
+	
+	
 	protected void loadProperties() throws IOException {
 		InputStream in = this.getClass().getClassLoader().getResourceAsStream(DEFAULT_PROPERTIES_FILE);
 		
@@ -91,7 +121,17 @@ public class CCDAService {
 		if(mu2_ccda_type_value == null)
 		{
 			mu2_ccda_type_value = "";
+		} else {
+			
+			String mapped_type_val = "";
+			
+			if (typeValMap.containsKey(mu2_ccda_type_value)){
+				mapped_type_val = typeValMap.get(mu2_ccda_type_value);
+			}
+			
+			mu2_ccda_type_value = mapped_type_val;
 		}
+		
 		
 		
 		Attachment file = body.getAttachment("file");
@@ -224,7 +264,6 @@ public class CCDAService {
 		return jsonbody;
     }
     
-    
     /*
     @GET
     @Path("/TestValidate")
@@ -233,13 +272,13 @@ public class CCDAService {
     {	
     	String json = null;
 		try {
-			 
+			
 			String fileLoc = "C:\\CWWorkspace\\SITE\\CCDA\\CCDA_Ambulatory.xml";
 			InputStream is = new FileInputStream(fileLoc);
 			
 			
 			HttpClient client = new DefaultHttpClient();
-			String URL = "http://localhost:7080/CcdaValidatorServices/CCDA/Validate/";
+			String URL = "http://localhost:7080/CCDAValidatorServices/Validate/";
 			HttpPost post = new HttpPost(URL);
 			
 			MultipartEntity entity = new MultipartEntity();
@@ -276,5 +315,6 @@ public class CCDAService {
     	return json;
     }
     */
+    
     
 }

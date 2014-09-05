@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE look-and-feel PUBLIC "-//Liferay//DTD Look and Feel 6.1.0//EN" "http://www.liferay.com/dtd/liferay-look-and-feel_6_1_0.dtd">
+
+<look-and-feel>
+	<compatibility>
+		<version>6.1.1+</version>
+	</compatibility>
+	<theme id="MDHT.SIT.MainTheme" name="Test Theme">
+		<settings> 
+			<setting key="header-type" value="brief" ></setting>
+			<setting key="">setting</setting>
+		</settings>
+		<color-scheme id="01" name="Day">
+		<css-class>day</css-class>
+		<color-scheme-images-path>${images-path}/color_schemes/${css-class}</color-scheme-images-path> 
+		</color-scheme> 
+		<color-scheme id="02" name="Night"> 
+			<css-class>night</css-class> 
+			<color-scheme-images-path>${images-path}/color_schemes/${css-class}</color-scheme-images-path>
+		</color-scheme>
+	</theme>
+</look-and-feel>

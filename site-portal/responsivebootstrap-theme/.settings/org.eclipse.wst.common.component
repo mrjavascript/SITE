@@ -4,7 +4,7 @@
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
-        <property name="context-root" value="sitenv-responsivebootstrap-theme"/>
         <property name="java-output-path" value="/sitenv-responsivebootstrap-theme/target/classes"/>
+        <property name="context-root" value="site-portal-responsivebootstrap-theme"/>
     </wb-module>
 </project-modules>

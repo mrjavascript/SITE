@@ -1,0 +1,6 @@
+#surefire
+#Thu Jul 31 11:36:51 EDT 2014
+environment.name=development
+user.dir=C\:\\Users\\cwatson\\git\\SITE\\sitenv\\sitenv-statistics-portlet
+localRepository=C\:\\Users\\cwatson\\.m2\\repository
+basedir=C\:\\Users\\cwatson\\git\\SITE\\sitenv\\sitenv-statistics-portlet

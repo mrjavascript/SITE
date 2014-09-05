@@ -1,0 +1,7 @@
+#surefire
+#Wed Jul 16 16:31:50 EDT 2014
+liferay.auto.deploy.dir=C\:/SITE/apache-tomcat-7.0.53-Liferay/deploy
+environment.name=development
+user.dir=C\:\\Users\\cwatson\\git\\SITE\\sitenv\\sitenv-commonutilities
+localRepository=C\:\\Users\\cwatson\\.m2\\repository
+basedir=C\:\\Users\\cwatson\\git\\SITE\\sitenv\\sitenv-commonutilities

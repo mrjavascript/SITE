@@ -28,8 +28,9 @@
 								<copy
 									file="src/main/resources/environment.${environment.name}.properties"
 									tofile="${project.build.outputDirectory}/environment.properties" />
-								<delete
-									file="${project.build.outputDirectory}/environment.development.properties" />
+								<delete>
+									<fileset dir="${project.build.outputDirectory}" includes="**/environment.development-*.properties" />
+								</delete>
 								<delete
 									file="${project.build.outputDirectory}/environment.test.properties" />
 								<delete

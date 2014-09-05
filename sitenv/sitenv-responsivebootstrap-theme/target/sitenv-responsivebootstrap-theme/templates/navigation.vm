@@ -1,0 +1,42 @@
+
+<nav class="$nav_css_class navbar-collapse collapse" id="navigation">
+	<ul class="nav navbar-nav">
+		#foreach ($nav_item in $nav_items)
+			#if ($nav_item.isSelected())
+				#if ($nav_item.hasChildren())
+					<li class="active dropdown-parent">
+				#else
+					<li class="active">
+				#end
+			#else
+				#if ($nav_item.hasChildren())
+					<li class="dropdown-parent">
+				#else
+					<li>
+				#end
+			#end
+				
+				
+				
+				#if ($nav_item.hasChildren())
+					<a href="$nav_item.getURL()" $nav_item.getTarget()  tabindex="1"><span>$nav_item.icon() $nav_item.getName()</span></a>
+					<div class="firefox_fix">
+					<ul class="dropdown-menu">
+						#foreach ($nav_child in $nav_item.getChildren())
+							#if ($nav_child.isSelected())
+								<li class="active">
+							#else
+								<li>
+							#end
+								<a href="$nav_child.getURL()" $nav_child.getTarget()  tabindex="1">$nav_child.getName()</a>
+							</li>
+						#end
+					</ul>
+					</div>
+				#else
+					<a href="$nav_item.getURL()" $nav_item.getTarget()  tabindex="1"><span>$nav_item.icon() $nav_item.getName()</span></a>
+				#end
+			</li>
+		#end
+	</ul>
+</nav>
