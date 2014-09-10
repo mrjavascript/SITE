@@ -106,5 +106,6 @@
     	<module>responsivebootstrap-portlet-layouttpl</module>
     	<module>statistics-portlet</module>
     	<module>xdrvalidator-portlet</module>
-	</modules>
+    <module>directcertificatediscovery-portlet</module>
+  </modules>
 </project>
