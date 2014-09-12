@@ -220,7 +220,6 @@ public class CCDAValidatorController extends BaseController {
 					statisticsManager.addCcdaValidation(ccda_type_value, hasErrors, hasWarnings, hasInfo, false);
 				}				
 				
-
 		} catch (Exception e) {
 			statisticsManager.addCcdaValidation(ccda_type_value, false, false, false, true);
 			
