@@ -7,7 +7,9 @@ import java.util.List;
 import javax.persistence.Query;
 
 import org.sitenv.common.statistics.dao.DirectTransmissionDAO;
+import org.sitenv.common.statistics.dto.DirectLogCounts;
 import org.sitenv.common.statistics.dto.DirectWeeklyCounts;
+import org.sitenv.common.statistics.entity.DirectLogCountsEntity;
 import org.sitenv.common.statistics.entity.DirectReceiveEntity;
 import org.sitenv.common.statistics.entity.DirectTrustUploadEntity;
 import org.sitenv.common.statistics.entity.DirectWeeklyCountsEntity;
@@ -249,6 +251,43 @@ public class DirectTransmissionDAOImpl extends BaseDAOImpl implements DirectTran
 		
 		return returnVal;
 		
+	}
+
+	public DirectLogCounts getDirectSendLogCount() {
+
+		
+		Query query = entityManager.createNamedQuery("directsend_log_counts", DirectLogCountsEntity.class);
+		
+		DirectLogCountsEntity results = (DirectLogCountsEntity) query.getSingleResult();
+		DirectLogCounts returnVal = null;
+		
+		if (results != null) {
+				
+				returnVal = new DirectLogCounts();
+				returnVal.setDistinctDomainsCount(results.getDistinctDomainsCount());
+				returnVal.setTotalDirectMessageCount(results.getTotalDirectMessageCount());
+				
+		}
+		
+		return returnVal;
+	}
+
+	public DirectLogCounts getDirectReceiveLogCount() {
+		
+		Query query = entityManager.createNamedQuery("directreceive_log_counts", DirectLogCountsEntity.class);
+		
+		DirectLogCountsEntity results = (DirectLogCountsEntity) query.getSingleResult();
+		DirectLogCounts returnVal = null;
+		
+		if (results != null) {
+				
+				returnVal = new DirectLogCounts();
+				returnVal.setDistinctDomainsCount(results.getDistinctDomainsCount());
+				returnVal.setTotalDirectMessageCount(results.getTotalDirectMessageCount());
+				
+		}
+		
+		return returnVal;
 	}
 
 }

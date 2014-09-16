@@ -2,6 +2,7 @@ package org.sitenv.common.statistics.dao;
 
 import java.util.List;
 
+import org.sitenv.common.statistics.dto.DirectLogCounts;
 import org.sitenv.common.statistics.dto.DirectWeeklyCounts;
 
 public interface DirectTransmissionDAO {
@@ -20,6 +21,9 @@ public interface DirectTransmissionDAO {
 
 	public Long getDirectTrustUploadCount(Boolean hasErrors, Integer numberOfDays);
 	
+	public DirectLogCounts getDirectSendLogCount();
+	
+	public DirectLogCounts getDirectReceiveLogCount();
 	
 	public List<DirectWeeklyCounts> getDirectWeeklyCounts(Integer numOfWeeks, Boolean send);
 }

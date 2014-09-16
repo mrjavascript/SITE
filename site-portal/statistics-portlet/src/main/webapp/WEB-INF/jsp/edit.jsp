@@ -40,6 +40,9 @@
 				<label for="<portlet:namespace />viewPage">Statistics Type:</label><br/>
 				 <select  name="<portlet:namespace />viewPage">
 				 	<option value="all-stats" >All Statistics</option>
+				 	
+				 	<option value="ccda-log-counts" <%= (request.getAttribute("viewPage").equals("ccda-log-counts") ? "selected=\"selected\"" : "") %>>Total Ccda Count</option>
+				 	<option value="direct-counts" <%= (request.getAttribute("viewPage").equals("direct-counts") ? "selected=\"selected\"" : "") %>>Total Direct Messages Count</option>
 				 	<option value="ccda-stats" <%= (request.getAttribute("viewPage").equals("ccda-stats") ? "selected=\"selected\"" : "") %>>C-CDA Validator Statistics</option>
 				 	<option value="qrda-stats" <%= (request.getAttribute("viewPage").equals("qrda-stats") ? "selected=\"selected\"" : "") %>>QRDA Validator Statistics</option>
 				 	<option value="pdti-stats" <%= (request.getAttribute("viewPage").equals("pdti-stats") ? "selected=\"selected\"" : "") %>>Provider Directory Test Tool Statistics</option>

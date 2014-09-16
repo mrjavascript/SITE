@@ -1,0 +1,69 @@
+﻿
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch develop-shruti
+# Your branch is up-to-date with 'origin/develop-shruti'.
+#
+# Changes to be committed:
+#	modified:   site-common/statistics/src/main/java/org/sitenv/common/statistics/dao/CcdaValidationDAO.java
+#
+# Changes not staged for commit:
+#	modified:   site-common/statistics/src/main/java/org/sitenv/common/statistics/dao/DirectTransmissionDAO.java
+#	modified:   site-common/statistics/src/main/java/org/sitenv/common/statistics/dao/impl/CcdaValidationDAOImpl.java
+#	modified:   site-common/statistics/src/main/java/org/sitenv/common/statistics/dao/impl/DirectTransmissionDAOImpl.java
+#	modified:   site-common/statistics/src/main/java/org/sitenv/common/statistics/manager/StatisticsManager.java
+#	modified:   site-common/statistics/src/main/java/org/sitenv/common/statistics/manager/impl/StatisticsManagerImpl.java
+#	modified:   site-common/statistics/src/main/resources/META-INF/persistence.xml
+#	modified:   site-portal/ccdavalidator-portlet/.settings/org.eclipse.wst.common.component
+#	modified:   site-portal/ccdavalidator-portlet/.settings/org.eclipse.wst.common.project.facet.core.xml
+#	modified:   site-portal/directmailbox-portlet/.settings/org.eclipse.wst.common.component
+#	modified:   site-portal/directmailbox-portlet/.settings/org.eclipse.wst.common.project.facet.core.xml
+#	modified:   site-portal/directtransport-portlet/.settings/org.eclipse.wst.common.component
+#	modified:   site-portal/directtransport-portlet/.settings/org.eclipse.wst.common.project.facet.core.xml
+#	deleted:    site-portal/directtransport-portlet/src/main/resources/environment.development.properties
+#	modified:   site-portal/providerdirectory-portlet/.settings/org.eclipse.wst.common.project.facet.core.xml
+#	modified:   site-portal/providerdirectory-servlet/.settings/org.eclipse.wst.common.component
+#	modified:   site-portal/qrda-portlet/.settings/org.eclipse.wst.common.component
+#	modified:   site-portal/qrda-portlet/.settings/org.eclipse.wst.common.project.facet.core.xml
+#	modified:   site-portal/responsivebootstrap-portlet-layouttpl/.classpath
+#	modified:   site-portal/responsivebootstrap-portlet-layouttpl/.settings/org.eclipse.wst.common.component
+#	modified:   site-portal/responsivebootstrap-portlet-layouttpl/.settings/org.eclipse.wst.common.project.facet.core.xml
+#	modified:   site-portal/responsivebootstrap-theme/.settings/org.eclipse.wst.common.component
+#	modified:   site-portal/responsivebootstrap-theme/.settings/org.eclipse.wst.common.project.facet.core.xml
+#	modified:   site-portal/showdockbar-hook/.settings/org.eclipse.wst.common.component
+#	modified:   site-portal/showdockbar-hook/.settings/org.eclipse.wst.common.project.facet.core.xml
+#	modified:   site-portal/statistics-portlet/.settings/org.eclipse.wst.common.project.facet.core.xml
+#	modified:   site-portal/statistics-portlet/src/main/java/org/sitenv/portlets/statistics/controllers/StatisticsController.java
+#	modified:   site-portal/statistics-portlet/src/main/resources/META-INF/persistence.xml
+#	modified:   site-portal/statistics-portlet/src/main/resources/environment.development.properties
+#	modified:   site-portal/statistics-portlet/src/main/webapp/WEB-INF/jsp/edit.jsp
+#	modified:   site-portal/usercreationalert-hook/.settings/org.eclipse.wst.common.component
+#	modified:   site-portal/usercreationalert-hook/.settings/org.eclipse.wst.common.project.facet.core.xml
+#	modified:   site-portal/xdrvalidator-portlet/.settings/org.eclipse.wst.common.project.facet.core.xml
+#	modified:   site-portal/xdrvalidator-portlet/src/main/webapp/WEB-INF/portlet.xml
+#
+# Untracked files:
+#	.gitignore
+#	site-common/statistics/src/main/java/org/sitenv/common/statistics/dto/DirectLogCounts.java
+#	site-common/statistics/src/main/java/org/sitenv/common/statistics/entity/DirectLogCountsEntity.java
+#	site-portal/directtransport-portlet/src/main/resources/environment.development-shruti.properties
+#	site-portal/statistics-portlet/src/main/webapp/WEB-INF/jsp/ccdaLogCounts.jsp
+#	site-portal/statistics-portlet/src/main/webapp/WEB-INF/jsp/directCounts.jsp
+#	sitenv-commonutilities/
+#	sitenv-customvelocity-hook/
+#	sitenv-directmailbox-portlet/
+#	sitenv-directtransport-portlet/
+#	sitenv-main-theme/
+#	sitenv-pdgi-single-test-portlet/
+#	sitenv-providerdirectory-servlet/
+#	sitenv-qrda-portlet/
+#	sitenv-responsivebootstrap-portlet-layouttpl/
+#	sitenv-responsivebootstrap-theme/
+#	sitenv-statistics-portlet/
+#	sitenv-statistics/
+#	sitenv-testlayout-layouttpl/
+#	sitenv-uploadportlet-portlet/
+#	sitenv-usercreation-hook/
+#	sitenv/
+#
+
