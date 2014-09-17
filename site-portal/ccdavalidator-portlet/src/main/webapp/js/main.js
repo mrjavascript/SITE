@@ -203,6 +203,15 @@ function smartCCDAValidation()
     });
 }
 
+
+function incorpRequired(field, rules, i, options){
+	if($('#incorpfilepath').val()== '')
+	{
+		return "Please select a C-CDA sample";
+	}
+}
+
+
 $(function(){
 	
 	
@@ -296,5 +305,180 @@ $(function(){
 	
 	
 	
-});
+	$("#ccdafiletreepanel").jstree({
+		 "json_data" : {
+			      "ajax" : {
+				      "url" : sampleCCDATreeURL,
+				      "type" : "post",
+				      /*"data" : function (n) {
+				    	 return { id : n.attr ? n.attr("id") : 0 };
+				      }*/
+				  }
+	      },
+	      
+	      "types" : {
+	    	  "valid_children" : [ "all" ],
+	    	  "type_attr" : "ref",
+	    	  "types" : {
+	    		  "root" : {
+		    	      "icon" : {
+		    	    	  "image" : window.currentContextPath + "/images/root.png"
+		    	      },
+		    	      "valid_children" : [ "file","folder" ],
+		    	      "max_depth" : 2,
+		    	      "hover_node" : false,
+		    	      "select_node" : function (e) {
 
+		    	    	  this.toggle_node(e);
+		    	    	  return false;
+		    	      }
+		    	      
+		    	  	},
+		    	  "file" : {
+		    		  "icon" : {
+		    	    	  "image" : window.currentContextPath + "/images/file.png"
+		    	      },
+		    		  "valid_children" : [ "none" ],
+		    		  "deselect_node" : function (node,e) {
+		    			  var jform = $('#incorpForm');
+		    			  $('#incorpForm .formError').hide(0);
+		    				
+		    			  
+		    			var textValue = $('#incorpemail').val();
+		  				$('#incorpForm').trigger('reset');
+		  				$('#incorpCCDAsubmit').unbind("click");
+		  				
+		  				$('#incorpfilePathOutput').empty();
+		  				$('#incorpfilepath').val('');
+		  				
+		  				$('#incorpemail').val(textValue);
+		    			  
+		    		  },
+		    		  "select_node" : function (node,e) {
+		    			  var jform = $('#incorpForm');
+		    			  //jform.validationEngine('hideAll');
+		    			  $('#incorpForm .formError').hide(0);
+		    			  //populate the textbox
+		    			  $("#incorpfilepath").val(node.data("serverpath"));
+		    			  $("#incorpfilePathOutput").text($("#incorpfilepath").val());
+		    	    	  //hide the drop down panel
+		    			  $('[data-toggle="dropdown"]').parent().removeClass('open');
+		    			  //hide all the errors
+		    			  //$('#incorpCCDAsubmit').validationEngine('hideAll');
+		    			   
+		    			  $('#dLabel').focus();
+		    			  $('#dLabel').dropdown("toggle");
+		    			  
+		    			  $("#incorpCCDAsubmit").click(function(e){
+		    				    
+		    				  	var ajaximgpath = window.currentContextPath + "/css/ajax-loader.gif";
+		    				  	$.blockUI({ css: { 
+		    				        border: 'none', 
+		    				        padding: '15px', 
+		    				        backgroundColor: '#000', 
+		    				        '-webkit-border-radius': '10px', 
+		    				        '-moz-border-radius': '10px', 
+		    				        opacity: .5, 
+		    				        color: '#fff' 
+		    			    	},
+		    			    	message: '<div class="progressorpanel"><img src="'+ ajaximgpath + '" alt="loading">'+
+		    					          '<div class="lbl">Preparing your report...</div></div>' });
+		    				  	
+		    				  
+		    					var jform = $('#incorpForm');
+		    					jform.validationEngine({promptPosition:"centerRight", validateNonVisibleFields: true, updatePromptsPosition:true});
+		    					if(jform.validationEngine('validate'))
+		    					{
+		    						$('#incorpForm .formError').hide(0);
+		    						
+		    						//var formData = $('#incorpForm').serializefiles();
+		    						
+		    					    
+		    						$.fileDownload($('#incorpForm').attr('action'), {
+		    							
+		    							successCallback: function (url) {
+		    								$.unblockUI(); 
+		    				            },
+		    				            failCallback: function (responseHtml, url) {
+		    				            	alert("Server error:" + responseHtml);
+		    				            	alert(url);
+		    				            	$.unblockUI(); 
+		    				            },
+		    					        httpMethod: "POST",
+		    					        data: $('#incorpForm').serialize()
+		    					    });
+		    						
+		    						
+		    						/*
+		    						 * 
+		    						var formData = $('#incorpForm').serialize();
+		    					    $.ajax({
+		    					        url: $('#incorpForm').attr('action'),
+		    					        
+		    					        type: 'POST',
+		    					        
+		    					        //xhr: function() {  // custom xhr
+		    					         //   myXhr = $.ajaxSettings.xhr();
+		    					         //   if(myXhr.upload){ // check if upload property exists
+		    					         //      myXhr.upload.addEventListener('progressor', progressorHandlingFunction, false); 
+		    					         //   }
+		    					         //   return myXhr;
+		    					        //},
+		    					        
+		    					        success: function(data){
+		    					        	
+		    					        },
+		    					        
+		    					        error: function (request, status, error) {
+		    					        	alert(status);
+		    					        	alert(error);
+		    					        },
+		    					        // Form data
+		    					        data: formData,
+		    					        //Options to tell JQuery not to process data or worry about content-type
+		    					        cache: false,
+		    					        contentType: false,
+		    					        processData: false
+		    					    });
+		    					    */
+		    					}
+		    					else
+		    					{
+		    						$('#incorpForm .formError').show(0);
+		    						
+		    						$('#incorpform .incorpfilepathformError').prependTo('#incorperrorlock');
+		    					}
+		    					
+		    					return false;
+		    				});
+		    			  
+		    		  }
+		    	  },
+		    	  "folder" : {
+		    		  "icon" : {
+		    	    	  "image" : window.currentContextPath + "/images/folder.png"
+		    	      },
+		    		  "valid_children" : [ "file" ],
+		    		  "select_node" : function (e) {
+		    	    	  e.find('a:first').focus();
+		    			  this.toggle_node(e);
+		    	    	  return false;
+		    	      }
+		    	  }
+	    	 }
+	    },
+	    "plugins" : [ "themes", "json_data", "ui", "types" ]
+	}).bind('loaded.jstree', function(e, data) {
+		isfiletreeloaded = true;
+		
+		$('#ccdafiletreepanel').find('a').each(function() {
+		    $(this).attr('tabindex', '1');
+		});
+	});
+	
+	
+	
+	
+	
+	
+});

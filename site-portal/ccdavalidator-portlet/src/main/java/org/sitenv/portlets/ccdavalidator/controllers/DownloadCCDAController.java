@@ -111,7 +111,6 @@ public class DownloadCCDAController extends BaseController {
 		}catch (Exception ex) {
 			ex.printStackTrace();
 		}
-
 	}
 
 	public StatisticsManager getStatisticsManager() {

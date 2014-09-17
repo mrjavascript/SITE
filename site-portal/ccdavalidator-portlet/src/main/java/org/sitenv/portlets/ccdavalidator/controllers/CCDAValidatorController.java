@@ -135,7 +135,7 @@ public class CCDAValidatorController extends BaseController {
 		} 
 		
 	}
-
+	
 	
 	@ActionMapping(params = "javax.portlet.action=uploadCCDA2")
 	public void responseCCDA2(MultipartActionRequest request, ActionResponse response) throws IOException {
