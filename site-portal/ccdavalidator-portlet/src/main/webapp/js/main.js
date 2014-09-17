@@ -355,17 +355,26 @@ $(function(){
 		    			  
 		    		  },
 		    		  "select_node" : function (node,e) {
-		    			  var jform = $('#incorpForm');
+		    			  //var jform = $('#incorpForm');
 		    			  //jform.validationEngine('hideAll');
 		    			  $('#incorpForm .formError').hide(0);
 		    			  //populate the textbox
 		    			  $("#incorpfilepath").val(node.data("serverpath"));
-		    			  $("#incorpfilePathOutput").text($("#incorpfilepath").val());
+		    			  
+		    			  var pathTokens = $("#incorpfilepath").val().split("/");
+		    			  if (pathTokens.length === 1){
+		    				  pathTokens = pathTokens[0].split("\\");
+		    			  }
+		    			  var fileName = pathTokens[pathTokens.length-1];
+		    			  
+		    			  //$("#incorpfilePathOutput").text($("#incorpfilepath").val());
+		    			  $("#incorpfilePathOutput").text(fileName);
+		    			  
 		    	    	  //hide the drop down panel
 		    			  $('[data-toggle="dropdown"]').parent().removeClass('open');
 		    			  //hide all the errors
 		    			  //$('#incorpCCDAsubmit').validationEngine('hideAll');
-		    			   
+		    			  
 		    			  $('#dLabel').focus();
 		    			  $('#dLabel').dropdown("toggle");
 		    			  
@@ -382,7 +391,7 @@ $(function(){
 		    				        color: '#fff' 
 		    			    	},
 		    			    	message: '<div class="progressorpanel"><img src="'+ ajaximgpath + '" alt="loading">'+
-		    					          '<div class="lbl">Preparing your report...</div></div>' });
+		    					          '<div class="lbl">Preparing your download...</div></div>' });
 		    				  	
 		    				  
 		    					var jform = $('#incorpForm');
@@ -390,8 +399,6 @@ $(function(){
 		    					if(jform.validationEngine('validate'))
 		    					{
 		    						$('#incorpForm .formError').hide(0);
-		    						
-		    						//var formData = $('#incorpForm').serializefiles();
 		    						
 		    					    
 		    						$.fileDownload($('#incorpForm').attr('action'), {

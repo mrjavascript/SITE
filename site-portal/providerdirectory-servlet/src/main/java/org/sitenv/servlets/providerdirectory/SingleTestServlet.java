@@ -239,7 +239,6 @@ public class SingleTestServlet extends HttpServlet {
             //session.setAttribute("LIFERAY_SHARED_resultList", results, PortletSession.APPLICATION_SCOPE);
             session.setAttribute("resultList", results);
             
-            //getPortletContext().getRequestDispatcher("/testcase_results.jsp").include(request, response);
             getServletContext().getRequestDispatcher("/testcase_results.jsp").include(request, response);
             
             return;

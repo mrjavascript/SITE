@@ -50,20 +50,24 @@ public class DownloadIncorporationController extends BaseController {
 			this.loadProperties();
 		}
 		
-		
 		String downloadPath = resourceRequest.getParameter("incorpfilepath");
 		
-		System.out.println(downloadPath);
+		String[] downloadPathTokens = downloadPath.split("[/\\\\]");
+		String fileName = downloadPathTokens[downloadPathTokens.length-1];
+		
+		if (downloadPathTokens.length > 1){
+			String folder = downloadPathTokens[downloadPathTokens.length-2];
+			fileName = folder + " - " + fileName;
+		}
 		
 		File downloadFile = new File(downloadPath);
 		InputStream in = new FileInputStream(downloadFile);
-		
 		
 		res.setContentType("application/xml");
 		res.addProperty(HttpHeaders.CACHE_CONTROL,
 				"max-age=3600, must-revalidate");
 		res.addProperty(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""
-				+ "test.xml" + "\"");
+				+ fileName + "\"");
 		// Use this to directly download the file
 		res.addProperty("Set-Cookie", "fileDownload=true; path=/");
 		
