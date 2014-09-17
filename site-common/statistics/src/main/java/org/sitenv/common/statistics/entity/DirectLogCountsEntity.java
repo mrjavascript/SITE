@@ -15,6 +15,9 @@ import javax.persistence.NamedNativeQuery;
 
 public class DirectLogCountsEntity {
 	@Id
+	@Column(name="rnum")
+	private Integer rnum;
+	
 	@Column(name="total_directmsg")
 	private Integer totalDirectMessageCount;
 	

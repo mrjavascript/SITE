@@ -57,7 +57,7 @@
 				<input type="hidden" name="action" value="save">
 				
 				<button id="qrdavalidate_btn" type="submit"
-					class="btn btn-primary start" onclick="submitForm(document.<portlet:namespace />fm);"">
+					class="btn btn-primary start" onclick="submitForm(document.<portlet:namespace />fm);">
 					<i class="glyphicon glyphicon-ok"></i> <span>Save Config</span>
 				</button>
 			
