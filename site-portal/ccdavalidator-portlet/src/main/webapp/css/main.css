@@ -282,8 +282,9 @@ text-decoration: underline;
     float:right;
 }
 
-
-
+#dLabel {
+	width: 180px;
+}
 
 #ccdafiletreepanel
 {
@@ -291,7 +292,10 @@ text-decoration: underline;
 	height:150px;
 }
 
-
+#incorpFormWrapper
+{
+	height:240px
+}
 
 
 
