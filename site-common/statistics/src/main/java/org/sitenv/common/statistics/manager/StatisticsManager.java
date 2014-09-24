@@ -62,6 +62,8 @@ public interface StatisticsManager {
 	public Long getTotalPdtiTestCount(Integer numOfDays);
 	public Long getHttpErrorPdtiTestCount(Integer numOfDays);
 	
+
+	public void addDcdtHostingVerification(String testcase, String directAddress, String response);
 	
 	public List<AggregateWeeklyCounts> getAggregateWeeklyCounts(Integer numOfWeeks);
 	

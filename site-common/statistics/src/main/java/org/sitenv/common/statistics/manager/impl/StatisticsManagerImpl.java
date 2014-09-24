@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.sitenv.common.statistics.dao.AggregateDAO;
 import org.sitenv.common.statistics.dao.CcdaValidationDAO;
+import org.sitenv.common.statistics.dao.DcdtHostingVerificationDAO;
 import org.sitenv.common.statistics.dao.DirectTransmissionDAO;
 import org.sitenv.common.statistics.dao.PdtiTestDAO;
 import org.sitenv.common.statistics.dao.QrdaValidationDAO;
@@ -43,6 +44,16 @@ public class StatisticsManagerImpl implements StatisticsManager {
 	
 	@Autowired
 	private AggregateDAO aggregateDAO;
+	
+	@Autowired
+	private DcdtHostingVerificationDAO dcdtHostingVerificationDAO;
+
+
+	@Transactional
+	public void addDcdtHostingVerification(String testcase, String directAddress, String response) 
+	{
+		dcdtHostingVerificationDAO.createDcdtHostingVerification(testcase, directAddress, response);
+	}
 	
 	
 	@Transactional

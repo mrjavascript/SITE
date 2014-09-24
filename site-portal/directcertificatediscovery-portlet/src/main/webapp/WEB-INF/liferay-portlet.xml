@@ -7,6 +7,13 @@
 		<icon>/icon.png</icon>
 		<instanceable>false</instanceable>
 		<header-portlet-css>/css/main.css</header-portlet-css>
+		<footer-portlet-javascript>/js/dcdt/data.js</footer-portlet-javascript>
+		<footer-portlet-javascript>/js/dcdt/web.js</footer-portlet-javascript>
+		<footer-portlet-javascript>/js/dcdt/web-form.js</footer-portlet-javascript>
+		<footer-portlet-javascript>/js/dcdt/web-beans.js</footer-portlet-javascript>
+		<footer-portlet-javascript>/js/dcdt/testcases.js</footer-portlet-javascript>
+		<footer-portlet-javascript>/js/dcdt/discovery-mail-mapping.js</footer-portlet-javascript>
+		<footer-portlet-javascript>/js/dcdt/hosting.js</footer-portlet-javascript>
 		<footer-portlet-javascript>/js/main.js</footer-portlet-javascript>
 	</portlet>
 	<role-mapper>
