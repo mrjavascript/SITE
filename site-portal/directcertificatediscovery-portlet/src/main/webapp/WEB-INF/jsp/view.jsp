@@ -88,7 +88,7 @@
 						</div>
 					</div>
 					<!-- Description of the test case will go here: -->
-					<div id="hosting-testcase-desc" class="testcase" style="display:none;">Please
+					<div id="hosting-testcase-desc" class="testcase">Please
 						select a test case.</div>
 					<p>
 						
@@ -300,7 +300,7 @@
 					<span class="glyphicon glyphicon-envelope glyphicon-type-info"></span>
 					<strong>Direct Address</strong>: <span></span>
 				</div>
-				<div id="testcase-desc" class="testcase" style="display: none;">Please select a test
+				<div id="testcase-desc" class="testcase" >Please select a test
 					case.</div>
 			</form>
 		</div>
