@@ -5,7 +5,7 @@ $(function() {
 	// Change this to the location of your server-side upload handler:
 	$('#progress').hide();
 	$('#CCDA1fileupload').fileupload({
-		url : url,
+		url : urlCCDA1_1,
 		dataType : 'json',
 		autoUpload : false,
 		type : 'POST',
@@ -358,7 +358,7 @@ $(function() {
 	// Change this to the location of your server-side upload handler:
 	$('#progress').hide();
 	$('#CCDA2fileupload').fileupload({
-		url : url,
+		url : urlCCDA2_0,
 		dataType : 'json',
 		autoUpload : false,
 		type : 'POST',

@@ -41,8 +41,8 @@ public class CCDAValidatorController extends BaseController {
 	@Autowired
 	private StatisticsManager statisticsManager;
 
-	@ActionMapping(params = "javax.portlet.action=uploadCCDA1")
-	public void responseCCDA1(MultipartActionRequest request, ActionResponse response) throws IOException {
+	@ActionMapping(params = "javax.portlet.action=uploadCCDA1.1")
+	public void responseCCDA1_1(MultipartActionRequest request, ActionResponse response) throws IOException {
 		
 		String ccda_type_value = null;
 		
@@ -134,8 +134,8 @@ public class CCDAValidatorController extends BaseController {
 	}
 	
 	
-	@ActionMapping(params = "javax.portlet.action=uploadCCDA2")
-	public void responseCCDA2(MultipartActionRequest request, ActionResponse response) throws IOException {
+	@ActionMapping(params = "javax.portlet.action=uploadCCDA2.0")
+	public void responseCCDA2_0(MultipartActionRequest request, ActionResponse response) throws IOException {
 		
 		String ccda_type_value = null;
 		
@@ -146,7 +146,7 @@ public class CCDAValidatorController extends BaseController {
 		
 		// handle the files:
 		
-		response.setRenderParameter("javax.portlet.action", "uploadCCDA2");
+		response.setRenderParameter("javax.portlet.action", "uploadCCDA2.0");
 		MultipartFile file = request.getFile("file");
 		
 		fileJson = new JSONArray();
@@ -225,8 +225,8 @@ public class CCDAValidatorController extends BaseController {
 	}
 	
 	
-	@RequestMapping(params = "javax.portlet.action=uploadCCDA1")
-	public ModelAndView processCCDA1(RenderRequest request, Model model)
+	@RequestMapping(params = "javax.portlet.action=uploadCCDA1.1")
+	public ModelAndView processCCDA1_1(RenderRequest request, Model model)
 			throws IOException {
 		Map map = new HashMap();
 		
@@ -238,8 +238,8 @@ public class CCDAValidatorController extends BaseController {
 	}
 	
 	
-	@RequestMapping(params = "javax.portlet.action=uploadCCDA2")
-	public ModelAndView processCCDA2(RenderRequest request, Model model)
+	@RequestMapping(params = "javax.portlet.action=uploadCCDA2.0")
+	public ModelAndView processCCDA2_0(RenderRequest request, Model model)
 			throws IOException {
 		Map map = new HashMap();
 		
