@@ -3,9 +3,20 @@
         "form": $.extend(function () {
             return this;
         }, {
-            "addMessageField": function (fieldName, level, msg, preFormatted) {
-                var elem = $(this);
-                
+            "addMessageField": function (fieldName, level, msg, preFormatted, formid) {
+
+            	var elem = $(this);
+            	
+                // jquery Validation Engine
+            	if (formid == "form-testcases-hosting" && fieldName == "directAddress")
+        		{
+            		$("#form-testcases-hosting input").validationEngine('showPrompt', msg, null, null, true);
+        		}	
+            	else
+        		{
+            		$("#form-testcases-discovery-mail-mapping input#" + fieldName).validationEngine('showPrompt', msg, null, null, true);
+        		}
+
                 elem.dcdt.form.formGroupsFields(fieldName).find("div:first-child").enableClass("has-" + level);
                 
                 return elem.dcdt.form.addMessage(elem.dcdt.form.messagesAddonsFields(level, fieldName), msg, preFormatted);
@@ -104,7 +115,7 @@
                 return selector ? formGroups.filter(selector) : formGroups;
             },
             "inputGroups": function () {
-                return $(this).find("div.input-group-sm");
+                return $(this).find("div.input-group-small");
             }
         })
     });

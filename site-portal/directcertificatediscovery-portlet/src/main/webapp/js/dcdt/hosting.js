@@ -19,6 +19,11 @@ $
 														"queryBeanSuccess" : function(
 																data, status,
 																jqXhr) {
+															
+															// Show the div
+													    	$("#testcase-results").removeClass("hide");
+													    	$("#testcase-results").attr("aria-hidden", "false");
+
 															var testcaseHostingResult = data["items"][0];
 															var testcaseHostingSuccess = testcaseHostingResult["success"];
 															var testcaseHostingSuccessStr = (testcaseHostingSuccess ? "success"
@@ -135,13 +140,17 @@ $
 
 																				if (testcaseHostingResultHeaderElem
 																						.hasClass("testcase-hosting-result-header-success")) {
+																					testcaseHostingResultHeaderElem.addClass("panel-success");
+																					
 																					testcaseHostingResultHeaderIcon
-																							.enableClass("glyphicon-ok-sign");
+																							.enableClass("glyphicon-ok");
 																					testcaseHostingResultHeaderIcon
 																							.enableClass("glyphicon-type-success");
 																				} else {
+																					testcaseHostingResultHeaderElem.addClass("panel-danger");
+																					
 																					testcaseHostingResultHeaderIcon
-																							.enableClass("glyphicon-remove-sign");
+																							.enableClass("glyphicon-remove");
 																					testcaseHostingResultHeaderIcon
 																							.enableClass("glyphicon-type-error");
 																				}

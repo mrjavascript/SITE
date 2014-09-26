@@ -6,7 +6,10 @@
 		<portlet-name>DCDT</portlet-name>
 		<icon>/icon.png</icon>
 		<instanceable>false</instanceable>
+		<header-portlet-css>/css/jquery/validationEngine.jquery.css</header-portlet-css>
 		<header-portlet-css>/css/main.css</header-portlet-css>
+		<footer-portlet-javascript>/js/jquery/jquery.validationEngine.js</footer-portlet-javascript>
+		<footer-portlet-javascript>/js/jquery/jquery.validationEngine-en.js</footer-portlet-javascript>
 		<footer-portlet-javascript>/js/dcdt/data.js</footer-portlet-javascript>
 		<footer-portlet-javascript>/js/dcdt/web.js</footer-portlet-javascript>
 		<footer-portlet-javascript>/js/dcdt/web-form.js</footer-portlet-javascript>

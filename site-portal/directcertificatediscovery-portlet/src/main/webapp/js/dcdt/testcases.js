@@ -18,13 +18,17 @@
             },
             "setTestcaseDescription": function (settings, testcase) {
                 var elem = $(this);
-                
+
                 if (settings["method"] == "hosting")
             	{
+                	elem.dcdt.testcases.testhostingcaseDescription().removeClass("hide");
+                    elem.dcdt.testcases.testhostingcaseDescription().attr("aria-hidden", "false");
                 	return elem.dcdt.testcases.testhostingcaseDescription().append(elem.dcdt.testcases.buildTestcaseDescription(settings, testcase));
             	}
                 else
                 {
+                	elem.dcdt.testcases.testcaseDescription().removeClass("hide");
+                    elem.dcdt.testcases.testcaseDescription().attr("aria-hidden", "false");
                 	return elem.dcdt.testcases.testcaseDescription().append(elem.dcdt.testcases.buildTestcaseDescription(settings, testcase));
                 }
             },
@@ -58,6 +62,10 @@
         		{
             		var elem = $(this), testcaseDescElem = elem.dcdt.testcases.testcaseDescription();
         		}
+            	
+            	testcaseDescElem.addClass("hide");
+            	testcaseDescElem.attr("aria-hidden", "true");
+            	
                 testcaseDescElem.empty();
                 
                 if (settings) {

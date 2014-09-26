@@ -32,6 +32,12 @@ $(function() {
     });
     
     testcaseHostingSubmit.click(function (event) {
+    	
+    	// Hide any existing errors
+    	$('form#form-testcases-hosting').validationEngine({promptPosition:"centerRight", validateNonVisibleFields: true, updatePromptsPosition:true});
+    	$('form#form-testcases-hosting input').validationEngine('hide');
+    	$('form .formError').remove();
+
         formTestcasesHosting.submit();
     });
     
@@ -75,6 +81,12 @@ $(function() {
     });
     
     formDiscoveryMailMapping.submit(function (event) {
+    	
+    	// Hide any existing errors
+    	$('form#form-testcases-discovery-mail-mapping').validationEngine({promptPosition:"centerRight", validateNonVisibleFields: true, updatePromptsPosition:true});
+    	$('form#form-testcases-discovery-mail-mapping input').validationEngine('hide');
+    	$('form .formError').remove();
+    	
         discoveryMailMapping = {
             "@type": "discoveryTestcaseMailMapping",
             "directAddr": directAddr.val(),

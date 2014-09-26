@@ -112,7 +112,16 @@
                 }
             },
             "addBeanMessageField": function (form, fieldName, level, msg) {
-                return $(form).dcdt.form.addMessageField(fieldName.replace(/^items\[\d+\]\./, ""), level, msg);
+
+            	var formid = "";
+            	try
+            	{
+            		formid = $(form).attr("id");
+            	}
+            	catch(e)
+            	{
+            	}
+                return $(form).dcdt.form.addMessageField(fieldName.replace(/^items\[\d+\]\./, ""), level, msg, "", formid);
             },
             "addBeanMessageGlobal": function (form, level, msg) {
                 return $(form).dcdt.form.addMessageGlobal(level, msg);

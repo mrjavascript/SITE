@@ -9,6 +9,7 @@ $
 									},
 									{
 										"processDiscoveryMailMapping" : function() {
+											
 											return $.dcdt.beans
 													.setBean({
 														"data" : $
@@ -29,6 +30,7 @@ $
 														"queryBeanErrors" : function(
 																data, status,
 																jqXhr) {
+
 															$.dcdt.beans
 																	.addQueryErrors(
 																			formDiscoveryMailMapping,
