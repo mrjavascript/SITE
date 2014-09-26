@@ -55,9 +55,7 @@ div.testcase
 /*
 *	Testcases (from DCDT)
 */
-div.input-group-small#testcase-info .has-error {
-    width: 640px;
-}
+
 
 div.input-group-small#testcase-info div#testcase-desc div > div,
 div.input-group-small#testcase-results div#testcase-results-accordion div > div {
@@ -125,7 +123,6 @@ div.input-group-small div.form-group.form-group-buttons span.btn-group {
 
 div.input-group-small div.form-group.form-group-addons div.input-group-addon {
     display: none;
-    width: 725px;
     text-align: left;
     font-size: 11px;
     white-space: normal;
@@ -153,7 +150,7 @@ div.input-group-small div.form-group span.form-cell.form-cell-label label {
 div.input-group-small div.form-group span.form-cell.form-cell-control input.form-control[type="password"],
 div.input-group-small div.form-group span.form-cell.form-cell-control input.form-control[type="text"],
 div.input-group-small div.form-group span.form-cell.form-cell-control select.form-control {
-    width: 500px;
+  
     padding: 5px;
 }
 
@@ -318,4 +315,16 @@ div.input-group-small div.form-group.form-group-buttons span.btn-group.btn-group
 .panel-info > .panel-footer + .panel-collapse .panel-body {
   border-bottom-color: #bce8f1; }
 
+
+#testcase-results-accordion
+{
+	max-width: 848px;
+	min-width: 300px;
+	width: 100%;
+}
+
+.form-group-addons
+{
+	border-collapse: initial !important;
+}
 

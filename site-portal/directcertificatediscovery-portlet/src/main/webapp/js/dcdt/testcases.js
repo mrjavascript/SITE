@@ -56,6 +56,7 @@
             	var elem;
             	if (settings["method"] == "hosting")
         		{
+            		$("#testcase-hosting-direct-addr").attr("disabled", "disabled");
             		var elem = $(this), testcaseDescElem = elem.dcdt.testcases.testhostingcaseDescription();
         		}
             	else

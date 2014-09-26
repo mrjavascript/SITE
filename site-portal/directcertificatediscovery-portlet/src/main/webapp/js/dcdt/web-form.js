@@ -10,11 +10,40 @@
                 // jquery Validation Engine
             	if (formid == "form-testcases-hosting" && fieldName == "directAddress")
         		{
-            		$("#form-testcases-hosting input").validationEngine('showPrompt', msg, null, null, true);
+            		if ($(".testcase-hosting-direct-addrformError")[0] != undefined)
+            		{
+            			$(".testcase-hosting-direct-addrformError .formErrorContent").html($(".testcase-hosting-direct-addrformError .formErrorContent").html() + "<br/>* " + msg);
+            		}
+            		else
+            		{
+            			$("#form-testcases-hosting input").validationEngine('showPrompt', "* " + msg, null, null, true);
+            		}
+            		
+            		if (msg.length > 40) {
+            			$(".testcase-hosting-direct-addrformError .formErrorContent").css("width", "450px");
+            		}
+            		else if (msg.length > 15 && $(".testcase-hosting-direct-addrformError .formErrorContent").css("width") != "450px") {
+            			$(".testcase-hosting-direct-addrformError .formErrorContent").css("width", "250px");
+            		}
         		}	
             	else
         		{
-            		$("#form-testcases-discovery-mail-mapping input#" + fieldName).validationEngine('showPrompt', msg, null, null, true);
+            		if ($("." + fieldName + "formError")[0] != undefined)
+            		{
+            			$("." + fieldName + "formError .formErrorContent").html($("." + fieldName + "formError .formErrorContent").html() + "<br/>* " + msg);
+            		}
+            		else
+            		{
+            			$("#form-testcases-discovery-mail-mapping input#" + fieldName).validationEngine('showPrompt', "* " + msg, null, null, true);
+            		}
+            		
+            		if (msg.length > 40) {
+            			$("." + fieldName + "formError .formErrorContent").css("width", "450px");
+            		}
+            		else if (msg.length > 15 && $("." + fieldName + "formError .formErrorContent").css("width") != "450px") {
+            			$("." + fieldName + "formError .formErrorContent").css("width", "250px");
+            		}
+            		
         		}
 
                 elem.dcdt.form.formGroupsFields(fieldName).find("div:first-child").enableClass("has-" + level);

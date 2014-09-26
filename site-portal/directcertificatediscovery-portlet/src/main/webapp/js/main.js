@@ -11,6 +11,18 @@ $(function() {
     testcaseHostingResults = $("div#testcase-results", formTestcasesHosting);
     testcaseHostingResultsAccordion = $("div#testcase-results-accordion", testcaseHostingResults);
     
+    $('#testcase-hosting-reset').click(function() { 
+    	$('#hosting-testcase-desc').addClass("hide"); 
+    	$('#hosting-testcase-desc').attr("aria-hidden", "true"); 
+    	$('form#form-testcases-hosting').validationEngine('hide');
+    	$('#testcase-results').addClass("hide");
+    	$('#testcase-results').attr("aria-hidden", "true");
+    });
+    
+    $('#discovery-mail-mapping-reset').click(function() { 
+    	$('form#form-testcases-discovery-mail-mapping').validationEngine('hide');
+    });
+    
     testcaseHostingResultsAccordion.accordion({
         "collapsible": true,
         "heightStyle": "content",
@@ -34,7 +46,7 @@ $(function() {
     testcaseHostingSubmit.click(function (event) {
     	
     	// Hide any existing errors
-    	$('form#form-testcases-hosting').validationEngine({promptPosition:"centerRight", validateNonVisibleFields: true, updatePromptsPosition:true});
+    	$('form#form-testcases-hosting').validationEngine({promptPosition:"centerRight", validateNonVisibleFields: true, updatePromptsPosition:true, scroll:false});
     	$('form#form-testcases-hosting input').validationEngine('hide');
     	$('form .formError').remove();
 
@@ -83,7 +95,7 @@ $(function() {
     formDiscoveryMailMapping.submit(function (event) {
     	
     	// Hide any existing errors
-    	$('form#form-testcases-discovery-mail-mapping').validationEngine({promptPosition:"centerRight", validateNonVisibleFields: true, updatePromptsPosition:true});
+    	$('form#form-testcases-discovery-mail-mapping').validationEngine({promptPosition:"centerRight", validateNonVisibleFields: true, updatePromptsPosition:true, scroll: false});
     	$('form#form-testcases-discovery-mail-mapping input').validationEngine('hide');
     	$('form .formError').remove();
     	
