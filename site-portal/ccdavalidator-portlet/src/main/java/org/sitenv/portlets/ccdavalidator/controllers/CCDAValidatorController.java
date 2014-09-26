@@ -19,9 +19,6 @@ import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.sitenv.common.utilities.controller.BaseController;
 import org.sitenv.common.statistics.manager.StatisticsManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -180,7 +177,7 @@ public class CCDAValidatorController extends BaseController {
 				
 				
 				HttpPost post = new HttpPost(ccdaURL);
-
+				
 				MultipartEntity entity = new MultipartEntity();
 				// set the file content
 				entity.addPart("file", new InputStreamBody(file.getInputStream() , file.getOriginalFilename()));
@@ -226,8 +223,6 @@ public class CCDAValidatorController extends BaseController {
 			throw new RuntimeException(e);
 		}
 	}
-	
-	
 	
 	
 	@RequestMapping(params = "javax.portlet.action=uploadCCDA1")

@@ -219,7 +219,7 @@
 											Pick Sample <i class="glyphicon glyphicon-play"></i>
 										</button>
 
-										<ul class="dropdown-menu rightMenu" role="menu" aria-labelledby="dLabel">
+										<ul class="dropdown-menu rightMenu" role="menu" aria-labelledby="dLabel" style="overflow: scroll; /* position: absolute; */" >
 											<li>
 												<div id="ccdafiletreepanel"></div>
 											</li>
