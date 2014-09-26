@@ -92,13 +92,15 @@ public class StatisticsController extends BaseController {
 						
 			DirectLogCounts Receivedata = statisticsManager.getDirectReceiveLogCount();
 			
-			modelAndView.addObject("directReceiveCountData", Receivedata);
+			Integer Data = 1000+Receivedata.getTotalDirectMessageCount();
+						
+			modelAndView.addObject("directReceiveCountData", Data);
 		
 			modelAndView.setViewName("directCounts");
 		}
 		else if (page.equals("ccda-log-counts"))
 		{
-			Long data = statisticsManager.getCcdaLogCounts();
+			Long data = 1000+statisticsManager.getCcdaLogCounts();
 			
 			modelAndView.addObject("ccdaLogCountData", data);
 			

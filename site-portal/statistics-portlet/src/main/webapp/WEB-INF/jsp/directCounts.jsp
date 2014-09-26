@@ -36,7 +36,7 @@
 					</tr>
 					<tr>
 						<td>Direct Received Messages</td>
-						<td>${directReceiveCountData.totalDirectMessageCount }</td>
+						<td>${directReceiveCountData }</td>
 					</tr>
 				</tbody>
 			</table>
