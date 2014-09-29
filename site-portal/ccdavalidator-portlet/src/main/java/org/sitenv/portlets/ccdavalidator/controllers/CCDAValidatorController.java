@@ -53,7 +53,7 @@ public class CCDAValidatorController extends BaseController {
 		
 		// handle the files:
 		
-		response.setRenderParameter("javax.portlet.action", "uploadCCDA1");
+		response.setRenderParameter("javax.portlet.action", "uploadCCDA1.1");
 		MultipartFile file = request.getFile("file");
 		
 		fileJson = new JSONArray();
@@ -100,7 +100,6 @@ public class CCDAValidatorController extends BaseController {
 				
 				int code = relayResponse.getStatusLine().getStatusCode();
 				
-				
 				if(code!=200) 
 				{
 					//do the error handling.
@@ -111,7 +110,6 @@ public class CCDAValidatorController extends BaseController {
 					boolean hasErrors = true, hasWarnings = true, hasInfo = true;
 					
 					String json = handler.handleResponse(relayResponse);
-					
 					JSONObject jsonbody = new JSONObject(json);
 					
 					JSONObject report = jsonbody.getJSONObject("report");
@@ -122,12 +120,14 @@ public class CCDAValidatorController extends BaseController {
 					JSONResponseBody = jsonbody;
 					
 					statisticsManager.addCcdaValidation(ccda_type_value, hasErrors, hasWarnings, hasInfo, false);
+					
+					
 				}				
 				
 
 		} catch (Exception e) {
 			statisticsManager.addCcdaValidation(ccda_type_value, false, false, false, true);
-			
+			System.out.println(e.getMessage());
 			throw new RuntimeException(e);
 		} 
 		
@@ -219,7 +219,6 @@ public class CCDAValidatorController extends BaseController {
 				
 		} catch (Exception e) {
 			statisticsManager.addCcdaValidation(ccda_type_value, false, false, false, true);
-			
 			throw new RuntimeException(e);
 		}
 	}

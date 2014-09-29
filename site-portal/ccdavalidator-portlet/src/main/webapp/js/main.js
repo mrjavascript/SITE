@@ -103,11 +103,16 @@ function smartCCDAValidation()
 	var ajaximgpath = window.currentContextPath + "/css/ajax-loader.gif";
 	
 	var selector = null;
-	var ccda11isActive = $('#tabCCDA11').hasClass('active');
-	if (ccda11isActive){
+	
+	//TODO: Make one of these for each C-CDA Validator 
+	if ($('#collapseCCDA1_1').hasClass('in')){
 		selector = '#CCDA1ValidationForm';
-	} else {
+		alert(selector);
+	} else if ($('#collapseCCDA2_0').hasClass('in')){
 		selector = '#CCDA2ValidationForm';
+		alert(selector);
+	} else {
+	 alert("OOPS!");	
 	}
 	
 	
@@ -264,7 +269,7 @@ $(function(){
 	});
 	
 	//ccdavalidator_callAjax();
-	
+	/*
 	$("#ccdavalidate_btn").click(function(e){
 	    
 		//switch back to tab1.
@@ -302,8 +307,7 @@ $(function(){
 	    });
 	    return false;
 	});
-	
-	
+	*/
 	
 	$("#ccdafiletreepanel").jstree({
 		 "json_data" : {

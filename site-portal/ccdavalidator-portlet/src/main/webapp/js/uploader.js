@@ -11,7 +11,14 @@ $(function() {
 		type : 'POST',
 		contenttype : false,
 		replaceFileInput : false,
-		error: function (e, data) {
+		//error: function (e, data) {
+		error: function(jqXHR, textStatus, errorThrown) {
+			
+			alert(textStatus);
+			alert(errorThrown);
+			alert(urlCCDA1_1);
+			console.log(urlCCDA1_1);
+			
 			var iconurl = window.currentContextPath + "/css/icn_alert_error.png" ;
 			
 			$('.blockMsg .progressorpanel img').attr('src',iconurl);
@@ -29,7 +36,7 @@ $(function() {
         		window.validationpanel.bind("click", function() { 
         			window.validationpanel.unbind("click");
         			clearTimeout(window.validationPanelTimeout);
-        			window.validationpanel.unblock(); 
+        			window.validationpanel.unblock();
         			window.validationpanel.attr('title','Click to hide this message.').click($.unblockUI); 
 	            });
         		
