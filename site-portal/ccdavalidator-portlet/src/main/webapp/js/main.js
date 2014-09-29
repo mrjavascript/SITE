@@ -107,12 +107,16 @@ function smartCCDAValidation()
 	//TODO: Make one of these for each C-CDA Validator 
 	if ($('#collapseCCDA1_1').hasClass('in')){
 		selector = '#CCDA1ValidationForm';
-		alert(selector);
 	} else if ($('#collapseCCDA2_0').hasClass('in')){
 		selector = '#CCDA2ValidationForm';
-		alert(selector);
+	} else if ($('#collapseReconciledValidator').hasClass('in')){
+		selector = '#CCDAReconciledValidationForm';
+	} else if ($('#collapseReferenceValidator').hasClass('in')){
+		selector = '#CCDAReferenceValidationForm';
+	} else if ($('#collapseSuperValidator').hasClass('in')){
+		selector = '#CCDASuperValidationForm';
 	} else {
-	 alert("OOPS!");	
+		
 	}
 	
 	
@@ -486,10 +490,6 @@ $(function(){
 		    $(this).attr('tabindex', '1');
 		});
 	});
-	
-	
-	
-	
 	
 	
 });
