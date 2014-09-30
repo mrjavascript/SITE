@@ -86,7 +86,10 @@ public class SampleCCDATreeController extends BaseController {
 		_log.trace("Start get sample CCDAs.");
 		SampleCCDATreeNode root = new SampleCCDATreeNode("Localhost", "root",
 				"open", "1", "helloword");
-		String CCDASampleDir = props.getProperty("sampleCcdaDir");
+		String CCDASampleDirBase = props.getProperty("sampleCcdaDir");
+		String CCDASampleDir = CCDASampleDirBase + "/SamplesFromVendors/sample_ccdas";
+		
+		
 		this.tranverseDir(CCDASampleDir, root, 1);
 
 		roots = new ArrayList<SampleCCDATreeNode>();

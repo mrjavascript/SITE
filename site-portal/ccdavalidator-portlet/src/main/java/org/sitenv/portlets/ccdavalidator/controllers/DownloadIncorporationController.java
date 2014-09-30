@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -78,13 +77,6 @@ public class DownloadIncorporationController extends BaseController {
 		}
 	}
 	
-	private String getNegativeTestingSampleFileName(String key){
-		
-		String filename = negativeTestingCCDAFileNames.get(key);
-		return filename;
-		
-	}
-	
 	
 	@ResourceMapping("downloadNegativeTesting")
 	public void serveNegativeTestingSamples(ResourceRequest resourceRequest, ResourceResponse res) throws PortletException, IOException {
@@ -96,28 +88,15 @@ public class DownloadIncorporationController extends BaseController {
 		
 		String ccdaVal = resourceRequest.getParameter("getCCDA");
 		
-		System.out.println(ccdaVal);
+		String downloadPathBase = this.props.getProperty("sampleCcdaDir");
+		String fileName = DownloadIncorporationController.negativeTestingCCDAFileNames.get(ccdaVal);
 		
-		String downloadFileName = getNegativeTestingSampleFileName(ccdaVal);
-		
-		System.out.println(downloadFileName);
-		
-		
-		/*
-		String downloadPath = resourceRequest.getParameter("incorpfilepath");
-		
-		String[] downloadPathTokens = downloadPath.split("[/\\\\]");
-		String fileName = downloadPathTokens[downloadPathTokens.length-1];
-		
-		if (downloadPathTokens.length > 1){
-			String folder = downloadPathTokens[downloadPathTokens.length-2];
-			fileName = folder + " - " + fileName;
-		}
+		String downloadPath = downloadPathBase + "/NegativeTestingSamples/" + fileName;
 		
 		File downloadFile = new File(downloadPath);
 		InputStream in = new FileInputStream(downloadFile);
 		
-		//res.setContentType("application/xml");
+		res.setContentType("application/zip");
 		res.addProperty(HttpHeaders.CACHE_CONTROL,
 				"max-age=3600, must-revalidate");
 		res.addProperty(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""
@@ -131,15 +110,6 @@ public class DownloadIncorporationController extends BaseController {
 		out.flush();
 		out.close();
 		in.close();
-		*/
-	}
-	
-	
-	private String getReferenceSampleFileName(String key){
-		
-		String filename = referenceCCDAFileNames.get(key);
-		return filename;
-		
 	}
 	
 	
@@ -152,25 +122,16 @@ public class DownloadIncorporationController extends BaseController {
 		}
 		
 		String ccdaVal = resourceRequest.getParameter("getCCDA");
-		System.out.println(ccdaVal);
-		String downloadFileName = getReferenceSampleFileName(ccdaVal);
-		System.out.println(downloadFileName);
 		
-		/*
-		String downloadPath = resourceRequest.getParameter("incorpfilepath");
+		String downloadPathBase = this.props.getProperty("sampleCcdaDir");
+		String fileName = DownloadIncorporationController.referenceCCDAFileNames.get(ccdaVal);
 		
-		String[] downloadPathTokens = downloadPath.split("[/\\\\]");
-		String fileName = downloadPathTokens[downloadPathTokens.length-1];
-		
-		if (downloadPathTokens.length > 1){
-			String folder = downloadPathTokens[downloadPathTokens.length-2];
-			fileName = folder + " - " + fileName;
-		}
+		String downloadPath = downloadPathBase + "/ReferenceSamples/" + fileName;
 		
 		File downloadFile = new File(downloadPath);
 		InputStream in = new FileInputStream(downloadFile);
 		
-		//res.setContentType("application/xml");
+		res.setContentType("application/zip");
 		res.addProperty(HttpHeaders.CACHE_CONTROL,
 				"max-age=3600, must-revalidate");
 		res.addProperty(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""
@@ -185,7 +146,7 @@ public class DownloadIncorporationController extends BaseController {
 		out.flush();
 		out.close();
 		in.close();
-		*/
+		
 	}
 	
 	
