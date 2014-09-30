@@ -91,6 +91,7 @@ public class DownloadIncorporationController extends BaseController {
 		String downloadPathBase = this.props.getProperty("sampleCcdaDir");
 		String fileName = DownloadIncorporationController.negativeTestingCCDAFileNames.get(ccdaVal);
 		
+		
 		String downloadPath = downloadPathBase + "/NegativeTestingSamples/" + fileName;
 		
 		File downloadFile = new File(downloadPath);
