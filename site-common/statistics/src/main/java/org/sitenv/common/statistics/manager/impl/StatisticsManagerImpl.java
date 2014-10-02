@@ -11,6 +11,7 @@ import org.sitenv.common.statistics.dao.PdtiTestDAO;
 import org.sitenv.common.statistics.dao.QrdaValidationDAO;
 import org.sitenv.common.statistics.dto.AggregateWeeklyCounts;
 import org.sitenv.common.statistics.dto.CcdaWeeklyCounts;
+import org.sitenv.common.statistics.dto.DirectLogCounts;
 import org.sitenv.common.statistics.dto.DirectWeeklyCounts;
 import org.sitenv.common.statistics.dto.GoogleAnalyticsData;
 import org.sitenv.common.statistics.dto.PdtiTestCase;
@@ -247,6 +248,17 @@ public class StatisticsManagerImpl implements StatisticsManager {
 	}
 	
 	@Transactional
+	public DirectLogCounts getDirectReceiveLogCount() {
+		return directTransmissionDAO.getDirectReceiveLogCount();
+	}
+	
+	@Transactional
+	public DirectLogCounts getDirectSendLogCount() {
+		return directTransmissionDAO.getDirectSendLogCount();
+	}
+	
+	
+	@Transactional
 	public List<CcdaWeeklyCounts> getCcdaWeeklyCounts(Integer numOfWeeks) {
 		return ccdaValidationDAO.getCcdaWeeklyCounts(numOfWeeks);
 	}
@@ -323,6 +335,12 @@ public class StatisticsManagerImpl implements StatisticsManager {
 
 	public void setAggregateDAO(AggregateDAO aggregateDAO) {
 		this.aggregateDAO = aggregateDAO;
+	}
+
+	@Transactional
+	public Long getCcdaLogCounts() {
+		return this.ccdaValidationDAO.getCcdaLogCounts();
+		
 	}
 	
 	

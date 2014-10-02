@@ -1,5 +1,6 @@
 package org.sitenv.common.statistics.dao.impl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -10,8 +11,8 @@ import org.sitenv.common.statistics.dao.CcdaValidationDAO;
 import org.sitenv.common.statistics.dto.CcdaWeeklyCounts;
 import org.sitenv.common.statistics.entity.CcdaDownloadEntity;
 import org.sitenv.common.statistics.entity.CcdaValidationEntity;
-import org.sitenv.common.statistics.entity.SmartCcdaValidationEntity;
 import org.sitenv.common.statistics.entity.CcdaWeeklyCountsEntity;
+import org.sitenv.common.statistics.entity.SmartCcdaValidationEntity;
 import org.springframework.stereotype.Repository;
 
 @Repository(value="CcdaValidationDAO")
@@ -257,5 +258,25 @@ public class CcdaValidationDAOImpl extends BaseDAOImpl implements CcdaValidation
 		return returnVal;
 		
 	}
+	
+	public Long getCcdaLogCounts()
+	{
+		
+		Query query = entityManager.createNativeQuery("SELECT CAST(SUM(ccdalog_count) AS INTEGER) total_ccda FROM ccda_log");
+		
+		Integer results = (Integer) query.getSingleResult();
+		Long returnVal = null;
+		
+		if (results != null) {
+				
+				returnVal = results.longValue();
+				
+				
+		}
+		return returnVal;
+		
+		
+	}
+
 	
 }
