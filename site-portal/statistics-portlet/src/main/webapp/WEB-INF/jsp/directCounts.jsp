@@ -31,11 +31,11 @@
 				</thread>
 				<tbody>
 					<tr>
-						<td>Direct Sent Messages</td>
-						<td>${directSendCountData.totalDirectMessageCount }</td>
+						<td>Direct Send Messages</td>
+						<td>${directSendCountData }</td>
 					</tr>
 					<tr>
-						<td>Direct Received Messages</td>
+						<td>Direct Receive Messages</td>
 						<td>${directReceiveCountData }</td>
 					</tr>
 				</tbody>

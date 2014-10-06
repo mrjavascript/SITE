@@ -422,3 +422,121 @@ END;
 $$ LANGUAGE plpgsql;
 
 SELECT * FROM aggregate_weekly_counts(104);
+
+
+
+
+-- Table: ccda_log
+
+-- DROP TABLE ccda_log;
+
+CREATE TABLE ccda_log
+(
+  ccdalog_pk bigserial NOT NULL,
+  ccdalog_count bigint NOT NULL,
+  ccdalog_date date NOT NULL,
+  ccdalog_clientip character varying(25) NOT NULL,
+  ccdalog_type character varying(250),
+  ccdalog_filename character varying(1000) NOT NULL,
+  ccdalog_action character varying(1000) NOT NULL,
+  CONSTRAINT ccda_log_pkey PRIMARY KEY (ccdalog_pk)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE ccda_log
+  OWNER TO "LifeRaySys";
+
+
+
+-- Table: direct_receive_log
+ 
+-- DROP TABLE direct_receive_log;
+ 
+CREATE TABLE direct_receive_log
+(
+  directreceive_pk bigserial NOT NULL,
+  directreceive_count bigint NOT NULL,
+  directreceive_date date NOT NULL,
+  directreceive_email character varying(1000) NOT NULL,
+  directreceive_domain character varying(1000) NOT NULL,
+  CONSTRAINT direct_receive_log_pkey PRIMARY KEY (directreceive_pk)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE direct_receive_log
+  OWNER TO "LifeRaySys";
+ 
+-- Index: direct_receive_log_directreceive_date_idx
+ 
+-- DROP INDEX direct_receive_log_directreceive_date_idx;
+ 
+CREATE INDEX direct_receive_log_directreceive_date_idx
+  ON direct_receive_log
+  USING btree
+  (directreceive_date);
+ 
+-- Index: direct_receive_log_directreceive_domain_idx
+ 
+-- DROP INDEX direct_receive_log_directreceive_domain_idx;
+ 
+CREATE INDEX direct_receive_log_directreceive_domain_idx
+  ON direct_receive_log
+  USING btree
+  (directreceive_domain COLLATE pg_catalog."default");
+ 
+-- Index: direct_receive_log_directreceive_email_idx
+ 
+-- DROP INDEX direct_receive_log_directreceive_email_idx;
+ 
+CREATE INDEX direct_receive_log_directreceive_email_idx
+  ON direct_receive_log
+  USING btree
+  (directreceive_email COLLATE pg_catalog."default");
+
+
+
+-- Function: directsend_log_counts()
+
+-- DROP FUNCTION directsend_log_counts();
+
+CREATE OR REPLACE FUNCTION directsend_log_counts()
+  RETURNS TABLE(rnum bigint, total_directmsg integer, distinct_domains integer) AS
+$BODY$
+BEGIN
+RETURN QUERY
+SELECT 
+	row_number() over () as rnum,
+	CAST(SUM(directsend_count) AS INTEGER) total_directmsg, 
+	CAST(COUNT(DISTINCT directsend_domain) AS INTEGER) distinct_domains 
+FROM 
+	direct_send;
+END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100
+  ROWS 1000;
+ALTER FUNCTION directsend_log_counts()
+  OWNER TO "LifeRaySys";
+  
+-- Function: directreceive_log_counts()
+
+-- DROP FUNCTION directreceive_log_counts();
+
+CREATE OR REPLACE FUNCTION directreceive_log_counts()
+  RETURNS TABLE(rnum bigint, total_directmsg integer, distinct_domains integer) AS
+$BODY$BEGIN
+RETURN QUERY
+SELECT 
+	row_number() over () as rnum,
+	CAST(SUM(directreceive_count) AS INTEGER) total_directmsg, 
+	CAST(COUNT(DISTINCT directreceive_domain) AS INTEGER) distinct_domains 
+FROM 
+	direct_receive_log;
+END;$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100
+  ROWS 1000;
+ALTER FUNCTION directreceive_log_counts()
+  OWNER TO "LifeRaySys";

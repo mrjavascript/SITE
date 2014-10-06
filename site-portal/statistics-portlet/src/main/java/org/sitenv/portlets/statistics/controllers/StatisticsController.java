@@ -86,23 +86,31 @@ public class StatisticsController extends BaseController {
 		}
 		else if (page.equals("direct-counts"))
 		{
-			DirectLogCounts SendData = statisticsManager.getDirectSendLogCount();
+			Long directReceiveSeed = Long.parseLong(props.getProperty("directReceiveStatisticsSeed"));
+			Long directSendSeed = Long.parseLong(props.getProperty("directSendStatisticsSeed"));
 			
-			modelAndView.addObject("directSendCountData", SendData);
-						
-			DirectLogCounts Receivedata = statisticsManager.getDirectReceiveLogCount();
+			DirectLogCounts sendData = statisticsManager.getDirectSendLogCount();
+			Long directSendCount = sendData.getTotalDirectMessageCount() + directSendSeed;
 			
-			Integer Data = 1000+Receivedata.getTotalDirectMessageCount();
+			modelAndView.addObject("directSendCountData", directSendCount);
 						
-			modelAndView.addObject("directReceiveCountData", Data);
+			
+			Long directReceiveCount = statisticsManager.getSuccessfulDirectReceiveCount(null);
+			directReceiveCount += directReceiveSeed;
+						
+			modelAndView.addObject("directReceiveCountData", directReceiveCount);
 		
 			modelAndView.setViewName("directCounts");
 		}
 		else if (page.equals("ccda-log-counts"))
 		{
-			Long data = 1000+statisticsManager.getCcdaLogCounts();
+
+			Long ccdaSeed = Long.parseLong(props.getProperty("ccdaValidationStatisticsSeed"));
+			Long ccdaCount = statisticsManager.getTotalCcdaValidationCount(null);
 			
-			modelAndView.addObject("ccdaLogCountData", data);
+			ccdaCount += ccdaSeed;
+			
+			modelAndView.addObject("ccdaLogCountData", ccdaCount);
 			
 			modelAndView.setViewName("ccdaLogCounts");
 		}

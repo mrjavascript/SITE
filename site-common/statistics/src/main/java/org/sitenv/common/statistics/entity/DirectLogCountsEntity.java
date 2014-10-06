@@ -16,7 +16,7 @@ import javax.persistence.NamedNativeQuery;
 public class DirectLogCountsEntity {
 	@Id
 	@Column(name="rnum")
-	private Integer rnum;
+	private Long rowNumber;
 	
 	@Column(name="total_directmsg")
 	private Integer totalDirectMessageCount;
@@ -76,6 +76,14 @@ public class DirectLogCountsEntity {
 
 	public void setDistinctDomainsCount(Integer distinctDomainsCount) {
 		this.distinctDomainsCount = distinctDomainsCount;
+	}
+
+	public Long getRowNumber() {
+		return rowNumber;
+	}
+
+	public void setRowNumber(Long rowNumber) {
+		this.rowNumber = rowNumber;
 	}
 	
 	
