@@ -15,18 +15,23 @@ import javax.persistence.TemporalType;
 
 
 @Entity
-@Table(name="ccda_download")
-public class CcdaDownloadEntity {
+@Table(name="ccda_reference_download")
+public class CcdaReferenceDownloadEntity {
 
 	@Id
 	@Column(name="download_pk")
 	@GeneratedValue( strategy = GenerationType.IDENTITY)
 	private Long id;
-
+	
 	@Basic(optional = false)
 	@Column(name = "download_time", insertable = false, updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date timestamp;
+	
+	@Basic(optional= false)
+	@Column(name = "download_file_name", insertable=true, updatable=true)
+	private String fileName; 
+	
 
 	@Override
 	public int hashCode() {
@@ -35,6 +40,9 @@ public class CcdaDownloadEntity {
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result
 				+ ((timestamp == null) ? 0 : timestamp.hashCode());
+		result = prime * result
+				+ ((fileName == null) ? 0 : fileName.hashCode());
+		
 		return result;
 	}
 
@@ -46,7 +54,7 @@ public class CcdaDownloadEntity {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		CcdaDownloadEntity other = (CcdaDownloadEntity) obj;
+		CcdaReferenceDownloadEntity other = (CcdaReferenceDownloadEntity) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -57,6 +65,12 @@ public class CcdaDownloadEntity {
 				return false;
 		} else if (!timestamp.equals(other.timestamp))
 			return false;
+		if (fileName == null) {
+			if (other.fileName != null)
+				return false;
+		} else if (!fileName.equals(other.fileName))
+			return false;
+		
 		return true;
 	}
 
@@ -76,6 +90,13 @@ public class CcdaDownloadEntity {
 		this.timestamp = timestamp;
 	}
 	
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
 	
 	
 }

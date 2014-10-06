@@ -15,9 +15,11 @@ public interface StatisticsManager {
 	public static final Integer QRDA_CATEGORY_I = new Integer(1);
 	public static final Integer QRDA_CATEGORY_III = new Integer(3);
 	
+	//TODO: Add Validator Type
 	public void addCcdaValidation(String testType, Boolean hasErrors, Boolean hasWarnings, Boolean hasInfo, Boolean hasHttpError);
 	public void addSmartCcdaValidation(Boolean hasHttpError);
 	public void addCcdaDownload();
+	public void addReferenceCcdaDownload(String fileName);
 	
 	
 	public Long getSuccessfulCcdaValidationCount(Integer numOfDays);

@@ -44,7 +44,7 @@ public class StatisticsManagerImpl implements StatisticsManager {
 	@Autowired
 	private AggregateDAO aggregateDAO;
 	
-	
+	//TODO: Add Validator Type
 	@Transactional
 	public void addCcdaValidation(String testType, Boolean hasErrors, Boolean hasWarnings,
 			Boolean hasInfo, Boolean hasHttpError) {
@@ -94,6 +94,12 @@ public class StatisticsManagerImpl implements StatisticsManager {
 	public void addCcdaDownload() {
 		this.ccdaValidationDAO.createCcdaDownload();
 	}
+	
+	@Transactional
+	public void addReferenceCcdaDownload(String fileName){
+		this.ccdaValidationDAO.createCcdaReferenceDownload(fileName);
+	}
+	
 
 	@Transactional
 	public Long getSmartCcdaCount(Integer numOfDays) {

@@ -12,6 +12,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+//TODO: Add Validator Type
+
 @Entity
 @Table(name="ccda_validations")
 public class CcdaValidationEntity {

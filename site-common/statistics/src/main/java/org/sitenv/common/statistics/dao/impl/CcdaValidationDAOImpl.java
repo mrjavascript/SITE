@@ -9,6 +9,7 @@ import javax.persistence.Query;
 import org.sitenv.common.statistics.dao.CcdaValidationDAO;
 import org.sitenv.common.statistics.dto.CcdaWeeklyCounts;
 import org.sitenv.common.statistics.entity.CcdaDownloadEntity;
+import org.sitenv.common.statistics.entity.CcdaReferenceDownloadEntity;
 import org.sitenv.common.statistics.entity.CcdaValidationEntity;
 import org.sitenv.common.statistics.entity.SmartCcdaValidationEntity;
 import org.sitenv.common.statistics.entity.CcdaWeeklyCountsEntity;
@@ -44,6 +45,14 @@ public class CcdaValidationDAOImpl extends BaseDAOImpl implements CcdaValidation
 		
 		entityManager.persist(entity);
 	}
+	
+	public void createCcdaReferenceDownload(String fileName) {
+		CcdaReferenceDownloadEntity entity = new CcdaReferenceDownloadEntity();
+		entity.setFileName(fileName);
+		
+		entityManager.persist(entity);
+	}
+	
 	
 	
 	public Long getHttpErrorCount(Boolean hasHttpError, Integer numOfDays) {
@@ -257,5 +266,6 @@ public class CcdaValidationDAOImpl extends BaseDAOImpl implements CcdaValidation
 		return returnVal;
 		
 	}
+
 	
 }

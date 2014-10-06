@@ -11,6 +11,7 @@
 		<class>org.sitenv.common.statistics.entity.DateItemEntity</class>
 		<class>org.sitenv.common.statistics.entity.SmartCcdaValidationEntity</class>
 		<class>org.sitenv.common.statistics.entity.CcdaDownloadEntity</class>
+		<class>org.sitenv.common.statistics.entity.CcdaReferenceDownloadEntity</class>
 		<class>org.sitenv.common.statistics.entity.QrdaValidationEntity</class>
 		<class>org.sitenv.common.statistics.entity.DirectReceiveEntity</class>
 		<class>org.sitenv.common.statistics.entity.DirectTrustUploadEntity</class>

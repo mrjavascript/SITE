@@ -12,6 +12,8 @@ public interface CcdaValidationDAO {
 	
 	public void createCcdaDownload();
 	
+	public void createCcdaReferenceDownload(String fileName);
+	
 	
 	public Long getErrorCount(Boolean hasErrors, Integer numOfDays);
 	
