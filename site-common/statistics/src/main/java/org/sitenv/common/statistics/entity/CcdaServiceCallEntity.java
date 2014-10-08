@@ -13,8 +13,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name="ccda_validations")
-public class CcdaValidationEntity {
+@Table(name="ccda_service_calls")
+public class CcdaServiceCallEntity {
 
 @Id
 @Column(name="validation_pk")
@@ -41,6 +41,10 @@ private Boolean httpError;
 @Column(name="validation_type")
 private String validationType;
 
+@Column(name="validator")
+private String validator;
+
+
 
 @Override
 public int hashCode() {
@@ -54,6 +58,8 @@ public int hashCode() {
 	result = prime * result
 			+ ((validationType == null) ? 0 : validationType.hashCode());
 	result = prime * result + ((warnings == null) ? 0 : warnings.hashCode());
+	result = prime * result + ((validator == null) ? 0 : validator.hashCode());
+	
 	return result;
 }
 
@@ -65,7 +71,7 @@ public boolean equals(Object obj) {
 		return false;
 	if (getClass() != obj.getClass())
 		return false;
-	CcdaValidationEntity other = (CcdaValidationEntity) obj;
+	CcdaServiceCallEntity other = (CcdaServiceCallEntity) obj;
 	if (errors == null) {
 		if (other.errors != null)
 			return false;
@@ -158,6 +164,14 @@ public String getValidationType() {
 
 public void setValidationType(String validationType) {
 	this.validationType = validationType;
+}
+
+public String getValidator() {
+	return validator;
+}
+
+public void setValidator(String validator) {
+	this.validator = validator;
 }
 
 
