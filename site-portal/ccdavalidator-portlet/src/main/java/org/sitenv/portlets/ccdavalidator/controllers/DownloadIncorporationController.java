@@ -111,6 +111,8 @@ public class DownloadIncorporationController extends BaseController {
 		out.flush();
 		out.close();
 		in.close();
+		statisticsManager.addReferenceCcdaDownload(fileName);
+		
 	}
 	
 	
@@ -147,6 +149,7 @@ public class DownloadIncorporationController extends BaseController {
 		out.flush();
 		out.close();
 		in.close();
+		statisticsManager.addReferenceCcdaDownload(fileName);
 		
 	}
 	
@@ -187,6 +190,7 @@ public class DownloadIncorporationController extends BaseController {
 		out.flush();
 		out.close();
 		in.close();
+		statisticsManager.addReferenceCcdaDownload(fileName);
 		
 	}
 	
