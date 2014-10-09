@@ -8,6 +8,7 @@
 	<persistence-unit name="statistics" transaction-type="RESOURCE_LOCAL">
 	<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<class>org.sitenv.common.statistics.entity.CcdaValidationEntity</class>
+		<class>org.sitenv.common.statistics.entity.CcdaServiceCallEntity</class>
 		<class>org.sitenv.common.statistics.entity.DateItemEntity</class>
 		<class>org.sitenv.common.statistics.entity.SmartCcdaValidationEntity</class>
 		<class>org.sitenv.common.statistics.entity.CcdaDownloadEntity</class>

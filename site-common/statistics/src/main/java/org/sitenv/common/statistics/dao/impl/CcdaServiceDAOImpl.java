@@ -1,6 +1,5 @@
 package org.sitenv.common.statistics.dao.impl;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -9,16 +8,15 @@ import javax.persistence.Query;
 
 import org.sitenv.common.statistics.dao.CcdaServiceDAO;
 import org.sitenv.common.statistics.dto.CcdaWeeklyCounts;
-import org.sitenv.common.statistics.entity.CcdaDownloadEntity;
 import org.sitenv.common.statistics.entity.CcdaServiceCallEntity;
 import org.sitenv.common.statistics.entity.CcdaWeeklyCountsEntity;
 import org.springframework.stereotype.Repository;
 
-@Repository(value="CcdaServiceDAO")
+@Repository(value="ccdaServiceDAO")
 public class CcdaServiceDAOImpl extends BaseDAOImpl implements CcdaServiceDAO {
 
 	
-	public void createCcdaValidation(String testType, Boolean hasErrors, Boolean hasWarnings,
+	public void createCcdaServiceCall(String testType, Boolean hasErrors, Boolean hasWarnings,
 			Boolean hasInfo, Boolean hasHttpError, String validator) {
 		CcdaServiceCallEntity entity = new CcdaServiceCallEntity();
 		
@@ -31,12 +29,6 @@ public class CcdaServiceDAOImpl extends BaseDAOImpl implements CcdaServiceDAO {
 		entityManager.persist(entity);
 	}
 	
-
-	public void createCcdaDownload() {
-		CcdaDownloadEntity entity = new CcdaDownloadEntity();
-		
-		entityManager.persist(entity);
-	}
 	
 	
 	public Long getHttpErrorCount(Boolean hasHttpError, Integer numOfDays) {
@@ -166,30 +158,6 @@ public class CcdaServiceDAOImpl extends BaseDAOImpl implements CcdaServiceDAO {
 	}
 	
 	
-	public Long getCcdaDownloadCount(Integer numOfDays) {
-		
-		Long downloadCount;
-		
-		if (numOfDays == null) {
-			
-			downloadCount = (Long) entityManager.createQuery("SELECT COUNT(t) FROM org.sitenv.common.statistics.entity.CcdaDownloadEntity t").getSingleResult();
-			
-		} else {
-			
-			Date currentDbDate = this.getSystemDate();
-			Date pastDate = this.getPreviousDate(currentDbDate, numOfDays);
-			
-			Query query = entityManager.createQuery("SELECT COUNT(t) FROM org.sitenv.common.statistics.entity.CcdaDownloadEntity t WHERE  t.timestamp < :currentDate AND t.timestamp > :prevDate");
-			query.setParameter("currentDate", currentDbDate);
-			query.setParameter("prevDate", pastDate);
-			
-			downloadCount = (Long) query.getSingleResult();
-			
-		}
-		
-		return downloadCount;
-		
-	}
 
 	@SuppressWarnings("unchecked")
 	public List<CcdaWeeklyCounts> getCcdaWeeklyCounts(Integer numOfWeeks) {
@@ -221,25 +189,6 @@ public class CcdaServiceDAOImpl extends BaseDAOImpl implements CcdaServiceDAO {
 		}
 		
 		return returnVal;
-		
-	}
-	
-	public Long getCcdaLogCounts()
-	{
-		
-		Query query = entityManager.createNativeQuery("SELECT CAST(SUM(ccdalog_count) AS INTEGER) total_ccda FROM ccda_log");
-		
-		Integer results = (Integer) query.getSingleResult();
-		Long returnVal = null;
-		
-		if (results != null) {
-				
-				returnVal = results.longValue();
-				
-				
-		}
-		return returnVal;
-		
 		
 	}
 

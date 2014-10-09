@@ -20,6 +20,8 @@ public interface StatisticsManager {
 	public void addSmartCcdaValidation(Boolean hasHttpError);
 	public void addCcdaDownload();
 	
+	public void addCcdaServiceCall(String testType, Boolean hasErrors, Boolean hasWarnings, Boolean hasInfo, Boolean hasHttpError, String validator);
+	
 	
 	public Long getSuccessfulCcdaValidationCount(Integer numOfDays);
 	public Long getFailedCcdaValidationCount(Integer numOfDays);
