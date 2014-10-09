@@ -1,20 +1,19 @@
 package org.sitenv.services.ccda;
 
 
-//import java.io.FileInputStream;
-//import java.io.UnsupportedEncodingException;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 import javax.activation.DataHandler;
 import javax.ws.rs.Consumes;
-//import javax.ws.rs.GET;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -38,18 +37,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.sitenv.common.statistics.manager.StatisticsManager;
-import org.springframework.beans.factory.annotation.Autowired;
 
-@Path("/CCDAv1_1")
+
+@Path("/CCDAv1_1/")
 @Produces("text/xml")
 public class CCDAService1_1 extends CCDAService {
     
 	Logger logger = LogManager.getLogger(CCDAService1_1.class.getName());
-	
-	public static final String DEFAULT_PROPERTIES_FILE = "environment.properties";
-	
-	protected Properties props;
 	
     private static final Map<String, String> typeValMap;
     static {
@@ -71,30 +65,7 @@ public class CCDAService1_1 extends CCDAService {
         typeValMap = Collections.unmodifiableMap(tpMap);
     }
 	
-	
-	@Autowired
-	private StatisticsManager statisticsManager;
-	
-	
-	
-	protected void loadProperties() throws IOException {
-		InputStream in = this.getClass().getClassLoader().getResourceAsStream(DEFAULT_PROPERTIES_FILE);
-		
-		if (in == null)
-		{
-			props = null;
-			throw new FileNotFoundException("Environment Properties File not found in class path.");
-		}
-		else
-		{
-			props = new Properties();
-			props.load(in);
-		}
-	}
-	
-	public CCDAService1_1() throws IOException {
-        loadProperties();
-    }
+	public CCDAService1_1() throws IOException {}
     
 	@Override
 	public String getValidatorID() {
@@ -129,8 +100,6 @@ public class CCDAService1_1 extends CCDAService {
 			
 			mu2_ccda_type_value = mapped_type_val;
 		}
-		
-		
 		
 		Attachment file = body.getAttachment("file");
 		
@@ -174,7 +143,7 @@ public class CCDAService1_1 extends CCDAService {
 	    } catch (Exception e) {
 	    	
 	    	
-	    	statisticsManager.addCcdaServiceCall(mu2_ccda_type_value, false, false, false, true, getValidatorID());
+	    	getStatisticsManager().addCcdaServiceCall(mu2_ccda_type_value, false, false, false, true, getValidatorID());
 	    	logger.error("Error while accessing CCDA service: ",  e);
 	    	try {
 				json = new JSONObject("{ \"error\" : {\"message\":"+"\""+e.getMessage()+"\""+"}}");
@@ -219,7 +188,7 @@ public class CCDAService1_1 extends CCDAService {
 			jsonbody = new JSONObject("{ \"error\" : {\"message\": Error while accessing CCDA service - "
 			+"\""+code +"-"+relayResponse.getStatusLine().getReasonPhrase() +"\""+"}}");
 			
-			statisticsManager.addCcdaServiceCall(mu2_ccda_type_value, false, false, false, true, getValidatorID());
+			getStatisticsManager().addCcdaServiceCall(mu2_ccda_type_value, false, false, false, true, getValidatorID());
 		}
 		else
 		{
@@ -259,7 +228,7 @@ public class CCDAService1_1 extends CCDAService {
 			hasInfo = report.getBoolean("hasInfo");
 			
 			jsonbody.put("performance", performance_object);
-			statisticsManager.addCcdaServiceCall(mu2_ccda_type_value, hasErrors, hasWarnings, hasInfo, false, getValidatorID());	
+			getStatisticsManager().addCcdaServiceCall(mu2_ccda_type_value, hasErrors, hasWarnings, hasInfo, false, getValidatorID());	
 		}
 		return jsonbody;
     }
@@ -279,7 +248,7 @@ public class CCDAService1_1 extends CCDAService {
 			
 			
 			HttpClient client = new DefaultHttpClient();
-			String URL = "http://localhost:7080/CCDAValidatorServices/Validate/";
+			String URL = "http://localhost:7080/CCDAValidatorServices/CCDAv1_1/Validate/";
 			HttpPost post = new HttpPost(URL);
 			
 			MultipartEntity entity = new MultipartEntity();

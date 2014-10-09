@@ -7,7 +7,7 @@
  
      <appender name="RollingAppender" class="org.apache.log4j.rolling.RollingFileAppender">
         <rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
-            <param name="FileNamePattern" value="${catalina.home}/logs/CCDAService.%d{yyyy-MM-dd}.log" />
+            <param name="FileNamePattern" value="${catalina.home}/logs/CCDAService1_1.%d{yyyy-MM-dd}.log" />
         </rollingPolicy>
  
         <layout class="org.apache.log4j.PatternLayout">
@@ -15,7 +15,7 @@
         </layout>
     </appender>
  	
- 	<logger name="org.sitenv.services.ccda.CCDAService">
+ 	<logger name="org.sitenv.services.ccda.CCDAService1_1">
         <level value="INFO" />
         <appender-ref ref="RollingAppender" />
     </logger>

@@ -84,7 +84,7 @@ public class CCDAValidatorController extends BaseController {
 				HttpClient client = new DefaultHttpClient();
 				
 				String ccdaURL = this.props.getProperty("CCDAValidationServiceURL");
-				
+				ccdaURL = ccdaURL + "/CCDAv1_1/Validate/";
 				
 				HttpPost post = new HttpPost(ccdaURL);
 

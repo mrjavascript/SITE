@@ -30,7 +30,7 @@
 
     <jaxrs:server id="ccdavalidatorService" address="/">
         <jaxrs:serviceBeans>
-            <ref bean="ccdavalidatorServiceBean"/>
+            <ref bean="ccdavalidatorService1_1Bean"/>
         </jaxrs:serviceBeans>
         <jaxrs:extensionMappings>
             <entry key="xml" value="application/xml" />
@@ -48,7 +48,7 @@
 			<bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/>
 		</jaxrs:providers>
     </jaxrs:server>
-	<bean id="ccdavalidatorServiceBean" class="org.sitenv.services.ccda.CCDAService"/>
+	<bean id="ccdavalidatorService1_1Bean" class="org.sitenv.services.ccda.CCDAService1_1"/>
 	
 	<!--context:property-placeholder location="classpath:db.properties" / -->
 	<context:annotation-config />
