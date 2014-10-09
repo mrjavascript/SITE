@@ -1,11 +1,11 @@
 package org.sitenv.services.ccda;
 
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+//import java.io.FileInputStream;
+//import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
+//import java.io.InputStream;
+//import java.io.UnsupportedEncodingException;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -13,7 +13,7 @@ import java.util.Map;
 
 import javax.activation.DataHandler;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
+//import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -143,7 +143,7 @@ public class CCDAService1_1 extends CCDAService {
 	    } catch (Exception e) {
 	    	
 	    	
-	    	getStatisticsManager().addCcdaServiceCall(mu2_ccda_type_value, false, false, false, true, getValidatorID());
+	    	recordStatistics(mu2_ccda_type_value, false, false, false, true);
 	    	logger.error("Error while accessing CCDA service: ",  e);
 	    	try {
 				json = new JSONObject("{ \"error\" : {\"message\":"+"\""+e.getMessage()+"\""+"}}");
@@ -188,7 +188,7 @@ public class CCDAService1_1 extends CCDAService {
 			jsonbody = new JSONObject("{ \"error\" : {\"message\": Error while accessing CCDA service - "
 			+"\""+code +"-"+relayResponse.getStatusLine().getReasonPhrase() +"\""+"}}");
 			
-			getStatisticsManager().addCcdaServiceCall(mu2_ccda_type_value, false, false, false, true, getValidatorID());
+			recordStatistics(mu2_ccda_type_value, false, false, false, true);
 		}
 		else
 		{
@@ -228,7 +228,7 @@ public class CCDAService1_1 extends CCDAService {
 			hasInfo = report.getBoolean("hasInfo");
 			
 			jsonbody.put("performance", performance_object);
-			getStatisticsManager().addCcdaServiceCall(mu2_ccda_type_value, hasErrors, hasWarnings, hasInfo, false, getValidatorID());	
+			recordStatistics(mu2_ccda_type_value, hasErrors, hasWarnings, hasInfo, false);	
 		}
 		return jsonbody;
     }

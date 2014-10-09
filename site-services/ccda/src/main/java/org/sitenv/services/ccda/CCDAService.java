@@ -46,6 +46,10 @@ public abstract class CCDAService {
 		this.statisticsManager = statisticsManager;
 	}
     
+	public void recordStatistics(String testType, Boolean hasErrors, Boolean hasWarnings, Boolean hasInfo, Boolean hasHttpError){
+		getStatisticsManager().addCcdaServiceCall(testType, hasErrors, hasWarnings, hasInfo, hasHttpError, getValidatorID());
+	}
+	
 	public abstract String getValidatorID();
     public abstract String Validate(MultipartBody body);
     
