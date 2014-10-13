@@ -77,7 +77,7 @@ public class CCDAService1_1 extends BaseCCDAService {
     @Path("/Validate/")
     @Consumes("multipart/form-data")
     @Produces("application/json")
-    public String Validate(MultipartBody body){
+    public String validate(MultipartBody body){
     	
     	Date requestStart = new Date();
     	

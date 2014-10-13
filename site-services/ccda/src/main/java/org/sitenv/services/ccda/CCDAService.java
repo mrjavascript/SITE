@@ -6,6 +6,6 @@ import org.apache.cxf.jaxrs.ext.multipart.MultipartBody;
 public interface CCDAService {
 	
 	public abstract String getValidatorID();
-    public abstract String Validate(MultipartBody body);
+    public abstract String validate(MultipartBody body);
     
 }

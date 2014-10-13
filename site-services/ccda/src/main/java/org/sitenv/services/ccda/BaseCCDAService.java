@@ -51,7 +51,7 @@ public abstract class BaseCCDAService implements CCDAService {
 	}
 	
 	public abstract String getValidatorID();
-    public abstract String Validate(MultipartBody body);
+    public abstract String validate(MultipartBody body);
     
     
 }
