@@ -41,7 +41,7 @@ import org.jsoup.nodes.Document;
 
 @Path("/CCDAv1_1/")
 @Produces("text/xml")
-public class CCDAService1_1 extends CCDAService {
+public class CCDAService1_1 extends BaseCCDAService {
     
 	Logger logger = LogManager.getLogger(CCDAService1_1.class.getName());
 	
