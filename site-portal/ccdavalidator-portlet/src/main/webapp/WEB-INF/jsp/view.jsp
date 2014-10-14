@@ -249,6 +249,8 @@
 								<br/><br/>
 								<noscript><input type="hidden" name="redirect" value="true" /></noscript>
 								<div id="CCDAReconciledUploaderrorlock" style="position: relative;">
+									
+									
 									<div class="row">
 										<div class="col-md-12">
 											<label for="CCDAReconciledFileupload">Select a Local C-CDA File to Validate:</label><br/>
@@ -259,7 +261,32 @@
 											<div id="CCDAReconciledFiles"></div>
 											
 										</div>
-									</div>								
+									</div>
+									
+									<div class="row">
+										<div class="col-md-12">
+											<label for="CCDAReconciledCEHRTFileupload">Select a CEHRT Generated C-CDA File to Validate:</label><br/>
+											<span class="btn btn-success fileinput-button" id="CCDAReconciledCEHRTFileupload-btn"> <i
+													class="glyphicon glyphicon-plus"></i>&nbsp;<span>Select a C-CDA File...</span>
+													<input id="CCDAReconciledCEHRTFileupload" type="file" name="CEHRTfile"  class="validate[required, custom[xmlfileextension[xml|XML]], custom[maxCCDAFileSize]]"  tabindex="1"/>
+											</span>
+											<div id="CCDACEHRTReconciledFiles"></div>
+											
+										</div>
+									</div>			
+									
+									<div class="row">
+										<div class="col-md-12">
+											<label for="CCDAReconciledReconciliationFileupload">Select a Reconciliation Input C-CDA File to Validate:</label><br/>
+											<span class="btn btn-success fileinput-button" id="CCDAReconciledReconciliationFileupload-btn"> <i
+													class="glyphicon glyphicon-plus"></i>&nbsp;<span>Select a C-CDA File...</span>
+													<input id="CCDAReconciledReconciliationFileupload" type="file" name="Reconciliationfile"  class="validate[required, custom[xmlfileextension[xml|XML]], custom[maxCCDAFileSize]]"  tabindex="1"/>
+											</span>
+											<div id="CCDAReconciliationReconciledFiles"></div>
+											
+										</div>
+									</div>
+																
 								</div>
 								<hr/>
 								<button id="CCDAReconciledFormSubmit" type="submit" class="btn btn-primary start" onclick="return false;"  tabindex="1">
@@ -311,17 +338,32 @@
 								<br/><br/>
 								<noscript><input type="hidden" name="redirect" value="true" /></noscript>
 								<div id="CCDAReferenceUploaderrorlock" style="position: relative;">
+								
 									<div class="row">
 										<div class="col-md-12">
-											<label for="CCDAReferenceFileupload">Select a Local C-CDA File to Validate:</label><br/>
+											<label for="CCDAReferenceFileupload">Select an input file used for generating C-CDA:</label><br/>
 											<span class="btn btn-success fileinput-button" id="CCDAReferenceFileupload-btn"> <i
-													class="glyphicon glyphicon-plus"></i>&nbsp;<span>Select a C-CDA File...</span>
+													class="glyphicon glyphicon-plus"></i>&nbsp;<span>Select a File...</span>
 													<input id="CCDAReferenceFileupload" type="file" name="file"  class="validate[required, custom[xmlfileextension[xml|XML]], custom[maxCCDAFileSize]]"  tabindex="1"/>
 											</span>
 											<div id="CCDAReferenceFiles"></div>
 											
 										</div>
-									</div>								
+									</div>
+									
+									
+									<div class="row">
+										<div class="col-md-12">
+											<label for="CCDAReferenceCEHRTFileupload">Select a CEHRT Generated C-CDA File to Validate:</label><br/>
+											<span class="btn btn-success fileinput-button" id="CCDAReferenceCEHRTFileupload-btn"> <i
+													class="glyphicon glyphicon-plus"></i>&nbsp;<span>Select a C-CDA File...</span>
+													<input id="CCDAReferenceCEHRTFileupload" type="file" name="CEHRTfile"  class="validate[required, custom[xmlfileextension[xml|XML]], custom[maxCCDAFileSize]]"  tabindex="1"/>
+											</span>
+											<div id="CCDACEHRTReferenceFiles"></div>
+											
+										</div>
+									</div>
+																	
 								</div>
 								<hr/>
 								<button id="CCDAReferenceFormSubmit" type="submit" class="btn btn-primary start" onclick="return false;"  tabindex="1">

@@ -1,4 +1,7 @@
 
+
+
+//C-CDA 1.1
 $(function() {
 	'use strict';
 
@@ -353,7 +356,7 @@ $(function() {
 
 
 
-
+// CCDA 2.0
 $(function() {
 	'use strict';
 
@@ -704,7 +707,7 @@ $(function() {
 
 
 
-
+//CCDA Reconciled
 $(function() {
 	'use strict';
 
@@ -992,7 +995,7 @@ $(function() {
 				
 				BlockPortletUI();
 				
-				var selectedValue = $("#CCDA2_type_val").val();
+				var selectedValue = $("CCDAReconciled_type_val").val();
 				
 				data.formData = { };
 				
@@ -1027,7 +1030,6 @@ $(function() {
 		e.preventDefault();
 	});
 	
-
 	
 	
 	$('#CCDAReconciledFileupload-btn').bind('click', function(e, data)
@@ -1055,6 +1057,8 @@ $(function() {
 
 
 
+
+// Reference C-CDA
 
 $(function() {
 	'use strict';
@@ -1343,7 +1347,7 @@ $(function() {
 				
 				BlockPortletUI();
 				
-				var selectedValue = $("#CCDA2_type_val").val();
+				var selectedValue = $("#CCDAReference_type_val").val();
 				
 				data.formData = { };
 				
@@ -1409,6 +1413,7 @@ $(function() {
 
 
 
+//Super C-CDA
 $(function() {
 	'use strict';
 
@@ -1696,7 +1701,7 @@ $(function() {
 				
 				BlockPortletUI();
 				
-				var selectedValue = $("#CCDA2_type_val").val();
+				var selectedValue = $("#CCDASuper_type_val").val();
 				
 				data.formData = { };
 				
