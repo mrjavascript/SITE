@@ -259,7 +259,7 @@
 											<div id="CCDAReconciledFiles"></div>
 											
 										</div>
-									</div>					
+									</div>								
 								</div>
 								<hr/>
 								<button id="CCDAReconciledFormSubmit" type="submit" class="btn btn-primary start" onclick="return false;"  tabindex="1">
