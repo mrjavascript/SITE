@@ -41,7 +41,6 @@ $(function() {
 			});
 			
 			
-			
 			//$( "#ValidationResult .tab-content #tabs-1" ).html(data.result.body);
 			//$( "#ValidationResult .tab-content #tabs-1" ).html(window.JSON.stringify(data.result.body));
 			

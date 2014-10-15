@@ -176,6 +176,7 @@ public class CCDAService1_1 extends BaseCCDAService {
 		int code = relayResponse.getStatusLine().getStatusCode();
 		
 		JSONObject jsonbody = null;
+		String errorMessage = null;
 		
 		if(code!=200)
 		{
@@ -195,6 +196,14 @@ public class CCDAService1_1 extends BaseCCDAService {
 			boolean hasErrors = true, hasWarnings = true, hasInfo = true;
 			
 			
+			org.apache.http.Header[] errorHeaders = relayResponse.getHeaders("error_message");
+			
+	    	if (errorHeaders.length > 0){
+	    		org.apache.http.Header errorHeader = errorHeaders[0];
+	    		errorMessage = errorHeader.getValue();
+	    	}
+	    	
+			
 	    	org.apache.http.Header[] timeAndDateHeaders = relayResponse.getHeaders("response_time_and_date");
 	    	
 	    	String timeAndDate = "";
@@ -203,6 +212,7 @@ public class CCDAService1_1 extends BaseCCDAService {
 	    		org.apache.http.Header timeAndDateHeader = timeAndDateHeaders[0];
 	    		timeAndDate = timeAndDateHeader.getValue();
 	    	}
+	    	
 	    	
 	    	org.apache.http.Header[] processingTimeHeaders = relayResponse.getHeaders("round_trip_response_time");
 	    	String processingTime = "";
@@ -216,19 +226,37 @@ public class CCDAService1_1 extends BaseCCDAService {
 	    	performance_object.put("processingTime", processingTime);
 			
 	    	
+	    	
 			String body = handler.handleResponse(relayResponse);
 			Document doc = Jsoup.parseBodyFragment(body);
 			org.jsoup.nodes.Element json = doc.select("pre").first();
 			
+			if (json == null){
+				
+				if (errorMessage != null){
+					
+					jsonbody = new JSONObject("{ \"error\" : {\"message\": "+errorMessage+"\""+"}}");
+					recordStatistics(mu2_ccda_type_value, false, false, false, true);
+				} else {
+					
+					jsonbody = new JSONObject("{ \"error\" : {\"message\": \"The web service has encountered an unknown error. Please try again. If this issue persists, please contact the SITE team."+"\""+"}}");
+					recordStatistics(mu2_ccda_type_value, false, false, false, true);
+				}
+				
+			} else {
+				
+				jsonbody = new JSONObject(json.text());
+				
+				JSONObject report = jsonbody.getJSONObject("report");
+				hasErrors = report.getBoolean("hasErrors");
+				hasWarnings = report.getBoolean("hasWarnings");
+				hasInfo = report.getBoolean("hasInfo");
+				
+				jsonbody.put("performance", performance_object);
+				recordStatistics(mu2_ccda_type_value, hasErrors, hasWarnings, hasInfo, false);
+				
+			}
 			
-			jsonbody = new JSONObject(json.text());
-			JSONObject report = jsonbody.getJSONObject("report");
-			hasErrors = report.getBoolean("hasErrors");
-			hasWarnings = report.getBoolean("hasWarnings");
-			hasInfo = report.getBoolean("hasInfo");
-			
-			jsonbody.put("performance", performance_object);
-			recordStatistics(mu2_ccda_type_value, hasErrors, hasWarnings, hasInfo, false);	
 		}
 		return jsonbody;
     }
