@@ -79,8 +79,8 @@
       	<div class="panel-heading"><h3 class="panel-title">C-CDA Validator</h3></div>
        
   			<div class="panel-body">
-  			<h4>Directions</h4>
-      		<p>To perform C-CDA validation, please select a C-CDA validator below, then select a C-CDA document type from the list provided, select the C-CDA document from your file system, and click the "Validate Document" button to perform the document validation.  <br/><br/>Please note: validation may take up to one minute to run.</p>
+  			
+      		<p>To perform C-CDA validation, please select a C-CDA validator below. <br/><br/>Please note: validation may take up to one minute to run.</p>
       		
       		
       		<div class="panel-group" id="CCDAAccordion">
@@ -98,6 +98,8 @@
 				      <div id="CCDA11">
 	  				
 	  					<div id="CCDA1wrapper">
+	  						<h4>Directions</h4>
+	  						Please select a C-CDA document type from the list provided, select the C-CDA document from your file system, and click the "Validate Document" button to perform the document validation. 
 	      	
 					       	<form id="CCDA1ValidationForm" action="${urlAction1_1}" method="POST" relay="<%= smartCCDAAction %>" enctype="multipart/form-data">
 					      		
@@ -160,7 +162,10 @@
 			        <div id="CCDA2">
 			        
 	  					<div id="CCDA2wrapper">
-	  					
+	  						
+	  						<h4>Directions</h4>
+	  						Please select a C-CDA document type from the list provided, select the C-CDA document from your file system, and click the "Validate Document" button to perform the document validation. 
+					       	
 					       	<form id="CCDA2ValidationForm" action="${urlAction2_0}" method="POST" relay="<%= smartCCDAAction %>" enctype="multipart/form-data">
 					      		
 					      		<div id="CCDA2_type_radioboxgroup" class="btn-group-vertical">
@@ -224,6 +229,10 @@
 			      
 			      
 			      	<div id="CCDAReconciled">
+			      	
+			      		<h4>Directions</h4>
+	  					Please select a C-CDA document type from the list provided, then select a C-CDA document, a CEHRT-generated C-CDA document, and a reconciliation input C-CDA document from your filesystem. Then click the "Validate Document" button to perform the document validation. 
+			      	
 			        
 	  					<div id="CCDAReconciledWrapper">
 	  					
@@ -316,6 +325,9 @@
 			        
 	  					<div id="CCDAReferenceWrapper">
 	  					
+	  						<h4>Directions</h4>
+	  						Please select a C-CDA document type from the list provided, then select a C-CDA document, and a CEHRT-generated C-CDA document from your filesystem. Then click the "Validate Document" button to perform the document validation. 
+	  					
 					       	<form id="CCDAReferenceValidationForm" action="${urlActionReference}" method="POST" relay="<%= smartCCDAAction %>" enctype="multipart/form-data">
 					      		
 					      		<div id="CCDAReference_type_radioboxgroup" class="btn-group-vertical">
@@ -394,6 +406,10 @@
 			      	<div id="CCDASuper">
 			        
 	  					<div id="CCDASuperWrapper">
+	  					
+	  						<h4>Directions</h4>
+	  						Please select a C-CDA document type from the list provided, select the C-CDA document from your file system, and click the "Validate Document" button to perform the document validation. 
+	  					
 	  					
 					       	<form id="CCDASuperValidationForm" action="${urlActionSuper}" method="POST" relay="<%= smartCCDAAction %>" enctype="multipart/form-data">
 					      		
