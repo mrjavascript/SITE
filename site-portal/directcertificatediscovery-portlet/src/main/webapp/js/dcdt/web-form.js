@@ -7,47 +7,13 @@
 
             	var elem = $(this);
             	
-                // jquery Validation Engine
-            	if (formid == "form-testcases-hosting" && fieldName == "directAddress")
-        		{
-            		if ($(".testcase-hosting-direct-addrformError")[0] != undefined)
-            		{
-            			$(".testcase-hosting-direct-addrformError .formErrorContent").html($(".testcase-hosting-direct-addrformError .formErrorContent").html() + "<br/>* " + msg);
-            		}
-            		else
-            		{
-            			$("#form-testcases-hosting input").validationEngine('showPrompt', "* " + msg, null, null, true);
-            		}
-            		
-            		if (msg.length > 40) {
-            			$(".testcase-hosting-direct-addrformError .formErrorContent").css("width", "450px");
-            		}
-            		else if (msg.length > 15 && $(".testcase-hosting-direct-addrformError .formErrorContent").css("width") != "450px") {
-            			$(".testcase-hosting-direct-addrformError .formErrorContent").css("width", "250px");
-            		}
-        		}	
-            	else
-        		{
-            		if ($("." + fieldName + "formError")[0] != undefined)
-            		{
-            			$("." + fieldName + "formError .formErrorContent").html($("." + fieldName + "formError .formErrorContent").html() + "<br/>* " + msg);
-            		}
-            		else
-            		{
-            			$("#form-testcases-discovery-mail-mapping input#" + fieldName).validationEngine('showPrompt', "* " + msg, null, null, true);
-            		}
-            		
-            		if (msg.length > 40) {
-            			$("." + fieldName + "formError .formErrorContent").css("width", "450px");
-            		}
-            		else if (msg.length > 15 && $("." + fieldName + "formError .formErrorContent").css("width") != "450px") {
-            			$("." + fieldName + "formError .formErrorContent").css("width", "250px");
-            		}
-            		
-        		}
-
+                // parsley Validation Engine
+            	var d = new Date();
+            	var invalidField = (formid == "form-testcases-hosting" && fieldName == "directAddress") 
+            			? $("#form-testcases-hosting input").parsley() 
+            			: $("#form-testcases-discovery-mail-mapping input#" + fieldName).parsley();
+            	window.ParsleyUI.addError(invalidField, "ajaxError_" + d.getMilliseconds(), msg);
                 elem.dcdt.form.formGroupsFields(fieldName).find("div:first-child").enableClass("has-" + level);
-                
                 return elem.dcdt.form.addMessage(elem.dcdt.form.messagesAddonsFields(level, fieldName), msg, preFormatted);
             },
             "addMessageGlobal": function (level, msg, preFormatted) {

@@ -48,7 +48,7 @@
 		<div class="well">
 			<form id="form-testcases-hosting" enctype="multipart/form-data"
 				name="form-testcases-hosting" action="about:blank" method="post"
-				onsubmit="return false;">
+				onsubmit="return false;" data-parsley-validate>
 				<div id="testcase-info" class="input-group-small">
 					<div class="form-group form-group-addons">
 						<div class="has-error">
@@ -62,9 +62,11 @@
 					</div>
 					<p>
 
-						<label for="testcase-hosting-select">Select a Hosting Test Case:</label> <select
-							id="testcase-hosting-select" name="testcase-hosting-select"
-							class="form-control validate[required]" tabindex="1">
+						<label for="testcase-hosting-select">Select a Hosting Test
+							Case:</label> <select id="testcase-hosting-select"
+							name="testcase-hosting-select"
+							class="form-control" tabindex="1"
+							required>
 							<option value="">-- No testcase selected --</option>
 							<option value="H1_DNS_AB_Normal">H1 - Normal
 								address-bound certificate search in DNS</option>
@@ -76,21 +78,18 @@
 								domain-bound certificate search in LDAP</option>
 						</select>
 					</p>
-					
+
 					<!-- Description of the test case will go here: -->
 					<div id="hosting-testcase-desc" class="testcase hide"
 						aria-hidden="true">Please select a test case.</div>
 					<p>
-
 						<label for="testcase-hosting-direct-addr">Enter Your
 							Direct Address:</label> <input id="testcase-hosting-direct-addr"
-							class="form-control"
-							name="directAddress" placeholder="direct email address"
-							style="display: inline;" type="text" tabindex="1" disabled="disabled" />
-
+							class="form-control" name="directAddress"
+							placeholder="direct email address" style="display: inline;"
+							type="email" tabindex="1" disabled="disabled" required />
 					</p>
 
-					
 					<hr />
 					<div class="form-group form-group-buttons">
 						<span class="btn-group btn-group-sm">
@@ -98,7 +97,7 @@
 								id="testcase-hosting-submit">
 								<i class="glyphicon glyphicon-ok"></i> <span>Submit</span>
 							</button>
-							
+
 							<button type="reset" class="btn btn-default start" tabindex="1"
 								id="testcase-hosting-reset">
 								<i class="glyphicon glyphicon-refresh"></i> <span>Reset</span>
@@ -131,54 +130,54 @@
 	</div>
 	<div class="panel-body">
 		<h4>Directions</h4>
-		
-		
 		<p>Step 1: Download the Testing Tool's trust anchor.</p>
 		<p style="margin-left: 15px;">
 			<a href="http://demo.direct-test.com/dcdt-web/discovery/anchor"
 				target="_blank">Download Trust Anchor</a>
 		</p>
-		<p>Step 2: Upload the anchor to your Direct instance. This will allow you to send messages to our tool.</p>
-		<p>Step 3: Using the form below, map the Direct email address from which you will be sending messages to a non-Direct email address that will receive a regular email containing test results. This email address should be able to receive plain text messages. Make sure you have access to the recipient email address in order to verify the receipt of the messages.</p>
+		<p>Step 2: Upload the anchor to your Direct instance. This will
+			allow you to send messages to our tool.</p>
+		<p>Step 3: Using the form below, map the Direct email address from
+			which you will be sending messages to a non-Direct email address that
+			will receive a regular email containing test results. This email
+			address should be able to receive plain text messages. Make sure you
+			have access to the recipient email address in order to verify the
+			receipt of the messages.</p>
 		<div class="well">
-			<form id="form-testcases-discovery-mail-mapping" action="about:blank" method="POST"
-				enctype="multipart/form-data" target="_self" onsubmit="return false;"
-				name="form-testcases-discovery-mail-mapping">
-				
-					<div class="form-group">
-						<div>
-							<label for="directAddress">Enter Your Direct Address:</label><br />
-							<input id="directAddress"
-								class="form-control"
-								name="directAddress"
-								placeholder="direct email address"
-								style="display: inline;" type="text" tabindex="1" />
-						</div>
-					</div>
-					
-					<div class="form-group">
-						<div>
-							<label for="resultsAddress">Enter Your Email Address (for
-								results):</label> <input id="resultsAddress"
-								class="form-control"
-								name="resultsAddress" placeholder="results email address"
-								style="display: inline;" type="text" tabindex="1" />
+			<form id="form-testcases-discovery-mail-mapping" action="about:blank"
+				method="POST" enctype="multipart/form-data" target="_self"
+				onsubmit="return false;"
+				name="form-testcases-discovery-mail-mapping" data-parsley-validate>
 
-						</div>
+				<div class="form-group">
+					<div>
+						<label for="directAddress">Enter Your Direct Address:</label><br />
+						<input id="directAddress" class="form-control"
+							name="directAddress" placeholder="direct email address"
+							style="display: inline;" type="email" tabindex="1" required  />
 					</div>
-					
-					<hr />
-					<div class="form-group form-group-buttons">
-						<button id="discovery-mail-mapping-submit" type="button"
-							class="btn btn-primary start" tabindex="1">
-							<i class="glyphicon glyphicon-ok"></i> <span>Submit</span>
-						</button>
-						<button id="discovery-mail-mapping-reset" type="reset"
-							class="btn btn-default start" tabindex="1">
-							<i class="glyphicon glyphicon-refresh"></i> <span>Reset</span>
-						</button>
+				</div>
+				<div class="form-group">
+					<div>
+						<label for="resultsAddress">Enter Your Email Address (for
+							results):</label> <input id="resultsAddress" class="form-control"
+							name="resultsAddress" placeholder="results email address"
+							style="display: inline;" type="email" tabindex="1" required  />
 					</div>
-					<div class="input-group-small">
+				</div>
+
+				<hr />
+				<div class="form-group form-group-buttons">
+					<button id="discovery-mail-mapping-submit" type="button"
+						class="btn btn-primary start" tabindex="1">
+						<i class="glyphicon glyphicon-ok"></i> <span>Submit</span>
+					</button>
+					<button id="discovery-mail-mapping-reset" type="reset"
+						class="btn btn-default start" tabindex="1">
+						<i class="glyphicon glyphicon-refresh"></i> <span>Reset</span>
+					</button>
+				</div>
+				<div class="input-group-small">
 					<div class="form-group form-group-addons">
 						<div class="has-error">
 							<div
@@ -200,15 +199,24 @@
 				</div>
 			</form>
 		</div>
-		<p>Step 4: Choose a test case from the drop down menu below. Read the test case description below the "Direct Address" field, copy the displayed Direct address and proceed to step 5. You should run all of the tests in order to verify that your system can correctly discover certificates in either DNS CERT records or LDAP servers. (Note: your system MUST NOT already contain a certificate for the address selected or the test case will not be valid). </p>
-		<p>Step 5: Attempt to send a message to the Direct address that you've just copied. Please only send to one address at a time. The test case results message will indicate the test case results. See the test case instructions for additional information. </p>
+		<p>Step 4: Choose a test case from the drop down menu below. Read
+			the test case description below the "Direct Address" field, copy the
+			displayed Direct address and proceed to step 5. You should run all of
+			the tests in order to verify that your system can correctly discover
+			certificates in either DNS CERT records or LDAP servers. (Note: your
+			system MUST NOT already contain a certificate for the address
+			selected or the test case will not be valid).</p>
+		<p>Step 5: Attempt to send a message to the Direct address that
+			you've just copied. Please only send to one address at a time. The
+			test case results message will indicate the test case results. See
+			the test case instructions for additional information.</p>
 		<div class="well">
-			<form id="form-testcases-discovery" action="about:blank" method="POST"
-				target="_self" enctype="multipart/form-data"
+			<form id="form-testcases-discovery" action="about:blank"
+				method="POST" target="_self" enctype="multipart/form-data"
 				name="form-testcases-discovery">
-				<label for="testcase-select">Select a Discovery Test Case:</label><br /> <select
-					id="testcase-select" name="testcase-select" class="form-control"
-					tabindex="1">
+				<label for="testcase-select">Select a Discovery Test Case:</label><br />
+				<select id="testcase-select" name="testcase-select"
+					class="form-control" tabindex="1">
 					<option value="">-- No testcase selected --</option>
 					<option value="D1_DNS_AB_Valid">D1 - Valid address-bound
 						certificate discovery in DNS</option>
