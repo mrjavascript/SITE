@@ -5,14 +5,10 @@
 	<portlet>
 		<portlet-name>DirectTransport</portlet-name>
 		<icon>/icon.png</icon>
-        <instanceable>true</instanceable>
+		<instanceable>true</instanceable>
 		<header-portlet-css>/css/jquery.fileupload.css</header-portlet-css>
-		
 		<header-portlet-css>/css/validationEngine.jquery.css</header-portlet-css>
-		
-		
-		
-		
+		<header-portlet-css>/css/parsley.css</header-portlet-css>
 		<header-portlet-javascript>/js/vendor/jquery.ui.widget.js</header-portlet-javascript>
 		<header-portlet-javascript>/js/jquery.filestyle.js</header-portlet-javascript>
 		<header-portlet-javascript>/js/jquery.cookie.js</header-portlet-javascript>
@@ -21,15 +17,16 @@
 		<header-portlet-javascript>/js/jquery.blockUI.js</header-portlet-javascript>
 		<header-portlet-javascript>/js/jquery.iframe-transport.js</header-portlet-javascript>
 		<header-portlet-javascript>/js/jquery.fileupload.js</header-portlet-javascript>
-		
 		<footer-portlet-css>/css/dropdown.css</footer-portlet-css>
 		<footer-portlet-css>/css/main.css</footer-portlet-css>
+		<footer-portlet-javascript>/js/web.js</footer-portlet-javascript>
 		<footer-portlet-javascript>/js/main.js</footer-portlet-javascript>
 		<footer-portlet-javascript>/js/jquery.validationEngine-en.js</footer-portlet-javascript>
 		<footer-portlet-javascript>/js/jquery.validationEngine.js</footer-portlet-javascript>
-		
+		<footer-portlet-javascript>/js/parsley.min.js</footer-portlet-javascript>
+
 		<footer-portlet-javascript>/js/uploader.js</footer-portlet-javascript>
-		
+
 		<css-class-wrapper>SIT-DirectTransport-portlet</css-class-wrapper>
 	</portlet>
 	<role-mapper>

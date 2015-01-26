@@ -323,3 +323,190 @@ $(function() {
 	
 
 });
+
+/*
+ * 	Parsley Validation
+ */
+$("button#precannedCCDAsubmit, button#ccdauploadsubmit").click(
+		function()
+		{
+			var $form = $(this).closest('form');
+			if (! $form.parsley().validate())
+			{
+				return false;
+			}
+		}
+);
+
+
+/*
+ * 	Get Direct Certificate Utility
+ */
+var formTestcasesHosting;
+var testcaseHostingResults;
+var testcaseHostingResultsAccordion;
+$(function() {
+
+	//Create the accordian
+	formTestcasesHosting = $("form[name=\"form-getdc\"]");
+	testcaseHostingResults = $("div#testcase-results", formTestcasesHosting);
+	testcaseHostingResultsAccordion = $("div#testcase-results-accordion", testcaseHostingResults);
+    testcaseHostingResultsAccordion.accordion({
+        "collapsible": true,
+        "heightStyle": "content",
+        "icons": {
+            "activeHeader": "",
+            "header": ""
+        }
+    });
+    testcaseHostingResultsAccordion.empty();
+
+	/*
+	 * Submit the form
+	 */
+	$('form#form-getdc').parsley().subscribe('parsley:form:validate', function (formInstance) {
+
+		if (formInstance.isValid())
+		{
+			// Show the div
+	    	$("#testcase-results-accordion").removeClass("hide");
+	    	$("#testcase-results-accordion").attr("aria-hidden", "false");
+			
+			// Submit the form
+			$.post(URL_GETDC_ACTION, {
+				directAddress : $("#directAddress").val()
+			}, function(data, status) {
+				appendAccordian(data, $("#directAddress").val());
+			}, 'json');
+			
+			return;
+		}
+
+		// else stop form submission
+	    formInstance.submitEvent.preventDefault();
+		
+		return;
+
+	});
+
+	/*
+	 * Reset parsley
+	 */
+	$("button#getdc-reset").click(function() {
+		$('form#form-getdc').parsley().reset();
+		
+		// And empty the accordian
+		testcaseHostingResultsAccordion.empty();
+	});
+
+});
+
+function appendAccordian(data, value)
+{
+	var testcaseHostingResultHeaderElem = $("<h3/>");
+	testcaseHostingResultHeaderElem.enableClass("testcase-hosting-result-header");
+	var testcaseHostingResultBodyElem = $("<div/>");
+	if (data.error !== undefined)
+	{
+		testcaseHostingResultHeaderElem.enableClass(("testcase-hosting-result-header-error"));
+		testcaseHostingResultHeaderElem.append(buildTestcaseItem("Value", value));
+		testcaseHostingResultBodyElem.append(buildTestcaseItem("Error", data.error));
+	}
+	else 
+	{
+		if (data.is_found !== undefined && data.is_found === true)
+		{
+			testcaseHostingResultHeaderElem.enableClass(("testcase-hosting-result-header-success"));
+		}
+		else
+		{
+			testcaseHostingResultHeaderElem.enableClass(("testcase-hosting-result-header-error"));
+		}
+		testcaseHostingResultHeaderElem.append(buildTestcaseItem("Value", value));
+		
+		// LDAP
+		if (data.ldap !== undefined)
+		{
+			var ldapFound = (data.ldap.is_found !== undefined && data.ldap.is_found === true)
+				? "LDAP Found" : "LDAP Not Found";
+			testcaseHostingResultBodyElem.append(buildTestcaseItem(ldapFound, data.ldap.message));
+		}
+		
+		// DNS
+		if (data.dns !== undefined)
+		{
+			var dnsFound = (data.dns.is_found !== undefined && data.dns.is_found === true)
+				? "DNS Found" : "DNS Not Found";
+			testcaseHostingResultBodyElem.append(buildTestcaseItem(dnsFound, data.dns.message));
+		}
+	}
+
+	testcaseHostingResultsAccordion.append(testcaseHostingResultHeaderElem);
+	testcaseHostingResultsAccordion.append(testcaseHostingResultBodyElem);
+	refreshAccordian();
+}
+
+function refreshAccordian()
+{
+	testcaseHostingResultsAccordion.accordion("refresh");
+	testcaseHostingResultsAccordion.accordion({"active" : -1});
+	$("h3.testcase-hosting-result-header", testcaseHostingResultsAccordion).each(
+		function() {
+			var testcaseHostingResultHeaderElem = $(this);
+
+			var testcaseHostingResultHeaderIcon = $(
+					"span.ui-accordion-header-icon",
+					testcaseHostingResultHeaderElem);
+			testcaseHostingResultHeaderIcon
+					.disableClass("ui-icon");
+			testcaseHostingResultHeaderIcon
+					.enableClass("glyphicon");
+
+			if (testcaseHostingResultHeaderElem
+					.hasClass("testcase-hosting-result-header-success")) {
+				testcaseHostingResultHeaderElem.addClass("panel-success");
+				
+				testcaseHostingResultHeaderIcon
+						.enableClass("glyphicon-ok");
+				testcaseHostingResultHeaderIcon
+						.enableClass("glyphicon-type-success");
+			} else {
+				testcaseHostingResultHeaderElem.addClass("panel-danger");
+				
+				testcaseHostingResultHeaderIcon
+						.enableClass("glyphicon-remove");
+				testcaseHostingResultHeaderIcon
+						.enableClass("glyphicon-type-error");
+			}
+		});	
+	
+	// Show the div
+	$("#testcase-results").removeClass("hide");
+	$("#testcase-results").attr("aria-hidden", "false");
+}
+
+function buildTestcaseItem(testcaseItemLbl, testcaseItemValues) {	
+    var testcaseItemElem = $("<div/>"), testcaseItemLblElem = $("<span/>");
+    testcaseItemLblElem.append($("<strong/>").text(testcaseItemLbl), ": ");
+    testcaseItemElem.append(testcaseItemLblElem);
+    
+    if (!$.isBoolean(testcaseItemValues) && !$.isNumeric(testcaseItemValues) && (!testcaseItemValues || $.isEmptyObject(testcaseItemValues))) {
+        testcaseItemLblElem.append($("<i/>").text("None"));
+    } else if ($.isArray(testcaseItemValues)) {
+        var testcaseItemValuesList = $("<ul/>");
+        
+        testcaseItemValues.forEach(function (testcaseItemValue) {
+            testcaseItemValuesList.append($("<li/>").append(testcaseItemValue));
+        });
+        
+        testcaseItemElem.append(testcaseItemValuesList);
+    } else {
+        testcaseItemLblElem.append(($.isBoolean(testcaseItemValues) || $.isNumeric(testcaseItemValues)) ? testcaseItemValues.toString()
+            : testcaseItemValues);
+    }
+
+    return testcaseItemElem;
+}
+
+
+
